@@ -33,14 +33,44 @@
     </div>
   </template>
 
-  <main class="catalog">
-    <table class="catalog__table">
+  <main>
+    <section class="catalog">
+      <div class="catalog__table-block">
+        <table class="catalog__table"></table>
+        <form class="catalog__sort-settings form">
+          <label class="form__label">
+            Select direction:
+            <select name="direction" class="form__select">
+              <option value="аscending">Ascending</option>
+              <option value="descending">Descending</option>
+            </select>
+          </label>
 
-    </table>
-    <div class="catalog__pagination">
+          <label class="form__label">
+            Select type:
+            <select name="type" class="form__select">
+              <option value="TV">TV</option>
+              <option value="MOVIE">MOVIE</option>
+              <option value="SPECIAL">SPECIAL</option>
+              <option value="ONA">ONA</option>
+              <option value="MUSIC">MUSIC</option>
+            </select>
+          </label>
 
-    </div>
+          <label class="form__label">
+            Sort by:
+            <select name="ordering" class="form__select">
+              <option value="title_eng">Title in English</option>
+              <option value="title_jpn">Title in Japanese</option>
+              <option value="aired__aired">Aired Start</option>
+            </select>
+          </label>
+        </form>
+      </div>
+      <div class="catalog__pagination"></div>
+    </section>
   </main>
+  
   <script type="module" src="./index.ts"></script>
 </body>
 

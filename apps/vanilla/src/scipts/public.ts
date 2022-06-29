@@ -7,9 +7,21 @@ import { fillTableAnime } from './table';
 /**
  * Creating a URL address to get the page with the anime, taking into account the offset.
  * @param offset Offset relative to which you want to get records.
+ * @param ordering Offset relative to which you want to get records.
+ * @param type Offset relative to which you want to get records.
  * @returns Ready url.
  */
-export const getUrlAnime = (offset: number): string => `https://api.camp-js.saritasa.rocks/api/v1/anime/anime/?offset=${offset}&limit=25`;
+export const getUrlAnime = (offset: number, ordering = 'id', type = 'TV'): string => {
+  const urlParts = [
+    'https://api.camp-js.saritasa.rocks/api/v1/anime/anime/?',
+    `offset=${offset}&`,
+    'limit=25&',
+    `ordering=${ordering}&`,
+    `type=${type}&`,
+  ];
+
+  return urlParts.join('');
+};
 
 /**
  * Jump to the top of the page.

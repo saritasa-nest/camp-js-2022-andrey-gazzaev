@@ -7,12 +7,12 @@ import { IAnime } from '../types/anime';
  * @returns Array of rows.
  */
 const createTableRows = (animes: IAnime[]): HTMLTableRowElement[] => animes.map(anime => {
-    const row = document.createElement('tr');
+  const row = document.createElement('tr');
 
     for (const key in ANIME_OBJECT) {
       const thElement = document.createElement('td');
       const imageElement = document.createElement('img');
-      const animeKey = String(ANIME_OBJECT[key]);
+      const titleKey = String(ANIME_OBJECT[key]);
       let aired = 'none';
 
       switch (key) {
@@ -22,15 +22,15 @@ const createTableRows = (animes: IAnime[]): HTMLTableRowElement[] => animes.map(
           row.append(thElement);
           break;
         case AnimeSwitchCase.Aired:
-          if (anime[key].start) {
-            aired = new Date(anime[key].start).toUTCString();
+          if (anime[AnimeSwitchCase.Aired].start) {
+            aired = new Date(anime[AnimeSwitchCase.Aired].start).toUTCString();
           }
           thElement.innerHTML = aired;
           row.append(thElement);
           break;
         case AnimeSwitchCase.TitleEng:
         case AnimeSwitchCase.TitleJpn:
-          thElement.innerHTML = `${anime[animeKey] || 'none'}`;
+          thElement.innerHTML = `${anime[titleKey] || 'none'}`;
           row.append(thElement);
           break;
         default:

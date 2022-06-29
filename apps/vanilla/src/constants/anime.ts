@@ -1,7 +1,6 @@
 import { IBaseAnime } from '../types/anime';
 
 export const DEFAULT_OFFSET = 25;
-
 export const ANIME_OBJECT: IBaseAnime = {
   image: 'image',
   titleEng: 'title_eng',
@@ -13,6 +12,11 @@ export const ANIME_OBJECT: IBaseAnime = {
   type: 'type',
   status: 'status',
 };
+export const LOCAL_STORAGE_SETTINGS = 'sortSettings';
+export const DEFAULT_SORT_SETTINGS = {
+  ordering: 'id',
+  type: 'TV',
+};
 
 /**
  * Used to define the request header.
@@ -22,11 +26,12 @@ export enum AnimeFetchHeaders {
 }
 
 /**
- * Used to work switch case in createTableRows.
+ * Used to work switch case.
  */
 export enum AnimeSwitchCase {
   Image = 'image',
-  TitleEng = 'title_eng',
-  TitleJpn = 'title_jpn',
+  TitleEng = 'titleEng',
+  TitleJpn = 'titleJpn',
   Aired = 'aired',
+  AiredStart = 'aired.start',
 }
