@@ -2,7 +2,7 @@ import { DEFAULT_OFFSET } from '../constants/anime';
 import { fetchGetAnime } from '../fetches/anime';
 
 import { fillPaginationAnime } from './pagination';
-import { fillTableAnime } from './tableAnime';
+import { fillTableAnime } from './table';
 
 /**
  * Creating a URL address to get the page with the anime, taking into account the offset.
