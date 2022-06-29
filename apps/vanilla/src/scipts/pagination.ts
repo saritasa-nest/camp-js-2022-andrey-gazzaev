@@ -1,4 +1,6 @@
 import { DEFAULT_OFFSET } from '../constants/anime';
+import { C_BTN_PAGINATION } from '../constants/classes';
+import { ATR_CLASS } from '../constants/public';
 
 import { changeAnimeData } from './public';
 
@@ -54,6 +56,7 @@ const createBtnsPagination = (
 
   for (let index = prevPage; index <= nextPage; index++) {
     const btn = document.createElement('button');
+    btn.setAttribute(ATR_CLASS, C_BTN_PAGINATION);
     btn.innerHTML = String(index);
     btnsPagination.push(btn);
     btn.addEventListener('click', changeAnimeData.bind(null, index));
