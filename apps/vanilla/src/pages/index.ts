@@ -3,11 +3,9 @@ import { changeAnimeData } from '../scipts/public';
 /**
  * Table initialization and pagination.
  */
-const initTable = () => {
+const initTable = (): Promise<void> => {
   const firstPage = 1;
-  changeAnimeData(firstPage);
-}
+  return changeAnimeData(firstPage);
+};
 
 window.addEventListener('DOMContentLoaded', initTable);
-
-document.querySelector('.catalog__table');
