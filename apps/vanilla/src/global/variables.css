@@ -9,4 +9,12 @@
   --error-text-color: #ee4a4a;
   --default-text-size: 0.7em;
   --border-color: #dbd7d2;
+  
+  /* Using html color names here only for showcase,
+   * you shouldn't be using color names in real projects. */
+  --heading-color-1: gold;
+  --heading-color-2: darksalmon;
+  --heading-color-3: powderblue;
+  --btn-border-color: #DBD7D2;
+  --btn-border-color-hover: #FFCF48;
 }
