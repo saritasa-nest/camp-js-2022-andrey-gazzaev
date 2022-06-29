@@ -1,25 +1,36 @@
-import { AnimeObject } from '../constants/anime';
+import { AnimeSwitchCase, ANIME_OBJECT } from '../constants/anime';
 import { IAnime } from '../types/anime';
 
-const createTableRows = (animes: IAnime[]) => {
-  return animes.map((anime) => {
+/**
+ * Creating and populating table rows.
+ * @param animes List of anime entries.
+ * @returns Array of rows.
+ */
+const createTableRows = (animes: IAnime[]): HTMLTableRowElement[] => animes.map(anime => {
     const row = document.createElement('tr');
 
-    for (const key in AnimeObject) {
-      const thElement = document.createElement('th');
+    for (const key in ANIME_OBJECT) {
+      const thElement = document.createElement('td');
+      const imageElement = document.createElement('img');
+      const animeKey = String(ANIME_OBJECT[key]);
+      let aired = 'none';
+
       switch (key) {
-        case AnimeObject.image:
-          const imageElement = document.createElement('img');
+        case AnimeSwitchCase.Image:
           imageElement.src = anime[key];
           thElement.append(imageElement);
           row.append(thElement);
           break;
-        case AnimeObject.aired:
-          let aired = 'none';
+        case AnimeSwitchCase.Aired:
           if (anime[key].start) {
             aired = new Date(anime[key].start).toUTCString();
           }
           thElement.innerHTML = aired;
+          row.append(thElement);
+          break;
+        case AnimeSwitchCase.TitleEng:
+        case AnimeSwitchCase.TitleJpn:
+          thElement.innerHTML = `${anime[animeKey] || 'none'}`;
           row.append(thElement);
           break;
         default:
@@ -30,9 +41,12 @@ const createTableRows = (animes: IAnime[]) => {
     }
     return row;
   });
-};
 
-const updateTableAnime = (tableRows: HTMLTableRowElement[]) => {
+/**
+ * Rendering table on the page.
+ * @param tableRows Array of rows.
+ */
+const updateTableAnime = (tableRows: HTMLTableRowElement[]): void => {
   const catalofElement = document.querySelector('.catalog__table');
   const catalogTitleRow = `<tr>
     <th></th>
@@ -51,10 +65,10 @@ const updateTableAnime = (tableRows: HTMLTableRowElement[]) => {
 
 /**
  * Fill the table with information about anime.
- * @param anime List of anime entries.
+ * @param animes List of anime entries.
  */
-export const fillTableAnime = (animes: IAnime[]) => {
+export const fillTableAnime = (animes: IAnime[]): void => {
   const tableRows = createTableRows(animes);
 
-  updateTableAnime(tableRows);
+  return updateTableAnime(tableRows);
 };

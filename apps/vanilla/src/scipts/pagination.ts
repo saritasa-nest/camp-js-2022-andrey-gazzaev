@@ -1,10 +1,17 @@
 import { DEFAULT_OFFSET } from '../constants/anime';
+
 import { changeAnimeData } from './public';
 
-const paginationBorderDetection = (
+/**
+ * Defining pagination boundaries relative to the current page.
+ * @param allAnimeCount All records that the server can provide.
+ * @param currentPageCount Page for which you want to create a pagination.
+ * @returns An array of borders where the first element is the left border and the second element is the right border.
+ */
+const definingPaginationBoundaries = (
   allAnimeCount: number,
-  currentPageCount: number
-) => {
+  currentPageCount: number,
+): number[] => {
   const pageOffset = 3;
   const firstPage = 1;
   const newOffset = currentPageCount * DEFAULT_OFFSET;
@@ -20,20 +27,29 @@ const paginationBorderDetection = (
     prevPage = allAnimeCount / DEFAULT_OFFSET - pageOffset;
   } else {
     prevPage =
-      currentPageCount - pageOffset < firstPage
-        ? firstPage
-        : currentPageCount - pageOffset;
+      currentPageCount - pageOffset < firstPage ?
+        firstPage :
+        currentPageCount - pageOffset;
   }
 
-  let nextPage =
-    currentPageCount + pageOffset > remainingCountPages
-      ? remainingCountPages
-      : currentPageCount + pageOffset;
+  const nextPage =
+    currentPageCount + pageOffset > remainingCountPages ?
+      remainingCountPages :
+      currentPageCount + pageOffset;
 
   return [prevPage, nextPage];
 };
 
-const createBtnsPagination = (prevPage: number, nextPage: number) => {
+/**
+ * Creating pagination buttons within certain borders.
+ * @param prevPage Left border.
+ * @param nextPage Right border.
+ * @returns Array of buttons.
+ */
+const createBtnsPagination = (
+  prevPage: number,
+  nextPage: number,
+): HTMLButtonElement[] => {
   const btnsPagination: HTMLButtonElement[] = [];
 
   for (let index = prevPage; index <= nextPage; index++) {
@@ -46,13 +62,18 @@ const createBtnsPagination = (prevPage: number, nextPage: number) => {
   return btnsPagination;
 };
 
-const updatePaginationElememt = (btns: HTMLButtonElement[]) => {
+/**
+ * Rendering pagination on the page.
+ * @param btns Array of buttons.
+ */
+const updatePaginationElememt = (btns: HTMLButtonElement[]): void => {
   const paginationElement = document.querySelector('.catalog__pagination');
 
   if (paginationElement) {
     paginationElement.innerHTML = '';
     paginationElement.append(...btns);
   }
+
 };
 
 /**
@@ -62,14 +83,14 @@ const updatePaginationElememt = (btns: HTMLButtonElement[]) => {
  */
 export const fillPaginationAnime = (
   allAnimeCount: number,
-  currentPageCount: number
-) => {
-  const [prevPage, nextPage] = paginationBorderDetection(
+  currentPageCount: number,
+): void => {
+  const [prevPage, nextPage] = definingPaginationBoundaries(
     allAnimeCount,
-    currentPageCount
+    currentPageCount,
   );
 
   const btnsPagination = createBtnsPagination(prevPage, nextPage);
 
-  updatePaginationElememt(btnsPagination);
+  return updatePaginationElememt(btnsPagination);
 };

@@ -5,7 +5,6 @@ import { renderHeader } from '../UI/header/header';
 /** Initializations page. */
 function initPage(): void {
   renderHeader();
-
   const firstPage = 1;
   changeAnimeData(firstPage);
 }
