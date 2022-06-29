@@ -1,11 +1,10 @@
-import { IBaseAnime } from "../types/anime";
-
 export const DEFAULT_OFFSET = 25;
 
-export const DEFAULT_ANIME_OBJECT: IBaseAnime = {
-    id: 0,
-    title_eng: '',
-    title_jpn: '',
-    type: '',
-    status: '',
-  };
+export enum AnimeObject {
+  image = 'image',
+  title_eng = 'title_eng',
+  title_jpn = 'title_jpn',
+  aired = 'aired',
+  type = 'type',
+  status = 'status',
+}

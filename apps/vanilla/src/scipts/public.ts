@@ -21,7 +21,8 @@ export const changeAnimeData = async (currentPage: number) => {
   const animeResponse = await fetchGetAnime(urlGetAnime);
   const anime = animeResponse.results;
   fillTableAnime(anime);
-
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   const allAnimeCount = animeResponse.count;
   fillPaginationAnime(allAnimeCount, currentPage);
 };
