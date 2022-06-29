@@ -1,15 +1,21 @@
 export interface IBaseAnime {
-  id: number;
-  status: string;
+  image: string;
   title_eng: string;
   title_jpn: string;
+  aired: IAired;
   type: string;
+  status: string;
+}
+
+export interface IAired {
+  end: Date;
+  start: Date;
 }
 
 export interface IAnime extends IBaseAnime {
-  [index: string]: string | number | Date;
+  [index: string]: string | number | Date | IAired;
+  id: number;
   created: Date;
-  image: string;
   modified: Date;
 }
 
