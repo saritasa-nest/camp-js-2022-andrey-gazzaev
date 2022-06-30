@@ -36,8 +36,17 @@
   <main>
     <section class="catalog">
       <div class="catalog__table-block">
-        <table class="catalog__table"></table>
-        <form class="catalog__sort-settings form">
+        <table class="catalog__table" aria-label="anime" aria-describedby="catalog anime">
+          <tr>
+            <th></th>
+            <th>Title in English</th>
+            <th>Title in Japanese</th>
+            <th>Aired Start</th>
+            <th>Type</th>
+            <th>Status</th>
+          </tr>
+        </table>
+        <div class="catalog__sort-settings form">
           <label class="form__label">
             Select direction:
             <select name="direction" class="form__select catalog__sort-direction">
@@ -63,7 +72,7 @@
               <option value="aired__aired">Aired Start</option>
             </select>
           </label>
-        </form>
+        </div>
       </div>
       <div class="catalog__pagination"></div>
     </section>
