@@ -13,7 +13,7 @@ const createTableRows = (animes: IAnime[]): HTMLTableRowElement[] => animes.map(
       const thElement = document.createElement('td');
       const imageElement = document.createElement('img');
       const titleKey = String(ANIME_OBJECT[key]);
-      let aired = 'none';
+      let aired = '-';
 
       switch (key) {
         case AnimeSwitchCase.Image:
@@ -30,11 +30,11 @@ const createTableRows = (animes: IAnime[]): HTMLTableRowElement[] => animes.map(
           break;
         case AnimeSwitchCase.TitleEng:
         case AnimeSwitchCase.TitleJpn:
-          thElement.innerHTML = `${anime[titleKey] || 'none'}`;
+          thElement.innerHTML = `${anime[titleKey] || '-'}`;
           row.append(thElement);
           break;
         default:
-          thElement.innerHTML = `${anime[key] || 'none'}`;
+          thElement.innerHTML = `${anime[key] || '-'}`;
           row.append(thElement);
           break;
       }
@@ -47,7 +47,7 @@ const createTableRows = (animes: IAnime[]): HTMLTableRowElement[] => animes.map(
  * @param tableRows Array of rows.
  */
 const updateTableAnime = (tableRows: HTMLTableRowElement[]): void => {
-  const catalofElement = document.querySelector('.catalog__table');
+  const catalogElement = document.querySelector('.catalog__table');
   const catalogTitleRow = `<tr>
     <th></th>
     <th>Title in English</th>
@@ -57,9 +57,9 @@ const updateTableAnime = (tableRows: HTMLTableRowElement[]): void => {
     <th>Status</th>
   </tr>`;
 
-  if (catalofElement) {
-    catalofElement.innerHTML = catalogTitleRow;
-    catalofElement.append(...tableRows);
+  if (catalogElement) {
+    catalogElement.innerHTML = catalogTitleRow;
+    catalogElement.append(...tableRows);
   }
 };
 
