@@ -1,4 +1,4 @@
-import { DEFAULT_OFFSET, LOCAL_CURRENT_PAGE, LOCAL_STORAGE_SETTINGS } from '../constants/anime';
+import { DEFAULT_OFFSET, LOCAL_STORAGE_SETTINGS } from '../constants/anime';
 import { fetchGetAnime } from '../fetches/anime';
 import { ISortSettings } from '../types/anime';
 
@@ -64,9 +64,9 @@ const goToTop = (): void => {
  */
 export const changeAnimeData = async(currentPage: number): Promise<void> => {
   const localSortSettings = getLocalSortSettings();
-  localStorage.setItem(LOCAL_CURRENT_PAGE, JSON.stringify(currentPage));
   let urlGetAnime = '';
   if (localSortSettings) {
+    // localSortSettings non-iterable object
     urlGetAnime = getUrlAnime(
       currentPage * DEFAULT_OFFSET,
       localSortSettings.ordering,
@@ -76,6 +76,7 @@ export const changeAnimeData = async(currentPage: number): Promise<void> => {
   } else {
     urlGetAnime = getUrlAnime(currentPage * DEFAULT_OFFSET);
   }
+
   const animeResponse = await fetchGetAnime(urlGetAnime);
   const anime = animeResponse.results;
   fillTableAnime(anime);

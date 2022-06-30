@@ -1,7 +1,7 @@
 
 import { DEFAULT_SORT_SETTINGS, LOCAL_STORAGE_SETTINGS } from '../constants/anime';
-import { changeAnimeData } from '../scipts/public';
 import { renderHeader } from '../UI/header/header';
+import { changeAnimeData } from '../scripts/public';
 import { setHandleToSortElements } from '../scripts/sort';
 
 /**
@@ -19,9 +19,10 @@ const initSortSettings = (): void => {
 const initPage = (): void => {
   renderHeader();
   initSortSettings();
+
   setHandleToSortElements();
   const firstPage = 1;
   changeAnimeData(firstPage);
-}
+};
 
 window.addEventListener('DOMContentLoaded', initPage);

@@ -1,6 +1,8 @@
-import { DEFAULT_OFFSET } from '../constants/anime';
-import { C_BTN_PAGINATION } from '../constants/classes';
-import { ATR_CLASS } from '../constants/public';
+import { DEFAULT_OFFSET, ELLIPSIS, FIRST_PAGE } from '../constants/anime';
+import { C_BTN_PAGINATION, C_PAGINATION, C_PAGINATION_BTN_CURRENT } from '../constants/classes';
+import { E_CLICK } from '../constants/events';
+import { PAGE_OFFSET } from '../constants/pagination';
+import { T_BUTTON, T_SPAN } from '../constants/tags';
 
 import { changeAnimeData } from './public';
 
@@ -14,54 +16,87 @@ const definingPaginationBoundaries = (
   allAnimeCount: number,
   currentPageCount: number,
 ): number[] => {
-  const pageOffset = 3;
-  const firstPage = 1;
-  const newOffset = currentPageCount * DEFAULT_OFFSET;
-  let remainingCountPages = 0;
-  if (newOffset > allAnimeCount) {
-    remainingCountPages = allAnimeCount / DEFAULT_OFFSET;
-  } else {
-    remainingCountPages = allAnimeCount - newOffset / DEFAULT_OFFSET;
-  }
+  const lastPage = Math.floor(allAnimeCount / DEFAULT_OFFSET);
 
   let prevPage = 1;
   if (currentPageCount > allAnimeCount) {
-    prevPage = allAnimeCount / DEFAULT_OFFSET - pageOffset;
+    prevPage = allAnimeCount / DEFAULT_OFFSET - PAGE_OFFSET;
   } else {
     prevPage =
-      currentPageCount - pageOffset < firstPage ?
-        firstPage :
-        currentPageCount - pageOffset;
+      currentPageCount - PAGE_OFFSET < FIRST_PAGE ?
+        FIRST_PAGE :
+        currentPageCount - PAGE_OFFSET;
   }
 
-  const nextPage =
-    currentPageCount + pageOffset > remainingCountPages ?
-      remainingCountPages :
-      currentPageCount + pageOffset;
+   const nextPage = currentPageCount + PAGE_OFFSET > lastPage ?
+      lastPage :
+      currentPageCount + PAGE_OFFSET;
 
-  return [prevPage, nextPage];
+  return [prevPage, nextPage, lastPage];
+};
+
+/**
+ * Creating a button element for pagination.
+ * @param pageNumber The page number the button contains.
+ * @param classes The styles that the element contains.
+ * @returns Button element.
+ */
+const createBtn = (pageNumber: number, classes: string[]): HTMLButtonElement => {
+  const btn = document.createElement(T_BUTTON);
+  btn.classList.add(...classes);
+  btn.innerHTML = String(pageNumber);
+  btn.addEventListener(E_CLICK, changeAnimeData.bind(null, pageNumber));
+  return btn;
+};
+
+/**
+ * Creating a span element.
+ * @param text The text that contains the element.
+ * @param classes The styles that the element contains.
+ * @returns Span element.
+ */
+const createSpan = (text: string, classes: string[]): HTMLSpanElement => {
+  const span = document.createElement(T_SPAN);
+  span.innerHTML = text;
+  span.classList.add(...classes);
+  return span;
 };
 
 /**
  * Creating pagination buttons within certain borders.
  * @param prevPage Left border.
  * @param nextPage Right border.
+ * @param currentPage Page for which you want to create a pagination.
+ * @param lastPage The last page.
  * @returns Array of buttons.
  */
 const createBtnsPagination = (
   prevPage: number,
   nextPage: number,
-): HTMLButtonElement[] => {
-  const btnsPagination: HTMLButtonElement[] = [];
+  currentPage: number,
+  lastPage: number,
+): (HTMLButtonElement | HTMLSpanElement)[] => {
+  const btnsPagination: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
-  for (let index = prevPage; index <= nextPage; index++) {
-    const btn = document.createElement('button');
-    btn.setAttribute(ATR_CLASS, C_BTN_PAGINATION);
-    btn.innerHTML = String(index);
-    btnsPagination.push(btn);
-    btn.addEventListener('click', changeAnimeData.bind(null, index));
+  if (currentPage - PAGE_OFFSET > FIRST_PAGE) {
+    btnsPagination.push(createBtn(FIRST_PAGE, [C_BTN_PAGINATION]));
+    btnsPagination.push(createSpan(ELLIPSIS, []));
   }
 
+  for (let index = prevPage; index <= nextPage; index++) {
+    let btn = null;
+    if (currentPage === index) {
+      btn = createBtn(index, [C_BTN_PAGINATION, C_PAGINATION_BTN_CURRENT]);
+    } else {
+      btn = createBtn(index, [C_BTN_PAGINATION]);
+    }
+    btnsPagination.push(btn);
+  }
+
+  if (currentPage + PAGE_OFFSET < lastPage) {
+    btnsPagination.push(createSpan(ELLIPSIS, []));
+    btnsPagination.push(createBtn(lastPage, [C_BTN_PAGINATION]));
+  }
   return btnsPagination;
 };
 
@@ -69,8 +104,8 @@ const createBtnsPagination = (
  * Rendering pagination on the page.
  * @param btns Array of buttons.
  */
-const updatePaginationElement = (btns: HTMLButtonElement[]): void => {
-  const paginationElement = document.querySelector('.catalog__pagination');
+const updatePaginationElement = (btns: (HTMLButtonElement | HTMLSpanElement)[]): void => {
+  const paginationElement = document.querySelector(C_PAGINATION);
 
   if (paginationElement) {
     paginationElement.innerHTML = '';
@@ -82,18 +117,18 @@ const updatePaginationElement = (btns: HTMLButtonElement[]): void => {
 /**
  * Filling the pagination element relative to the current page.
  * @param allAnimeCount All records that the server can provide.
- * @param currentPageCount Page for which you want to create a pagination.
+ * @param currentPage Page for which you want to create a pagination.
  */
 export const fillPaginationAnime = (
   allAnimeCount: number,
-  currentPageCount: number,
+  currentPage: number,
 ): void => {
-  const [prevPage, nextPage] = definingPaginationBoundaries(
+  const [prevPage, nextPage, lastPage] = definingPaginationBoundaries(
     allAnimeCount,
-    currentPageCount,
+    currentPage,
   );
 
-  const btnsPagination = createBtnsPagination(prevPage, nextPage);
+  const btnsPagination = createBtnsPagination(prevPage, nextPage, currentPage, lastPage);
 
   return updatePaginationElement(btnsPagination);
 };
