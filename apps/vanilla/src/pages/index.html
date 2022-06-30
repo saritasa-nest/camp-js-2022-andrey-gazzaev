@@ -1,47 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./index.css" />
-    <title>Vite App</title>
-  </head>
-  <body class="page">
-    <main>
-      <section class="catalog">
-        <div class="catalog__table-block">
-          <table class="catalog__table"></table>
-          <div class="catalog__sort-settings form">
-            <label class="form__label">
-              Select direction:
-              <select name="direction" class="form__select catalog__sort-direction">
-                <option value="">Ascending</option>
-                <option value="-">Descending</option>
-              </select>
-            </label>
 
-            <label class="form__label">
-              Select status:
-              <select name="status" class="form__select catalog__sort-status">
-                <option value="AIRING">AIRING</option>
-                <option value="FINISHED">FINISHED</option>
-                <option value="NOT_YET_AIRED">NOT_YET_AIRED</option>
-              </select>
-            </label>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./index.css" />
+  <title>Vite App</title>
+</head>
 
-            <label class="form__label">
-              Sort by:
-              <select name="ordering" class="form__select catalog__sort-ordering">
-                <option value="title_eng">Title in English</option>
-                <option value="title_jpn">Title in Japanese</option>
-                <option value="aired__aired">Aired Start</option>
-              </select>
-            </label>
-          </div>
+<body class="page">
+  <main>
+    <section class="catalog">
+      <div class="catalog__table-block">
+        <table class="catalog__table" aria-label="anime" aria-describedby="catalog anime">
+          <tr>
+            <th></th>
+            <th>Title in English</th>
+            <th>Title in Japanese</th>
+            <th>Aired Start</th>
+            <th>Type</th>
+            <th>Status</th>
+          </tr>
+        </table>
+        <div class="catalog__sort-settings form">
+          <label class="form__label">
+            Select direction:
+            <select name="direction" class="form__select catalog__sort-direction">
+              <option value="">Ascending</option>
+              <option value="-">Descending</option>
+            </select>
+          </label>
+
+          <label class="form__label">
+            Select status:
+            <select name="status" class="form__select catalog__sort-status">
+              <option value="AIRING">AIRING</option>
+              <option value="FINISHED">FINISHED</option>
+              <option value="NOT_YET_AIRED">NOT_YET_AIRED</option>
+            </select>
+          </label>
+
+          <label class="form__label">
+            Sort by:
+            <select name="ordering" class="form__select catalog__sort-ordering">
+              <option value="title_eng">Title in English</option>
+              <option value="title_jpn">Title in Japanese</option>
+              <option value="aired__aired">Aired Start</option>
+            </select>
+          </label>
         </div>
-        <div class="catalog__pagination"></div>
-      </section>
-    </main>
-    <script type="module" src="./index.ts"></script>
-  </body>
+      </div>
+      <div class="catalog__pagination"></div>
+    </section>
+  </main>
+  <script type="module" src="./index.ts"></script>
+</body>
+
 </html>
