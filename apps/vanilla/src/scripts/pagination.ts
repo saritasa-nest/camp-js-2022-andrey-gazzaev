@@ -69,7 +69,7 @@ const createBtnsPagination = (
  * Rendering pagination on the page.
  * @param btns Array of buttons.
  */
-const updatePaginationElememt = (btns: HTMLButtonElement[]): void => {
+const updatePaginationElement = (btns: HTMLButtonElement[]): void => {
   const paginationElement = document.querySelector('.catalog__pagination');
 
   if (paginationElement) {
@@ -95,5 +95,5 @@ export const fillPaginationAnime = (
 
   const btnsPagination = createBtnsPagination(prevPage, nextPage);
 
-  return updatePaginationElememt(btnsPagination);
+  return updatePaginationElement(btnsPagination);
 };

@@ -14,26 +14,24 @@
           <form class="catalog__sort-settings form">
             <label class="form__label">
               Select direction:
-              <select name="direction" class="form__select">
-                <option value="аscending">Ascending</option>
-                <option value="descending">Descending</option>
+              <select name="direction" class="form__select catalog__sort-direction">
+                <option value="">Ascending</option>
+                <option value="-">Descending</option>
               </select>
             </label>
 
             <label class="form__label">
-              Select type:
-              <select name="type" class="form__select">
-                <option value="TV">TV</option>
-                <option value="MOVIE">MOVIE</option>
-                <option value="SPECIAL">SPECIAL</option>
-                <option value="ONA">ONA</option>
-                <option value="MUSIC">MUSIC</option>
+              Select status:
+              <select name="status" class="form__select catalog__sort-status">
+                <option value="AIRING">AIRING</option>
+                <option value="FINISHED">FINISHED</option>
+                <option value="NOT_YET_AIRED">NOT_YET_AIRED</option>
               </select>
             </label>
 
             <label class="form__label">
               Sort by:
-              <select name="ordering" class="form__select">
+              <select name="ordering" class="form__select catalog__sort-ordering">
                 <option value="title_eng">Title in English</option>
                 <option value="title_jpn">Title in Japanese</option>
                 <option value="aired__aired">Aired Start</option>

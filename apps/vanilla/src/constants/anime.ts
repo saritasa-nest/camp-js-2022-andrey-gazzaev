@@ -13,9 +13,11 @@ export const ANIME_OBJECT: IBaseAnime = {
   status: 'status',
 };
 export const LOCAL_STORAGE_SETTINGS = 'sortSettings';
+export const LOCAL_CURRENT_PAGE = 'currentPage';
 export const DEFAULT_SORT_SETTINGS = {
-  ordering: 'id',
-  type: 'TV',
+  ordering: 'title_eng',
+  direction: '',
+  status: 'AIRING',
 };
 
 /**
