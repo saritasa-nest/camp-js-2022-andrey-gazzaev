@@ -1,6 +1,6 @@
 import { C_SELECT_SORT_DIRECTION, C_SELECT_SORT_ORDERING, C_SELECT_SORT_STATUS } from '../constants/classes';
 import { E_CHANGE } from '../constants/events';
-import { ISortSettings } from '../types/anime';
+import { ISortSettings } from '../types/sortSettings';
 
 import { changeAnimeData, getLocalSortSettings, setLocalSortSettings } from './public';
 
@@ -33,7 +33,7 @@ export const setHandleToSortElements = (): void => {
 
   for (const key in selectors) {
     if (Object.prototype.hasOwnProperty.call(selectors, key)) {
-      const select: HTMLSelectElement | null = document.querySelector(selectors[key]);
+      const select = document.querySelector<HTMLSelectElement>(selectors[key]);
       if (select) {
         select.addEventListener(
           E_CHANGE,

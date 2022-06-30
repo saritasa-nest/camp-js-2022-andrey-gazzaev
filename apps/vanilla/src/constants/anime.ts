@@ -1,16 +1,13 @@
-import { IBaseAnime } from '../types/anime';
+
 export const FIRST_PAGE = 1;
 export const DEFAULT_OFFSET = 25;
-export const ANIME_OBJECT: IBaseAnime = {
-  image: 'image',
-  titleEng: 'title_eng',
-  titleJpn: 'title_jpn',
-  aired: {
-    end: new Date(0),
-    start: new Date(0),
-  },
-  type: 'type',
-  status: 'status',
+export const ANIME_OBJECT = {
+  image: '',
+  titleEng: '',
+  titleJpn: '',
+  aired: '',
+  type: '',
+  status: '',
 };
 export const LOCAL_STORAGE_SETTINGS = 'sortSettings';
 export const LOCAL_CURRENT_PAGE = 'currentPage';
@@ -38,4 +35,6 @@ export enum AnimeSwitchCase {
   TitleJpn = 'titleJpn',
   Aired = 'aired',
   AiredStart = 'aired.start',
+  Type = 'type',
+  Status = 'status',
 }

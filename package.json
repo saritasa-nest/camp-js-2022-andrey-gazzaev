@@ -15,7 +15,7 @@
     "angular:stylelint": "nx run angular:stylelint",
     "vanilla:build": "nx run vanilla:build",
     "vanilla:serve": "nx run vanilla:serve",
-    "vanilla:lint": "nx run vanilla:lint",
+    "vanilla:lint": "nx run vanilla:lint --fix",
     "vanilla:stylelint": "nx run vanilla:stylelint"
   },
   "private": true,

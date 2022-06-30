@@ -1,13 +1,16 @@
+import { IAnimeResponseDTO } from '@js-camp/core/dtos/anime.dto';
+import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
+import { AnimeResponse } from '@js-camp/core/models/anime';
+
 import { AnimeFetchHeaders } from '../constants/anime';
 import { API_KEY } from '../constants/public';
-import { IAnimeResponse } from '../types/anime';
 
 /**
  * Request to the server to get anime.
  * @param url Request address.
  * @returns Server response.
  */
-export const fetchGetAnime = async(url: string): Promise<IAnimeResponse> => {
+export const fetchGetAnime = async(url: string): Promise<AnimeResponse> => {
   try {
     const res = await fetch(url, {
       method: 'GET',
@@ -16,16 +19,15 @@ export const fetchGetAnime = async(url: string): Promise<IAnimeResponse> => {
       },
     });
 
-    const animeResponse: IAnimeResponse = await res.json();
-
+    const animeResponseDto: IAnimeResponseDTO = await res.json();
+    const animeResponse = AnimeMapper.fromDto(animeResponseDto);
     return animeResponse;
   } catch {
-    const errorResponse: IAnimeResponse = {
+    return new AnimeResponse({
       count: 0,
       next: null,
       previous: null,
       results: [],
-    };
-    return errorResponse;
+    });
   }
 };

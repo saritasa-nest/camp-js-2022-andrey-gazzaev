@@ -1,7 +1,7 @@
 /**
  * Describes a value аired.
  */
-export interface IAired {
+interface IAiredDTO {
 
   /**
    * End Anime.
@@ -17,8 +17,7 @@ export interface IAired {
 /**
  * Describes base values anime.
  */
-export interface IBaseAnime {
-  readonly [index: string]: string | number | Date | IAired;
+interface IBaseAnimeDTO {
 
   /**
    * Image.
@@ -28,17 +27,17 @@ export interface IBaseAnime {
   /**
    * Title in english.
    */
-  readonly titleEng: string;
+  readonly title_eng: string;
 
   /**
    * Title in Japanese.
    */
-  readonly titleJpn: string;
+  readonly title_jpn: string;
 
   /**
    * Release and end dates.
    */
-  readonly aired: IAired;
+  readonly aired: IAiredDTO;
 
   /**
    * Anime type.
@@ -54,7 +53,7 @@ export interface IBaseAnime {
 /**
  * Extend base values anime .
  */
-export interface IAnime extends IBaseAnime {
+interface IAnimeDTO extends IBaseAnimeDTO {
 
   /**
    * ID.
@@ -75,7 +74,7 @@ export interface IAnime extends IBaseAnime {
 /**
  * Describes the value that comes from the request for anime.
  */
-export interface IAnimeResponse {
+export interface IAnimeResponseDTO {
 
   /**
    * Number of anime in the database.
@@ -95,27 +94,5 @@ export interface IAnimeResponse {
   /**
    * Results.
    */
-  readonly results: IAnime[];
-}
-
-/**
- * Describes sort settings that are stored in local storage.
- */
-export interface ISortSettings {
-  [index: string]: string;
-
-  /**
-   * Ordering.
-   */
-  ordering: string;
-
-  /**
-   * Status.
-   */
-  status: string;
-
-  /**
-   * Direction.
-   */
-  direction: string;
+  readonly results: readonly IAnimeDTO[];
 }

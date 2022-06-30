@@ -1,6 +1,6 @@
 import { DEFAULT_OFFSET, LOCAL_STORAGE_SETTINGS } from '../constants/anime';
 import { fetchGetAnime } from '../fetches/anime';
-import { ISortSettings } from '../types/anime';
+import { ISortSettings } from '../types/sortSettings';
 
 import { fillPaginationAnime } from './pagination';
 import { fillTableAnime } from './table';
