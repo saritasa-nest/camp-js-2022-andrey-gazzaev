@@ -1,4 +1,4 @@
-import { IAnimeResponseDTO } from '@js-camp/core/dtos/anime.dto';
+import { AnimeResponseDTO } from '@js-camp/core/dtos/anime.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { AnimeResponse } from '@js-camp/core/models/anime';
 
@@ -18,7 +18,7 @@ export const fetchGetAnime = async(url: string): Promise<AnimeResponse> => {
       },
     });
 
-    const animeResponseDto: IAnimeResponseDTO = await res.json();
+    const animeResponseDto: AnimeResponseDTO = await res.json();
     const animeResponse = AnimeMapper.fromDto(animeResponseDto);
     return animeResponse;
   } catch {

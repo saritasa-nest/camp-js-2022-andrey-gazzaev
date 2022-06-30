@@ -1,8 +1,8 @@
 import { Anime } from '@js-camp/core/models/anime';
 
 import { AnimeSwitchCase, ANIME_OBJECT, NO_DATA } from '../constants/anime';
-import { C_TABLE } from '../constants/classes';
-import { T_IMG, T_TD, T_TR } from '../constants/tags';
+import { Catalog } from '../constants/classes';
+import { Tag } from '../constants/tags';
 
 /**
  * Creating and populating table rows.
@@ -10,11 +10,11 @@ import { T_IMG, T_TD, T_TR } from '../constants/tags';
  * @returns Array of rows.
  */
 const createTableRows = (animes: Anime[]): HTMLTableRowElement[] => animes.map(anime => {
-  const row = document.createElement(T_TR);
+  const row = document.createElement(Tag.TR);
 
   for (const key in ANIME_OBJECT) {
-    const thElement = document.createElement(T_TD);
-    const imageElement = document.createElement(T_IMG);
+    const thElement = document.createElement(Tag.TD);
+    const imageElement = document.createElement(Tag.IMG);
     let aired = NO_DATA;
 
     switch (key) {
@@ -44,9 +44,6 @@ const createTableRows = (animes: Anime[]): HTMLTableRowElement[] => animes.map(a
         break;
 
       default:
-        // Adding all other fields.
-        // thElement.innerHTML = `${anime[key] || NO_DATA}`;
-        // row.append(thElement);
         break;
     }
   }
@@ -58,7 +55,7 @@ const createTableRows = (animes: Anime[]): HTMLTableRowElement[] => animes.map(a
  * @param tableRows Array of rows.
  */
 const updateTableAnime = (tableRows: HTMLTableRowElement[]): void => {
-  const catalogElement = document.querySelector(C_TABLE);
+  const catalogElement = document.querySelector(Catalog.TABLE);
   const catalogTitleRow = `<tr>
     <th></th>
     <th>Title in English</th>
@@ -68,7 +65,7 @@ const updateTableAnime = (tableRows: HTMLTableRowElement[]): void => {
     <th>Status</th>
   </tr>`;
 
-  if (catalogElement) {
+  if (catalogElement !== null) {
     catalogElement.innerHTML = catalogTitleRow;
     catalogElement.append(...tableRows);
   }

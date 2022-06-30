@@ -1,8 +1,8 @@
 import { DEFAULT_OFFSET, ELLIPSIS, FIRST_PAGE } from '../constants/anime';
-import { C_BTN_PAGINATION, C_PAGINATION, C_PAGINATION_BTN_CURRENT } from '../constants/classes';
+import { Catalog } from '../constants/classes';
 import { E_CLICK } from '../constants/events';
 import { PAGE_OFFSET } from '../constants/pagination';
-import { T_BUTTON, T_SPAN } from '../constants/tags';
+import { Tag } from '../constants/tags';
 
 import { changeAnimeData } from './public';
 
@@ -42,7 +42,7 @@ const definingPaginationBoundaries = (
  * @returns Button element.
  */
 const createBtn = (pageNumber: number, classes: string[]): HTMLButtonElement => {
-  const btn = document.createElement(T_BUTTON);
+  const btn = document.createElement(Tag.BUTTON);
   btn.classList.add(...classes);
   btn.innerHTML = String(pageNumber);
   btn.addEventListener(E_CLICK, changeAnimeData.bind(null, pageNumber));
@@ -56,7 +56,7 @@ const createBtn = (pageNumber: number, classes: string[]): HTMLButtonElement => 
  * @returns Span element.
  */
 const createSpan = (text: string, classes: string[]): HTMLSpanElement => {
-  const span = document.createElement(T_SPAN);
+  const span = document.createElement(Tag.SPAN);
   span.innerHTML = text;
   span.classList.add(...classes);
   return span;
@@ -79,23 +79,23 @@ const createBtnsPagination = (
   const btnsPagination: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
   if (currentPage - PAGE_OFFSET > FIRST_PAGE) {
-    btnsPagination.push(createBtn(FIRST_PAGE, [C_BTN_PAGINATION]));
+    btnsPagination.push(createBtn(FIRST_PAGE, [Catalog.BTN_PAGINATION]));
     btnsPagination.push(createSpan(ELLIPSIS, []));
   }
 
   for (let index = prevPage; index <= nextPage; index++) {
     let btn = null;
     if (currentPage === index) {
-      btn = createBtn(index, [C_BTN_PAGINATION, C_PAGINATION_BTN_CURRENT]);
+      btn = createBtn(index, [Catalog.BTN_PAGINATION, Catalog.PAGINATION_BTN_CURRENT]);
     } else {
-      btn = createBtn(index, [C_BTN_PAGINATION]);
+      btn = createBtn(index, [Catalog.BTN_PAGINATION]);
     }
     btnsPagination.push(btn);
   }
 
   if (currentPage + PAGE_OFFSET < lastPage) {
     btnsPagination.push(createSpan(ELLIPSIS, []));
-    btnsPagination.push(createBtn(lastPage, [C_BTN_PAGINATION]));
+    btnsPagination.push(createBtn(lastPage, [Catalog.BTN_PAGINATION]));
   }
   return btnsPagination;
 };
@@ -105,7 +105,7 @@ const createBtnsPagination = (
  * @param btns Array of buttons.
  */
 const updatePaginationElement = (btns: (HTMLButtonElement | HTMLSpanElement)[]): void => {
-  const paginationElement = document.querySelector(C_PAGINATION);
+  const paginationElement = document.querySelector(Catalog.PAGINATION);
 
   if (paginationElement) {
     paginationElement.innerHTML = '';

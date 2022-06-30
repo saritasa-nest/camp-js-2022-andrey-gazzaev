@@ -1,4 +1,4 @@
-import { IAnimeResponseDTO } from '../dtos/anime.dto';
+import { AnimeResponseDTO } from '../dtos/anime.dto';
 import { Aired, Anime, AnimeResponse } from '../models/anime';
 
 export namespace AnimeMapper {
@@ -7,7 +7,7 @@ export namespace AnimeMapper {
    * Maps dto to model.
    * @param dto Anime dto.
    */
-  export function fromDto(dto: IAnimeResponseDTO): AnimeResponse {
+  export function fromDto(dto: AnimeResponseDTO): AnimeResponse {
     const results = dto.results.map(animeDto => {
       const aired = new Aired({
         end: animeDto.aired.end,
