@@ -1,5 +1,7 @@
-export const T_BUTTON = 'button';
-export const T_SPAN = 'span';
-export const T_TR = 'tr';
-export const T_TD = 'td';
-export const T_IMG = 'img';
+export namespace Tag {
+  export const BUTTON = 'button';
+  export const SPAN = 'span';
+  export const TR = 'tr';
+  export const TD = 'td';
+  export const IMG = 'img';
+}

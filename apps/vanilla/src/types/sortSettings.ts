@@ -1,21 +1,13 @@
-/**
- * Describes sort settings that are stored in local storage.
- */
-export interface ISortSettings {
+/** Describes sort settings that are stored in local storage. */
+export interface SortSettings {
   [index: string]: string;
 
-  /**
-   * Ordering.
-   */
-  ordering: string;
+  /** Ordering. */
+  readonly ordering: string;
 
-  /**
-   * Status.
-   */
-  status: string;
+  /** Status. */
+  readonly status: string;
 
-  /**
-   * Direction.
-   */
-  direction: string;
+  /** Direction. */
+  readonly direction: string;
 }

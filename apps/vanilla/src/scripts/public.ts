@@ -1,6 +1,6 @@
 import { DEFAULT_OFFSET, LOCAL_STORAGE_SETTINGS } from '../constants/anime';
 import { fetchGetAnime } from '../fetches/anime';
-import { ISortSettings } from '../types/sortSettings';
+import { SortSettings } from '../types/sortSettings';
 
 import { fillPaginationAnime } from './pagination';
 import { fillTableAnime } from './table';
@@ -9,10 +9,10 @@ import { fillTableAnime } from './table';
  * Get sort settings from local storage.
  * @returns If there are no settings, then null otherwise the settings object.
  */
-export const getLocalSortSettings = (): ISortSettings | null => {
+export const getLocalSortSettings = (): SortSettings | null => {
   const localStorageSettings = localStorage.getItem(LOCAL_STORAGE_SETTINGS);
   if (localStorageSettings) {
-    const sortSettings: ISortSettings = JSON.parse(localStorageSettings);
+    const sortSettings: SortSettings = JSON.parse(localStorageSettings);
     return sortSettings;
   }
   return null;
@@ -22,7 +22,7 @@ export const getLocalSortSettings = (): ISortSettings | null => {
  * Write sort settings to local storage.
  * @param sortSettings Selected sort values.
  */
-export const setLocalSortSettings = (sortSettings: ISortSettings): void => {
+export const setLocalSortSettings = (sortSettings: SortSettings): void => {
   localStorage.setItem(LOCAL_STORAGE_SETTINGS, JSON.stringify(sortSettings));
 };
 

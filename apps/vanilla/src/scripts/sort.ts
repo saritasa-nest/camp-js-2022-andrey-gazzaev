@@ -1,6 +1,7 @@
-import { C_SELECT_SORT_DIRECTION, C_SELECT_SORT_ORDERING, C_SELECT_SORT_STATUS } from '../constants/classes';
+import { FIRST_PAGE } from '../constants/anime';
+import { Catalog } from '../constants/classes';
 import { E_CHANGE } from '../constants/events';
-import { ISortSettings } from '../types/sortSettings';
+import { SortSettings } from '../types/sortSettings';
 
 import { changeAnimeData, getLocalSortSettings, setLocalSortSettings } from './public';
 
@@ -13,28 +14,28 @@ function handleChangeSortSettings(this: HTMLSelectElement, field: string): void 
   // Need to save context
   const sortSettings = getLocalSortSettings();
 
-  if (sortSettings) {
+  if (sortSettings !== null) {
     sortSettings[field] = this.value;
     setLocalSortSettings(sortSettings);
   }
 
-  changeAnimeData(1);
+  changeAnimeData(FIRST_PAGE);
 }
 
 /**
  * Sets events to sort selectors.
  */
 export const setHandleToSortElements = (): void => {
-  const selectors: ISortSettings = {
-    direction: C_SELECT_SORT_DIRECTION,
-    status: C_SELECT_SORT_STATUS,
-    ordering: C_SELECT_SORT_ORDERING,
+  const selectors: SortSettings = {
+    direction: Catalog.SELECT_SORT_DIRECTION,
+    status: Catalog.SELECT_SORT_STATUS,
+    ordering: Catalog.SELECT_SORT_ORDERING,
   };
 
   for (const key in selectors) {
     if (Object.prototype.hasOwnProperty.call(selectors, key)) {
       const select = document.querySelector<HTMLSelectElement>(selectors[key]);
-      if (select) {
+      if (select !== null) {
         select.addEventListener(
           E_CHANGE,
           handleChangeSortSettings.bind(select, key),

@@ -1,16 +1,12 @@
 import { Immerable, OmitImmerable } from './immerable';
 
-/**
- * Describes a value аired.
- */
+/** Describes a value аired. */
 export class Aired extends Immerable {
 
-  /**
-   * End Anime.
-   */
+  /** End date Anime. */
   public readonly end: Date;
 
-  /** Start Anime. */
+  /** Start date Anime. */
   public readonly start: Date;
 
   public constructor(data: PostInitArgsAired) {
@@ -20,10 +16,9 @@ export class Aired extends Immerable {
   }
 }
 
-/**
- * Describes values anime.
- */
+/** Describes values anime. */
 export class Anime extends Immerable {
+
   /** ID. */
   public readonly id: number;
 
@@ -65,9 +60,7 @@ export class Anime extends Immerable {
   }
 }
 
-/**
- * Describes the value that comes from the request for anime.
- */
+/** Describes the value that comes from the request for anime. */
 export class AnimeResponse extends Immerable {
 
   /** Number of anime in the database. */
@@ -90,6 +83,7 @@ export class AnimeResponse extends Immerable {
     this.results = data.results;
   }
 }
+
 type PostInitArgsAired = OmitImmerable<Aired>;
 type PostInitArgsAnime = OmitImmerable<Anime>;
 type PostInitArgsAnimeResponse = OmitImmerable<AnimeResponse>;

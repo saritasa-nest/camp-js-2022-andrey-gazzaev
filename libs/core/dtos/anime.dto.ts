@@ -1,98 +1,60 @@
-/**
- * Describes a value аired.
- */
-interface IAiredDTO {
+/** Describes a value аired. */
+interface AiredDTO {
 
-  /**
-   * End Anime.
-   */
+  /** End date Anime. */
   readonly end: Date;
 
-  /**
-   * Start Anime.
-   */
+  /** Start date Anime. */
   readonly start: Date;
 }
 
-/**
- * Describes base values anime.
- */
-interface IBaseAnimeDTO {
+/** Describes base values anime. */
+interface BaseAnimeDTO {
 
-  /**
-   * Image.
-   */
+  /** Image. */
   readonly image: string;
 
-  /**
-   * Title in english.
-   */
+  /** Title in english. */
   readonly title_eng: string;
 
-  /**
-   * Title in Japanese.
-   */
+  /**  Title in Japanese. */
   readonly title_jpn: string;
 
-  /**
-   * Release and end dates.
-   */
-  readonly aired: IAiredDTO;
+  /** Release and end dates. */
+  readonly aired: AiredDTO;
 
-  /**
-   * Anime type.
-   */
+  /** Anime type. */
   readonly type: string;
 
-  /**
-   * Status.
-   */
+  /** Status. */
   readonly status: string;
 }
 
-/**
- * Extend base values anime .
- */
-interface IAnimeDTO extends IBaseAnimeDTO {
+/** Extend base values anime. */
+interface AnimeDTO extends BaseAnimeDTO {
 
-  /**
-   * ID.
-   */
+  /** ID. */
   readonly id: number;
 
-  /**
-   * Created.
-   */
+  /** Created. */
   readonly created: Date;
 
-  /**
-   * Modified.
-   */
+  /** Modified. */
   readonly modified: Date;
 }
 
-/**
- * Describes the value that comes from the request for anime.
- */
-export interface IAnimeResponseDTO {
+/** Describes the value that comes from the request for anime. */
+export interface AnimeResponseDTO {
 
-  /**
-   * Number of anime in the database.
-   */
+  /** Number of anime in the database. */
   readonly count: number;
 
-  /**
-   * URL Next page.
-   */
+  /** URL Next page. */
   readonly next: string | null;
 
-  /**
-   * URL prev page.
-   */
+  /** URL prev page. */
   readonly previous: string | null;
 
-  /**
-   * Results.
-   */
-  readonly results: readonly IAnimeDTO[];
+  /** Results. */
+  readonly results: readonly AnimeDTO[];
 }
