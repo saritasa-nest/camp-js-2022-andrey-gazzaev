@@ -54,6 +54,11 @@
   cursor: pointer;
 }
 
+.catalog__pagination-btn_current {
+  background-color: var(--btn-current-color);
+  border-color: var(--btn-current-border-color-hover);
+}
+
 .catalog__pagination-btn:hover {
   border-color: var(--border-color-hover);
 }

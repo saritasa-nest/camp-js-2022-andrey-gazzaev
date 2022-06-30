@@ -1,5 +1,5 @@
 import { IBaseAnime } from '../types/anime';
-
+export const FIRST_PAGE = 1;
 export const DEFAULT_OFFSET = 25;
 export const ANIME_OBJECT: IBaseAnime = {
   image: 'image',
@@ -19,6 +19,8 @@ export const DEFAULT_SORT_SETTINGS = {
   direction: '',
   status: 'AIRING',
 };
+export const ELLIPSIS = '...';
+export const NO_DATA = '-';
 
 /**
  * Used to define the request header.

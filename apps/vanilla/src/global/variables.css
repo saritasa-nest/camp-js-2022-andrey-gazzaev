@@ -4,6 +4,8 @@
   --heading-color-1: gold;
   --heading-color-2: darksalmon;
   --heading-color-3: powderblue;
+  --btn-current-color: #ffcf48;
+  --btn-current-border-color-hover: #ffcf48;
   --border-color: #dbd7d2;
   --border-color-hover: #ffcf48;
 }

@@ -1,5 +1,5 @@
-import { LOCAL_CURRENT_PAGE } from '../constants/anime';
 import { C_SELECT_SORT_DIRECTION, C_SELECT_SORT_ORDERING, C_SELECT_SORT_STATUS } from '../constants/classes';
+import { E_CHANGE } from '../constants/events';
 import { ISortSettings } from '../types/anime';
 
 import { changeAnimeData, getLocalSortSettings, setLocalSortSettings } from './public';
@@ -10,6 +10,7 @@ import { changeAnimeData, getLocalSortSettings, setLocalSortSettings } from './p
  * @param field Editable field.
  */
 function handleChangeSortSettings(this: HTMLSelectElement, field: string): void {
+  // Need to save context
   const sortSettings = getLocalSortSettings();
 
   if (sortSettings) {
@@ -17,11 +18,7 @@ function handleChangeSortSettings(this: HTMLSelectElement, field: string): void 
     setLocalSortSettings(sortSettings);
   }
 
-  const localCurrentPage = localStorage.getItem(LOCAL_CURRENT_PAGE);
-  if (localCurrentPage) {
-    const currentPage: number = JSON.parse(localCurrentPage);
-    changeAnimeData(currentPage);
-  }
+  changeAnimeData(1);
 }
 
 /**
@@ -39,7 +36,7 @@ export const setHandleToSortElements = (): void => {
       const select: HTMLSelectElement | null = document.querySelector(selectors[key]);
       if (select) {
         select.addEventListener(
-          'change',
+          E_CHANGE,
           handleChangeSortSettings.bind(select, key),
         );
       }

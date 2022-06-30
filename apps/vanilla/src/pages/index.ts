@@ -1,4 +1,4 @@
-import { DEFAULT_SORT_SETTINGS, LOCAL_STORAGE_SETTINGS } from '../constants/anime';
+import { DEFAULT_SORT_SETTINGS, FIRST_PAGE, LOCAL_STORAGE_SETTINGS } from '../constants/anime';
 import { changeAnimeData } from '../scripts/public';
 import { setHandleToSortElements } from '../scripts/sort';
 
@@ -16,9 +16,10 @@ const initSortSettings = (): void => {
  */
 const initTable = (): Promise<void> => {
   initSortSettings();
+
   setHandleToSortElements();
-  const firstPage = 1;
-  return changeAnimeData(firstPage);
+
+  return changeAnimeData(FIRST_PAGE);
 };
 
 window.addEventListener('DOMContentLoaded', initTable);
