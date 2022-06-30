@@ -3,7 +3,6 @@ import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { AnimeResponse } from '@js-camp/core/models/anime';
 
 import { AnimeFetchHeaders } from '../constants/anime';
-import { API_KEY } from '../constants/public';
 
 /**
  * Request to the server to get anime.
@@ -15,7 +14,7 @@ export const fetchGetAnime = async(url: string): Promise<AnimeResponse> => {
     const res = await fetch(url, {
       method: 'GET',
       headers: {
-        [AnimeFetchHeaders.ApiKey]: API_KEY,
+        [AnimeFetchHeaders.ApiKey]: ENV.apiKey,
       },
     });
 
