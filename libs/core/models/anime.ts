@@ -60,30 +60,5 @@ export class Anime extends Immerable {
   }
 }
 
-/** Describes the value that comes from the request for anime. */
-export class AnimeResponse extends Immerable {
-
-  /** Number of anime in the database. */
-  public readonly count: number;
-
-  /** URL Next page. */
-  public readonly next: string | null;
-
-  /** URL prev page. */
-  public readonly previous: string | null;
-
-  /** Results.  */
-  public readonly results: Anime[];
-
-  public constructor(data: PostInitArgsAnimeResponse) {
-    super();
-    this.count = data.count;
-    this.next = data.next;
-    this.previous = data.previous;
-    this.results = data.results;
-  }
-}
-
 type PostInitArgsAired = OmitImmerable<Aired>;
 type PostInitArgsAnime = OmitImmerable<Anime>;
-type PostInitArgsAnimeResponse = OmitImmerable<AnimeResponse>;

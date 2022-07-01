@@ -1,32 +1,34 @@
-import { AnimeResponseDTO } from '@js-camp/core/dtos/anime.dto';
+import { AnimeDto } from '@js-camp/core/dtos/anime.dto';
+import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
-import { AnimeResponse } from '@js-camp/core/models/anime';
+import { Anime } from '@js-camp/core/models/anime';
+import { Pagination } from '@js-camp/core/models/pagination';
+import axios from 'axios';
 
-import { AnimeFetchHeaders } from '../constants/anime';
+import { FetchHeaders } from '../constants/fetch';
 
 /**
  * Request to the server to get anime.
  * @param url Request address.
  * @returns Server response.
  */
-export const fetchGetAnime = async(url: string): Promise<AnimeResponse> => {
+export async function fetchGetAnime(url: string): Promise<Pagination<Anime>> {
   try {
-    const res = await fetch(url, {
-      method: 'GET',
+    const instance = axios.get(url, {
       headers: {
-        [AnimeFetchHeaders.ApiKey]: ENV.apiKey,
+        [FetchHeaders.ApiKey]: ENV.apiKey,
       },
     });
 
-    const animeResponseDto: AnimeResponseDTO = await res.json();
-    const animeResponse = AnimeMapper.fromDto(animeResponseDto);
-    return animeResponse;
+    const animeResponseDto: PaginationDto<AnimeDto> = (await instance).data;
+
+    return AnimeMapper.fromDto(animeResponseDto);
   } catch {
-    return new AnimeResponse({
+    return new Pagination<Anime>({
       count: 0,
-      next: null,
-      previous: null,
+      next: '',
+      previous: '',
       results: [],
     });
   }
-};
+}

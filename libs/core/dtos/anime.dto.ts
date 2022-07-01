@@ -1,5 +1,5 @@
 /** Describes a value аired. */
-interface AiredDTO {
+interface AiredDto {
 
   /** End date Anime. */
   readonly end: Date;
@@ -8,8 +8,17 @@ interface AiredDTO {
   readonly start: Date;
 }
 
-/** Describes base values anime. */
-interface BaseAnimeDTO {
+/** Extend base values anime. */
+export interface AnimeDto {
+
+  /** ID. */
+  readonly id: number;
+
+  /** Created date. */
+  readonly created: Date;
+
+  /** Modified date. */
+  readonly modified: Date;
 
   /** Image. */
   readonly image: string;
@@ -21,40 +30,11 @@ interface BaseAnimeDTO {
   readonly title_jpn: string;
 
   /** Release and end dates. */
-  readonly aired: AiredDTO;
+  readonly aired: AiredDto;
 
-  /** Anime type. */
+  /** Anime type (TV, OVA, MOVIE, SPECIAL, ONA, MUSIC). */
   readonly type: string;
 
-  /** Status. */
+  /** Anime status (airing, finished, not yet airing). */
   readonly status: string;
-}
-
-/** Extend base values anime. */
-interface AnimeDTO extends BaseAnimeDTO {
-
-  /** ID. */
-  readonly id: number;
-
-  /** Created. */
-  readonly created: Date;
-
-  /** Modified. */
-  readonly modified: Date;
-}
-
-/** Describes the value that comes from the request for anime. */
-export interface AnimeResponseDTO {
-
-  /** Number of anime in the database. */
-  readonly count: number;
-
-  /** URL Next page. */
-  readonly next: string | null;
-
-  /** URL prev page. */
-  readonly previous: string | null;
-
-  /** Results. */
-  readonly results: readonly AnimeDTO[];
 }
