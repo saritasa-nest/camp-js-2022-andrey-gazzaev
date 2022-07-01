@@ -1,6 +1,6 @@
 import { Anime } from '@js-camp/core/models/anime';
 
-import { TableСolumns, ANIME_TABLE, NO_DATA } from '../constants/anime';
+import { TableColumns, NO_DATA, ANIME_TABLE_COLUMNS } from '../constants/animeTable';
 import { Catalog } from '../constants/classes';
 import { Tag } from '../constants/tag';
 
@@ -14,37 +14,37 @@ function createTableRows(animes: readonly Anime[]): HTMLTableRowElement[] {
     const row = document.createElement(Tag.TR);
     row.classList.add(Catalog.TABLE_ROW.replace('.', ''));
 
-    for (const key in ANIME_TABLE) {
+    ANIME_TABLE_COLUMNS.forEach(column => {
       const thElement = document.createElement(Tag.TD);
       thElement.classList.add(Catalog.TABLE_BODY.replace('.', ''));
 
       const imageElement = document.createElement(Tag.IMG);
       imageElement.classList.add(Catalog.TABLE_IMAGE.replace('.', ''));
 
-      const aired = anime[TableСolumns.Aired].start !== null ?
-        new Date(anime[TableСolumns.Aired].start).toUTCString() :
+      const aired = anime[TableColumns.Aired].start !== null ?
+        new Date(anime[TableColumns.Aired].start).toUTCString() :
         NO_DATA;
 
-      switch (key) {
-        case TableСolumns.Image:
+      switch (column) {
+        case TableColumns.Image:
           // Add an image to a table.
-          imageElement.src = anime[key];
+          imageElement.src = anime[column];
           thElement.append(imageElement);
           row.append(thElement);
           break;
 
-        case TableСolumns.Aired:
+        case TableColumns.Aired:
           // Add an entry for aired start.
           thElement.innerHTML = aired;
           row.append(thElement);
           break;
 
-        case TableСolumns.TitleEng:
-        case TableСolumns.TitleJpn:
-        case TableСolumns.Type:
-        case TableСolumns.Status:
+        case TableColumns.TitleEng:
+        case TableColumns.TitleJpn:
+        case TableColumns.Type:
+        case TableColumns.Status:
           // Add title in English and Japanese, Type, Status.
-          thElement.innerHTML = `${anime[key] || NO_DATA}`;
+          thElement.innerHTML = `${anime[column] || NO_DATA}`;
           row.append(thElement);
           break;
 
@@ -52,7 +52,8 @@ function createTableRows(animes: readonly Anime[]): HTMLTableRowElement[] {
           // It is necessary to skip fields that should not be included in the table.
           break;
       }
-    }
+    });
+
     return row;
   });
 }
@@ -64,7 +65,6 @@ function createTableRows(animes: readonly Anime[]): HTMLTableRowElement[] {
 function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
   const catalogElement = document.querySelector(Catalog.TABLE);
   const catalogTitleRow = `
-
   <tr class="catalog__table-row">
     <th class="catalog__table-head"></th>
     <th class="catalog__table-head">Title in English</th>

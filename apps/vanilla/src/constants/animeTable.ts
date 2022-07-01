@@ -1,7 +1,7 @@
 /**
  * Used when creating a table.
  */
-export enum TableСolumns {
+export enum TableColumns {
   Image = 'image',
   TitleEng = 'titleEng',
   TitleJpn = 'titleJpn',
@@ -11,13 +11,5 @@ export enum TableСolumns {
   Status = 'status',
 }
 
-export const ANIME_TABLE = {
-  image: '',
-  titleEng: '',
-  titleJpn: '',
-  aired: '',
-  type: '',
-  status: '',
-};
-
+export const ANIME_TABLE_COLUMNS = ['image', 'titleEng', 'titleJpn', 'aired', 'type', 'status'];
 export const NO_DATA = '-';

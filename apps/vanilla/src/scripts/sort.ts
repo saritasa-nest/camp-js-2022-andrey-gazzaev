@@ -10,14 +10,14 @@ import { changeAnimeData, getLocalSortSettings, setLocalSortSettings } from './p
 
 /**
  * Changes sort values in local storage and changes the table.
- * @param this Function context.
+ * @param select Selected select element.
  * @param field Editable field.
  */
-function handleChangeSortSettings(this: HTMLSelectElement, field: string): void {
+function handleChangeSortSettings(select: HTMLSelectElement, field: string): void {
   const sortSettings = getLocalSortSettings();
 
   if (sortSettings !== null) {
-    sortSettings[field] = this.value;
+    sortSettings[field] = select.value;
     setLocalSortSettings(sortSettings);
   }
 
@@ -61,7 +61,7 @@ export function initSortElements(): void {
       // Set event to sort selector.
       selectElement.addEventListener(
         Event.CHANGE,
-        handleChangeSortSettings.bind(selectElement, select.sortName),
+        handleChangeSortSettings.bind(null, selectElement, select.sortName),
       );
     }
   });

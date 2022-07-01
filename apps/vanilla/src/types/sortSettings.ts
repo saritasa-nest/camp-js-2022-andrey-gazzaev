@@ -1,4 +1,5 @@
-interface SortOption {
+/** Describes the option element. */
+export interface SortOption {
 
   /** The text that contains the option. */
   readonly text: string;

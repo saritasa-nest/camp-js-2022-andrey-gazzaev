@@ -22,13 +22,13 @@ export class Anime extends Immerable {
   /** ID. */
   public readonly id: number;
 
-  /** Created. */
+  /** Created date. */
   public readonly created: Date;
 
-  /** Modified. */
+  /** Modified date. */
   public readonly modified: Date;
 
-  /** Image. */
+  /** Url address image. */
   public readonly image: string;
 
   /** Title in english. */
