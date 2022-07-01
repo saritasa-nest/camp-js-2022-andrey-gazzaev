@@ -5,7 +5,7 @@ import { Catalog } from '../constants/classes';
 import { Tag } from '../constants/tags';
 
 /**
- * Creating and populating table rows.
+ * Creates and fills table rows.
  * @param animes List of anime entries.
  * @returns Array of rows.
  */
@@ -58,10 +58,10 @@ function createTableRows(animes: readonly Anime[]): HTMLTableRowElement[] {
 }
 
 /**
- * Rendering table on the page.
+ * Renders table on the page.
  * @param tableRows Array of rows.
  */
-function updateTableAnime(tableRows: HTMLTableRowElement[]): void {
+function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
   const catalogElement = document.querySelector(Catalog.TABLE);
   const catalogTitleRow = `<tr class="catalog__table-row">
     <th class="catalog__table-head"></th>
@@ -79,7 +79,7 @@ function updateTableAnime(tableRows: HTMLTableRowElement[]): void {
 }
 
 /**
- * Fill the table with information about anime.
+ * Fills the table with information about anime.
  * @param animes List of anime entries.
  */
 export function fillTableAnime(animes: readonly Anime[]): void {

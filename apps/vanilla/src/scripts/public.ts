@@ -1,5 +1,5 @@
 import { DEFAULT_OFFSET } from '../constants/public';
-import { LOCAL_STORAGE_SETTINGS } from '../constants/sort';
+import { LOCAL_SORT_SETTINGS } from '../constants/sort';
 import { fetchGetAnime } from '../fetches/anime';
 import { SortSettings } from '../types/sortSettings';
 
@@ -11,7 +11,7 @@ import { fillTableAnime } from './table';
  * @returns If there are no settings, then null otherwise the settings object.
  */
 export function getLocalSortSettings(): SortSettings | null {
-  const localStorageSettings = localStorage.getItem(LOCAL_STORAGE_SETTINGS);
+  const localStorageSettings = localStorage.getItem(LOCAL_SORT_SETTINGS);
   if (localStorageSettings !== null) {
     const sortSettings: SortSettings = JSON.parse(localStorageSettings);
     return sortSettings;
@@ -24,11 +24,11 @@ export function getLocalSortSettings(): SortSettings | null {
  * @param sortSettings Selected sort values.
  */
 export function setLocalSortSettings(sortSettings: SortSettings): void {
-  localStorage.setItem(LOCAL_STORAGE_SETTINGS, JSON.stringify(sortSettings));
+  localStorage.setItem(LOCAL_SORT_SETTINGS, JSON.stringify(sortSettings));
 }
 
 /**
- * Creating a URL address to get the page with the anime, taking into account the offset.
+ * Creates a URL address to get the page with the anime, taking into account the offset.
  * @param offset Offset relative to which you want to get records.
  * @param ordering Field for ordering elements.
  * @param status Anime status.
@@ -59,22 +59,22 @@ function goToTop(): void {
 }
 
 /**
- * Сhang anime and pagination data relative to the current page.
- * @param currentPage The page on which the change occurs.
+ * Сhanges anime and pagination data relative to the current page.
+ * @param currentPageNumber The page on which the change occurs.
  */
-export async function changeAnimeData(currentPage: number): Promise<void> {
+export async function changeAnimeData(currentPageNumber: number): Promise<void> {
   const localSortSettings = getLocalSortSettings();
   let urlGetAnime = '';
   if (localSortSettings !== null) {
     // localSortSettings non-iterable object
     urlGetAnime = getUrlAnime(
-      currentPage * DEFAULT_OFFSET,
+      currentPageNumber * DEFAULT_OFFSET,
       localSortSettings.ordering,
       localSortSettings.status,
       localSortSettings.direction,
     );
   } else {
-    urlGetAnime = getUrlAnime(currentPage * DEFAULT_OFFSET);
+    urlGetAnime = getUrlAnime(currentPageNumber * DEFAULT_OFFSET);
   }
 
   const animeResponse = await fetchGetAnime(urlGetAnime);
@@ -84,5 +84,5 @@ export async function changeAnimeData(currentPage: number): Promise<void> {
   goToTop();
 
   const allAnimeCount = animeResponse.count;
-  return fillPaginationAnime(allAnimeCount, currentPage);
+  return fillPaginationAnime(allAnimeCount, currentPageNumber);
 }

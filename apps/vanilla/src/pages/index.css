@@ -23,7 +23,7 @@
 .catalog__table .catalog__table-row > .catalog__table-body,
 .catalog__table .catalog__table-row > .catalog__table-head {
   text-align: center;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--table-row-border-button-color);
   width: 160px;
 }
 
@@ -43,14 +43,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   background: none;
   border: 1px solid var(--border-color);
   border-radius: 5px;
   margin-left: 10px;
   margin-right: 10px;
-  font-size: 24px;
+  font-size: var(--pagination-btn-font-size);
   cursor: pointer;
 }
 
