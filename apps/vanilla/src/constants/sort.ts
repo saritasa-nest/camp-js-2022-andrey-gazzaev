@@ -1,4 +1,4 @@
-import { SortSettings } from '../types/sortSettings';
+import { SortOption, SortSettings } from '../types/sortSettings';
 
 export const LOCAL_SORT_SETTINGS = 'sortSettings';
 export const DEFAULT_SORT_SETTINGS: SortSettings = {
@@ -7,20 +7,20 @@ export const DEFAULT_SORT_SETTINGS: SortSettings = {
   status: 'AIRING',
 };
 
-export const DEFAULT_OPTIONS_FOR_ORDERING =
+export const DEFAULT_OPTIONS_FOR_ORDERING: SortOption[] =
   [
     { text: 'Title in English', value: 'title_eng' },
     { text: 'Title in Japanese', value: 'title_jpn' },
     { text: 'Aired Start', value: 'aired' },
   ];
 
-export const DEFAULT_OPTIONS_FOR_DIRECTION =
+export const DEFAULT_OPTIONS_FOR_DIRECTION: SortOption[] =
   [
     { text: 'Ascending', value: '' },
     { text: 'Descending', value: '-' },
   ];
 
-export const DEFAULT_OPTIONS_FOR_STATUS =
+export const DEFAULT_OPTIONS_FOR_STATUS: SortOption[] =
   [
     { text: 'Airing', value: 'AIRING' },
     { text: 'Finished', value: 'FINISHED' },

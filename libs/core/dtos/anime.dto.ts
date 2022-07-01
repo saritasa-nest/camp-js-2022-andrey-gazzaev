@@ -20,7 +20,7 @@ export interface AnimeDto {
   /** Modified date. */
   readonly modified: Date;
 
-  /** Image. */
+  /** Url address image. */
   readonly image: string;
 
   /** Title in english. */
