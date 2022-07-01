@@ -2,7 +2,7 @@ import { Anime } from '@js-camp/core/models/anime';
 
 import { TableСolumns, ANIME_TABLE, NO_DATA } from '../constants/anime';
 import { Catalog } from '../constants/classes';
-import { Tag } from '../constants/tags';
+import { Tag } from '../constants/tag';
 
 /**
  * Creates and fills table rows.

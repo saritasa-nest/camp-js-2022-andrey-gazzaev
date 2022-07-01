@@ -1,10 +1,10 @@
 
 import { AttributeName, AttributeValue } from '../constants/attribute';
 import { Catalog } from '../constants/classes';
-import { Event } from '../constants/events';
+import { Event } from '../constants/event';
 import { ELLIPSIS, PAGE_OFFSET } from '../constants/pagination';
 import { DEFAULT_OFFSET, FIRST_PAGE } from '../constants/public';
-import { Tag } from '../constants/tags';
+import { Tag } from '../constants/tag';
 
 import { changeAnimeData } from './public';
 

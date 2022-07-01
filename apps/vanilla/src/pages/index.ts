@@ -1,4 +1,4 @@
-import { Event } from '../constants/events';
+import { Event } from '../constants/event';
 import { FIRST_PAGE } from '../constants/public';
 import { DEFAULT_SORT_SETTINGS, LOCAL_STORAGE_SETTINGS } from '../constants/sort';
 import { changeAnimeData } from '../scripts/public';

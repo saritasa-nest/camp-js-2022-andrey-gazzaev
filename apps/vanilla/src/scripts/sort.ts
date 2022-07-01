@@ -1,5 +1,5 @@
 import { Catalog } from '../constants/classes';
-import { Event } from '../constants/events';
+import { Event } from '../constants/event';
 import { FIRST_PAGE } from '../constants/public';
 import { SortSettings } from '../types/sortSettings';
 
