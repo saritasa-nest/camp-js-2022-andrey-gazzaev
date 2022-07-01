@@ -1,6 +1,6 @@
-import { FIRST_PAGE } from '../constants/anime';
 import { Catalog } from '../constants/classes';
-import { E_CHANGE } from '../constants/events';
+import { Event } from '../constants/events';
+import { FIRST_PAGE } from '../constants/public';
 import { SortSettings } from '../types/sortSettings';
 
 import { changeAnimeData, getLocalSortSettings, setLocalSortSettings } from './public';
@@ -11,7 +11,6 @@ import { changeAnimeData, getLocalSortSettings, setLocalSortSettings } from './p
  * @param field Editable field.
  */
 function handleChangeSortSettings(this: HTMLSelectElement, field: string): void {
-  // Need to save context
   const sortSettings = getLocalSortSettings();
 
   if (sortSettings !== null) {
@@ -25,7 +24,7 @@ function handleChangeSortSettings(this: HTMLSelectElement, field: string): void 
 /**
  * Sets events to sort selectors.
  */
-export const setHandleToSortElements = (): void => {
+export function setHandleToSortElements(): void {
   const selectors: SortSettings = {
     direction: Catalog.SELECT_SORT_DIRECTION,
     status: Catalog.SELECT_SORT_STATUS,
@@ -37,10 +36,10 @@ export const setHandleToSortElements = (): void => {
       const select = document.querySelector<HTMLSelectElement>(selectors[key]);
       if (select !== null) {
         select.addEventListener(
-          E_CHANGE,
+          Event.CHANGE,
           handleChangeSortSettings.bind(select, key),
         );
       }
     }
   }
-};
+}

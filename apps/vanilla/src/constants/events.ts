@@ -1,2 +1,5 @@
-export const E_CLICK = 'click';
-export const E_CHANGE = 'change';
+export namespace Event {
+  export const CLICK = 'click';
+  export const CHANGE = 'change';
+  export const DOM_LOADED = 'DOMContentLoaded';
+}

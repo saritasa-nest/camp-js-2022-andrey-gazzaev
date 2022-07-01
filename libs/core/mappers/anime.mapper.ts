@@ -1,5 +1,7 @@
-import { AnimeResponseDTO } from '../dtos/anime.dto';
-import { Aired, Anime, AnimeResponse } from '../models/anime';
+import { AnimeDto } from '../dtos/anime.dto';
+import { PaginationDto } from '../dtos/pagination.dto';
+import { Aired, Anime } from '../models/anime';
+import { Pagination } from '../models/pagination';
 
 export namespace AnimeMapper {
 
@@ -7,7 +9,7 @@ export namespace AnimeMapper {
    * Maps dto to model.
    * @param dto Anime dto.
    */
-  export function fromDto(dto: AnimeResponseDTO): AnimeResponse {
+  export function fromDto(dto: PaginationDto<AnimeDto>): Pagination<Anime> {
     const results = dto.results.map(animeDto => {
       const aired = new Aired({
         end: animeDto.aired.end,
@@ -27,7 +29,7 @@ export namespace AnimeMapper {
       });
     });
 
-    return new AnimeResponse({
+    return new Pagination<Anime>({
       count: dto.count,
       next: dto.next,
       previous: dto.previous,
