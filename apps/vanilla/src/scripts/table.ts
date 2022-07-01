@@ -63,7 +63,9 @@ function createTableRows(animes: readonly Anime[]): HTMLTableRowElement[] {
  */
 function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
   const catalogElement = document.querySelector(Catalog.TABLE);
-  const catalogTitleRow = `<tr class="catalog__table-row">
+  const catalogTitleRow = `
+
+  <tr class="catalog__table-row">
     <th class="catalog__table-head"></th>
     <th class="catalog__table-head">Title in English</th>
     <th class="catalog__table-head">Title in Japanese</th>

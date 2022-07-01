@@ -45,8 +45,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 45px;
-  height: 45px;
+  width: 55px;
+  height: 50px;
   background: none;
   border: 1px solid var(--border-color);
   border-radius: 5px;
