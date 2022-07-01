@@ -20,13 +20,9 @@ function definingPaginationBoundaries(
 ): [number, number, number] {
   const lastPage = Math.floor(allAnimeCount / DEFAULT_OFFSET);
 
-  let prevPage = allAnimeCount / DEFAULT_OFFSET - PAGE_OFFSET;
-  if (currentPageNumber <= allAnimeCount) {
-    prevPage =
-      currentPageNumber - PAGE_OFFSET < FIRST_PAGE ?
-        FIRST_PAGE :
-        currentPageNumber - PAGE_OFFSET;
-  }
+  const prevPage = currentPageNumber - PAGE_OFFSET < FIRST_PAGE ?
+    FIRST_PAGE :
+    currentPageNumber - PAGE_OFFSET;
 
   const nextPage = currentPageNumber + PAGE_OFFSET > lastPage ?
     lastPage :
