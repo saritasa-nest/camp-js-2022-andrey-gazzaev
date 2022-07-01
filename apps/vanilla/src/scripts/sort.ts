@@ -1,7 +1,10 @@
+import { AttributeName } from '../constants/attribute';
 import { Catalog } from '../constants/classes';
 import { Event } from '../constants/event';
 import { FIRST_PAGE } from '../constants/public';
-import { SortSettings } from '../types/sortSettings';
+import { DEFAULT_OPTIONS_FOR_DIRECTION, DEFAULT_OPTIONS_FOR_ORDERING, DEFAULT_OPTIONS_FOR_STATUS } from '../constants/sort';
+import { Tag } from '../constants/tag';
+import { SortSelectOptions } from '../types/sortSettings';
 
 import { changeAnimeData, getLocalSortSettings, setLocalSortSettings } from './public';
 
@@ -22,24 +25,45 @@ function handleChangeSortSettings(this: HTMLSelectElement, field: string): void 
 }
 
 /**
- * Sets events to sort selectors.
+ * Creates a option element.
+ * @param text The text that contains the element.
+ * @param classes The style classes that the element contains.
+ * @param value Value that contains option.
+ * @returns Option element.
  */
-export function setHandleToSortElements(): void {
-  const selectors: SortSettings = {
-    direction: Catalog.SELECT_SORT_DIRECTION,
-    status: Catalog.SELECT_SORT_STATUS,
-    ordering: Catalog.SELECT_SORT_ORDERING,
-  };
+function createOption(text: string, classes: readonly string[], value: string): HTMLSpanElement {
+  const option = document.createElement(Tag.OPTION);
+  option.setAttribute(AttributeName.VALUE, value);
+  option.innerHTML = text;
 
-  for (const key in selectors) {
-    if (Object.prototype.hasOwnProperty.call(selectors, key)) {
-      const select = document.querySelector<HTMLSelectElement>(selectors[key]);
-      if (select !== null) {
-        select.addEventListener(
-          Event.CHANGE,
-          handleChangeSortSettings.bind(select, key),
-        );
-      }
+  // "c" because "class" is the keyword.
+  option.classList.add(...classes.map(c => c.replace('.', '')));
+  return option;
+}
+
+/**
+ * Adds option elements to select.
+ */
+export function initSortElements(): void {
+  const selectors: SortSelectOptions[] = [
+    { sortName: 'direction', selector: Catalog.SELECT_SORT_DIRECTION, options: DEFAULT_OPTIONS_FOR_DIRECTION },
+    { sortName: 'status', selector: Catalog.SELECT_SORT_STATUS, options: DEFAULT_OPTIONS_FOR_STATUS },
+    { sortName: 'ordering', selector: Catalog.SELECT_SORT_ORDERING, options: DEFAULT_OPTIONS_FOR_ORDERING },
+  ];
+
+  selectors.forEach(select => {
+    const selectElement = document.querySelector<HTMLSelectElement>(select.selector);
+
+    if (selectElement !== null) {
+      // Adding options elements.
+      select.options.forEach(option => selectElement.append(createOption(option.text, [], option.value)));
+
+      // Set event to sort selector.
+      selectElement.addEventListener(
+        Event.CHANGE,
+        handleChangeSortSettings.bind(selectElement, select.sortName),
+      );
     }
-  }
+  });
+
 }

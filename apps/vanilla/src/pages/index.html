@@ -11,7 +11,7 @@
 <body class="page">
   <main class="container">
     <section class="catalog">
-      <h2 id="catalog-anime">Anime catalog</h2>
+      <h2 id="catalog-anime" class="catalog__title">Anime catalog</h2>
       <div class="catalog__table-block">
         <table class="catalog__table" aria-label="anime" aria-describedby="catalog-anime">
           <tr>
@@ -27,28 +27,17 @@
         <div class="catalog__sort-settings form">
           <label class="form__label">
             Select direction:
-            <select name="direction" class="form__select catalog__sort-direction">
-              <option value="">Ascending</option>
-              <option value="-">Descending</option>
-            </select>
+            <select name="direction" class="form__select catalog__sort-direction"></select>
           </label>
 
           <label class="form__label">
             Select status:
-            <select name="status" class="form__select catalog__sort-status">
-              <option value="AIRING">AIRING</option>
-              <option value="FINISHED">FINISHED</option>
-              <option value="NOT_YET_AIRED">NOT_YET_AIRED</option>
-            </select>
+            <select name="status" class="form__select catalog__sort-status"></select>
           </label>
 
           <label class="form__label">
             Sort by:
-            <select name="ordering" class="form__select catalog__sort-ordering">
-              <option value="title_eng">Title in English</option>
-              <option value="title_jpn">Title in Japanese</option>
-              <option value="aired">Aired Start</option>
-            </select>
+            <select name="ordering" class="form__select catalog__sort-ordering"></select>
           </label>
         </div>
       </div>

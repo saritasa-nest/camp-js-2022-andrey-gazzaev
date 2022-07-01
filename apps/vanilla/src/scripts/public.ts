@@ -1,5 +1,5 @@
 import { DEFAULT_OFFSET } from '../constants/public';
-import { LOCAL_SORT_SETTINGS } from '../constants/sort';
+import { DEFAULT_SORT_SETTINGS, LOCAL_SORT_SETTINGS } from '../constants/sort';
 import { fetchGetAnime } from '../fetches/anime';
 import { SortSettings } from '../types/sortSettings';
 
@@ -30,18 +30,16 @@ export function setLocalSortSettings(sortSettings: SortSettings): void {
 /**
  * Creates a URL address to get the page with the anime, taking into account the offset.
  * @param offset Offset relative to which you want to get records.
- * @param ordering Field for ordering elements.
- * @param status Anime status.
- * @param direction Sorting in descending and ascending order.
+ * @param sort Sort Options.
  * @returns Ready url.
  */
-export function getUrlAnime(offset: number, ordering = 'id', status = 'AIRING', direction = ''): string {
+export function getUrlAnime(offset: number, sort: SortSettings): string {
   const urlParts = [
     'https://api.camp-js.saritasa.rocks/api/v1/anime/anime/?',
     `offset=${offset}&`,
     'limit=25&',
-    `ordering=${direction}${ordering}&`,
-    `status=${status}&`,
+    `ordering=${sort.direction}${sort.ordering}&`,
+    `status=${sort.status}&`,
   ];
 
   return urlParts.join('');
@@ -64,18 +62,9 @@ function goToTop(): void {
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<void> {
   const localSortSettings = getLocalSortSettings();
-  let urlGetAnime = '';
-  if (localSortSettings !== null) {
-    // localSortSettings non-iterable object
-    urlGetAnime = getUrlAnime(
-      currentPageNumber * DEFAULT_OFFSET,
-      localSortSettings.ordering,
-      localSortSettings.status,
-      localSortSettings.direction,
-    );
-  } else {
-    urlGetAnime = getUrlAnime(currentPageNumber * DEFAULT_OFFSET);
-  }
+  const urlGetAnime = localSortSettings !== null ?
+    getUrlAnime(currentPageNumber * DEFAULT_OFFSET, localSortSettings) :
+    getUrlAnime(currentPageNumber * DEFAULT_OFFSET, DEFAULT_SORT_SETTINGS);
 
   const animeResponse = await fetchGetAnime(urlGetAnime);
   const anime = animeResponse.results;
