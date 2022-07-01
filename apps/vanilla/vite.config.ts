@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
       emptyOutDir: true,
       rollupOptions: {
         input: [
-          resolve(root, 'index.html'),
+          resolve(root, 'index.html')
         ],
       },
     },
