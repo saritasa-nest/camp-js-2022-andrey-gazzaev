@@ -2,7 +2,7 @@ import { renderHeader } from '../UI/header/header';
 import { FIRST_PAGE } from '../constants/public';
 import { DEFAULT_SORT_SETTINGS, LOCAL_SORT_SETTINGS } from '../constants/sort';
 import { changeAnimeData } from '../scripts/public';
-import { setHandleToSortElements } from '../scripts/sort';
+import { initSortElements } from '../scripts/sort';
 
 /**
  * Add sorting settings to local storage if they are not there.
@@ -20,7 +20,7 @@ const initPage = (): void => {
   renderHeader();
 
   initSortSettings();
-  setHandleToSortElements();
+  initSortElements();
 
   changeAnimeData(FIRST_PAGE);
 };
