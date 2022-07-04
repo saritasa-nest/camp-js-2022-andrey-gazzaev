@@ -1,6 +1,6 @@
 import { Immerable, OmitImmerable } from './immerable';
 
-/** Describes a value аired. */
+/** Aired. */
 export class Aired extends Immerable {
 
   /** End date Anime. */
@@ -16,7 +16,7 @@ export class Aired extends Immerable {
   }
 }
 
-/** Describes values anime. */
+/** Anime. */
 export class Anime extends Immerable {
 
   /** ID. */

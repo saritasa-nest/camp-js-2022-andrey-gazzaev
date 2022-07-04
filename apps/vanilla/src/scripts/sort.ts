@@ -2,11 +2,12 @@ import { AttributeName } from '../constants/attribute';
 import { Catalog } from '../constants/classes';
 import { Event } from '../constants/event';
 import { FIRST_PAGE } from '../constants/public';
-import { DEFAULT_OPTIONS_FOR_DIRECTION, DEFAULT_OPTIONS_FOR_ORDERING, DEFAULT_OPTIONS_FOR_STATUS } from '../constants/sort';
+import { DEFAULT_OPTIONS_FOR_DIRECTION, DEFAULT_OPTIONS_FOR_ORDERING, DEFAULT_OPTIONS_FOR_STATUS, LOCAL_SORT_SETTINGS } from '../constants/sort';
 import { Tag } from '../constants/tag';
-import { SortSelectOptions } from '../types/sortSettings';
+import { SortSelectOptions, SortSettings } from '../types/sortSettings';
 
-import { changeAnimeData, getLocalSortSettings, setLocalSortSettings } from './public';
+import { getLocalStorage, setLocalStorage } from './localStorage';
+import { changeAnimeData } from './public';
 
 /**
  * Changes sort values in local storage and changes the table.
@@ -14,11 +15,11 @@ import { changeAnimeData, getLocalSortSettings, setLocalSortSettings } from './p
  * @param field Editable field.
  */
 function handleChangeSortSettings(select: HTMLSelectElement, field: string): void {
-  const sortSettings = getLocalSortSettings();
+  const sortSettings = getLocalStorage<SortSettings>(LOCAL_SORT_SETTINGS);
 
   if (sortSettings !== null) {
     sortSettings[field] = select.value;
-    setLocalSortSettings(sortSettings);
+    setLocalStorage<SortSettings>(LOCAL_SORT_SETTINGS, sortSettings);
   }
 
   changeAnimeData(FIRST_PAGE);
@@ -59,7 +60,7 @@ export function initSortElements(): void {
       // Set event to sort selector.
       selectElement.addEventListener(
         Event.CHANGE,
-        handleChangeSortSettings.bind(null, selectElement, select.sortName),
+        () => handleChangeSortSettings(selectElement, select.sortName),
       );
     }
   });

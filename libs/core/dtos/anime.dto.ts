@@ -1,4 +1,4 @@
-/** Describes a value аired. */
+/** Aired DTO. */
 interface AiredDto {
 
   /** End date Anime. */
@@ -8,7 +8,7 @@ interface AiredDto {
   readonly start: Date;
 }
 
-/** Extend base values anime. */
+/** Anime DTO. */
 export interface AnimeDto {
 
   /** ID. */

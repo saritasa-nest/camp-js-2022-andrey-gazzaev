@@ -12,7 +12,8 @@ import { changeAnimeData } from './public';
  * Defines pagination boundaries relative to the current page.
  * @param allAnimeCount All records that the server can provide.
  * @param currentPageNumber Page for which you want to create a pagination.
- * @returns An array of borders where the first element is the left border and the second element is the right border.
+ * @returns An array of borders, where the first element is the left border,
+ * the second element is the right border, and the third element is the last page.
  */
 function definePaginationBoundaries(
   allAnimeCount: number,
@@ -43,7 +44,7 @@ function createButton(pageNumber: number, classes: readonly string[]): HTMLButto
   button.classList.add(...classes);
   button.setAttribute(AttributeName.TYPE, AttributeValue.BUTTON);
   button.innerHTML = String(pageNumber);
-  button.addEventListener(Event.CLICK, changeAnimeData.bind(null, pageNumber));
+  button.addEventListener(Event.CLICK, () => changeAnimeData(pageNumber));
   return button;
 }
 
