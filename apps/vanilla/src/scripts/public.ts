@@ -29,15 +29,17 @@ export function getUrlAnime(offset: number, sort: SortSettings): string {
  * Jump to the top of the page.
  */
 function goToTop(): void {
-  // For Safari.
-  document.body.scrollTop = 0;
+  const TOP_OF_PAGE = 0;
+  const SCROLL_EVENT = 'smooth';
 
-  // For Chrome, Firefox, IE and Opera.
-  document.documentElement.scrollTop = 0;
+  window.scrollTo({
+    top: TOP_OF_PAGE,
+    behavior: SCROLL_EVENT,
+  });
 }
 
 /**
- * Сhanges anime and pagination data relative to the current page.
+ * Changes anime and pagination data relative to the current page.
  * @param currentPageNumber The page on which the change occurs.
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<void> {
