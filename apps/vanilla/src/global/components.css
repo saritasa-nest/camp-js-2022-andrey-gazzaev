@@ -15,6 +15,7 @@ a:hover,
   text-decoration: underline var(--primary-light-color);
 }
 
+/* TO-DO add all colors to variables */
 a:focus {
   outline: 1px solid#faa527;
 }
