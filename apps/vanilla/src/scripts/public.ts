@@ -44,9 +44,10 @@ function goToTop(): void {
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<void> {
   const localSortSettings = getLocalStorage<SortSettings>(LOCAL_SORT_SETTINGS);
+  const currentOffset = currentPageNumber * DEFAULT_OFFSET;
   const urlGetAnime = localSortSettings !== null ?
-    getUrlAnime(currentPageNumber * DEFAULT_OFFSET, localSortSettings) :
-    getUrlAnime(currentPageNumber * DEFAULT_OFFSET, DEFAULT_SORT_SETTINGS);
+    getUrlAnime(currentOffset, localSortSettings) :
+    getUrlAnime(currentOffset, DEFAULT_SORT_SETTINGS);
 
   const animeResponse = await fetchAnime(urlGetAnime);
   const anime = animeResponse.results;
