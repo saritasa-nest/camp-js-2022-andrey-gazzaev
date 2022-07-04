@@ -14,11 +14,11 @@ import { changeAnimeData } from './public';
  * @param currentPageNumber Page for which you want to create a pagination.
  * @returns An array of borders where the first element is the left border and the second element is the right border.
  */
-function definingPaginationBoundaries(
+function definePaginationBoundaries(
   allAnimeCount: number,
   currentPageNumber: number,
 ): [number, number, number] {
-  const lastPage = Math.floor(allAnimeCount / DEFAULT_OFFSET);
+  const lastPage = Math.ceil(allAnimeCount / DEFAULT_OFFSET);
 
   const prevPage = currentPageNumber - PAGE_OFFSET < FIRST_PAGE ?
     FIRST_PAGE :
@@ -40,7 +40,6 @@ function definingPaginationBoundaries(
 function createButton(pageNumber: number, classes: readonly string[]): HTMLButtonElement {
   const button = document.createElement(Tag.BUTTON);
 
-  // "c" because "class" is the keyword.
   button.classList.add(...classes.map(c => c.replace('.', '')));
   button.setAttribute(AttributeName.TYPE, AttributeValue.BUTTON);
   button.innerHTML = String(pageNumber);
@@ -122,7 +121,7 @@ export function fillPaginationAnime(
   allAnimeCount: number,
   currentPage: number,
 ): void {
-  const [prevPage, nextPage, lastPage] = definingPaginationBoundaries(
+  const [prevPage, nextPage, lastPage] = definePaginationBoundaries(
     allAnimeCount,
     currentPage,
   );
