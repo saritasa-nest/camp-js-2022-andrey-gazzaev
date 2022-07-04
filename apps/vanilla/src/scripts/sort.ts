@@ -1,7 +1,7 @@
 import { AttributeName } from '../constants/attribute';
 import { Catalog } from '../constants/classes';
 import { Event } from '../constants/event';
-import { FIRST_PAGE } from '../constants/public';
+import { FIRST_PAGE_NUMBER } from '../constants/public';
 import { OPTIONS_FOR_DIRECTION, OPTIONS_FOR_ORDERING, OPTIONS_FOR_STATUS, LOCAL_SORT_SETTINGS } from '../constants/sort';
 import { Tag } from '../constants/tag';
 import { SortSelectOptions, SortSettings } from '../types/sortSettings';
@@ -22,7 +22,7 @@ function handleChangeSortSettings(select: HTMLSelectElement, field: string): voi
     setLocalStorage<SortSettings>(LOCAL_SORT_SETTINGS, sortSettings);
   }
 
-  changeAnimeData(FIRST_PAGE);
+  changeAnimeData(FIRST_PAGE_NUMBER);
 }
 
 /**
