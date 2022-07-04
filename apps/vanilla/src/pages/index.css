@@ -22,14 +22,14 @@
   margin-bottom: 5px;
 }
 
-.catalog__table .catalog__table-row > .catalog__table-body,
-.catalog__table .catalog__table-row > .catalog__table-head {
+.catalog__table-body,
+.catalog__table-head {
   text-align: center;
   border-bottom: 1px solid var(--table-row-border-button-color);
   width: 160px;
 }
 
-.catalog__table .catalog__table-body > .catalog__table-image {
+.catalog__table-image {
   width: 160px;
   height: 160px;
 }

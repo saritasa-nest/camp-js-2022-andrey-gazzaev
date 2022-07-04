@@ -1,4 +1,4 @@
-/** Describes the option element. */
+/** The option element. */
 export interface SortOption {
 
   /** The text that contains the option. */
@@ -8,7 +8,7 @@ export interface SortOption {
   readonly value: string;
 }
 
-/** Describes select and its options. */
+/** Select and its options. */
 export interface SortSelectOptions {
 
   /** The name of the sort used. */
@@ -21,7 +21,7 @@ export interface SortSelectOptions {
   readonly options: readonly SortOption[];
 }
 
-/** Describes sort settings that are stored in local storage. */
+/** Sort settings that are stored in local storage. */
 export interface SortSettings {
   [index: string]: string;
 

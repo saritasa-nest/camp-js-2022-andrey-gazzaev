@@ -1,6 +1,6 @@
 import { Anime } from '@js-camp/core/models/anime';
 
-import { TableColumns, NO_DATA, ANIME_TABLE_COLUMNS } from '../constants/animeTable';
+import { TableColumns, NO_DATA } from '../constants/animeTable';
 import { Catalog } from '../constants/classes';
 import { Tag } from '../constants/tag';
 
@@ -12,44 +12,38 @@ import { Tag } from '../constants/tag';
 function createTableRows(animes: readonly Anime[]): HTMLTableRowElement[] {
   return animes.map(anime => {
     const row = document.createElement(Tag.TR);
-    row.classList.add(Catalog.TABLE_ROW.replace('.', ''));
+    row.classList.add(Catalog.TABLE_ROW);
 
-    ANIME_TABLE_COLUMNS.forEach(column => {
+    Object.values(TableColumns).forEach(column => {
       const thElement = document.createElement(Tag.TD);
-      thElement.classList.add(Catalog.TABLE_BODY.replace('.', ''));
+      thElement.classList.add(Catalog.TABLE_BODY);
 
       const imageElement = document.createElement(Tag.IMG);
-      imageElement.classList.add(Catalog.TABLE_IMAGE.replace('.', ''));
+      imageElement.classList.add(Catalog.TABLE_IMAGE);
 
-      const aired = anime[TableColumns.Aired].start !== null ?
-        new Date(anime[TableColumns.Aired].start).toUTCString() :
+      const airedStart = anime[TableColumns.Aired].start;
+      const airedColumnText = airedStart !== null ?
+        new Date(airedStart).toUTCString() :
         NO_DATA;
 
       switch (column) {
         case TableColumns.Image:
-          // Add an image to a table.
+          // Adding an image to a table.
           imageElement.src = anime[column];
           thElement.append(imageElement);
           row.append(thElement);
           break;
 
         case TableColumns.Aired:
-          // Add an entry for aired start.
-          thElement.innerHTML = aired;
-          row.append(thElement);
-          break;
-
-        case TableColumns.TitleEng:
-        case TableColumns.TitleJpn:
-        case TableColumns.Type:
-        case TableColumns.Status:
-          // Add title in English and Japanese, Type, Status.
-          thElement.innerHTML = `${anime[column] || NO_DATA}`;
+          // Adding an entry for aired start.
+          thElement.innerHTML = airedColumnText;
           row.append(thElement);
           break;
 
         default:
-          // It is necessary to skip fields that should not be included in the table.
+          // Adding more columns.
+          thElement.innerHTML = `${anime[column] || NO_DATA}`;
+          row.append(thElement);
           break;
       }
     });
