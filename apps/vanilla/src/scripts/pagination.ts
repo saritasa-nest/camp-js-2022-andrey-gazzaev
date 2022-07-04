@@ -35,11 +35,17 @@ function definePaginationBoundaries(
 /**
  * Creates a button element for pagination.
  * @param pageNumber The page number the button contains.
- * @param classes The style classes that the element contains.
+ * @param isCurrentPage If button is current then will add class current.
  * @returns Button element.
  */
-function createButton(pageNumber: number, classes: readonly string[]): HTMLButtonElement {
+function createButton(pageNumber: number, isCurrentPage: boolean): HTMLButtonElement {
   const button = document.createElement(Tag.BUTTON);
+
+  const classes = [Catalog.BUTTON_PAGINATION];
+
+  if (isCurrentPage) {
+    classes.push(Catalog.PAGINATION_BUTTON_CURRENT);
+  }
 
   button.classList.add(...classes);
   button.setAttribute(AttributeName.TYPE, AttributeValue.BUTTON);
@@ -78,21 +84,19 @@ function createButtonPagination(
   const buttonsPagination: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
   if (currentPage - PAGE_OFFSET > FIRST_PAGE) {
-    buttonsPagination.push(createButton(FIRST_PAGE, [Catalog.BUTTON_PAGINATION]));
+    buttonsPagination.push(createButton(FIRST_PAGE, false));
     buttonsPagination.push(createSpan(ELLIPSIS, []));
   }
 
   for (let index = prevPage; index < nextPage; index++) {
-    const button = currentPage === index ?
-      createButton(index, [Catalog.BUTTON_PAGINATION, Catalog.PAGINATION_BUTTON_CURRENT]) :
-      createButton(index, [Catalog.BUTTON_PAGINATION]);
+    const button = createButton(index, currentPage === index);
 
     buttonsPagination.push(button);
   }
 
   if (currentPage + PAGE_OFFSET < lastPage - 1) {
     buttonsPagination.push(createSpan(ELLIPSIS, []));
-    buttonsPagination.push(createButton(lastPage - 1, [Catalog.BUTTON_PAGINATION]));
+    buttonsPagination.push(createButton(lastPage - 1, false));
   }
 
   return buttonsPagination;
