@@ -88,10 +88,12 @@ function createButtonPagination(
     buttonsPagination.push(createSpan(ELLIPSIS, []));
   }
 
-  for (let index = prevPage; index < nextPage; index++) {
-    const button = createButton(index, currentPage === index);
+  for (let index = prevPage; index <= nextPage; index++) {
+    if (index !== lastPage) {
+      const button = createButton(index, currentPage === index);
 
-    buttonsPagination.push(button);
+      buttonsPagination.push(button);
+    }
   }
 
   if (currentPage + PAGE_OFFSET < lastPage - 1) {
