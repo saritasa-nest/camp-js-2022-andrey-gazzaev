@@ -17,17 +17,11 @@
 
 .form__input {
   background: none;
-  border: 2px solid #686868;
+  border: 1px solid #686868;
   border-radius: 5px;
   color: #686868;
   font-size: 0.85em;
   padding-left: 10px;
-}
-
-.form__input:active,
-.form__input:target {
-  border: 2px solid #faa527;
-  outline-color: #faa527;
 }
 
 .form__button {
@@ -41,7 +35,13 @@
 }
 
 .form__button:hover {
-  background: none;
+  background: #fff;
   color: #faa527;
   border-color: #faa527;
+}
+
+.form__input:focus,
+.form__button:focus {
+  border: 1px solid #faa527;
+  outline: 1px solid #faa527;
 }

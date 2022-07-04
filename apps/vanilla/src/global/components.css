@@ -5,13 +5,18 @@ a,
 
   color: var(--link-color);
   text-decoration: none;
-  border-bottom: 1px solid var(--link-color);
 }
 
 a:hover,
 :link:hover,
 .link:hover {
   --link-color: var(--primary-light-color);
+
+  text-decoration: underline var(--primary-light-color);
+}
+
+a:focus {
+  outline: 1px solid#faa527;
 }
 
 .links {
