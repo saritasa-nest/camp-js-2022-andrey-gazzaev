@@ -17,5 +17,7 @@ export function getLocalStorage<T>(key: string): T | null {
  * @param value Some value that needs to be stored.
  */
 export function setLocalStorage<T>(key: string, value: T): void {
-  localStorage.setItem(key, JSON.stringify(value));
+  if (value !== undefined) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
 }
