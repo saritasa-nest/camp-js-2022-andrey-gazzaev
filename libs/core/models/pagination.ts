@@ -1,4 +1,4 @@
-import { Immerable } from './immerable';
+import { Immerable, OmitImmerable } from './immerable';
 
 /** Pagination meta info. */
 export class Pagination<T> extends Immerable {
@@ -24,4 +24,4 @@ export class Pagination<T> extends Immerable {
   }
 }
 
-type PaginationConstructorData<T> = Pick<Pagination<T>, 'count' | 'next' | 'previous' | 'results'>;
+type PaginationConstructorData<T> = OmitImmerable<Pagination<T>>;
