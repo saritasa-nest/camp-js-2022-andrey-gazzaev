@@ -1,3 +1,4 @@
+/** Tag names. */
 export namespace Tag {
   export const BUTTON = 'button';
   export const SPAN = 'span';

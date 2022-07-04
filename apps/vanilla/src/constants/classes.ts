@@ -1,3 +1,4 @@
+/** The class names for the catalog block. */
 export namespace Catalog {
   export const BUTTON_PAGINATION = 'catalog__pagination-btn';
   export const SELECT_SORT_STATUS = 'catalog__sort-status';

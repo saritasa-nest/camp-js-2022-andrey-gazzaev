@@ -2,7 +2,7 @@ import { AttributeName } from '../constants/attribute';
 import { Catalog } from '../constants/classes';
 import { Event } from '../constants/event';
 import { FIRST_PAGE } from '../constants/public';
-import { DEFAULT_OPTIONS_FOR_DIRECTION, DEFAULT_OPTIONS_FOR_ORDERING, DEFAULT_OPTIONS_FOR_STATUS, LOCAL_SORT_SETTINGS } from '../constants/sort';
+import { OPTIONS_FOR_DIRECTION, OPTIONS_FOR_ORDERING, OPTIONS_FOR_STATUS, LOCAL_SORT_SETTINGS } from '../constants/sort';
 import { Tag } from '../constants/tag';
 import { SortSelectOptions, SortSettings } from '../types/sortSettings';
 
@@ -45,16 +45,16 @@ function createOption(text: string, classes: readonly string[], value: string): 
  */
 export function initSortElements(): void {
   const selectors: SortSelectOptions[] = [
-    { sortName: 'direction', selector: Catalog.SELECT_SORT_DIRECTION, options: DEFAULT_OPTIONS_FOR_DIRECTION },
-    { sortName: 'status', selector: Catalog.SELECT_SORT_STATUS, options: DEFAULT_OPTIONS_FOR_STATUS },
-    { sortName: 'ordering', selector: Catalog.SELECT_SORT_ORDERING, options: DEFAULT_OPTIONS_FOR_ORDERING },
+    { sortName: 'direction', selector: Catalog.SELECT_SORT_DIRECTION, options: OPTIONS_FOR_DIRECTION },
+    { sortName: 'status', selector: Catalog.SELECT_SORT_STATUS, options: OPTIONS_FOR_STATUS },
+    { sortName: 'ordering', selector: Catalog.SELECT_SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
   ];
 
   selectors.forEach(select => {
     const selectElement = document.querySelector<HTMLSelectElement>(`.${select.selector}`);
 
     if (selectElement !== null) {
-      // Adding options elements.
+      // Adds options elements.
       select.options.forEach(option => selectElement.append(createOption(option.text, [], option.value)));
 
       // Set event to sort selector.

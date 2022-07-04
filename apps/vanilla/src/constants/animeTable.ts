@@ -1,6 +1,4 @@
-/**
- * Anime Table Columns.
- */
+/** Anime Table Columns. */
 export enum TableColumns {
   Image = 'image',
   TitleEng = 'titleEng',
@@ -10,4 +8,5 @@ export enum TableColumns {
   Status = 'status',
 }
 
+/** Missing data in a column. */
 export const NO_DATA = '-';
