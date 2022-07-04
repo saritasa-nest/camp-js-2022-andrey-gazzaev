@@ -15,9 +15,9 @@ import { FetchHeaders } from '../constants/fetch';
 export async function fetchAnime(url: string): Promise<Pagination<Anime>> {
   try {
     const instance = await axios.get<PaginationDto<AnimeDto>>(url, {
-      baseURL: ENV.baseUrl,
+      baseURL: import.meta.env.VITE_BASE_URL,
       headers: {
-        [FetchHeaders.ApiKey]: ENV.apiKey,
+        [FetchHeaders.ApiKey]: import.meta.env.VITE_API_KEY,
       },
     });
 
