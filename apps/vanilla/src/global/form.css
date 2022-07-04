@@ -54,7 +54,7 @@
 .form__links {
   display: flex;
   flex-direction: column;
-  max-width: 215px;
+  background: #fff;
 }
 
 .form__links-item {
