@@ -37,3 +37,9 @@ export namespace Catalog {
   export const TABLE_BODY = 'catalog__table-body';
   export const TABLE_IMAGE = 'catalog__table-image';
 }
+
+/** The class names for the page block. */
+export namespace Page {
+  export const CONTAINER = 'page__container';
+  export const ERROR = 'page__error';
+}

@@ -1,5 +1,9 @@
+import { HttpError } from '@js-camp/core/models/httpError';
+
+import { Page } from '../constants/classes';
 import { DEFAULT_LIMIT, START_OFFSET } from '../constants/public';
 import { DEFAULT_SORT_SETTINGS, LOCAL_SORT_SETTINGS } from '../constants/sort';
+import { Tag } from '../constants/tag';
 import { fetchAnime } from '../fetches/anime';
 import { SortSettings } from '../types/sortSettings';
 
@@ -39,17 +43,39 @@ function goToTop(): void {
 }
 
 /**
+ * Render message about error.
+ */
+function renderError(): void {
+  const pageContainer = document.querySelector(`.${Page.CONTAINER}`);
+  if (pageContainer !== null) {
+    const errorTemplate = document.createElement(Tag.P);
+    errorTemplate.classList.add(Page.ERROR);
+
+    const ERROR_MESSAGE = 'Ooops... Something went wrong';
+    errorTemplate.innerHTML = ERROR_MESSAGE;
+
+    pageContainer.innerHTML = '';
+    pageContainer.append(errorTemplate);
+  }
+}
+
+/**
  * Changes anime and pagination data relative to the current page.
  * @param currentPageNumber The page on which the change occurs.
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<void> {
   const localSortSettings = getLocalStorage<SortSettings>(LOCAL_SORT_SETTINGS);
-  const currentOffset = currentPageNumber * START_OFFSET ;
+  const currentOffset = currentPageNumber * START_OFFSET;
   const urlGetAnime = localSortSettings !== null ?
     getUrlAnime(currentOffset, localSortSettings) :
     getUrlAnime(currentOffset, DEFAULT_SORT_SETTINGS);
 
   const animeResponse = await fetchAnime(urlGetAnime);
+
+  if (animeResponse instanceof HttpError || animeResponse instanceof Error) {
+    return renderError();
+  }
+
   const anime = animeResponse.results;
   fillTableAnime(anime);
 
