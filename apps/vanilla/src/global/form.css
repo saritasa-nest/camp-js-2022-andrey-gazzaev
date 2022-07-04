@@ -1,10 +1,9 @@
 @import url("../global/index.css");
 
 .form {
-  background: #fff;
   display: flex;
   flex-direction: column;
-  max-width: 215px;
+  background: #fff;
 }
 
 .form__label {
@@ -13,13 +12,10 @@
 }
 
 .form__label-text {
-  /* color: darksalmon; */
   font-size: 0.9em;
 }
 
 .form__input {
-  max-width: 205px;
-  height: 25px;
   border: 1px solid #686868;
   border-radius: 5px;
   color: #686868;
@@ -33,15 +29,8 @@
   border: 1px solid #686868;
   border-radius: 5px;
   cursor: pointer;
-  height: 25px;
   color: #686868;
   font-size: 0.85em;
-}
-
-.form__label,
-.form__button {
-  margin-top: 5px;
-  margin-bottom: 5px;
 }
 
 .form__button:hover {

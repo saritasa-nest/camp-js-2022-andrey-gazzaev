@@ -8,11 +8,12 @@
   <title>Vite App</title>
 </head>
 
-<body>
+<body class="page__body">
 
-  <main class="container">
+  <main class="page__container">
     <section class="login">
-      <h2 class="login__title">Sign in</h2>
+      <!-- h1 because the page does not assume that there will be other sections on it. -->
+      <h1 class="login__title">Sign in</h1>
       <form class="form login__form">
         <label class="form__label">
           <span class="form__label-text">Email:</span>
@@ -24,7 +25,7 @@
           <input class="form__input login__password" name="password" type="password" required>
         </label>
 
-        <button class="form__button" type="submit">Sing in</button>
+        <button class="form__button login__submit" type="submit">Sing in</button>
       </form>
       <div class="login__links">
         <a class="login__link" href="#">Forgot your password</a>
