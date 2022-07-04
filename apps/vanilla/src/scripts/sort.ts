@@ -35,9 +35,7 @@ function createOption(text: string, classes: readonly string[], value: string): 
   const option = document.createElement(Tag.OPTION);
   option.setAttribute(AttributeName.VALUE, value);
   option.innerHTML = text;
-
-  // "c" because "class" is the keyword.
-  option.classList.add(...classes.map(c => c.replace('.', '')));
+  option.classList.add(...classes);
   return option;
 }
 
@@ -52,7 +50,7 @@ export function initSortElements(): void {
   ];
 
   selectors.forEach(select => {
-    const selectElement = document.querySelector<HTMLSelectElement>(select.selector);
+    const selectElement = document.querySelector<HTMLSelectElement>(`.${select.selector}`);
 
     if (selectElement !== null) {
       // Adding options elements.
