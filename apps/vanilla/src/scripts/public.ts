@@ -1,6 +1,6 @@
 import { DEFAULT_OFFSET } from '../constants/public';
 import { DEFAULT_SORT_SETTINGS, LOCAL_SORT_SETTINGS } from '../constants/sort';
-import { fetchGetAnime } from '../fetches/anime';
+import { fetchAnime } from '../fetches/anime';
 import { SortSettings } from '../types/sortSettings';
 
 import { fillPaginationAnime } from './pagination';
@@ -66,7 +66,7 @@ export async function changeAnimeData(currentPageNumber: number): Promise<void> 
     getUrlAnime(currentPageNumber * DEFAULT_OFFSET, localSortSettings) :
     getUrlAnime(currentPageNumber * DEFAULT_OFFSET, DEFAULT_SORT_SETTINGS);
 
-  const animeResponse = await fetchGetAnime(urlGetAnime);
+  const animeResponse = await fetchAnime(urlGetAnime);
   const anime = animeResponse.results;
   fillTableAnime(anime);
 

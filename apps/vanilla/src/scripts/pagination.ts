@@ -40,7 +40,7 @@ function definePaginationBoundaries(
 function createButton(pageNumber: number, classes: readonly string[]): HTMLButtonElement {
   const button = document.createElement(Tag.BUTTON);
 
-  button.classList.add(...classes.map(c => c.replace('.', '')));
+  button.classList.add(...classes);
   button.setAttribute(AttributeName.TYPE, AttributeValue.BUTTON);
   button.innerHTML = String(pageNumber);
   button.addEventListener(Event.CLICK, changeAnimeData.bind(null, pageNumber));
@@ -56,9 +56,7 @@ function createButton(pageNumber: number, classes: readonly string[]): HTMLButto
 function createSpan(text: string, classes: readonly string[]): HTMLSpanElement {
   const span = document.createElement(Tag.SPAN);
   span.innerHTML = text;
-
-  // "c" because "class" is the keyword.
-  span.classList.add(...classes.map(c => c.replace('.', '')));
+  span.classList.add(...classes);
   return span;
 }
 
@@ -104,7 +102,7 @@ function createButtonPagination(
  * @param buttons Array of buttons.
  */
 function updatePaginationElement(buttons: readonly (HTMLButtonElement | HTMLSpanElement)[]): void {
-  const paginationElement = document.querySelector(Catalog.PAGINATION);
+  const paginationElement = document.querySelector(`.${Catalog.PAGINATION}`);
 
   if (paginationElement !== null) {
     paginationElement.innerHTML = '';

@@ -63,7 +63,7 @@ function createTableRows(animes: readonly Anime[]): HTMLTableRowElement[] {
  * @param tableRows Array of rows.
  */
 function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
-  const catalogElement = document.querySelector(Catalog.TABLE);
+  const catalogElement = document.querySelector(`.${Catalog.TABLE}`);
   const catalogTitleRow = `
   <tr class="catalog__table-row">
     <th class="catalog__table-head"></th>
