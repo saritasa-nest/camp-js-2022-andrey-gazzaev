@@ -15,7 +15,7 @@ import { fillTableAnime } from './table';
  */
 export function getUrlAnime(offset: number, sort: SortSettings): string {
   const urlParts = [
-    'https://api.camp-js.saritasa.rocks/api/v1/anime/anime/?',
+    'anime/anime/?',
     `offset=${offset}&`,
     `limit=${offset}&`,
     `ordering=${sort.direction}${sort.ordering}&`,

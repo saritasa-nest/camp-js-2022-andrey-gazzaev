@@ -28,20 +28,20 @@ function createTableRows(animes: readonly Anime[]): HTMLTableRowElement[] {
 
       switch (column) {
         case TableColumns.Image:
-          // Adding an image to a table.
+          // Adds an image to a table.
           imageElement.src = anime[column];
           thElement.append(imageElement);
           row.append(thElement);
           break;
 
         case TableColumns.Aired:
-          // Adding an entry for aired start.
+          // Adds an entry for aired start.
           thElement.innerHTML = airedColumnText;
           row.append(thElement);
           break;
 
         default:
-          // Adding more columns.
+          // Adds more columns.
           thElement.innerHTML = `${anime[column] || NO_DATA}`;
           row.append(thElement);
           break;

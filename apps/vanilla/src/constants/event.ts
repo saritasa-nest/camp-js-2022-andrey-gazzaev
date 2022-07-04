@@ -1,3 +1,4 @@
+/** Events names. */
 export namespace Event {
   export const CLICK = 'click';
   export const CHANGE = 'change';

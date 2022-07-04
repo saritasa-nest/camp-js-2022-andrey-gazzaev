@@ -29,9 +29,9 @@ export default defineConfig(({ mode }) => {
           resolve(root, 'registration', 'index.html'),
         ],
       },
-      define: {
-        ENV: { apiKey: env.API_KEY }
-      }
+    },
+    define: {
+      ENV: { apiKey: env.API_KEY, baseUrl:env.BASE_URL }
     }
   }
 }
