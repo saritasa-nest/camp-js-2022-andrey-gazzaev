@@ -133,5 +133,5 @@ export function fillPaginationAnime(
 
   const buttonsPagination = createButtonPagination(prevPage, nextPage, currentPage, lastPage);
 
-  return updatePaginationElement(buttonsPagination);
+  updatePaginationElement(buttonsPagination);
 }
