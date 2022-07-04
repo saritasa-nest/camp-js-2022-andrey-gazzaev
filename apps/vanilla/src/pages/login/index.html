@@ -5,19 +5,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./index.css" />
-  <title>Vite App</title>
+  <title>Login</title>
 </head>
 
 <body class="page__body">
+  <header class="page__header header">
+    <a class="link" title="Go to home page" href="/">Back</a>
+  </header>
 
   <main class="page__container">
     <section class="login">
-      <!-- h1 because the page does not assume that there will be other sections on it. -->
       <h1 class="login__title">Sign in</h1>
       <form class="form login__form">
         <label class="form__label">
           <span class="form__label-text">Email:</span>
-          <input class="form__input login__email" name="login" type="email" required>
+          <input class="form__input login__email" name="login" type="email" required >
         </label>
 
         <label class="form__label">
@@ -28,8 +30,8 @@
         <button class="form__button login__submit" type="submit">Sing in</button>
       </form>
       <div class="login__links">
-        <a class="login__link" href="#">Forgot your password</a>
-        <a class="login__link" href="#">Don't have an account?</a>
+        <a class="login__link" title="Password recovery" href="#">Forgot your password</a>
+        <a class="login__link" title="Register a new account" href="#">Don't have an account?</a>
       </div>
     </section>
   </main>
