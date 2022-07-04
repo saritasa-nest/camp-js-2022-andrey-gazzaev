@@ -25,4 +25,7 @@
   --border-color: #dbd7d2;
   --border-color-hover: #ffcf48;
   --min-laptop-width: 1024px;
+  --table-row-border-button-color: #ddd;
+  --pagination-btn-font-size: 1.5rem;
+  --login-border-color: #d4d4d4;
 }
