@@ -6,11 +6,11 @@ import { Tag } from '../constants/tag';
 
 /**
  * Creates and fills table rows.
- * @param animes List of anime entries.
+ * @param animeList List of anime entries.
  * @returns Array of rows.
  */
-function createTableRows(animes: readonly Anime[]): HTMLTableRowElement[] {
-  return animes.map(anime => {
+function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
+  return animeList.map(anime => {
     const row = document.createElement(Tag.TR);
     row.classList.add(Catalog.TABLE_ROW);
 
@@ -76,10 +76,10 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
 
 /**
  * Fills the table with information about anime.
- * @param animes List of anime entries.
+ * @param animeList List of anime entries.
  */
-export function fillTableAnime(animes: readonly Anime[]): void {
-  const tableRows = createTableRows(animes);
+export function fillTableAnime(animeList: readonly Anime[]): void {
+  const tableRows = createTableRows(animeList);
 
   updateTableAnime(tableRows);
 }

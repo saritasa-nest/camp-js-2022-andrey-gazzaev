@@ -2,10 +2,10 @@
 interface AiredDto {
 
   /** End date Anime. */
-  readonly end: Date;
+  readonly end: string;
 
   /** Start date Anime. */
-  readonly start: Date;
+  readonly start: string;
 }
 
 /** Anime DTO. */
@@ -15,10 +15,10 @@ export interface AnimeDto {
   readonly id: number;
 
   /** Created date. */
-  readonly created: Date;
+  readonly created: string;
 
   /** Modified date. */
-  readonly modified: Date;
+  readonly modified: string;
 
   /** Url address image. */
   readonly image: string;

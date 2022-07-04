@@ -1,5 +1,21 @@
 import { Immerable, OmitImmerable } from './immerable';
 
+/** Possible options anime type. */
+export enum Type {
+  Tv = 'TV',
+  Ova = 'OVA',
+  Movie = 'MOVIE',
+  Special = 'SPECIAL',
+  Ona = 'MUSIC',
+}
+
+/** Possible options anime status. */
+export enum Status {
+  Airing = 'AIRING',
+  Finished = 'FINISHED',
+  NotYetAired = 'NOT_YET_AIRED',
+}
+
 /** Aired. */
 export class Aired extends Immerable {
 
@@ -41,10 +57,10 @@ export class Anime extends Immerable {
   public readonly aired: Aired;
 
   /** Anime type. */
-  public readonly type: string;
+  public readonly type: Type;
 
-  /** Status. */
-  public readonly status: string;
+  /** Anime status. */
+  public readonly status: Status;
 
   public constructor(data: PostInitArgsAnime) {
     super();

@@ -1,6 +1,6 @@
 import { AnimeDto } from '../dtos/anime.dto';
 import { PaginationDto } from '../dtos/pagination.dto';
-import { Aired, Anime } from '../models/anime';
+import { Aired, Anime, Status, Type } from '../models/anime';
 import { Pagination } from '../models/pagination';
 
 export namespace AnimeMapper {
@@ -12,20 +12,23 @@ export namespace AnimeMapper {
   export function fromDto(dto: PaginationDto<AnimeDto>): Pagination<Anime> {
     const results = dto.results.map(animeDto => {
       const aired = new Aired({
-        end: animeDto.aired.end,
-        start: animeDto.aired.start,
+        end: new Date(animeDto.aired.end),
+        start: new Date(animeDto.aired.start),
       });
 
+      const status = animeDto.status in Status ? animeDto.status as Status : Status.Airing;
+      const type = animeDto.type in Type ? animeDto.type as Type : Type.Tv;
+
       return new Anime({
-        aired,
-        created: animeDto.created,
         id: animeDto.id,
+        created: new Date(animeDto.created),
+        modified: new Date(animeDto.modified),
         image: animeDto.image,
-        modified: animeDto.modified,
-        status: animeDto.status,
         titleEng: animeDto.title_eng,
         titleJpn: animeDto.title_jpn,
-        type: animeDto.type,
+        aired,
+        status,
+        type,
       });
     });
 
