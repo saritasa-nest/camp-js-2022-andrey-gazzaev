@@ -18,12 +18,12 @@ function initSortSettings(): void {
 /**
  * Table initialization and pagination.
  */
-function initTable(): Promise<void> {
+function initTable(): void {
   initSortSettings();
 
   initSortElements();
 
-  return changeAnimeData(FIRST_PAGE);
+  changeAnimeData(FIRST_PAGE);
 }
 
 window.addEventListener(Event.DOM_LOADED, initTable);

@@ -56,5 +56,5 @@ export async function changeAnimeData(currentPageNumber: number): Promise<void> 
   goToTop();
 
   const allAnimeCount = animeResponse.count;
-  return fillPaginationAnime(allAnimeCount, currentPageNumber);
+  fillPaginationAnime(allAnimeCount, currentPageNumber);
 }

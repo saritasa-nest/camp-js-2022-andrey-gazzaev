@@ -81,5 +81,5 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
 export function fillTableAnime(animes: readonly Anime[]): void {
   const tableRows = createTableRows(animes);
 
-  return updateTableAnime(tableRows);
+  updateTableAnime(tableRows);
 }
