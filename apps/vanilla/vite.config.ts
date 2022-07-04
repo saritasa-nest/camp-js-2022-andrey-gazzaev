@@ -7,7 +7,7 @@ const outDir = resolve(__dirname, '../../dist/apps/vanilla');
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '')
+  const env = loadEnv(mode, process.cwd(), '');
 
   return {
     root,
@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      ENV: { apiKey: env.API_KEY, baseUrl:env.BASE_URL }
+      ENV: { apiKey: env.API_KEY, baseUrl: env.BASE_URL }
     }
   }
 });
