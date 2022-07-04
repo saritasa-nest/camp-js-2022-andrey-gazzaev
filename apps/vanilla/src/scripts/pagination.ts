@@ -3,7 +3,7 @@ import { AttributeName, AttributeValue } from '../constants/attribute';
 import { Catalog } from '../constants/classes';
 import { Event } from '../constants/event';
 import { ELLIPSIS, PAGE_OFFSET } from '../constants/pagination';
-import { DEFAULT_OFFSET, FIRST_PAGE } from '../constants/public';
+import { DEFAULT_OFFSET, FIRST_PAGE_NUMBER } from '../constants/public';
 import { Tag } from '../constants/tag';
 
 import { changeAnimeData } from './public';
@@ -21,8 +21,8 @@ function definePaginationBoundaries(
 ): [number, number, number] {
   const lastPage = Math.ceil(allAnimeCount / DEFAULT_OFFSET);
 
-  const prevPage = currentPageNumber - PAGE_OFFSET < FIRST_PAGE ?
-    FIRST_PAGE :
+  const prevPage = currentPageNumber - PAGE_OFFSET < FIRST_PAGE_NUMBER ?
+    FIRST_PAGE_NUMBER :
     currentPageNumber - PAGE_OFFSET;
 
   const nextPage = currentPageNumber + PAGE_OFFSET > lastPage ?
@@ -83,8 +83,8 @@ function createButtonPagination(
 ): (HTMLButtonElement | HTMLSpanElement)[] {
   const buttonsPagination: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
-  if (currentPage - PAGE_OFFSET > FIRST_PAGE) {
-    buttonsPagination.push(createButton(FIRST_PAGE, false));
+  if (currentPage - PAGE_OFFSET > FIRST_PAGE_NUMBER) {
+    buttonsPagination.push(createButton(FIRST_PAGE_NUMBER, false));
     buttonsPagination.push(createSpan(ELLIPSIS, []));
   }
 
