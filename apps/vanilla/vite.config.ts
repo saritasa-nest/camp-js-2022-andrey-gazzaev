@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      ENV: { apiKey: env.API_KEY }
+      ENV: { apiKey: env.API_KEY, baseUrl: env.BASE_URL}
     }
   }
 });
