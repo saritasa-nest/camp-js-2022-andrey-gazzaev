@@ -14,14 +14,14 @@ import { FetchHeaders } from '../constants/fetch';
  */
 export async function fetchAnime(url: string): Promise<Pagination<Anime>> {
   try {
-    const instance = axios.get<PaginationDto<AnimeDto>>(url, {
+    const instance = await axios.get<PaginationDto<AnimeDto>>(url, {
       baseURL: ENV.baseUrl,
       headers: {
         [FetchHeaders.ApiKey]: ENV.apiKey,
       },
     });
 
-    const animeResponseDto = (await instance).data;
+    const animeResponseDto = instance.data;
 
     return AnimeMapper.fromDto(animeResponseDto);
   } catch {
