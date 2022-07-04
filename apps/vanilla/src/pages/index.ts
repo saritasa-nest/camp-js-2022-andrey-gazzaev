@@ -1,5 +1,5 @@
 import { Event } from '../constants/event';
-import { FIRST_PAGE } from '../constants/public';
+import { FIRST_PAGE_NUMBER } from '../constants/public';
 import { DEFAULT_SORT_SETTINGS, LOCAL_SORT_SETTINGS } from '../constants/sort';
 import { getLocalStorage, setLocalStorage } from '../scripts/localStorage';
 import { changeAnimeData } from '../scripts/public';
@@ -23,7 +23,7 @@ function initTable(): void {
 
   initSortElements();
 
-  changeAnimeData(FIRST_PAGE);
+  changeAnimeData(FIRST_PAGE_NUMBER);
 }
 
 window.addEventListener(Event.DOM_LOADED, initTable);
