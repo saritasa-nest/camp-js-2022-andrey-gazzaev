@@ -28,23 +28,19 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
 
       switch (column) {
         case TableColumns.Image:
-          // Adds an image to a table.
           imageElement.src = anime[column];
           thElement.append(imageElement);
           row.append(thElement);
           break;
 
         case TableColumns.Aired:
-          // Adds an entry for aired start.
           thElement.innerHTML = airedColumnText;
           row.append(thElement);
           break;
 
         default:
-          // Adds more columns.
           thElement.innerHTML = `${anime[column] || NO_DATA}`;
           row.append(thElement);
-          break;
       }
     });
 

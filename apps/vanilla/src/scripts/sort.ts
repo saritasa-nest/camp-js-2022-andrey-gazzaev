@@ -40,9 +40,7 @@ function createOption(text: string, classes: readonly string[], value: string): 
   return option;
 }
 
-/**
- * Adds option elements to select.
- */
+/** Adds option elements to select. */
 export function initSortElements(): void {
   const selectors: SortSelectOptions[] = [
     { sortName: 'direction', selector: Catalog.SELECT_SORT_DIRECTION, options: OPTIONS_FOR_DIRECTION },

@@ -1,15 +1,11 @@
 /** Error coming from the server. */
 export class HttpError extends Error {
 
-  /** Error Description. */
+  /** Error description. */
   public readonly detail: string;
 
-  /** Error code. */
-  public readonly code: number;
-
-  public constructor(detail: string, code: number) {
+  public constructor(detail: string) {
     super();
     this.detail = detail;
-    this.code = code;
   }
 }

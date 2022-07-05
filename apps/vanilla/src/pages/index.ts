@@ -6,23 +6,17 @@ import { changeAnimeData } from '../scripts/public';
 import { initSortElements } from '../scripts/sort';
 import { SortSettings } from '../types/sortSettings';
 
-/**
- * Adds sorting settings to local storage if they are not there.
- */
+/** Adds sorting settings to local storage if they are not there. */
 function initSortSettings(): void {
   if (getLocalStorage<SortSettings>(LOCAL_SORT_SETTINGS) === null) {
     setLocalStorage<SortSettings>(LOCAL_SORT_SETTINGS, DEFAULT_SORT_SETTINGS);
   }
 }
 
-/**
- * Table initialization and pagination.
- */
+/** Table initialization and pagination. */
 function initTable(): void {
   initSortSettings();
-
   initSortElements();
-
   changeAnimeData(FIRST_PAGE_NUMBER);
 }
 

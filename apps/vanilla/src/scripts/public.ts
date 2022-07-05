@@ -29,9 +29,7 @@ export function getUrlAnime(offset: number, sort: SortSettings): string {
   return urlParts.join('');
 }
 
-/**
- * Jump to the top of the page.
- */
+/** Jump to the top of the page. */
 function goToTop(): void {
   const TOP_OF_PAGE = 0;
   const SCROLL_EVENT = 'smooth';
@@ -42,9 +40,7 @@ function goToTop(): void {
   });
 }
 
-/**
- * Render message about error.
- */
+/** Render message about error. */
 function renderError(): void {
   const pageContainer = document.querySelector(`.${Page.CONTAINER}`);
   if (pageContainer !== null) {
