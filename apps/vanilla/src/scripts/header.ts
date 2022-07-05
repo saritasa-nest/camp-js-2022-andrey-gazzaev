@@ -9,7 +9,7 @@ function isTokenVerify(access: string): boolean {
 
 function changeHeader() {
   const tokens = getLocalStorage(LOCAL_TOKENS);
-  if (tokens !== undefined) {
+  if (tokens !== null) {
     if (isTokenVerify()) {
       // TO-DO get user info
       // create user profile in header

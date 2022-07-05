@@ -14,7 +14,7 @@ import { setLocalStorage } from '../../scripts/localStorage';
  * @returns Value of element or null.
  */
 function getValue(element: FormDataEntryValue | null): string | null {
-  if (element !== null && element instanceof String) {
+  if (element !== null) {
     return String(element);
   }
   return null;
@@ -47,6 +47,8 @@ async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
   } catch (error: unknown) {
 
     if (error instanceof HttpError) {
+
+      // console.log(error);
 
       // TO-DO Handle error
       // error.detail;
