@@ -1,7 +1,6 @@
 import { HttpError } from '@js-camp/core/models/httpError';
 import { Tokens } from '@js-camp/core/models/tokens';
 
-import { AttributeName } from '../../constants/attribute';
 import { Login } from '../../constants/classes';
 import { Event } from '../../constants/event';
 import { FormField } from '../../constants/form';
@@ -14,9 +13,9 @@ import { setLocalStorage } from '../../scripts/localStorage';
  * @param element The element from which you want to get the value.
  * @returns Value of element or null.
  */
-function getValueInputElement(element: Element | RadioNodeList | null): string | null {
-  if (element !== null && AttributeName.VALUE in element) {
-    return element.value;
+function getValue(element: FormDataEntryValue | null): string | null {
+  if (element !== null && element instanceof String) {
+    return String(element);
   }
   return null;
 }
@@ -28,16 +27,16 @@ function getValueInputElement(element: Element | RadioNodeList | null): string |
 async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
   event.preventDefault();
 
-  const form = event.currentTarget as HTMLFormElement;
+  if (!(event.target instanceof HTMLFormElement)) {
+    return;
+  }
 
-  const emailItem = form.elements.namedItem(FormField.EMAIL);
-  const email = getValueInputElement(emailItem);
+  const form = new FormData(event.target);
 
-  const passwordItem = form.elements.namedItem(FormField.PASSWORD);
-  const password = getValueInputElement(passwordItem);
+  const email = getValue(form.get(FormField.EMAIL));
+  const password = getValue(form.get(FormField.PASSWORD));
 
   try {
-
     const tokens = await loginUser(email, password);
 
     if (tokens instanceof Tokens) {

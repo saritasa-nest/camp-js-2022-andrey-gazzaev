@@ -9,11 +9,11 @@ export class Tokens extends Immerable {
   /** Access token. */
   public readonly access: string;
 
-  public constructor(data: PostInitArgsTokens) {
+  public constructor(data: InitArgsTokens) {
     super();
     this.refresh = data.refresh;
     this.access = data.access;
   }
 }
 
-type PostInitArgsTokens = OmitImmerable<Tokens>;
+type InitArgsTokens = OmitImmerable<Tokens>;
