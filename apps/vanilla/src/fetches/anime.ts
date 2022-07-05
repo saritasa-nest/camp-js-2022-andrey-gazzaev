@@ -21,7 +21,7 @@ export async function fetchAnime(url: string): Promise<Pagination<Anime> | HttpE
   } catch (error: unknown) {
 
     if (error instanceof HttpError) {
-      return new HttpError(error.detail, error.code);
+      return new HttpError(error.detail);
     }
 
     const UNKNOWN_ERROR = 'unexpected error';

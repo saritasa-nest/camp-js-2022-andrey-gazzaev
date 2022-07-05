@@ -2,9 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 
 import { FetchHeaders } from '../constants/fetch';
 
-/**
- * Axios request template.
- */
+/** Axios request template. */
 export const instance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   headers: {

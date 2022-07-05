@@ -1,8 +1,8 @@
 /** Anime Table Columns. */
 export enum TableColumns {
   Image = 'image',
-  TitleEng = 'titleEng',
-  TitleJpn = 'titleJpn',
+  TitleEnglish = 'titleEnglish',
+  TitleJapanese = 'titleJapanese',
   Aired = 'aired',
   Type = 'type',
   Status = 'status',

@@ -16,8 +16,8 @@ export enum Status {
   NotYetAired = 'NOT_YET_AIRED',
 }
 
-/** Aired. */
-export class Aired extends Immerable {
+/** Date range. */
+export class DateRange extends Immerable {
 
   /** End date Anime. */
   public readonly end: Date;
@@ -25,7 +25,7 @@ export class Aired extends Immerable {
   /** Start date Anime. */
   public readonly start: Date;
 
-  public constructor(data: PostInitArgsAired) {
+  public constructor(data: InitArgsDateRange) {
     super();
     this.end = data.end;
     this.start = data.start;
@@ -38,23 +38,17 @@ export class Anime extends Immerable {
   /** ID. */
   public readonly id: number;
 
-  /** Created date. */
-  public readonly created: Date;
-
-  /** Modified date. */
-  public readonly modified: Date;
-
   /** Url address image. */
   public readonly image: string;
 
-  /** Title in english. */
-  public readonly titleEng: string;
+  /** Title in English. */
+  public readonly titleEnglish: string;
 
   /** Title in Japanese. */
-  public readonly titleJpn: string;
+  public readonly titleJapanese: string;
 
   /** Release and end dates. */
-  public readonly aired: Aired;
+  public readonly aired: DateRange;
 
   /** Anime type. */
   public readonly type: Type;
@@ -62,19 +56,17 @@ export class Anime extends Immerable {
   /** Anime status. */
   public readonly status: Status;
 
-  public constructor(data: PostInitArgsAnime) {
+  public constructor(data: InitArgsAnime) {
     super();
     this.id = data.id;
-    this.created = data.created;
-    this.modified = data.modified;
     this.image = data.image;
-    this.titleEng = data.titleEng;
-    this.titleJpn = data.titleJpn;
+    this.titleEnglish = data.titleEnglish;
+    this.titleJapanese = data.titleJapanese;
     this.aired = data.aired;
     this.type = data.type;
     this.status = data.status;
   }
 }
 
-type PostInitArgsAired = OmitImmerable<Aired>;
-type PostInitArgsAnime = OmitImmerable<Anime>;
+type InitArgsDateRange = OmitImmerable<DateRange>;
+type InitArgsAnime = OmitImmerable<Anime>;
