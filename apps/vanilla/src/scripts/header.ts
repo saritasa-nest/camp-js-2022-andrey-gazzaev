@@ -1,66 +1,93 @@
 import { HttpError } from '@js-camp/core/models/httpError';
 
+import { AttributeName, AttributeValue } from '../constants/attribute';
+import { Header } from '../constants/classes';
+import { Event } from '../constants/event';
 import { LOCAL_TOKENS } from '../constants/public';
+import { Tag } from '../constants/tag';
 import { isVerifyToken, refreshToken } from '../fetches/auth';
 import { getUserProfile } from '../fetches/user';
 
 import { getLocalStorage, setLocalStorage } from './localStorage';
 
-function renderProfile(element: Element | null | Node) {
-  const headerElement = document.querySelector(`.profile`);
+/** Sing out from account. */
+function handleSingOut(): void {
+  setLocalStorage(LOCAL_TOKENS, null);
+  changeHeader();
+}
+
+/** Creates a logout button. */
+function createSingOutButton(): HTMLButtonElement {
+  const button = document.createElement(Tag.BUTTON);
+  button.setAttribute(AttributeName.TYPE, AttributeValue.BUTTON);
+  button.innerHTML = 'Sing out';
+  button.addEventListener(Event.CLICK, handleSingOut);
+  return button;
+}
+
+/**
+ * Adds profile element to header.
+ * @param element Profile element.
+ */
+function addProfileToHeader(element: Element | Node | null): void {
+  const headerElement = document.querySelector(`.${Header.PROFILE}`);
   if (headerElement !== null && element !== null) {
     headerElement.innerHTML = '';
     headerElement.append(element);
   }
 }
 
-function renderStandardElement() {
-  const standardElement = document.querySelector<HTMLTemplateElement>(`#standart-profile`);
-  if (standardElement !== null) {
-    renderProfile(standardElement.content.cloneNode(true));
+/** Render standard header template. */
+function renderStandardProfile(): void {
+  const ID_STANDARD_PROFILE_TEMPLATE = '#standard-profile';
+  const standardTemplate = document.querySelector<HTMLTemplateElement>(ID_STANDARD_PROFILE_TEMPLATE);
+  if (standardTemplate !== null) {
+    const standardElement = standardTemplate.content.cloneNode(true);
+    addProfileToHeader(standardElement);
   }
 }
 
-async function renderProfileElement() {
+/** Render profile header. */
+async function renderUserProfile(): Promise<void> {
   const user = await getUserProfile();
   if (user instanceof HttpError) {
     return;
   }
 
-  const userElement = document.createElement(`div`);
+  const ID_USER_PROFILE_TEMPLATE = '#user-profile';
+  const profileTemplate = document.querySelector<HTMLTemplateElement>(ID_USER_PROFILE_TEMPLATE);
 
-  const profileElement = document.createElement('p');
-  profileElement.innerHTML = `Hello, ${user.firstName} ${user.lastName} !!!`;
+  const userGreeting = document.createElement(Tag.P);
+  userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName} !!!`;
 
-  const singOutElement = document.createElement('button');
-  singOutElement.setAttribute('type', 'button');
-  singOutElement.innerHTML = 'Sing out';
-  singOutElement.addEventListener('click', () => {
-    setLocalStorage(LOCAL_TOKENS, null);
-    changeHeader();
-  });
-  userElement?.append(profileElement, singOutElement);
+  const singOutButton = createSingOutButton();
 
-  renderProfile(userElement);
+  if (profileTemplate !== null) {
+    const profileElement = profileTemplate.content.cloneNode(true);
+    profileElement.appendChild(userGreeting);
+    profileElement.appendChild(singOutButton);
+    addProfileToHeader(profileElement);
+  }
+
 }
 
-export async function changeHeader() {
+/** Changes header depending on the user. */
+export async function changeHeader(): Promise<void> {
   const tokens = getLocalStorage(LOCAL_TOKENS);
   if (tokens !== null) {
     if (await isVerifyToken()) {
-
-      return renderProfileElement();
+      return renderUserProfile();
     }
 
     const isTokenRefreshed = await refreshToken();
 
     if (isTokenRefreshed) {
-      return renderProfileElement();
+      return renderUserProfile();
     }
 
     setLocalStorage(LOCAL_TOKENS, null);
     location.href = '/login/';
   } else {
-    renderStandardElement();
+    renderStandardProfile();
   }
 }
