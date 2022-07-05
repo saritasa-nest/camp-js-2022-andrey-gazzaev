@@ -5,7 +5,7 @@ import { Anime } from '@js-camp/core/models/anime';
 import { HttpError } from '@js-camp/core/models/httpError';
 import { Pagination } from '@js-camp/core/models/pagination';
 
-import { getInstance } from './instance';
+import { instance } from './instance';
 
 /**
  * Request to the server to get anime.
@@ -13,8 +13,6 @@ import { getInstance } from './instance';
  */
 export async function fetchAnime(url: string): Promise<Pagination<Anime> | HttpError | Error> {
   try {
-    const instance = getInstance();
-
     const response = await instance.get<PaginationDto<AnimeDto>>(url);
 
     const animePaginationDto = response.data;
@@ -23,12 +21,10 @@ export async function fetchAnime(url: string): Promise<Pagination<Anime> | HttpE
   } catch (error: unknown) {
 
     if (error instanceof HttpError) {
-      const { detail } = error;
-      console.warn(detail);
       return new HttpError(error.detail, error.code);
     }
 
-    const unknownError = 'unexpected error';
-    return new Error(unknownError);
+    const UNKNOWN_ERROR = 'unexpected error';
+    return new Error(UNKNOWN_ERROR);
   }
 }
