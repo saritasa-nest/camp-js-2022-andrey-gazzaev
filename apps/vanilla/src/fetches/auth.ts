@@ -53,7 +53,7 @@ export async function isVerifyToken(): Promise<boolean> {
       return false;
     }
 
-    const URL_VERIFY_TOKEN = 'auth/token/verify';
+    const URL_VERIFY_TOKEN = 'auth/token/verify/';
     await instance.post<TokensDto>(URL_VERIFY_TOKEN, {
       token: tokens.access,
     });
@@ -73,7 +73,7 @@ export async function refreshToken(): Promise<boolean> {
       return false;
     }
 
-    const URL_REFRESH_TOKEN = 'auth/token/verify';
+    const URL_REFRESH_TOKEN = 'auth/token/refresh/';
     const response = await instance.post<TokensDto>(URL_REFRESH_TOKEN, {
       refresh: tokens.refresh,
     });
