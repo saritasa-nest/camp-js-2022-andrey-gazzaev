@@ -1,7 +1,11 @@
+import axios from 'axios';
+
 import { TokensDto } from '@js-camp/core/dtos/tokens.dto';
+import { HttpErrorDto } from '@js-camp/core/dtos/httpError.dto';
 import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
-import { HttpError } from '@js-camp/core/models/httpError';
 import { Tokens } from '@js-camp/core/models/tokens';
+import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
+import { HttpError } from '@js-camp/core/models/httpError';
 
 import { instance } from './instance';
 
@@ -11,28 +15,29 @@ import { instance } from './instance';
  * @param password Password user.
  */
 export async function loginUser(
-  email: string,
-  password: string,
+  email: string | null,
+  password: string | null,
 ): Promise<Tokens | HttpError | Error> {
   try {
     const LOGIN_URL = 'auth/login/';
 
     const response = await instance.post<TokensDto>(LOGIN_URL, {
-      postMessage: {
-        email,
-        password,
-      },
+      email,
+      password,
     });
 
     return TokensMapper.fromDto(response.data);
 
   } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response !== undefined) {
+        const httpError = HttpErrorMapper.fromDto(error.response.data as HttpErrorDto);
 
-    if (error instanceof HttpError) {
-      return new HttpError(error.detail, error.code);
+        throw httpError;
+      }
     }
 
     const UNKNOWN_ERROR = 'unexpected error';
-    return new Error(UNKNOWN_ERROR);
+    throw new Error(UNKNOWN_ERROR);
   }
 }
