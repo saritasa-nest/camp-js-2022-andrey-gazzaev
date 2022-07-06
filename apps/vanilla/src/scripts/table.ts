@@ -1,7 +1,7 @@
 import { Anime } from '@js-camp/core/models/anime';
 
 import { TableColumns, NO_DATA } from '../constants/animeTable';
-import { Catalog } from '../constants/classes';
+import { Table, TableBlock } from '../constants/classes';
 
 /**
  * Creates and fills table rows.
@@ -11,14 +11,14 @@ import { Catalog } from '../constants/classes';
 function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
   return animeList.map(anime => {
     const row = document.createElement('tr');
-    row.classList.add(Catalog.TABLE_ROW);
+    row.classList.add(Table.ROW);
 
     Object.values(TableColumns).forEach(column => {
       const thElement = document.createElement('td');
-      thElement.classList.add(Catalog.TABLE_BODY);
+      thElement.classList.add(Table.BODY);
 
       const imageElement = document.createElement('img');
-      imageElement.classList.add(Catalog.TABLE_IMAGE);
+      imageElement.classList.add(Table.IMAGE);
 
       const airedStart = anime[TableColumns.Aired].start;
       const airedColumnText = airedStart !== null ?
@@ -53,15 +53,15 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
  * @param tableRows Array of rows.
  */
 function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
-  const catalogElement = document.querySelector(`.${Catalog.TABLE}`);
+  const catalogElement = document.querySelector(`.${TableBlock.TABLE}`);
   const catalogTitleRow = `
-  <tr class="catalog__table-row">
-    <th class="catalog__table-head"></th>
-    <th class="catalog__table-head">Title in English</th>
-    <th class="catalog__table-head">Title in Japanese</th>
-    <th class="catalog__table-head">Aired Start</th>
-    <th class="catalog__table-head">Type</th>
-    <th class="catalog__table-head">Status</th>
+  <tr class="table__row">
+    <th class="table__head"></th>
+    <th class="table__head">Title in English</th>
+    <th class="table__head">Title in Japanese</th>
+    <th class="table__head">Aired Start</th>
+    <th class="table__head">Type</th>
+    <th class="table__head">Status</th>
   </tr>`;
 
   if (catalogElement !== null) {

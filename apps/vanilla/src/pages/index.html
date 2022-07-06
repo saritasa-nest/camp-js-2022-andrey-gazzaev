@@ -36,9 +36,26 @@
 
   <main class="page__container">
     <section class="catalog">
-      <h2 id="catalog-anime" class="catalog__title">Table with anime</h2>
-      <div class="catalog__table-block">
-        <table class="catalog__table" aria-label="anime" aria-describedby="catalog-anime">
+      <h2 id="catalog-anime" class="title">Table with anime</h2>
+      <div class="table-block">
+        <form class="table-block__sort-settings form">
+          <label class="form__label sort-field">
+            <span class="form__label-text">Sort by:</span>
+            <select name="ordering" class="form__select sort-ordering"></select>
+          </label>
+
+          <label class="form__label sort-field">
+            <span class="form__label-text">Direction:</span>
+            <select name="direction" class="form__select sort-direction"></select>
+          </label>
+
+          <label class="form__label sort-field">
+            <span class="form__label-text">Filter by status:</span>
+            <select name="status" class="form__select sort-status"></select>
+          </label>
+        </form>
+
+        <table class="table-block__table table" aria-label="anime" aria-describedby="catalog-anime">
           <tr>
             <th></th>
             <th>Title in English</th>
@@ -49,24 +66,8 @@
           </tr>
         </table>
 
-        <form class="catalog__sort-settings form">
-          <label class="form__label">
-            Select direction:
-            <select name="direction" class="form__select sort-direction"></select>
-          </label>
-
-          <label class="form__label">
-            Select status:
-            <select name="status" class="form__select sort-status"></select>
-          </label>
-
-          <label class="form__label">
-            Sort by:
-            <select name="ordering" class="form__select sort-ordering"></select>
-          </label>
-        </form>
       </div>
-      <div class="catalog__pagination"></div>
+      <div class="table-block__pagination"></div>
     </section>
   </main>
 
