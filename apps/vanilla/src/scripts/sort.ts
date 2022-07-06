@@ -1,6 +1,6 @@
-import { Catalog } from '../constants/classes';
+import { Selectors } from '../constants/classes';
 import { LocalStorageKeys } from '../constants/localStorage';
-import { FIRST_PAGE_NUMBER } from '../constants/public';
+import { Pagination } from '../constants/pagination';
 import { OPTIONS_FOR_DIRECTION, OPTIONS_FOR_ORDERING, OPTIONS_FOR_STATUS } from '../constants/sort';
 import { SortSelectOptions, SortSettings } from '../types/sortSettings';
 
@@ -20,7 +20,7 @@ function handleChangeSortSettings(select: HTMLSelectElement, field: string): voi
     setLocalStorage<SortSettings>(LocalStorageKeys.SORT_SETTINGS, sortSettings);
   }
 
-  changeAnimeData(FIRST_PAGE_NUMBER);
+  changeAnimeData(Pagination.FIRST_PAGE_NUMBER);
 }
 
 /**
@@ -41,9 +41,9 @@ function createOption(text: string, classes: readonly string[], value: string): 
 /** Adds option elements to select. */
 export function initSortElements(): void {
   const selectors: SortSelectOptions[] = [
-    { sortName: 'direction', selector: Catalog.SELECT_SORT_DIRECTION, options: OPTIONS_FOR_DIRECTION },
-    { sortName: 'status', selector: Catalog.SELECT_SORT_STATUS, options: OPTIONS_FOR_STATUS },
-    { sortName: 'ordering', selector: Catalog.SELECT_SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
+    { sortName: 'direction', selector: Selectors.SELECT_SORT_DIRECTION, options: OPTIONS_FOR_DIRECTION },
+    { sortName: 'status', selector: Selectors.SELECT_SORT_STATUS, options: OPTIONS_FOR_STATUS },
+    { sortName: 'ordering', selector: Selectors.SELECT_SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
   ];
 
   selectors.forEach(select => {

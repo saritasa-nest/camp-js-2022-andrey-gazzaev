@@ -1,4 +1,4 @@
-/** Anime Table Columns. */
+/** Anime table columns. */
 export enum TableColumns {
   Image = 'image',
   TitleEnglish = 'titleEnglish',

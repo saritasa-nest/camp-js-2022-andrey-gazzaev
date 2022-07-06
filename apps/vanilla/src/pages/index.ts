@@ -1,5 +1,5 @@
 import { LocalStorageKeys } from '../constants/localStorage';
-import { FIRST_PAGE_NUMBER } from '../constants/public';
+import { Pagination } from '../constants/pagination';
 import { DEFAULT_SORT_SETTINGS } from '../constants/sort';
 import { getLocalStorage, setLocalStorage } from '../scripts/localStorage';
 import { changeAnimeData } from '../scripts/public';
@@ -17,7 +17,7 @@ function initSortSettings(): void {
 function initTable(): void {
   initSortSettings();
   initSortElements();
-  changeAnimeData(FIRST_PAGE_NUMBER);
+  changeAnimeData(Pagination.FIRST_PAGE_NUMBER);
 }
 
 window.addEventListener('DOMContentLoaded', initTable);

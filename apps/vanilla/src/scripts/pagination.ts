@@ -1,7 +1,6 @@
 
-import { Catalog } from '../constants/classes';
-import { ELLIPSIS, PAGE_OFFSET } from '../constants/pagination';
-import { START_OFFSET, FIRST_PAGE_NUMBER } from '../constants/public';
+import { TableBlock } from '../constants/classes';
+import { Pagination } from '../constants/pagination';
 
 import { changeAnimeData } from './public';
 
@@ -16,15 +15,15 @@ function definePaginationBoundaries(
   allAnimeCount: number,
   currentPageNumber: number,
 ): [number, number, number] {
-  const lastPage = Math.ceil(allAnimeCount / START_OFFSET);
+  const lastPage = Math.ceil(allAnimeCount / Pagination.START_OFFSET);
 
-  const prevPage = currentPageNumber - PAGE_OFFSET < FIRST_PAGE_NUMBER ?
-    FIRST_PAGE_NUMBER :
-    currentPageNumber - PAGE_OFFSET;
+  const prevPage = currentPageNumber - Pagination.PAGE_OFFSET < Pagination.FIRST_PAGE_NUMBER ?
+    Pagination.FIRST_PAGE_NUMBER :
+    currentPageNumber - Pagination.PAGE_OFFSET;
 
-  const nextPage = currentPageNumber + PAGE_OFFSET > lastPage ?
+  const nextPage = currentPageNumber + Pagination.PAGE_OFFSET > lastPage ?
     lastPage :
-    currentPageNumber + PAGE_OFFSET;
+    currentPageNumber + Pagination.PAGE_OFFSET;
 
   return [prevPage, nextPage, lastPage];
 }
@@ -38,10 +37,10 @@ function definePaginationBoundaries(
 function createButton(pageNumber: number, isCurrentPage: boolean): HTMLButtonElement {
   const button = document.createElement('button');
 
-  const classes = [Catalog.BUTTON_PAGINATION];
+  const classes = [TableBlock.BUTTON_PAGINATION];
 
   if (isCurrentPage) {
-    classes.push(Catalog.PAGINATION_BUTTON_CURRENT);
+    classes.push(TableBlock.PAGINATION_BUTTON_CURRENT);
   }
 
   button.classList.add(...classes);
@@ -80,9 +79,9 @@ function createButtonPagination(
 ): (HTMLButtonElement | HTMLSpanElement)[] {
   const buttonsPagination: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
-  if (currentPage - PAGE_OFFSET > FIRST_PAGE_NUMBER) {
-    buttonsPagination.push(createButton(FIRST_PAGE_NUMBER, false));
-    buttonsPagination.push(createSpan(ELLIPSIS, []));
+  if (currentPage - Pagination.PAGE_OFFSET > Pagination.FIRST_PAGE_NUMBER) {
+    buttonsPagination.push(createButton(Pagination.FIRST_PAGE_NUMBER, false));
+    buttonsPagination.push(createSpan(Pagination.ELLIPSIS, []));
   }
 
   for (let index = prevPage; index <= nextPage; index++) {
@@ -93,8 +92,8 @@ function createButtonPagination(
     }
   }
 
-  if (currentPage + PAGE_OFFSET < lastPage - 1) {
-    buttonsPagination.push(createSpan(ELLIPSIS, []));
+  if (currentPage + Pagination.PAGE_OFFSET < lastPage - 1) {
+    buttonsPagination.push(createSpan(Pagination.ELLIPSIS, []));
     buttonsPagination.push(createButton(lastPage - 1, false));
   }
 
@@ -106,7 +105,7 @@ function createButtonPagination(
  * @param buttons Array of buttons.
  */
 function updatePaginationElement(buttons: readonly (HTMLButtonElement | HTMLSpanElement)[]): void {
-  const paginationElement = document.querySelector(`.${Catalog.PAGINATION}`);
+  const paginationElement = document.querySelector(`.${TableBlock.PAGINATION}`);
 
   if (paginationElement !== null) {
     paginationElement.innerHTML = '';

@@ -2,7 +2,7 @@ import { HttpError } from '@js-camp/core/models/httpError';
 
 import { Page } from '../constants/classes';
 import { LocalStorageKeys } from '../constants/localStorage';
-import { DEFAULT_LIMIT, START_OFFSET } from '../constants/public';
+import { Pagination } from '../constants/pagination';
 import { DEFAULT_SORT_SETTINGS } from '../constants/sort';
 import { fetchAnime } from '../fetches/anime';
 import { SortSettings } from '../types/sortSettings';
@@ -21,7 +21,7 @@ export function getUrlAnime(offset: number, sort: SortSettings): string {
   const urlParts = [
     'anime/anime/?',
     `offset=${offset}&`,
-    `limit=${DEFAULT_LIMIT}&`,
+    `limit=${Pagination.DEFAULT_LIMIT}&`,
     `ordering=${sort.direction}${sort.ordering}&`,
     `status=${sort.status}&`,
   ];
@@ -61,22 +61,27 @@ function renderError(): void {
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<void> {
   const localSortSettings = getLocalStorage<SortSettings>(LocalStorageKeys.SORT_SETTINGS);
-  const currentOffset = currentPageNumber * START_OFFSET;
+  const currentOffset = currentPageNumber * Pagination.START_OFFSET;
   const urlGetAnime = localSortSettings !== null ?
     getUrlAnime(currentOffset, localSortSettings) :
     getUrlAnime(currentOffset, DEFAULT_SORT_SETTINGS);
 
-  const animeResponse = await fetchAnime(urlGetAnime);
+  try {
+    const animeResponse = await fetchAnime(urlGetAnime);
 
-  if (animeResponse instanceof HttpError || animeResponse instanceof Error) {
-    return renderError();
+    const anime = animeResponse.results;
+    fillTableAnime(anime);
+
+    goToTop();
+
+    const allAnimeCount = animeResponse.count;
+    fillPaginationAnime(allAnimeCount, currentPageNumber);
+
+  } catch (error: unknown) {
+
+    if (error instanceof HttpError || error instanceof Error) {
+      return renderError();
+    }
   }
 
-  const anime = animeResponse.results;
-  fillTableAnime(anime);
-
-  goToTop();
-
-  const allAnimeCount = animeResponse.count;
-  fillPaginationAnime(allAnimeCount, currentPageNumber);
 }
