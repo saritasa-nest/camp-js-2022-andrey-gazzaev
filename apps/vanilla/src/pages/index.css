@@ -13,9 +13,9 @@
 
 .catalog__table {
   display: flex;
-  max-width: 960px;
   flex-direction: column;
   justify-content: center;
+  max-width: 960px;
   margin-bottom: 5px;
 }
 
@@ -23,12 +23,17 @@
 .catalog__table-head {
   text-align: center;
   border-bottom: 1px solid var(--table-row-border-button-color);
-  width: 160px;
+  min-width: 160px;
+}
+
+.catalog__table-head:first-child,
+.catalog__table-body:first-child {
+  min-width: 200px;
 }
 
 .catalog__table-image {
-  width: 160px;
-  height: 160px;
+  max-width: 200px;
+  max-height: 200px;
 }
 
 .catalog__pagination {
@@ -42,13 +47,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 55px;
-  height: 50px;
+  max-width: 75px;
+  min-width: 55px;
+  min-height: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
   background: none;
   border: 1px solid var(--border-color);
   border-radius: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
   font-size: var(--pagination-btn-font-size);
   cursor: pointer;
 }
@@ -72,5 +78,5 @@
   margin-top: 50px;
   row-gap: 20px;
   border: 1px solid var(--border-color);
-  height: 170px;
+  max-height: 170px;
 }
