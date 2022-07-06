@@ -2,7 +2,6 @@ import { Anime } from '@js-camp/core/models/anime';
 
 import { TableColumns, NO_DATA } from '../constants/animeTable';
 import { Catalog } from '../constants/classes';
-import { Tag } from '../constants/tag';
 
 /**
  * Creates and fills table rows.
@@ -11,14 +10,14 @@ import { Tag } from '../constants/tag';
  */
 function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
   return animeList.map(anime => {
-    const row = document.createElement(Tag.TR);
+    const row = document.createElement('tr');
     row.classList.add(Catalog.TABLE_ROW);
 
     Object.values(TableColumns).forEach(column => {
-      const thElement = document.createElement(Tag.TD);
+      const thElement = document.createElement('td');
       thElement.classList.add(Catalog.TABLE_BODY);
 
-      const imageElement = document.createElement(Tag.IMG);
+      const imageElement = document.createElement('img');
       imageElement.classList.add(Catalog.TABLE_IMAGE);
 
       const airedStart = anime[TableColumns.Aired].start;
@@ -29,6 +28,7 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
       switch (column) {
         case TableColumns.Image:
           imageElement.src = anime[column];
+          imageElement.alt = `Image of anime ${anime.titleEnglish}`;
           thElement.append(imageElement);
           row.append(thElement);
           break;
