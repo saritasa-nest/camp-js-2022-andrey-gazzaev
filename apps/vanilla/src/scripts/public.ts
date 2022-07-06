@@ -1,8 +1,9 @@
 import { HttpError } from '@js-camp/core/models/httpError';
 
 import { Page } from '../constants/classes';
+import { LocalStorageKeys } from '../constants/localStorage';
 import { DEFAULT_LIMIT, START_OFFSET } from '../constants/public';
-import { DEFAULT_SORT_SETTINGS, LOCAL_SORT_SETTINGS } from '../constants/sort';
+import { DEFAULT_SORT_SETTINGS } from '../constants/sort';
 import { fetchAnime } from '../fetches/anime';
 import { SortSettings } from '../types/sortSettings';
 
@@ -59,7 +60,7 @@ function renderError(): void {
  * @param currentPageNumber The page on which the change occurs.
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<void> {
-  const localSortSettings = getLocalStorage<SortSettings>(LOCAL_SORT_SETTINGS);
+  const localSortSettings = getLocalStorage<SortSettings>(LocalStorageKeys.SORT_SETTINGS);
   const currentOffset = currentPageNumber * START_OFFSET;
   const urlGetAnime = localSortSettings !== null ?
     getUrlAnime(currentOffset, localSortSettings) :
