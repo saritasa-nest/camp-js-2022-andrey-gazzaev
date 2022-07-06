@@ -8,7 +8,7 @@
   <title>Login</title>
 </head>
 
-<body class="page__body">
+<body class="page">
   <header class="page__header header">
     <a class="link" title="Go to home page" href="/">Go to home page</a>
   </header>
@@ -17,19 +17,19 @@
     <section class="login">
       <h1 class="login__title">Sign in</h1>
       <form class="form login__form">
-        <label class="form__label">
-          <span class="form__label-text">Email:</span>
-          <input class="form__input login__input" placeholder="example@gmail.com" name="email"
+        <label class="form__label login-element">
+          <span class="form__label-text">Email</span>
+          <input class="form__input login-input" placeholder="example@gmail.com" name="email"
             type="email" required>
         </label>
 
-        <label class="form__label">
-          <span class="form__label-text">Password:</span>
-          <input class="form__input login__input" placeholder="Super difficult password" name="password"
+        <label class="form__label login-element">
+          <span class="form__label-text">Password</span>
+          <input class="form__input login-input" name="password"
             type="password" required>
         </label>
 
-        <button class="form__button login__submit" type="submit">Sing in</button>
+        <button class="form__button login-submit" type="submit">Sing in</button>
       </form>
       <div class="login__links">
         <a class="login__link link" title="Password recovery" href="#">Forgot your password</a>

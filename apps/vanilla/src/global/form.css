@@ -13,16 +13,18 @@
 }
 
 .form__label-text {
-  font-size: 0.9em;
+  font-size: 0.7em;
+  color: #686868;
+  padding-left: 10px;
 }
 
 .form__input {
   background: none;
-  border: 1px solid #686868;
-  border-radius: 5px;
+  border: none;
   color: #686868;
   font-size: 0.85em;
   padding-left: 10px;
+  border-bottom: 2px solid #686868;
 }
 
 .form__button {
@@ -41,8 +43,12 @@
   border-color: #faa527;
 }
 
-.form__input:focus,
+.form__input:focus {
+  border-bottom: 2px solid #faa527;
+  outline: 0;
+}
+
 .form__button:focus {
-  border: 1px solid #faa527;
-  outline: 1px solid #faa527;
+  border: 2px solid #faa527;
+  outline: 2px solid #faa527;
 }

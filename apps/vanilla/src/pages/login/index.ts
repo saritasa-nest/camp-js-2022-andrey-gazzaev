@@ -3,7 +3,7 @@ import { Tokens } from '@js-camp/core/models/tokens';
 
 import { Login } from '../../constants/classes';
 import { FormField } from '../../constants/form';
-import { LOCAL_TOKENS } from '../../constants/public';
+import { LocalStorageKeys } from '../../constants/localStorage';
 import { loginUser } from '../../fetches/auth';
 import { setLocalStorage } from '../../scripts/localStorage';
 
@@ -39,12 +39,11 @@ async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
     const tokens = await loginUser(email, password);
 
     if (tokens instanceof Tokens) {
-      setLocalStorage<Tokens>(LOCAL_TOKENS, tokens);
+      setLocalStorage<Tokens>(LocalStorageKeys.TOKENS, tokens);
     }
 
     location.href = '/';
   } catch (error: unknown) {
-
     if (error instanceof HttpError) {
 
       // console.log(error);
