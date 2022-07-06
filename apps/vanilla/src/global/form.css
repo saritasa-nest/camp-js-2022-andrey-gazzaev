@@ -12,6 +12,7 @@
   font-size: var(--default-text-size);
   padding-left: 10px;
   border-bottom: 2px solid #686868;
+  min-height: 35px;
 }
 
 .form__input {
@@ -78,4 +79,14 @@
   display: flex;
   flex-direction: column;
   margin: 10px 0;
+}
+
+.form__link {
+  text-align: center;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+.form__link:link {
+  border-bottom: none;
 }
