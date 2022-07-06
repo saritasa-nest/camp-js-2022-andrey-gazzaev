@@ -1,4 +1,3 @@
-import { Event } from '../constants/event';
 import { changeHeader } from '../scripts/header';
 
 /**
@@ -8,4 +7,4 @@ function initPage(): void {
   changeHeader();
 }
 
-window.addEventListener(Event.DOM_LOADED, initPage);
+window.addEventListener('DOMContentLoaded', initPage);

@@ -2,7 +2,6 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Tokens } from '@js-camp/core/models/tokens';
 
 import { Login } from '../../constants/classes';
-import { Event } from '../../constants/event';
 import { FormField } from '../../constants/form';
 import { LOCAL_TOKENS } from '../../constants/public';
 import { loginUser } from '../../fetches/auth';
@@ -65,8 +64,8 @@ function initLoginForm(): void {
   const loginForm = document.querySelector<HTMLFormElement>(`.${Login.FORM}`);
 
   if (loginForm !== null) {
-    loginForm.addEventListener(Event.SUBMIT, handleSubmitLoginForm);
+    loginForm.addEventListener('submit', handleSubmitLoginForm);
   }
 }
 
-window.addEventListener(Event.DOM_LOADED, initLoginForm);
+window.addEventListener('DOMContentLoaded', initLoginForm);
