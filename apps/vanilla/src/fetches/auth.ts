@@ -5,12 +5,8 @@ import { HttpErrorDto } from '@js-camp/core/dtos/httpError.dto';
 import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
 import { Tokens } from '@js-camp/core/models/tokens';
 import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
-import { HttpError } from '@js-camp/core/models/httpError';
 
-import { LOCAL_TOKENS } from '../constants/public';
-import { getLocalStorage, setLocalStorage } from '../scripts/localStorage';
-
-import { instance } from './instance';
+import { defaultRequestInstance } from './instance';
 
 /**
  * Submit a login request.
@@ -20,11 +16,11 @@ import { instance } from './instance';
 export async function loginUser(
   email: string | null,
   password: string | null,
-): Promise<Tokens | HttpError | Error> {
+): Promise<Tokens> {
   try {
     const URL_LOGIN = 'auth/login/';
 
-    const response = await instance.post<TokensDto>(URL_LOGIN, {
+    const response = await defaultRequestInstance.post<TokensDto>(URL_LOGIN, {
       email,
       password,
     });
@@ -45,17 +41,15 @@ export async function loginUser(
   }
 }
 
-/** Check if the token is valid. */
-export async function isVerifyToken(): Promise<boolean> {
+/**
+ * Check if the token is valid.
+ * @param access Access token.
+ */
+export async function checkTokenValidity(access: string): Promise<boolean> {
   try {
-    const tokens = getLocalStorage<Tokens>(LOCAL_TOKENS);
-    if (tokens === null) {
-      return false;
-    }
-
     const URL_VERIFY_TOKEN = 'auth/token/verify/';
-    await instance.post<TokensDto>(URL_VERIFY_TOKEN, {
-      token: tokens.access,
+    await defaultRequestInstance.post<TokensDto>(URL_VERIFY_TOKEN, {
+      token: access,
     });
 
     return true;
@@ -65,24 +59,29 @@ export async function isVerifyToken(): Promise<boolean> {
   }
 }
 
-/** Refresh tokens. */
-export async function refreshToken(): Promise<boolean> {
+/**
+ * Refresh tokens.
+ * @param refresh Refresh token.
+ */
+export async function getRefreshedToken(refresh: string): Promise<TokensDto> {
   try {
-    const tokens = getLocalStorage<Tokens>(LOCAL_TOKENS);
-    if (tokens === null) {
-      return false;
-    }
-
     const URL_REFRESH_TOKEN = 'auth/token/refresh/';
-    const response = await instance.post<TokensDto>(URL_REFRESH_TOKEN, {
-      refresh: tokens.refresh,
+    const response = await defaultRequestInstance.post<TokensDto>(URL_REFRESH_TOKEN, {
+      refresh,
     });
 
-    setLocalStorage(LOCAL_TOKENS, TokensMapper.fromDto(response.data));
-
-    return true;
+    return TokensMapper.fromDto(response.data);
   } catch (error: unknown) {
 
-    return false;
+    if (axios.isAxiosError(error)) {
+      if (error.response !== undefined) {
+        const httpError = HttpErrorMapper.fromDto(error.response.data as HttpErrorDto);
+
+        throw httpError;
+      }
+    }
+
+    const UNKNOWN_ERROR = 'unexpected error';
+    throw new Error(UNKNOWN_ERROR);
   }
 }

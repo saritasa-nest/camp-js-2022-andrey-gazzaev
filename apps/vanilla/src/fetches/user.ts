@@ -3,31 +3,25 @@ import axios from 'axios';
 import { UserDto } from '@js-camp/core/dtos/user.dto';
 import { HttpErrorDto } from '@js-camp/core/dtos/httpError.dto';
 import { HttpError } from '@js-camp/core/models/httpError';
-import { Tokens } from '@js-camp/core/models/tokens';
 import { User } from '@js-camp/core/models/user';
 import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 
 import { FetchHeaders } from '../constants/fetch';
-import { LOCAL_TOKENS } from '../constants/public';
-import { getLocalStorage } from '../scripts/localStorage';
 
-import { instance } from './instance';
+import { defaultRequestInstance } from './instance';
 
-/** Get user information from the server. */
-export async function getUserProfile(): Promise<User | HttpError> {
+/**
+ * Get user information from the server.
+ * @param access Access token.
+ */
+export async function getUserProfile(access: string): Promise<User> {
   try {
     const URL_USER_PROFILE = 'users/profile/';
 
-    const tokens = getLocalStorage<Tokens>(LOCAL_TOKENS);
-    if (tokens === null) {
-      const UNKNOWN_ERROR = 'no tokens';
-      throw new HttpError({ detail: UNKNOWN_ERROR, message: UNKNOWN_ERROR, name: 'Error' });
-    }
-
-    const response = await instance.get<UserDto>(URL_USER_PROFILE, {
+    const response = await defaultRequestInstance.get<UserDto>(URL_USER_PROFILE, {
       headers: {
-        [FetchHeaders.Authorization]: `Bearer ${tokens.access}`,
+        [FetchHeaders.Authorization]: `Bearer ${access}`,
       },
     });
 
@@ -43,6 +37,6 @@ export async function getUserProfile(): Promise<User | HttpError> {
     }
 
     const UNKNOWN_ERROR = 'unexpected error';
-    throw new HttpError({ detail: UNKNOWN_ERROR, message: UNKNOWN_ERROR, name: 'Error' });
+    throw new HttpError(UNKNOWN_ERROR);
   }
 }
