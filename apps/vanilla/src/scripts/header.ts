@@ -2,9 +2,7 @@ import { HttpError } from '@js-camp/core/models/httpError';
 
 import { AttributeName, AttributeValue } from '../constants/attribute';
 import { Header } from '../constants/classes';
-import { Event } from '../constants/event';
 import { LOCAL_TOKENS } from '../constants/public';
-import { Tag } from '../constants/tag';
 import { isVerifyToken, refreshToken } from '../fetches/auth';
 import { getUserProfile } from '../fetches/user';
 
@@ -18,10 +16,10 @@ function handleSingOut(): void {
 
 /** Creates a logout button. */
 function createSingOutButton(): HTMLButtonElement {
-  const button = document.createElement(Tag.BUTTON);
+  const button = document.createElement('button');
   button.setAttribute(AttributeName.TYPE, AttributeValue.BUTTON);
   button.innerHTML = 'Sing out';
-  button.addEventListener(Event.CLICK, handleSingOut);
+  button.addEventListener('click', handleSingOut);
   return button;
 }
 
@@ -57,7 +55,7 @@ async function renderUserProfile(): Promise<void> {
   const ID_USER_PROFILE_TEMPLATE = '#user-profile';
   const profileTemplate = document.querySelector<HTMLTemplateElement>(ID_USER_PROFILE_TEMPLATE);
 
-  const userGreeting = document.createElement(Tag.P);
+  const userGreeting = document.createElement('p');
   userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName} !!!`;
 
   const singOutButton = createSingOutButton();
