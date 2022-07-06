@@ -20,7 +20,9 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: [
-        resolve(root, 'index.html')
+        resolve(root, 'index.html'),
+        resolve(root, 'login', 'index.html'),
+        resolve(root, 'registration', 'index.html'),
       ],
     },
   }

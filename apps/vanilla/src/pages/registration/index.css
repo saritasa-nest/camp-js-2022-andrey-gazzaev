@@ -2,11 +2,16 @@
 @import url("../../global/index.css");
 @import url("../../global/variables.css");
 
-.login {
+.registration {
   position: relative;
   margin: 80px auto;
   max-width: 215px;
   border: 1px solid var(--form-border-color);
   border-radius: 5px;
   padding: 25px;
+}
+
+.registration-input,
+.registration-submit {
+  height: 35px;
 }

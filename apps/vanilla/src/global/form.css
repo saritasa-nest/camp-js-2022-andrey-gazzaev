@@ -10,6 +10,7 @@
 .form__label {
   display: flex;
   flex-direction: column;
+  margin: 10px 0;
 }
 
 .form__label-text {
@@ -25,6 +26,7 @@
   font-size: 0.85em;
   padding-left: 10px;
   border-bottom: 2px solid #686868;
+  min-height: 35px;
 }
 
 .form__button {
@@ -35,6 +37,8 @@
   cursor: pointer;
   color: #686868;
   font-size: 0.85em;
+  min-height: 35px;
+  margin: 10px 0;
 }
 
 .form__button:hover {
@@ -51,4 +55,24 @@
 .form__button:focus {
   border: 2px solid #faa527;
   outline: 2px solid #faa527;
+}
+
+.form__title {
+  text-align: center;
+}
+
+.form__links {
+  display: flex;
+  flex-direction: column;
+  max-width: 215px;
+}
+
+.form__link {
+  text-align: center;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+.form__link:link {
+  border-bottom: none;
 }
