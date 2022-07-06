@@ -14,8 +14,11 @@ export interface UserDto {
   readonly avatar: string;
 
   /** Creation time. */
-  readonly created: string;
+  readonly created?: string;
 
   /** Time of the last modification. */
-  readonly modified: string;
+  readonly modified?: string;
+
+  /** Password of user. */
+  readonly password?: string;
 }

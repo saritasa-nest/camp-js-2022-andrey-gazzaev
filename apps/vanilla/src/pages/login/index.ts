@@ -6,18 +6,7 @@ import { FormField } from '../../constants/form';
 import { LocalStorageKeys } from '../../constants/localStorage';
 import { loginUser } from '../../fetches/auth';
 import { setLocalStorage } from '../../scripts/localStorage';
-
-/**
- * Get value from input element.
- * @param element The element from which you want to get the value.
- * @returns Value of element or null.
- */
-function getValue(element: FormDataEntryValue | null): string | null {
-  if (element !== null) {
-    return String(element);
-  }
-  return null;
-}
+import { getValue } from '../../scripts/public';
 
 /**
  * Handle login form submit event.
@@ -36,7 +25,7 @@ async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
   const password = getValue(form.get(FormField.PASSWORD));
 
   try {
-    const tokens = await loginUser(email, password);
+    const tokens = await loginUser({ email, password });
 
     if (tokens instanceof Tokens) {
       setLocalStorage<Tokens>(LocalStorageKeys.TOKENS, tokens);

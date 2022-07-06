@@ -26,7 +26,12 @@ a:focus {
   gap: 16px;
 }
 
-.page__body {
+.page {
   margin: 0;
   padding: 0;
+}
+
+.error {
+  color: #ee4a4a;
+  font-size: 0.7em;
 }
