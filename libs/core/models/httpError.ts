@@ -1,7 +1,7 @@
 import { OmitImmerable } from './immerable';
 
 /** Error coming from the server. */
-export class HttpError extends Error {
+export class HttpError {
 
   /** Error Description. */
   public readonly detail?: string;
