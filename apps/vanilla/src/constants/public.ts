@@ -5,4 +5,4 @@ export const FIRST_PAGE_NUMBER = 1;
 export const START_OFFSET = 25;
 
 /** Anime limit when requesting a new page. */
-export const DEFAULT_LIMIT = 25;
+export const DEFAULT_LIMIT = START_OFFSET;

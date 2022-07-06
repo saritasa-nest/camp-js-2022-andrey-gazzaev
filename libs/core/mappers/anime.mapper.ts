@@ -14,8 +14,8 @@ export namespace AnimeMapper {
       start: new Date(dto.aired.start),
     });
 
-    const status = dto.status in Status ? dto.status as Status : Status.Airing;
-    const type = dto.type in Type ? dto.type as Type : Type.Tv;
+    const status = Object.values(Status).includes(dto.status as Status) ? dto.status as Status : Status.Airing;
+    const type = Object.values(Type).includes(dto.type as Type) ? dto.type as Type : Type.Tv;
 
     return new Anime({
       id: dto.id,

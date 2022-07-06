@@ -1,6 +1,7 @@
 import { Catalog } from '../constants/classes';
+import { LocalStorageKeys } from '../constants/localStorage';
 import { FIRST_PAGE_NUMBER } from '../constants/public';
-import { OPTIONS_FOR_DIRECTION, OPTIONS_FOR_ORDERING, OPTIONS_FOR_STATUS, LOCAL_SORT_SETTINGS } from '../constants/sort';
+import { OPTIONS_FOR_DIRECTION, OPTIONS_FOR_ORDERING, OPTIONS_FOR_STATUS } from '../constants/sort';
 import { SortSelectOptions, SortSettings } from '../types/sortSettings';
 
 import { getLocalStorage, setLocalStorage } from './localStorage';
@@ -12,11 +13,11 @@ import { changeAnimeData } from './public';
  * @param field Editable field.
  */
 function handleChangeSortSettings(select: HTMLSelectElement, field: string): void {
-  const sortSettings = getLocalStorage<SortSettings>(LOCAL_SORT_SETTINGS);
+  const sortSettings = getLocalStorage<SortSettings>(LocalStorageKeys.SORT_SETTINGS);
 
   if (sortSettings !== null) {
     sortSettings[field] = select.value;
-    setLocalStorage<SortSettings>(LOCAL_SORT_SETTINGS, sortSettings);
+    setLocalStorage<SortSettings>(LocalStorageKeys.SORT_SETTINGS, sortSettings);
   }
 
   changeAnimeData(FIRST_PAGE_NUMBER);
