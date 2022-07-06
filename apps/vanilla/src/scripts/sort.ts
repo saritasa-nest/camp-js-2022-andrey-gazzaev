@@ -1,9 +1,6 @@
-import { AttributeName } from '../constants/attribute';
 import { Catalog } from '../constants/classes';
-import { Event } from '../constants/event';
 import { FIRST_PAGE_NUMBER } from '../constants/public';
 import { OPTIONS_FOR_DIRECTION, OPTIONS_FOR_ORDERING, OPTIONS_FOR_STATUS, LOCAL_SORT_SETTINGS } from '../constants/sort';
-import { Tag } from '../constants/tag';
 import { SortSelectOptions, SortSettings } from '../types/sortSettings';
 
 import { getLocalStorage, setLocalStorage } from './localStorage';
@@ -33,8 +30,8 @@ function handleChangeSortSettings(select: HTMLSelectElement, field: string): voi
  * @returns Option element.
  */
 function createOption(text: string, classes: readonly string[], value: string): HTMLSpanElement {
-  const option = document.createElement(Tag.OPTION);
-  option.setAttribute(AttributeName.VALUE, value);
+  const option = document.createElement('option');
+  option.setAttribute('value', value);
   option.innerHTML = text;
   option.classList.add(...classes);
   return option;
@@ -52,12 +49,12 @@ export function initSortElements(): void {
     const selectElement = document.querySelector<HTMLSelectElement>(`.${select.selector}`);
 
     if (selectElement !== null) {
-      // Adds options elements.
+      // Selects should consist of pre-prepared options elements.
       select.options.forEach(option => selectElement.append(createOption(option.text, [], option.value)));
 
-      // Set event to sort selector.
+      // Depending on the choice, the table should change.
       selectElement.addEventListener(
-        Event.CHANGE,
+        'change',
         () => handleChangeSortSettings(selectElement, select.sortName),
       );
     }

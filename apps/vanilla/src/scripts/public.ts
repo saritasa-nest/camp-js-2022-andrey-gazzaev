@@ -3,7 +3,6 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Page } from '../constants/classes';
 import { DEFAULT_LIMIT, START_OFFSET } from '../constants/public';
 import { DEFAULT_SORT_SETTINGS, LOCAL_SORT_SETTINGS } from '../constants/sort';
-import { Tag } from '../constants/tag';
 import { fetchAnime } from '../fetches/anime';
 import { SortSettings } from '../types/sortSettings';
 
@@ -44,7 +43,7 @@ function goToTop(): void {
 function renderError(): void {
   const pageContainer = document.querySelector(`.${Page.CONTAINER}`);
   if (pageContainer !== null) {
-    const errorTemplate = document.createElement(Tag.P);
+    const errorTemplate = document.createElement('p');
     errorTemplate.classList.add(Page.ERROR);
 
     const ERROR_MESSAGE = 'Ooops... Something went wrong';

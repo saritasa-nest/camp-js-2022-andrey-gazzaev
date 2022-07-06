@@ -1,10 +1,7 @@
 
-import { AttributeName, AttributeValue } from '../constants/attribute';
 import { Catalog } from '../constants/classes';
-import { Event } from '../constants/event';
 import { ELLIPSIS, PAGE_OFFSET } from '../constants/pagination';
 import { START_OFFSET, FIRST_PAGE_NUMBER } from '../constants/public';
-import { Tag } from '../constants/tag';
 
 import { changeAnimeData } from './public';
 
@@ -39,7 +36,7 @@ function definePaginationBoundaries(
  * @returns Button element.
  */
 function createButton(pageNumber: number, isCurrentPage: boolean): HTMLButtonElement {
-  const button = document.createElement(Tag.BUTTON);
+  const button = document.createElement('button');
 
   const classes = [Catalog.BUTTON_PAGINATION];
 
@@ -48,9 +45,9 @@ function createButton(pageNumber: number, isCurrentPage: boolean): HTMLButtonEle
   }
 
   button.classList.add(...classes);
-  button.setAttribute(AttributeName.TYPE, AttributeValue.BUTTON);
+  button.setAttribute('type', 'button');
   button.innerHTML = String(pageNumber);
-  button.addEventListener(Event.CLICK, () => changeAnimeData(pageNumber));
+  button.addEventListener('click', () => changeAnimeData(pageNumber));
   return button;
 }
 
@@ -61,7 +58,7 @@ function createButton(pageNumber: number, isCurrentPage: boolean): HTMLButtonEle
  * @returns Span element.
  */
 function createSpan(text: string, classes: readonly string[]): HTMLSpanElement {
-  const span = document.createElement(Tag.SPAN);
+  const span = document.createElement('span');
   span.innerHTML = text;
   span.classList.add(...classes);
   return span;

@@ -1,4 +1,3 @@
-import { Event } from '../constants/event';
 import { FIRST_PAGE_NUMBER } from '../constants/public';
 import { DEFAULT_SORT_SETTINGS, LOCAL_SORT_SETTINGS } from '../constants/sort';
 import { getLocalStorage, setLocalStorage } from '../scripts/localStorage';
@@ -20,4 +19,4 @@ function initTable(): void {
   changeAnimeData(FIRST_PAGE_NUMBER);
 }
 
-window.addEventListener(Event.DOM_LOADED, initTable);
+window.addEventListener('DOMContentLoaded', initTable);
