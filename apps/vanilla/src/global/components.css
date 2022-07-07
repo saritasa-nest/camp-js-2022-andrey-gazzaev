@@ -32,6 +32,6 @@ a:hover,
 }
 
 .error {
-  color: #ee4a4a;
-  font-size: 0.7em;
+  color: var(--error-text-color);
+  font-size: var(--default-text-size);
 }

@@ -14,7 +14,7 @@
 
 .form__label-text {
   color: var(--form-default-color);
-  font-size: var(--form-text-size);
+  font-size: var(--default-text-size);
   padding-left: 10px;
 }
 
@@ -22,7 +22,7 @@
   background: none;
   border: none;
   color: var(--form-default-color);
-  font-size: var(--form-text-size);
+  font-size: var(--default-text-size);
   border-bottom: 2px solid var(--form-default-color);
   padding-left: 10px;
   min-height: 35px;
@@ -30,7 +30,7 @@
 
 .form__button {
   color: var(--form-default-color);
-  font-size: var(--form-text-size);
+  font-size: var(--default-text-size);
   background: none;
   background-color: var(--form-background);
   border: 1px solid var(--form-default-color);
@@ -68,7 +68,7 @@
 
 .form__link {
   text-align: center;
-  font-size: var(--form-text-size);
+  font-size: var(--default-text-size);
   margin-top: 5px;
 }
 

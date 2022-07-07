@@ -3,16 +3,11 @@ import { Tokens } from '@js-camp/core/models/tokens';
 import { User } from '@js-camp/core/models/user';
 
 import { Registration } from '../../constants/classes';
-import { FormField } from '../../constants/form';
+import { ERROR_MESSAGES, FormField } from '../../constants/form';
 import { LocalStorageKeys } from '../../constants/localStorage';
 import { registerUser } from '../../fetches/auth';
 import { setLocalStorage } from '../../scripts/localStorage';
 import { getValue, goToHomePage, showError } from '../../scripts/public';
-
-const ERROR_MESSAGES = {
-  fieldNotFilled: 'Field(s) are not filled',
-  passwordNotConfirm: 'Password not confirm',
-};
 
 /**
  * Handle registration form submit event.
