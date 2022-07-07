@@ -1,6 +1,6 @@
 @import url("../global/index.css");
+@import url("../global/variables.css");
 
-/* TO-DO add all colors to variables */
 .form {
   display: flex;
   flex-direction: column;
@@ -11,7 +11,6 @@
   color: var(--form-default-color);
   font-size: var(--default-text-size);
   padding-left: 10px;
-  border-bottom: 2px solid #686868;
   min-height: 35px;
 }
 
@@ -83,10 +82,15 @@
 
 .form__link {
   text-align: center;
-  font-size: 0.8em;
+  font-size: var(--form-text-size);
   margin-top: 5px;
 }
 
 .form__link:link {
   border-bottom: none;
+}
+
+.form__link:focus {
+  text-decoration: underline var(--primary-light-color);
+  outline: 0;
 }
