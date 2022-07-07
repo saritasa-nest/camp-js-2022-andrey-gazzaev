@@ -3,6 +3,18 @@ export namespace Login {
   export const FORM = 'login__form';
 }
 
+/** The class names for the form block. */
+export namespace Form {
+  export const BUTTON = 'form__button';
+}
+
+/** The class names for the profile block. */
+export namespace Profile {
+  export const NAME = 'profile__user-name';
+  export const SING_OUT_BUTTON = 'sing-out';
+  export const FORM = 'profile__form';
+}
+
 /** The class names for the login block. */
 export namespace Registration {
   export const FORM = 'registration__form';

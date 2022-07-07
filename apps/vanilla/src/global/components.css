@@ -15,15 +15,15 @@ a:hover,
   text-decoration: underline var(--primary-light-color);
 }
 
-/* TO-DO add all colors to variables */
-a:focus {
-  outline: 1px solid#faa527;
-}
-
 .links {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+}
+
+.link:focus {
+  text-decoration: underline var(--primary-light-color);
+  outline: 0;
 }
 
 .page {

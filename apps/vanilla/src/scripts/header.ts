@@ -1,6 +1,6 @@
 import { Tokens } from '@js-camp/core/models/tokens';
 
-import { Header } from '../constants/classes';
+import { Form, Header, Profile } from '../constants/classes';
 import { LocalStorageKeys } from '../constants/localStorage';
 import { checkTokenValidity, getRefreshedToken } from '../fetches/auth';
 import { getUserProfile } from '../fetches/user';
@@ -18,6 +18,7 @@ function createSingOutButton(): HTMLButtonElement {
   const button = document.createElement('button');
   button.innerHTML = 'Sing out';
   button.setAttribute('type', 'button');
+  button.classList.add(Profile.SING_OUT_BUTTON, Form.BUTTON);
   button.addEventListener('click', handleSingOut);
   return button;
 }
@@ -54,19 +55,27 @@ async function renderUserProfile(access: string): Promise<void> {
 
     const ID_USER_PROFILE_TEMPLATE = '#user-profile';
     const profileTemplate = document.querySelector<HTMLTemplateElement>(ID_USER_PROFILE_TEMPLATE);
-
-    const userGreeting = document.createElement('p');
-    userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName}!`;
-
-    const singOutButton = createSingOutButton();
-
     if (profileTemplate !== null) {
+      const userGreeting = document.createElement('span');
+      userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName}!`;
+      userGreeting.classList.add(Profile.NAME);
+
+      const singOutButton = createSingOutButton();
       const profileElement = profileTemplate.content.cloneNode(true);
 
-      // DOM node has no append method :(
-      profileElement.appendChild(userGreeting);
-      profileElement.appendChild(singOutButton);
+      if (!(profileElement instanceof DocumentFragment)) {
+        return renderStandardProfile();
+      }
+
+      const form = profileElement.querySelector(`.${Profile.FORM}`);
+
+      if (form === null) {
+        return renderStandardProfile();
+      }
+
+      form.append(userGreeting, singOutButton);
       addProfileToHeader(profileElement);
+
     }
   } catch (error: unknown) {
     renderStandardProfile();
@@ -91,7 +100,7 @@ export async function changeHeader(): Promise<void> {
       setLocalStorage(LocalStorageKeys.TOKENS, null);
 
       const URL_LOGIN_PAGE = '/login/';
-      location.href = URL_LOGIN_PAGE ;
+      location.href = URL_LOGIN_PAGE;
     }
   } else {
     renderStandardProfile();
