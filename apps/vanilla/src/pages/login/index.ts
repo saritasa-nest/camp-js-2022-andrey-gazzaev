@@ -2,7 +2,7 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Tokens } from '@js-camp/core/models/tokens';
 
 import { Login } from '../../constants/classes';
-import { ERROR_MESSAGES, FormField } from '../../constants/form';
+import { ErrorMessages, FormField } from '../../constants/form';
 import { LocalStorageKeys } from '../../constants/localStorage';
 import { loginUser } from '../../fetches/auth';
 import { setLocalStorage } from '../../scripts/localStorage';
@@ -25,7 +25,7 @@ async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
   const password = getValue(form.get(FormField.PASSWORD));
 
   if (email === null || password === null) {
-    return showError(ERROR_MESSAGES.fieldNotFilled);
+    return showError(ErrorMessages.FIELD_NOT_FILLED);
   }
 
   try {

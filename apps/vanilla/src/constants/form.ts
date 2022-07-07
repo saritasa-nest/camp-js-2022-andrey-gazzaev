@@ -8,7 +8,7 @@ export namespace FormField {
 }
 
 /** Error messages for forms. */
-export const ERROR_MESSAGES = {
-  fieldNotFilled: 'Field(s) are not filled',
-  passwordNotConfirm: 'Password not confirm',
-};
+export namespace ErrorMessages {
+  export const FIELD_NOT_FILLED = 'Field(s) are not filled';
+  export const PASSWORD_NOT_MATCH = 'Passwords do not match';
+}

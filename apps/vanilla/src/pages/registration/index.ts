@@ -3,7 +3,7 @@ import { Tokens } from '@js-camp/core/models/tokens';
 import { User } from '@js-camp/core/models/user';
 
 import { Registration } from '../../constants/classes';
-import { ERROR_MESSAGES, FormField } from '../../constants/form';
+import { ErrorMessages, FormField } from '../../constants/form';
 import { LocalStorageKeys } from '../../constants/localStorage';
 import { registerUser } from '../../fetches/auth';
 import { setLocalStorage } from '../../scripts/localStorage';
@@ -35,11 +35,11 @@ async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
     password === null ||
     confirmedPassword === null
   ) {
-    return showError(ERROR_MESSAGES.fieldNotFilled);
+    return showError(ErrorMessages.FIELD_NOT_FILLED);
   }
 
   if (password.localeCompare(confirmedPassword) !== 0) {
-    return showError(ERROR_MESSAGES.passwordNotConfirm);
+    return showError(ErrorMessages.PASSWORD_NOT_MATCH);
   }
 
   try {
