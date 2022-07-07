@@ -5,7 +5,7 @@ import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
 import { HttpError } from '@js-camp/core/models/httpError';
 
 /**
- * Generate predictable error.
+ * Generates predictable error.
  * @param error Some error.
  */
 export function generateError(error: unknown): HttpError {
