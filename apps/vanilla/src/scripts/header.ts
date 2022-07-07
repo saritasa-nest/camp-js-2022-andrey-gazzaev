@@ -1,4 +1,3 @@
-import { HttpError } from '@js-camp/core/models/httpError';
 import { Tokens } from '@js-camp/core/models/tokens';
 
 import { Header } from '../constants/classes';
@@ -57,7 +56,7 @@ async function renderUserProfile(access: string): Promise<void> {
     const profileTemplate = document.querySelector<HTMLTemplateElement>(ID_USER_PROFILE_TEMPLATE);
 
     const userGreeting = document.createElement('p');
-    userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName} !!!`;
+    userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName}!!!`;
 
     const singOutButton = createSingOutButton();
 
@@ -68,15 +67,7 @@ async function renderUserProfile(access: string): Promise<void> {
       addProfileToHeader(profileElement);
     }
   } catch (error: unknown) {
-    if (error instanceof HttpError) {
-
-      // console.log(error);
-
-      // TO-DO Handle error
-      // error.detail;
-      // error.code
-      // console.log(error.detail);
-    }
+    renderStandardProfile();
   }
 
 }

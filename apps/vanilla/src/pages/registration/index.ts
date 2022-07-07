@@ -45,8 +45,11 @@ async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
   }
 
   try {
+    const URL_IMAGE_STUBS =
+      'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
+      'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
     const user = new User({
-      avatar: '',
+      avatar: URL_IMAGE_STUBS,
       firstName,
       lastName,
       email,
@@ -66,9 +69,7 @@ async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
   }
 }
 
-/**
- * Initialization registration form.
- */
+/** Initialization registration form. */
 function initRegistrationForm(): void {
   const loginForm = document.querySelector<HTMLFormElement>(`.${Registration.FORM}`);
 

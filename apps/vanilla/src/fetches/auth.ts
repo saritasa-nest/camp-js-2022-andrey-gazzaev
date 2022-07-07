@@ -1,13 +1,10 @@
-import axios from 'axios';
-
 import { TokensDto } from '@js-camp/core/dtos/tokens.dto';
-import { HttpErrorDto } from '@js-camp/core/dtos/httpError.dto';
 import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
-import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { Tokens } from '@js-camp/core/models/tokens';
 import { User } from '@js-camp/core/models/user';
 
+import { generateError } from './error';
 import { defaultRequestInstance } from './instance';
 
 interface LoginData {
@@ -21,7 +18,7 @@ interface LoginData {
 
 interface RegistrationData {
 
-  /** Email of user. */
+  /** User information. */
   readonly user: User;
 
   /** Password of user. */
@@ -29,44 +26,30 @@ interface RegistrationData {
 }
 
 /**
- * Submit a login request.
- * @param param0 Information required to log in to the user's account.
+ * Login to user account.
+ * @param userInformation  Information required to log in to the user's account.
  */
 export async function loginUser(
-  { email, password }: LoginData,
+  userInformation: LoginData,
 ): Promise<Tokens> {
   try {
     const URL_LOGIN = 'auth/login/';
-
-    const response = await defaultRequestInstance.post<TokensDto>(URL_LOGIN, {
-      email,
-      password,
-    });
+    const response = await defaultRequestInstance.post<TokensDto>(URL_LOGIN, userInformation);
 
     return TokensMapper.fromDto(response.data);
 
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      if (error.response !== undefined) {
-        const httpError = HttpErrorMapper.fromDto(error.response.data as HttpErrorDto);
-
-        throw httpError;
-      }
-    }
-
-    const UNKNOWN_ERROR = 'unexpected error';
-    throw new Error(UNKNOWN_ERROR);
+    throw generateError(error);
   }
 }
 
 /**
- * Register user.
- * @param param0 Information required to register a user account.
+ * Register a user account.
+ * @param userInformation Information required to register a user account.
  */
 export async function registerUser({ user, password }: RegistrationData): Promise<Tokens> {
   try {
     const URL_REGISTER = 'auth/register/';
-
     const userDto = UserMapper.toDto(user, password);
     const response = await defaultRequestInstance.post<TokensDto>(URL_REGISTER, {
       ...userDto,
@@ -74,16 +57,7 @@ export async function registerUser({ user, password }: RegistrationData): Promis
 
     return TokensMapper.fromDto(response.data);
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      if (error.response !== undefined) {
-        const httpError = HttpErrorMapper.fromDto(error.response.data as HttpErrorDto);
-
-        throw httpError;
-      }
-    }
-
-    const UNKNOWN_ERROR = 'unexpected error';
-    throw new Error(UNKNOWN_ERROR);
+    throw generateError(error);
   }
 }
 
@@ -100,13 +74,13 @@ export async function checkTokenValidity(access: string): Promise<boolean> {
 
     return true;
   } catch (error: unknown) {
-
+    // If an error occurs, it will mean that the token is not valid.
     return false;
   }
 }
 
 /**
- * Refresh tokens.
+ * Submit a request to refresh tokens.
  * @param refresh Refresh token.
  */
 export async function getRefreshedToken(refresh: string): Promise<TokensDto> {
@@ -118,16 +92,6 @@ export async function getRefreshedToken(refresh: string): Promise<TokensDto> {
 
     return TokensMapper.fromDto(response.data);
   } catch (error: unknown) {
-
-    if (axios.isAxiosError(error)) {
-      if (error.response !== undefined) {
-        const httpError = HttpErrorMapper.fromDto(error.response.data as HttpErrorDto);
-
-        throw httpError;
-      }
-    }
-
-    const UNKNOWN_ERROR = 'unexpected error';
-    throw new Error(UNKNOWN_ERROR);
+    throw generateError(error);
   }
 }

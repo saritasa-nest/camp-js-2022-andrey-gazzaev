@@ -6,7 +6,7 @@ import { FormField } from '../../constants/form';
 import { LocalStorageKeys } from '../../constants/localStorage';
 import { loginUser } from '../../fetches/auth';
 import { setLocalStorage } from '../../scripts/localStorage';
-import { getValue } from '../../scripts/public';
+import { getValue, showError } from '../../scripts/public';
 
 /**
  * Handle login form submit event.
@@ -34,20 +34,12 @@ async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
     location.href = '/';
   } catch (error: unknown) {
     if (error instanceof HttpError) {
-
-      // console.log(error);
-
-      // TO-DO Handle error
-      // error.detail;
-      // error.code
-      // console.log(error.detail);
+      showError(error.detail);
     }
   }
 }
 
-/**
- * Initialization login form.
- */
+/** Initialization login form. */
 function initLoginForm(): void {
   const loginForm = document.querySelector<HTMLFormElement>(`.${Login.FORM}`);
 

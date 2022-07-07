@@ -1,15 +1,11 @@
-import axios from 'axios';
-
 import { UserDto } from '@js-camp/core/dtos/user.dto';
-import { HttpErrorDto } from '@js-camp/core/dtos/httpError.dto';
-import { HttpError } from '@js-camp/core/models/httpError';
 import { User } from '@js-camp/core/models/user';
-import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 
 import { FetchHeaders } from '../constants/fetch';
 
 import { defaultRequestInstance } from './instance';
+import { generateError } from './error';
 
 /**
  * Get user information from the server.
@@ -28,15 +24,6 @@ export async function getUserProfile(access: string): Promise<User> {
     return UserMapper.fromDto(response.data);
 
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      if (error.response !== undefined) {
-        const httpError = HttpErrorMapper.fromDto(error.response.data as HttpErrorDto);
-
-        throw httpError;
-      }
-    }
-
-    const UNKNOWN_ERROR = 'unexpected error';
-    throw new HttpError(UNKNOWN_ERROR);
+    throw generateError(error);
   }
 }
