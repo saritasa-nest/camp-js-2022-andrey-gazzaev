@@ -6,7 +6,7 @@ import { FormField } from '../../constants/form';
 import { LocalStorageKeys } from '../../constants/localStorage';
 import { loginUser } from '../../fetches/auth';
 import { setLocalStorage } from '../../scripts/localStorage';
-import { getValue, showError } from '../../scripts/public';
+import { getValue, goToHomePage, showError } from '../../scripts/public';
 
 /**
  * Handle login form submit event.
@@ -31,7 +31,7 @@ async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
       setLocalStorage<Tokens>(LocalStorageKeys.TOKENS, tokens);
     }
 
-    location.href = '/';
+    goToHomePage();
   } catch (error: unknown) {
     if (error instanceof HttpError) {
       showError(error.detail);

@@ -7,7 +7,12 @@ import { FormField } from '../../constants/form';
 import { LocalStorageKeys } from '../../constants/localStorage';
 import { registerUser } from '../../fetches/auth';
 import { setLocalStorage } from '../../scripts/localStorage';
-import { getValue, showError } from '../../scripts/public';
+import { getValue, goToHomePage, showError } from '../../scripts/public';
+
+const ERROR_MESSAGES = {
+  fieldNotFilled: 'Field(s) are not filled',
+  passwordNotConfirm: 'Password not confirm',
+};
 
 /**
  * Handle registration form submit event.
@@ -35,16 +40,15 @@ async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
     password === null ||
     confirmedPassword === null
   ) {
-    showError('field(s) are not filled');
-    return;
+    return showError(ERROR_MESSAGES.fieldNotFilled);
   }
 
-  if (password.localeCompare(confirmedPassword)) {
-    showError('Password not confirm');
-    return;
+  if (password.localeCompare(confirmedPassword) !== 0) {
+    return showError(ERROR_MESSAGES.passwordNotConfirm);
   }
 
   try {
+    // Uploaded image to the server.
     const URL_IMAGE_STUBS =
       'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
       'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
@@ -61,7 +65,7 @@ async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
       setLocalStorage<Tokens>(LocalStorageKeys.TOKENS, tokens);
     }
 
-    location.href = '/';
+    goToHomePage();
   } catch (error: unknown) {
     if (error instanceof HttpError) {
       showError(error.detail);

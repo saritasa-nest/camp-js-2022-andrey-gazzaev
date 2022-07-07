@@ -13,5 +13,5 @@
 
 .registration-input,
 .registration-submit {
-  height: 35px;
+  min-height: 35px;
 }
