@@ -27,6 +27,11 @@ interface RegistrationData {
   readonly password: string;
 }
 
+const LOGIN_URL = 'auth/login/';
+const REGISTER_URL = 'auth/register/';
+const VERIFY_TOKEN_URL = 'auth/token/verify/';
+const REFRESH_TOKEN_URL = 'auth/token/refresh/';
+
 /**
  * Login to user account.
  * @param userInformation Information required to log in to the user's account.
@@ -35,8 +40,7 @@ export async function loginUser(
   userInformation: LoginData,
 ): Promise<Tokens> {
   try {
-    const URL_LOGIN = 'auth/login/';
-    const response = await defaultRequestInstance.post<TokensDto>(URL_LOGIN, userInformation);
+    const response = await defaultRequestInstance.post<TokensDto>(LOGIN_URL, userInformation);
 
     return TokensMapper.fromDto(response.data);
 
@@ -46,14 +50,13 @@ export async function loginUser(
 }
 
 /**
- * Register a user account.
+ * Registers a user account.
  * @param userInformation Information required to register a user account.
  */
 export async function registerUser({ user, password }: RegistrationData): Promise<Tokens> {
   try {
-    const URL_REGISTER = 'auth/register/';
     const userDto = UserMapper.toDto(user, password);
-    const response = await defaultRequestInstance.post<TokensDto>(URL_REGISTER, {
+    const response = await defaultRequestInstance.post<TokensDto>(REGISTER_URL, {
       ...userDto,
     });
 
@@ -64,14 +67,13 @@ export async function registerUser({ user, password }: RegistrationData): Promis
 }
 
 /**
- * Check if the token is valid.
- * @param access Access token.
+ * Checks if the token is valid.
+ * @param accessToken Access token.
  */
-export async function checkTokenValidity(access: string): Promise<boolean> {
+export async function checkTokenValidity(accessToken: string): Promise<boolean> {
   try {
-    const URL_VERIFY_TOKEN = 'auth/token/verify/';
-    await defaultRequestInstance.post<TokensDto>(URL_VERIFY_TOKEN, {
-      token: access,
+    await defaultRequestInstance.post<TokensDto>(VERIFY_TOKEN_URL, {
+      token: accessToken,
     });
 
     return true;
@@ -82,14 +84,13 @@ export async function checkTokenValidity(access: string): Promise<boolean> {
 }
 
 /**
- * Submit a request to refresh tokens.
- * @param refresh Refresh token.
+ * Submits a request to refresh tokens.
+ * @param refreshToken Refresh token.
  */
-export async function getRefreshedToken(refresh: string): Promise<TokensDto> {
+export async function getRefreshedToken(refreshToken: string): Promise<TokensDto> {
   try {
-    const URL_REFRESH_TOKEN = 'auth/token/refresh/';
-    const response = await defaultRequestInstance.post<TokensDto>(URL_REFRESH_TOKEN, {
-      refresh,
+    const response = await defaultRequestInstance.post<TokensDto>(REFRESH_TOKEN_URL, {
+      refreshToken,
     });
 
     return TokensMapper.fromDto(response.data);

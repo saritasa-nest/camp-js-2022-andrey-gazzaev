@@ -11,7 +11,6 @@ export namespace Form {
 /** The class names for the profile block. */
 export namespace Profile {
   export const NAME = 'profile__user-name';
-  export const SING_OUT_BUTTON = 'sing-out';
   export const FORM = 'profile__form';
 }
 

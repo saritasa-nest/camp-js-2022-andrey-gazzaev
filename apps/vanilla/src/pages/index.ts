@@ -1,7 +1,7 @@
 import { changeHeader } from '../scripts/header';
 
 /**
- * Page initialization and pagination.
+ * Initializations page.
  */
 function initPage(): void {
   changeHeader();

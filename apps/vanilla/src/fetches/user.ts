@@ -7,15 +7,15 @@ import { FetchHeaders } from '../constants/fetch';
 import { defaultRequestInstance } from './instance';
 import { generateError } from './error';
 
+const USER_PROFILE_URL = 'users/profile/';
+
 /**
- * Get user information from the server.
+ * Gets user information from the server.
  * @param access Access token.
  */
 export async function getUserProfile(access: string): Promise<User> {
   try {
-    const URL_USER_PROFILE = 'users/profile/';
-
-    const response = await defaultRequestInstance.get<UserDto>(URL_USER_PROFILE, {
+    const response = await defaultRequestInstance.get<UserDto>(USER_PROFILE_URL, {
       headers: {
         [FetchHeaders.Authorization]: `Bearer ${access}`,
       },

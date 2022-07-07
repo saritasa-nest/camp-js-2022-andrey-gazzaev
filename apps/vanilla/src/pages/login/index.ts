@@ -2,8 +2,8 @@ import { HttpError } from '@js-camp/core/models/httpError';
 import { Tokens } from '@js-camp/core/models/tokens';
 
 import { Login } from '../../constants/classes';
-import { ErrorMessages, FormField } from '../../constants/form';
-import { LocalStorageKeys } from '../../constants/localStorage';
+import { ErrorMessage, FormField } from '../../constants/form';
+import { LocalStorageKey } from '../../constants/localStorage';
 import { loginUser } from '../../fetches/auth';
 import { setLocalStorage } from '../../scripts/localStorage';
 import { getValue, goToHomePage, showError } from '../../scripts/public';
@@ -25,15 +25,13 @@ async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
   const password = getValue(form.get(FormField.PASSWORD));
 
   if (email === null || password === null) {
-    return showError(ErrorMessages.FIELD_NOT_FILLED);
+    return showError(ErrorMessage.FIELD_NOT_FILLED);
   }
 
   try {
     const tokens = await loginUser({ email, password });
 
-    if (tokens instanceof Tokens) {
-      setLocalStorage<Tokens>(LocalStorageKeys.TOKENS, tokens);
-    }
+    setLocalStorage<Tokens>(LocalStorageKey.TOKENS, tokens);
 
     goToHomePage();
   } catch (error: unknown) {
@@ -43,7 +41,7 @@ async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
   }
 }
 
-/** Initialization login form. */
+/** Initializations login form. */
 function initLoginForm(): void {
   const loginForm = document.querySelector<HTMLFormElement>(`.${Login.FORM}`);
 

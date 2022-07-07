@@ -3,11 +3,15 @@ import { Tokens } from '@js-camp/core/models/tokens';
 import { User } from '@js-camp/core/models/user';
 
 import { Registration } from '../../constants/classes';
-import { ErrorMessages, FormField } from '../../constants/form';
-import { LocalStorageKeys } from '../../constants/localStorage';
+import { ErrorMessage, FormField } from '../../constants/form';
+import { LocalStorageKey } from '../../constants/localStorage';
 import { registerUser } from '../../fetches/auth';
 import { setLocalStorage } from '../../scripts/localStorage';
 import { getValue, goToHomePage, showError } from '../../scripts/public';
+
+const DEFAULT_AVATAR_URL =
+  'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
+  'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
 
 /**
  * Handle registration form submit event.
@@ -35,20 +39,16 @@ async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
     password === null ||
     confirmedPassword === null
   ) {
-    return showError(ErrorMessages.FIELD_NOT_FILLED);
+    return showError(ErrorMessage.FIELD_NOT_FILLED);
   }
 
   if (password.localeCompare(confirmedPassword) !== 0) {
-    return showError(ErrorMessages.PASSWORD_NOT_MATCH);
+    return showError(ErrorMessage.PASSWORD_NOT_MATCH);
   }
 
   try {
-    // Uploaded image to the server.
-    const URL_IMAGE_STUBS =
-      'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
-      'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
     const user = new User({
-      avatar: URL_IMAGE_STUBS,
+      avatar: DEFAULT_AVATAR_URL,
       firstName,
       lastName,
       email,
@@ -56,9 +56,7 @@ async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
 
     const tokens = await registerUser({ user, password });
 
-    if (tokens instanceof Tokens) {
-      setLocalStorage<Tokens>(LocalStorageKeys.TOKENS, tokens);
-    }
+    setLocalStorage<Tokens>(LocalStorageKey.TOKENS, tokens);
 
     goToHomePage();
   } catch (error: unknown) {
@@ -68,12 +66,12 @@ async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
   }
 }
 
-/** Initialization registration form. */
+/** Initializations registration form. */
 function initRegistrationForm(): void {
-  const loginForm = document.querySelector<HTMLFormElement>(`.${Registration.FORM}`);
+  const registrationForm = document.querySelector<HTMLFormElement>(`.${Registration.FORM}`);
 
-  if (loginForm !== null) {
-    loginForm.addEventListener('submit', handleSubmitRegistrationForm);
+  if (registrationForm !== null) {
+    registrationForm.addEventListener('submit', handleSubmitRegistrationForm);
   }
 }
 
