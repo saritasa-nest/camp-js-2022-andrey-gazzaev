@@ -16,8 +16,8 @@ function handleSingOut(): void {
 /** Creates a logout button. */
 function createSingOutButton(): HTMLButtonElement {
   const button = document.createElement('button');
-  button.setAttribute('type', 'button');
   button.innerHTML = 'Sing out';
+  button.setAttribute('type', 'button');
   button.addEventListener('click', handleSingOut);
   return button;
 }
@@ -56,12 +56,14 @@ async function renderUserProfile(access: string): Promise<void> {
     const profileTemplate = document.querySelector<HTMLTemplateElement>(ID_USER_PROFILE_TEMPLATE);
 
     const userGreeting = document.createElement('p');
-    userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName}!!!`;
+    userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName}!`;
 
     const singOutButton = createSingOutButton();
 
     if (profileTemplate !== null) {
       const profileElement = profileTemplate.content.cloneNode(true);
+
+      // DOM node has no append method :(
       profileElement.appendChild(userGreeting);
       profileElement.appendChild(singOutButton);
       addProfileToHeader(profileElement);
@@ -83,13 +85,13 @@ export async function changeHeader(): Promise<void> {
 
     try {
       const refreshedTokens = await getRefreshedToken(tokens.refresh);
-
       renderUserProfile(refreshedTokens.access);
 
     } catch (error: unknown) {
       setLocalStorage(LocalStorageKeys.TOKENS, null);
 
-      location.href = '/login/';
+      const URL_LOGIN_PAGE = '/login/';
+      location.href = URL_LOGIN_PAGE ;
     }
   } else {
     renderStandardProfile();

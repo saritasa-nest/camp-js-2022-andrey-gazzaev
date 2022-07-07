@@ -22,3 +22,10 @@ export function showError(error: string): void {
     errorElement.removeAttribute('hidden');
   }
 }
+
+/** Redirect to home page. */
+export function goToHomePage(): void {
+  const URL_HOME_PAGE = '/';
+
+  location.href = URL_HOME_PAGE;
+}
