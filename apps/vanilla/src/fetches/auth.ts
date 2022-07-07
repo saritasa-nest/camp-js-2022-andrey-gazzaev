@@ -7,15 +7,17 @@ import { User } from '@js-camp/core/models/user';
 import { generateError } from './error';
 import { defaultRequestInstance } from './instance';
 
+/** Data necessary for login. */
 interface LoginData {
 
   /** Email of user. */
-  readonly email: string | null;
+  readonly email: string;
 
   /** Password of user. */
-  readonly password: string | null;
+  readonly password: string;
 }
 
+/** Data necessary for register. */
 interface RegistrationData {
 
   /** User information. */
@@ -27,7 +29,7 @@ interface RegistrationData {
 
 /**
  * Login to user account.
- * @param userInformation  Information required to log in to the user's account.
+ * @param userInformation Information required to log in to the user's account.
  */
 export async function loginUser(
   userInformation: LoginData,

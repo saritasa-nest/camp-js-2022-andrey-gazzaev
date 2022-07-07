@@ -16,9 +16,10 @@ function handleSingOut(): void {
 /** Creates a logout button. */
 function createSingOutButton(): HTMLButtonElement {
   const button = document.createElement('button');
-  button.innerHTML = 'Sing out';
-  button.setAttribute('type', 'button');
+  const BUTTON_TEXT = 'Sing out';
+  button.innerHTML = BUTTON_TEXT ;
   button.classList.add(Profile.SING_OUT_BUTTON, Form.BUTTON);
+  button.setAttribute('type', 'button');
   button.addEventListener('click', handleSingOut);
   return button;
 }
@@ -75,7 +76,6 @@ async function renderUserProfile(access: string): Promise<void> {
 
       form.append(userGreeting, singOutButton);
       addProfileToHeader(profileElement);
-
     }
   } catch (error: unknown) {
     renderStandardProfile();

@@ -81,7 +81,7 @@
 
 .form__link {
   text-align: center;
-  font-size: var(--form-text-size);
+  font-size: var(--default-text-size);
   margin-top: 5px;
 }
 
