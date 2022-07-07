@@ -6,7 +6,8 @@ export enum Type {
   Ova = 'OVA',
   Movie = 'MOVIE',
   Special = 'SPECIAL',
-  Ona = 'MUSIC',
+  Ona = 'ONA',
+  Music = 'MUSIC',
 }
 
 /** Possible options anime status. */
