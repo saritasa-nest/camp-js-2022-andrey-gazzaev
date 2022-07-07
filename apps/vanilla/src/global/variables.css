@@ -9,4 +9,8 @@
   --table-row-border-button-color: #ddd;
   --pagination-btn-font-size: 1.5rem;
   --form-border-color: #d4d4d4;
+  --form-default-color: #686868;
+  --form-active-color: #faa527;
+  --form-text-size: 0.7em;
+  --form-background: #fff;
 }

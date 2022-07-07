@@ -1,10 +1,10 @@
 @import url("../global/index.css");
+@import url("../global/variables.css");
 
-/* TO-DO add all colors to variables */
 .form {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: var(--form-background);
 }
 
 .form__label {
@@ -14,47 +14,47 @@
 }
 
 .form__label-text {
-  font-size: 0.7em;
-  color: #686868;
+  color: var(--form-default-color);
+  font-size: var(--form-text-size);
   padding-left: 10px;
 }
 
 .form__input {
   background: none;
   border: none;
-  color: #686868;
-  font-size: 0.85em;
+  color: var(--form-default-color);
+  font-size: var(--form-text-size);
+  border-bottom: 2px solid var(--form-default-color);
   padding-left: 10px;
-  border-bottom: 2px solid #686868;
   min-height: 35px;
 }
 
 .form__button {
+  color: var(--form-default-color);
+  font-size: var(--form-text-size);
   background: none;
-  background-color: #f5f5f5;
-  border: 1px solid #686868;
+  background-color: var(--form-background);
+  border: 1px solid var(--form-default-color);
   border-radius: 5px;
-  cursor: pointer;
-  color: #686868;
-  font-size: 0.85em;
   min-height: 35px;
   margin: 10px 0;
+  cursor: pointer;
 }
 
 .form__button:hover {
-  background: #fff;
-  color: #faa527;
-  border-color: #faa527;
+  color: var(--form-active-color);
+  border-color: var(--form-active-color);
 }
 
 .form__input:focus {
-  border-bottom: 2px solid #faa527;
+  border-bottom: 2px solid var(--form-active-color);
   outline: 0;
 }
 
 .form__button:focus {
-  border: 2px solid #faa527;
-  outline: 2px solid #faa527;
+  color: var(--form-active-color);
+  border: 1px solid var(--form-active-color);
+  outline: 1px solid var(--form-active-color);
 }
 
 .form__title {
@@ -69,10 +69,15 @@
 
 .form__link {
   text-align: center;
-  font-size: 0.8em;
+  font-size: var(--form-text-size);
   margin-top: 5px;
 }
 
 .form__link:link {
   border-bottom: none;
+}
+
+.form__link:focus {
+  text-decoration: underline var(--primary-light-color);
+  outline: 0;
 }
