@@ -1,4 +1,4 @@
 /** Request header names. */
-export enum FetchHeaders {
+export enum FetchHeader {
   ApiKey = 'Api-Key',
 }

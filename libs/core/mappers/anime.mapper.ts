@@ -12,6 +12,7 @@ export namespace AnimeMapper {
     dto: AnimeDto<Dto>,
     mapperFromDto: (resultDto: Dto) => Model,
   ): Anime<Model> {
+
     const status = Object.values(Status).includes(dto.status as Status) ? dto.status as Status : Status.Airing;
     const type = Object.values(Type).includes(dto.type as Type) ? dto.type as Type : Type.Tv;
 

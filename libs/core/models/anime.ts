@@ -32,7 +32,7 @@ export class Anime<T> extends Immerable {
   /** Title in Japanese. */
   public readonly titleJapanese: string;
 
-  /** Release and end dates. */
+  /** Release start and end dates. */
   public readonly aired: T;
 
   /** Anime type. */

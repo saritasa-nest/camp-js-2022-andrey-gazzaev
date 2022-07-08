@@ -1,5 +1,5 @@
-/** The class names sort selectors. */
-export namespace Selectors {
+/** The class names sort element. */
+export namespace SelectorElement {
   export const SELECT_SORT_STATUS = 'sort-status';
   export const SELECT_SORT_DIRECTION = 'sort-direction';
   export const SELECT_SORT_ORDERING = 'sort-ordering';

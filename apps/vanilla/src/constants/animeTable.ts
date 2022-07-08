@@ -1,5 +1,5 @@
 /** Anime table columns. */
-export enum TableColumns {
+export enum TableColumn {
   Image = 'image',
   TitleEnglish = 'titleEnglish',
   TitleJapanese = 'titleJapanese',

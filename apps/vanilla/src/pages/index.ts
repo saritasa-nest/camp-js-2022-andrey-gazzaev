@@ -4,7 +4,7 @@ import { DEFAULT_SORT_SETTINGS } from '../constants/sort';
 import { getValueFromLocalStorage, setValueToLocalStorage } from '../services/domain/localStorage';
 import { initSortElements } from '../UI/tableView/sort';
 import { SortSettings } from '../types/sortSettings';
-import { changeAnimeData } from '../services/general';
+import { handleChangeAnimeData } from '../UI/tableView/general';
 
 /** Adds sorting settings to local storage if they are not there. */
 function initSortSettings(): void {
@@ -17,7 +17,7 @@ function initSortSettings(): void {
 function initTable(): void {
   initSortSettings();
   initSortElements();
-  changeAnimeData(Pagination.FIRST_PAGE_NUMBER);
+  handleChangeAnimeData(Pagination.FIRST_PAGE_NUMBER);
 }
 
 window.addEventListener('DOMContentLoaded', initTable);
