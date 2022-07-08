@@ -32,10 +32,10 @@ function goToTop(): void {
  * Renders UI component related to table view.
  * @param tableViewData Data about table view.
  */
-export function renderTableView({ animeList, totalAnimeCount, currentPageNumber }: AnimeData): void {
+export function renderTableView({ animeList, totalAnimeCount, currentPageNumber, limit }: AnimeData): void {
   goToTop();
   fillTableAnime(animeList);
-  fillPaginationAnime(totalAnimeCount, currentPageNumber);
+  fillPaginationAnime(totalAnimeCount, currentPageNumber, limit);
 }
 
 /** Renders message about table view error. */

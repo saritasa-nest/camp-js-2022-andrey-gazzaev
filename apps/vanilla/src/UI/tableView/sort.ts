@@ -1,25 +1,33 @@
 import { SelectorElement } from '../../constants/classes';
 import { LocalStorageKey } from '../../constants/localStorage';
-import { Pagination } from '../../constants/pagination';
-import { OPTIONS_FOR_DIRECTION, OPTIONS_FOR_ORDERING, OPTIONS_FOR_STATUS } from '../../constants/sort';
-import { SortSelectOptions, SortSettings } from '../../types/sortSettings';
+import { FIRST_PAGE_NUMBER, OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS } from '../../constants/pagination';
+import { PaginationOptions, SelectOptions } from '../../types/paginationSettings';
 import { getValueFromLocalStorage, setValueToLocalStorage } from '../../services/domain/localStorage';
+import { isSortField, isSortOrdering, isStatus } from '../../helpers/guards';
 
 import { handleChangeAnimeData } from './general';
 
 /**
- * Changes sort values in local storage and changes the table.
- * @param select Selected select element.
- * @param field Editable field.
+ * Changes pagination settings.
+ * @param selectValue Value of sort or filter select.
  */
-function handleChangeSortSettings(select: HTMLSelectElement, field: string): void {
-  const sortSettings = getValueFromLocalStorage<SortSettings>(LocalStorageKey.SORT_SETTINGS);
+function handleChangePaginationOptions(selectValue: string): void {
+  const paginationOptions = getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  if (paginationOptions !== null) {
+    let { sort, filter } = paginationOptions;
 
-  if (sortSettings !== null) {
-    setValueToLocalStorage<SortSettings>(LocalStorageKey.SORT_SETTINGS, { ...sortSettings, [field]: select.value });
+    if (isStatus(selectValue)) {
+      filter = { ...paginationOptions.filter, byStatusField: selectValue };
+    } else if (isSortField(selectValue)) {
+      sort = { ...paginationOptions.sort, field: selectValue };
+    } else if (isSortOrdering(selectValue)) {
+      sort = { ...paginationOptions.sort, ordering: selectValue };
+    }
+
+    setValueToLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS, { ...paginationOptions, sort, filter });
   }
 
-  handleChangeAnimeData(Pagination.FIRST_PAGE_NUMBER);
+  handleChangeAnimeData(FIRST_PAGE_NUMBER);
 }
 
 /**
@@ -39,10 +47,10 @@ function createOption(text: string, classes: readonly string[], value: string): 
 
 /** Adds option elements to select. */
 export function initSortElements(): void {
-  const selectors: SortSelectOptions[] = [
-    { sortName: 'direction', selector: SelectorElement.SELECT_SORT_DIRECTION, options: OPTIONS_FOR_DIRECTION },
-    { sortName: 'status', selector: SelectorElement.SELECT_SORT_STATUS, options: OPTIONS_FOR_STATUS },
-    { sortName: 'ordering', selector: SelectorElement.SELECT_SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
+  const selectors: SelectOptions[] = [
+    { name: 'ordering', selector: SelectorElement.SELECT_SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
+    { name: 'status', selector: SelectorElement.SELECT_SORT_STATUS, options: OPTIONS_FOR_STATUS },
+    { name: 'sort', selector: SelectorElement.SELECT_SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
   ];
 
   selectors.forEach(select => {
@@ -53,11 +61,10 @@ export function initSortElements(): void {
       select.options.forEach(option => selectElement.append(createOption(option.text, [], option.value)));
 
       // Depending on the choice, the table should change.
-      selectElement.addEventListener(
+      return selectElement.addEventListener(
         'change',
-        () => handleChangeSortSettings(selectElement, select.sortName),
+        () => handleChangePaginationOptions(selectElement.value),
       );
     }
   });
-
 }

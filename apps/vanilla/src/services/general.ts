@@ -1,10 +1,8 @@
 import { User } from '@js-camp/core/models/user';
 
 import { LocalStorageKey } from '../constants/localStorage';
-import { Pagination } from '../constants/pagination';
-import { DEFAULT_SORT_SETTINGS } from '../constants/sort';
 import { AnimeData } from '../types/anime';
-import { SortSettings } from '../types/sortSettings';
+import { PaginationOptions } from '../types/paginationSettings';
 
 import { fetchAnime } from './api/anime';
 import { isTokenValid } from './api/auth';
@@ -40,14 +38,14 @@ export async function getUser(): Promise<User | null> {
 /**
  * Creates a URL address to get the page with the anime, taking into account the offset.
  * @param offset Offset relative to which you want to get records.
- * @param sort Sort Options.
+ * @param paginationOptions  Options.
  * @returns Ready url.
  */
-function getUrlAnime(offset: number, sort: SortSettings): string {
+function getUrlAnime(offset: number, paginationOptions: PaginationOptions): string {
   const offsetParam = ['offset', String(offset)];
-  const limitParam = ['limit', String(Pagination.DEFAULT_LIMIT)];
-  const orderingParam = ['ordering', `${sort.direction}${sort.ordering}`];
-  const statusParam = ['status', sort.status];
+  const limitParam = ['limit', String(paginationOptions.limit)];
+  const orderingParam = ['ordering', `${paginationOptions.sort.ordering}${paginationOptions.sort.field}`];
+  const statusParam = ['status', paginationOptions.filter.byStatusField];
 
   const params = [offsetParam, limitParam, orderingParam, statusParam];
   const searchParams = new URLSearchParams(params);
@@ -60,19 +58,21 @@ function getUrlAnime(offset: number, sort: SortSettings): string {
  * @param currentPageNumber The page on which the change occurs.
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
-  const localSortSettings = getValueFromLocalStorage<SortSettings>(LocalStorageKey.SORT_SETTINGS);
-  const currentOffset = currentPageNumber * Pagination.DEFAULT_LIMIT;
-  const urlGetAnime = localSortSettings !== null ?
-    getUrlAnime(currentOffset, localSortSettings) :
-    getUrlAnime(currentOffset, DEFAULT_SORT_SETTINGS);
+  const localPaginationOptions = getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  if (localPaginationOptions === null) {
+    return null;
+  }
+
+  const currentOffset = currentPageNumber * localPaginationOptions.limit;
+
+  const urlGetAnime = getUrlAnime(currentOffset, localPaginationOptions);
 
   try {
     const { results: animeList, count: totalAnimeCount } = await fetchAnime(urlGetAnime);
 
-    return { animeList, totalAnimeCount, currentPageNumber };
+    return { animeList, totalAnimeCount, currentPageNumber, limit: localPaginationOptions.limit };
   } catch (error: unknown) {
-    setValueToLocalStorage(LocalStorageKey.SORT_SETTINGS, null);
-
+    setValueToLocalStorage(LocalStorageKey.PAGINATION_SETTINGS, null);
     return null;
   }
 }
