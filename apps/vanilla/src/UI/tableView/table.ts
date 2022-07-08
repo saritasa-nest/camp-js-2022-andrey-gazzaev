@@ -1,7 +1,7 @@
 import { Anime } from '@js-camp/core/models/anime';
 
-import { TableColumns, NO_DATA } from '../constants/animeTable';
-import { Table, TableBlock } from '../constants/classes';
+import { TableColumns, NO_DATA } from '../../constants/animeTable';
+import { Table, TableBlock } from '../../constants/classes';
 
 /**
  * Creates and fills table rows.

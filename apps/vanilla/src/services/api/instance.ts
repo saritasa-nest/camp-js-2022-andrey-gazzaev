@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 
-import { FetchHeaders } from '../constants/fetch';
+import { FetchHeaders } from '../../constants/fetch';
 
-/** Axios request template. */
+/** Request template. */
 export const defaultRequestInstance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   headers: {

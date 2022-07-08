@@ -1,11 +1,11 @@
-import { Selectors } from '../constants/classes';
-import { LocalStorageKeys } from '../constants/localStorage';
-import { Pagination } from '../constants/pagination';
-import { OPTIONS_FOR_DIRECTION, OPTIONS_FOR_ORDERING, OPTIONS_FOR_STATUS } from '../constants/sort';
-import { SortSelectOptions, SortSettings } from '../types/sortSettings';
+import { Selectors } from '../../constants/classes';
+import { LocalStorageKey } from '../../constants/localStorage';
+import { Pagination } from '../../constants/pagination';
+import { OPTIONS_FOR_DIRECTION, OPTIONS_FOR_ORDERING, OPTIONS_FOR_STATUS } from '../../constants/sort';
+import { SortSelectOptions, SortSettings } from '../../types/sortSettings';
 
-import { getLocalStorage, setLocalStorage } from './localStorage';
-import { changeAnimeData } from './public';
+import { getValueFromLocalStorage, setValueToLocalStorage } from '../../services/domain/localStorage';
+import { changeAnimeData } from '../../services/general';
 
 /**
  * Changes sort values in local storage and changes the table.
@@ -13,11 +13,11 @@ import { changeAnimeData } from './public';
  * @param field Editable field.
  */
 function handleChangeSortSettings(select: HTMLSelectElement, field: string): void {
-  const sortSettings = getLocalStorage<SortSettings>(LocalStorageKeys.SORT_SETTINGS);
+  const sortSettings = getValueFromLocalStorage<SortSettings>(LocalStorageKey.SORT_SETTINGS);
 
   if (sortSettings !== null) {
     sortSettings[field] = select.value;
-    setLocalStorage<SortSettings>(LocalStorageKeys.SORT_SETTINGS, sortSettings);
+    setValueToLocalStorage<SortSettings>(LocalStorageKey.SORT_SETTINGS, sortSettings);
   }
 
   changeAnimeData(Pagination.FIRST_PAGE_NUMBER);
