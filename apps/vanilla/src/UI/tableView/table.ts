@@ -1,7 +1,7 @@
 import { Anime } from '@js-camp/core/models/anime';
 import { DateRange } from '@js-camp/core/models/dateRange';
 
-import { TableColumns, NO_DATA } from '../../constants/animeTable';
+import { TableColumn, NO_DATA } from '../../constants/animeTable';
 import { Table, TableBlock } from '../../constants/classes';
 
 /**
@@ -14,27 +14,27 @@ function createTableRows(animeList: readonly Anime<DateRange>[]): HTMLTableRowEl
     const row = document.createElement('tr');
     row.classList.add(Table.ROW);
 
-    Object.values(TableColumns).forEach(column => {
+    Object.values(TableColumn).forEach(column => {
       const thElement = document.createElement('td');
       thElement.classList.add(Table.BODY);
 
       const imageElement = document.createElement('img');
       imageElement.classList.add(Table.IMAGE);
 
-      const airedStart = anime[TableColumns.Aired].start;
+      const airedStart = anime[TableColumn.Aired].start;
       const airedColumnText = airedStart !== null ?
         new Date(airedStart).toUTCString() :
         NO_DATA;
 
       switch (column) {
-        case TableColumns.Image:
+        case TableColumn.Image:
           imageElement.src = anime[column];
           imageElement.alt = `Image of anime ${anime.titleEnglish}`;
           thElement.append(imageElement);
           row.append(thElement);
           break;
 
-        case TableColumns.Aired:
+        case TableColumn.Aired:
           thElement.innerHTML = airedColumnText;
           row.append(thElement);
           break;

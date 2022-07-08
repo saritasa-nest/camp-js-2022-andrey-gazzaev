@@ -21,7 +21,7 @@ export async function fetchAnime(url: string): Promise<Pagination<Anime<DateRang
 
     return PaginationMapper.fromDto<AnimeDto<DateRangeDto>, Anime<DateRange>>(
       response.data,
-      dto => AnimeMapper.fromDto(dto, DateRangeMapper.fromDto),
+      animeDto => AnimeMapper.fromDto(animeDto, DateRangeMapper.fromDto),
     );
   } catch (error: unknown) {
 

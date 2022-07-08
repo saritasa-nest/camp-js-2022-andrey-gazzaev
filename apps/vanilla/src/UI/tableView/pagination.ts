@@ -1,6 +1,9 @@
 import { TableBlock } from '../../constants/classes';
 import { Pagination } from '../../constants/pagination';
-import { changeAnimeData } from '../../services/general';
+
+import { handleChangeAnimeData } from './general';
+
+const ELLIPSIS = '...';
 
 /**
  * Defines pagination boundaries relative to the current page.
@@ -13,7 +16,7 @@ function definePaginationBoundaries(
   allAnimeCount: number,
   currentPageNumber: number,
 ): [number, number, number] {
-  const lastPage = Math.ceil(allAnimeCount / Pagination.START_OFFSET);
+  const lastPage = Math.ceil(allAnimeCount / Pagination.DEFAULT_LIMIT);
 
   const prevPage = currentPageNumber - Pagination.PAGE_OFFSET < Pagination.FIRST_PAGE_NUMBER ?
     Pagination.FIRST_PAGE_NUMBER :
@@ -44,7 +47,7 @@ function createButton(pageNumber: number, isCurrentPage: boolean): HTMLButtonEle
   button.classList.add(...classes);
   button.setAttribute('type', 'button');
   button.innerHTML = String(pageNumber);
-  button.addEventListener('click', () => changeAnimeData(pageNumber));
+  button.addEventListener('click', () => handleChangeAnimeData(pageNumber));
   return button;
 }
 
@@ -79,7 +82,7 @@ function createButtonPagination(
 
   if (currentPage - Pagination.PAGE_OFFSET > Pagination.FIRST_PAGE_NUMBER) {
     buttonsPagination.push(createButton(Pagination.FIRST_PAGE_NUMBER, false));
-    buttonsPagination.push(createSpan(Pagination.ELLIPSIS, []));
+    buttonsPagination.push(createSpan(ELLIPSIS, []));
   }
 
   for (let index = prevPage; index <= nextPage; index++) {
@@ -91,7 +94,7 @@ function createButtonPagination(
   }
 
   if (currentPage + Pagination.PAGE_OFFSET < lastPage - 1) {
-    buttonsPagination.push(createSpan(Pagination.ELLIPSIS, []));
+    buttonsPagination.push(createSpan(ELLIPSIS, []));
     buttonsPagination.push(createButton(lastPage - 1, false));
   }
 

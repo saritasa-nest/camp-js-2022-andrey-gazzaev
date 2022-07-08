@@ -23,7 +23,7 @@ export interface SortSelectOptions {
 
 /** Sort settings that are stored in local storage. */
 export interface SortSettings {
-  [index: string]: string;
+  readonly [index: string]: string;
 
   /** Ordering. */
   readonly ordering: string;
