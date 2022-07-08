@@ -1,11 +1,15 @@
 :root {
-  --button-current-page-color: #ffcf48;
-  --button-current-page-border-color-hover: #ffcf48;
+  /* Pagination */
+  --pagination-button-active-color: #ffcf48;
+  --pagination-button-font-size: 1.5em;
+
+  /* Anime table. */
+  --table-columns-number: 6;
+  --table-row-border-color: #ddd;
+  --max-width-table-col: calc(var(--min-laptop-width) / var(--table-columns-number));
+
+  /* General. */
   --border-color: #dbd7d2;
   --border-color-hover: #ffcf48;
-  --table-row-border-color: #ddd;
-  --pagination-button-font-size: 1.5em;
   --min-laptop-width: 1024px;
-  --table-columns: 6;
-  --max-width-table-col: calc(var(--min-laptop-width) / var(--table-columns));
 }
