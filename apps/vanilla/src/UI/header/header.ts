@@ -83,5 +83,4 @@ export async function renderHeader(): Promise<void> {
   } else if (!TokenService.isTokens()) {
     renderStandardProfile();
   }
-
 }
