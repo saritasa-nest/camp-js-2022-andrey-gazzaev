@@ -1,11 +1,12 @@
 import { Tokens } from '@js-camp/core/models/tokens';
+import { User } from '@js-camp/core/models/user';
 
-import { Form, Header, Profile } from '../constants/classes';
-import { LocalStorageKey } from '../constants/localStorage';
-import { checkTokenValidity, getRefreshedToken } from '../fetches/auth';
-import { getUserProfile } from '../fetches/user';
-
-import { getLocalStorage, setLocalStorage } from './localStorage';
+import { Form, Header, Profile } from '../../constants/classes';
+import { LocalStorageKey } from '../../constants/localStorage';
+import { checkTokenValidity, getRefreshedToken } from '../../services/api/auth';
+import { fetchUserProfile } from '../../services/api/user';
+import { getValueFromLocalStorage, setValueToLocalStorage } from '../../services/domain/localStorage';
+import { changeHeader } from '../../services/general';
 
 const USER_PROFILE_TEMPLATE = 'user-profile';
 const STANDARD_PROFILE_TEMPLATE = 'standard-profile';
@@ -13,7 +14,7 @@ const SIGN_OUT_BUTTON = 'sign-out';
 
 /** Signs out from account. */
 function handleSingOut(): void {
-  setLocalStorage(LocalStorageKey.TOKENS, null);
+  setValueToLocalStorage(LocalStorageKey.TOKENS, null);
   changeHeader();
 }
 
@@ -48,14 +49,9 @@ function renderStandardProfile(): void {
   }
 }
 
-/**
- * Renders profile header.
- * @param access Access token.
- */
-async function renderUserProfile(access: string): Promise<void> {
+/** Renders profile header. */
+async function renderUserProfile(user: User): Promise<void> {
   try {
-    const user = await getUserProfile(access);
-
     const profileTemplate = document.querySelector<HTMLTemplateElement>(`.${USER_PROFILE_TEMPLATE}`);
     if (profileTemplate !== null) {
       const userGreeting = document.createElement('span');
@@ -84,26 +80,18 @@ async function renderUserProfile(access: string): Promise<void> {
 
 }
 
-/** Changes header depending on the user. */
-export async function changeHeader(): Promise<void> {
-  const tokens = getLocalStorage<Tokens>(LocalStorageKey.TOKENS);
-  if (tokens !== null) {
-    const isTokenValid = await checkTokenValidity(tokens.access);
-    if (isTokenValid) {
-      return renderUserProfile(tokens.access);
-    }
+export async function renderHeader() {
+  const user = await changeHeader()
 
-    try {
-      const refreshedTokens = await getRefreshedToken(tokens.refresh);
-      renderUserProfile(refreshedTokens.access);
+  console.log(user);
 
-    } catch (error: unknown) {
-      setLocalStorage(LocalStorageKey.TOKENS, null);
-
-      const URL_LOGIN_PAGE = '/login/';
-      location.href = URL_LOGIN_PAGE;
-    }
-  } else {
+  if (user instanceof User) {
+    renderUserProfile(user);
+  } else if (user) {
     renderStandardProfile();
+  } else {
+    const URL_LOGIN_PAGE = '/login/';
+    location.href = URL_LOGIN_PAGE;
   }
+
 }

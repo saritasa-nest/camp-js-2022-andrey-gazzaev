@@ -1,10 +1,10 @@
-import { changeHeader } from '../scripts/header';
+import { renderHeader } from '../UI/header/header';
 
 /**
  * Initializations page.
  */
 function initPage(): void {
-  changeHeader();
+  renderHeader();
 }
 
 window.addEventListener('DOMContentLoaded', initPage);

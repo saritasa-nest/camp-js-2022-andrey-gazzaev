@@ -4,7 +4,6 @@ import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { Tokens } from '@js-camp/core/models/tokens';
 import { User } from '@js-camp/core/models/user';
 
-import { generateError } from './error';
 import { defaultRequestInstance } from './instance';
 
 /** Data necessary for login. */
@@ -39,14 +38,9 @@ const REFRESH_TOKEN_URL = 'auth/token/refresh/';
 export async function loginUser(
   userInformation: LoginData,
 ): Promise<Tokens> {
-  try {
-    const response = await defaultRequestInstance.post<TokensDto>(LOGIN_URL, userInformation);
+  const response = await defaultRequestInstance.post<TokensDto>(LOGIN_URL, userInformation);
 
-    return TokensMapper.fromDto(response.data);
-
-  } catch (error: unknown) {
-    throw generateError(error);
-  }
+  return TokensMapper.fromDto(response.data);
 }
 
 /**
@@ -54,16 +48,12 @@ export async function loginUser(
  * @param userInformation Information required to register a user account.
  */
 export async function registerUser({ user, password }: RegistrationData): Promise<Tokens> {
-  try {
-    const userDto = UserMapper.toDto(user, password);
-    const response = await defaultRequestInstance.post<TokensDto>(REGISTER_URL, {
-      ...userDto,
-    });
+  const userDto = UserMapper.toDto(user, password);
+  const response = await defaultRequestInstance.post<TokensDto>(REGISTER_URL, {
+    ...userDto,
+  });
 
-    return TokensMapper.fromDto(response.data);
-  } catch (error: unknown) {
-    throw generateError(error);
-  }
+  return TokensMapper.fromDto(response.data);
 }
 
 /**
@@ -88,13 +78,9 @@ export async function checkTokenValidity(accessToken: string): Promise<boolean> 
  * @param refreshToken Refresh token.
  */
 export async function getRefreshedToken(refreshToken: string): Promise<TokensDto> {
-  try {
-    const response = await defaultRequestInstance.post<TokensDto>(REFRESH_TOKEN_URL, {
-      refreshToken,
-    });
+  const response = await defaultRequestInstance.post<TokensDto>(REFRESH_TOKEN_URL, {
+    refresh: refreshToken,
+  });
 
-    return TokensMapper.fromDto(response.data);
-  } catch (error: unknown) {
-    throw generateError(error);
-  }
+  return TokensMapper.fromDto(response.data);
 }

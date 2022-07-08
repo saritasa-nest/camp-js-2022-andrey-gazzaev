@@ -3,9 +3,12 @@
  * @param key The key by which the value is stored.
  * @returns If there are no value, then null otherwise the value object.
  */
-export function getLocalStorage<T>(key: string): T | null {
+export function getValueFromLocalStorage<T>(key: string): T | null {
   const localValue = localStorage.getItem(key);
-  return localValue !== null ? JSON.parse(localValue) : null;
+  if (localValue !== null) {
+    return JSON.parse(localValue);
+  }
+  return null;
 }
 
 /**
@@ -13,8 +16,8 @@ export function getLocalStorage<T>(key: string): T | null {
  * @param key The key by which the value is stored.
  * @param value Some value that needs to be stored.
  */
-export function setLocalStorage<T>(key: string, value: T): void {
-  return value !== undefined ?
-    localStorage.setItem(key, JSON.stringify(value)) :
-    localStorage.setItem(key, JSON.stringify(null));
+export function setValueToLocalStorage<T>(key: string, value: T): void {
+  if (value !== undefined) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
 }
