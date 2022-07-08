@@ -7,10 +7,10 @@ import { AnimeData } from '../types/anime';
 import { SortSettings } from '../types/sortSettings';
 
 import { fetchAnime } from './api/anime';
-import { getValueFromLocalStorage } from './domain/localStorage';
 import { isTokenValid } from './api/auth';
 import { fetchUserProfile } from './api/user';
 import { TokenService } from './domain/token';
+import { getValueFromLocalStorage, setValueToLocalStorage } from './domain/localStorage';
 
 /** Checks if the user is logged in. */
 async function isAuthorized(): Promise<boolean> {
@@ -71,8 +71,9 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
     const { results: animeList, count: totalAnimeCount } = await fetchAnime(urlGetAnime);
 
     return { animeList, totalAnimeCount, currentPageNumber };
-
   } catch (error: unknown) {
+    setValueToLocalStorage(LocalStorageKey.SORT_SETTINGS, null);
+
     return null;
   }
 }
