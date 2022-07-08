@@ -1,4 +1,5 @@
 import { Anime } from '@js-camp/core/models/anime';
+import { DateRange } from '@js-camp/core/models/dateRange';
 
 import { TableColumns, NO_DATA } from '../../constants/animeTable';
 import { Table, TableBlock } from '../../constants/classes';
@@ -8,7 +9,7 @@ import { Table, TableBlock } from '../../constants/classes';
  * @param animeList List of anime entries.
  * @returns Array of rows.
  */
-function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
+function createTableRows(animeList: readonly Anime<DateRange>[]): HTMLTableRowElement[] {
   return animeList.map(anime => {
     const row = document.createElement('tr');
     row.classList.add(Table.ROW);
@@ -74,7 +75,7 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
  * Fills the table with information about anime.
  * @param animeList List of anime entries.
  */
-export function fillTableAnime(animeList: readonly Anime[]): void {
+export function fillTableAnime(animeList: readonly Anime<DateRange>[]): void {
   const tableRows = createTableRows(animeList);
 
   updateTableAnime(tableRows);

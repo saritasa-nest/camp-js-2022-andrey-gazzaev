@@ -6,18 +6,18 @@ export namespace PaginationMapper {
   /**
    * Maps dto to model.
    * @param dto Pagination DTO.
-   * @param resultFromDto Callback of result mapper from DTO to Model.
+   * @param mapperFromDto Callback of result mapper from DTO to Model.
    */
   export function fromDto<Dto, Model>(
     dto: PaginationDto<Dto>,
-    resultFromDto: (resultDto: Dto) => Model,
+    mapperFromDto: (resultDto: Dto) => Model,
   ): Pagination<Model> {
 
     return new Pagination<Model>({
       count: dto.count,
       next: dto.next,
       previous: dto.previous,
-      results: dto.results.map(result => resultFromDto(result)),
+      results: dto.results.map(result => mapperFromDto(result)),
     });
   }
 }
