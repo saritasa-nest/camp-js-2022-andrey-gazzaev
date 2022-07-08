@@ -1,9 +1,12 @@
 :root {
-  --error-text-color: #ee4a4a;
-  --border-color: #dbd7d2;
+  /* Form */
   --form-border-color: #d4d4d4;
   --form-default-color: #686868;
   --form-active-color: #faa527;
-  --default-text-size: 0.7em;
   --form-background: #fff;
+
+  /* General */
+  --error-text-color: #ee4a4a;
+  --default-text-size: 0.7em;
+  --border-color: #dbd7d2;
 }
