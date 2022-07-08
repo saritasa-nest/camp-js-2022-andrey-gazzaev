@@ -33,19 +33,19 @@ const REFRESH_TOKEN_URL = 'auth/token/refresh/';
 
 /**
  * Login to user account.
- * @param userInformation Information required to log in to the user's account.
+ * @param loginData Information required to log in to the user's account.
  */
 export async function loginUser(
-  userInformation: LoginData,
+  loginData: LoginData,
 ): Promise<Tokens> {
-  const response = await defaultRequestInstance.post<TokensDto>(LOGIN_URL, userInformation);
+  const response = await defaultRequestInstance.post<TokensDto>(LOGIN_URL, loginData);
 
   return TokensMapper.fromDto(response.data);
 }
 
 /**
  * Registers a user account.
- * @param userInformation Information required to register a user account.
+ * @param registrationData Information required to register a user account.
  */
 export async function registerUser({ user, password }: RegistrationData): Promise<Tokens> {
   const userDto = UserMapper.toDto(user, password);

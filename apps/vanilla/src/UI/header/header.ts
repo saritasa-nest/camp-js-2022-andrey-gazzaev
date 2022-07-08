@@ -1,11 +1,8 @@
-import { Tokens } from '@js-camp/core/models/tokens';
 import { User } from '@js-camp/core/models/user';
 
 import { Form, Header, Profile } from '../../constants/classes';
 import { LocalStorageKey } from '../../constants/localStorage';
-import { checkTokenValidity, getRefreshedToken } from '../../services/api/auth';
-import { fetchUserProfile } from '../../services/api/user';
-import { getValueFromLocalStorage, setValueToLocalStorage } from '../../services/domain/localStorage';
+import { setValueToLocalStorage } from '../../services/domain/localStorage';
 import { changeHeader } from '../../services/general';
 
 const USER_PROFILE_TEMPLATE = 'user-profile';
@@ -49,8 +46,11 @@ function renderStandardProfile(): void {
   }
 }
 
-/** Renders profile header. */
-async function renderUserProfile(user: User): Promise<void> {
+/**
+ * Renders profile header.
+ * @param user Information about user.
+ */
+function renderUserProfile(user: User): void {
   try {
     const profileTemplate = document.querySelector<HTMLTemplateElement>(`.${USER_PROFILE_TEMPLATE}`);
     if (profileTemplate !== null) {
@@ -80,10 +80,11 @@ async function renderUserProfile(user: User): Promise<void> {
 
 }
 
-export async function renderHeader() {
-  const user = await changeHeader()
-
-  console.log(user);
+/**
+ * Renders header.
+ */
+export async function renderHeader(): Promise<void> {
+  const user = await changeHeader();
 
   if (user instanceof User) {
     renderUserProfile(user);
@@ -93,5 +94,4 @@ export async function renderHeader() {
     const URL_LOGIN_PAGE = '/login/';
     location.href = URL_LOGIN_PAGE;
   }
-
 }

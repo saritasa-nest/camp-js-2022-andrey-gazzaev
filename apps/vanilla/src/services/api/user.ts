@@ -6,10 +6,7 @@ import { defaultRequestInstance } from './instance';
 
 const USER_PROFILE_URL = 'users/profile/';
 
-/**
- * Gets user information from the server.
- * @param access Access token.
- */
+/** Gets user information from the server. */
 export async function fetchUserProfile(): Promise<User> {
   const response = await defaultRequestInstance.get<UserDto>(USER_PROFILE_URL);
 
