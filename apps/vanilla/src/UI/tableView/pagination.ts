@@ -43,14 +43,12 @@ function definePaginationBoundaries(
     lastPage :
     currentPageNumber + PAGE_OFFSET;
 
-  const paginationBorders = {
+  return {
     firstPage: FIRST_PAGE_NUMBER,
     prevPage,
     nextPage,
     lastPage,
   };
-
-  return paginationBorders;
 }
 
 /**
