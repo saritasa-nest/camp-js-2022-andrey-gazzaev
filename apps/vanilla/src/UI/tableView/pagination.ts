@@ -5,17 +5,31 @@ import { handleChangeAnimeData } from './general';
 
 const ELLIPSIS = '...';
 
+/** Borders due to which pagination is built. */
+interface PaginationBorders {
+
+  /** The first page in pagination. */
+  readonly firstPage: number;
+
+  /** The first page, taking into account the offset from the current page. */
+  readonly prevPage: number;
+
+  /** The last page, taking into account the offset from the current page. */
+  readonly nextPage: number;
+
+  /** The last page in pagination. */
+  readonly lastPage: number;
+}
+
 /**
  * Defines pagination boundaries relative to the current page.
  * @param allAnimeCount All records that the server can provide.
  * @param currentPageNumber Page for which you want to create a pagination.
- * @returns An array of borders, where the first element is the left border,
- * the second element is the right border, and the third element is the last page.
  */
 function definePaginationBoundaries(
   allAnimeCount: number,
   currentPageNumber: number,
-): [number, number, number] {
+): PaginationBorders {
   const lastPage = Math.ceil(allAnimeCount / Pagination.DEFAULT_LIMIT);
 
   const prevPage = currentPageNumber - Pagination.PAGE_OFFSET < Pagination.FIRST_PAGE_NUMBER ?
@@ -26,7 +40,14 @@ function definePaginationBoundaries(
     lastPage :
     currentPageNumber + Pagination.PAGE_OFFSET;
 
-  return [prevPage, nextPage, lastPage];
+  const paginationBorders = {
+    firstPage: Pagination.FIRST_PAGE_NUMBER,
+    prevPage,
+    nextPage,
+    lastPage,
+  };
+
+  return paginationBorders;
 }
 
 /**
@@ -123,7 +144,7 @@ export function fillPaginationAnime(
   allAnimeCount: number,
   currentPage: number,
 ): void {
-  const [prevPage, nextPage, lastPage] = definePaginationBoundaries(
+  const { prevPage, nextPage, lastPage } = definePaginationBoundaries(
     allAnimeCount,
     currentPage,
   );
