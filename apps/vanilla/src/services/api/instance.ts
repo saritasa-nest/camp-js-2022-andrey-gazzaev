@@ -1,18 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
 import { HttpError } from '@js-camp/core/models/httpError';
-
-import { HttpErrorDto } from '@js-camp/core/dtos/httpError.dto';
 import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
 
 import { FetchHeader } from '../../constants/fetch';
-
-/**
- * Check if the error is of type HttpErrorDto.
- * @param error Some error.
- */
-function isHttpErrorDto(error: unknown): error is HttpErrorDto {
-  return (error as HttpErrorDto).detail !== undefined;
-}
+import { isHttpErrorDto } from '../../helpers/guards';
 
 /**
  * Generates HttpError from general error.

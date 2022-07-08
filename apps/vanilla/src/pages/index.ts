@@ -1,15 +1,16 @@
 import { LocalStorageKey } from '../constants/localStorage';
-import { Pagination } from '../constants/pagination';
-import { DEFAULT_SORT_SETTINGS } from '../constants/sort';
+import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
 import { getValueFromLocalStorage, setValueToLocalStorage } from '../services/domain/localStorage';
 import { initSortElements } from '../UI/tableView/sort';
-import { SortSettings } from '../types/sortSettings';
+import { PaginationOptions } from '../types/paginationSettings';
 import { handleChangeAnimeData } from '../UI/tableView/general';
+
+const FIRST_PAGE_NUMBER = 1;
 
 /** Adds sorting settings to local storage if they are not there. */
 function initSortSettings(): void {
-  if (getValueFromLocalStorage<SortSettings>(LocalStorageKey.SORT_SETTINGS) === null) {
-    setValueToLocalStorage<SortSettings>(LocalStorageKey.SORT_SETTINGS, DEFAULT_SORT_SETTINGS);
+  if (getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS) === null) {
+    setValueToLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS, DEFAULT_PAGINATION_SETTINGS);
   }
 }
 
@@ -17,7 +18,7 @@ function initSortSettings(): void {
 function initTable(): void {
   initSortSettings();
   initSortElements();
-  handleChangeAnimeData(Pagination.FIRST_PAGE_NUMBER);
+  handleChangeAnimeData(FIRST_PAGE_NUMBER);
 }
 
 window.addEventListener('DOMContentLoaded', initTable);

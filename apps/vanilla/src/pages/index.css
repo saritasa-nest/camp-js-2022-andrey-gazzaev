@@ -24,7 +24,7 @@
   justify-content: space-evenly;
 }
 
-.sort-direction,
+.sort-field,
 .sort-status,
 .sort-ordering {
   display: block;

@@ -1,9 +1,10 @@
 import { TableBlock } from '../../constants/classes';
-import { Pagination } from '../../constants/pagination';
+import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
 
 import { handleChangeAnimeData } from './general';
 
 const ELLIPSIS = '...';
+const PAGE_OFFSET = 3;
 
 /** Borders due to which pagination is built. */
 interface PaginationBorders {
@@ -25,23 +26,25 @@ interface PaginationBorders {
  * Defines pagination boundaries relative to the current page.
  * @param allAnimeCount All records that the server can provide.
  * @param currentPageNumber Page for which you want to create a pagination.
+ * @param limit Anime limit when requesting a new page.
  */
 function definePaginationBoundaries(
   allAnimeCount: number,
   currentPageNumber: number,
+  limit: number,
 ): PaginationBorders {
-  const lastPage = Math.ceil(allAnimeCount / Pagination.DEFAULT_LIMIT);
+  const lastPage = Math.ceil(allAnimeCount / limit);
 
-  const prevPage = currentPageNumber - Pagination.PAGE_OFFSET < Pagination.FIRST_PAGE_NUMBER ?
-    Pagination.FIRST_PAGE_NUMBER :
-    currentPageNumber - Pagination.PAGE_OFFSET;
+  const prevPage = currentPageNumber - PAGE_OFFSET < FIRST_PAGE_NUMBER ?
+    FIRST_PAGE_NUMBER :
+    currentPageNumber - PAGE_OFFSET;
 
-  const nextPage = currentPageNumber + Pagination.PAGE_OFFSET > lastPage ?
+  const nextPage = currentPageNumber + PAGE_OFFSET > lastPage ?
     lastPage :
-    currentPageNumber + Pagination.PAGE_OFFSET;
+    currentPageNumber + PAGE_OFFSET;
 
   const paginationBorders = {
-    firstPage: Pagination.FIRST_PAGE_NUMBER,
+    firstPage: FIRST_PAGE_NUMBER,
     prevPage,
     nextPage,
     lastPage,
@@ -101,8 +104,8 @@ function createButtonPagination(
 ): (HTMLButtonElement | HTMLSpanElement)[] {
   const buttonsPagination: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
-  if (currentPage - Pagination.PAGE_OFFSET > Pagination.FIRST_PAGE_NUMBER) {
-    buttonsPagination.push(createButton(Pagination.FIRST_PAGE_NUMBER, false));
+  if (currentPage - PAGE_OFFSET > FIRST_PAGE_NUMBER) {
+    buttonsPagination.push(createButton(FIRST_PAGE_NUMBER, false));
     buttonsPagination.push(createSpan(ELLIPSIS, []));
   }
 
@@ -114,7 +117,7 @@ function createButtonPagination(
     }
   }
 
-  if (currentPage + Pagination.PAGE_OFFSET < lastPage - 1) {
+  if (currentPage + PAGE_OFFSET < lastPage - 1) {
     buttonsPagination.push(createSpan(ELLIPSIS, []));
     buttonsPagination.push(createButton(lastPage - 1, false));
   }
@@ -139,14 +142,17 @@ function updatePaginationElement(buttons: readonly (HTMLButtonElement | HTMLSpan
  * Fills the pagination element relative to the current page.
  * @param allAnimeCount All records that the server can provide.
  * @param currentPage Page for which you want to create a pagination.
+ * @param limit Anime limit when requesting a new page.
  */
 export function fillPaginationAnime(
   allAnimeCount: number,
   currentPage: number,
+  limit: number,
 ): void {
   const { prevPage, nextPage, lastPage } = definePaginationBoundaries(
     allAnimeCount,
     currentPage,
+    limit,
   );
 
   const buttonsPagination = createButtonPagination(prevPage, nextPage, currentPage, lastPage);
