@@ -17,24 +17,8 @@ export enum Status {
   NotYetAired = 'NOT_YET_AIRED',
 }
 
-/** Date range. */
-export class DateRange extends Immerable {
-
-  /** End date Anime. */
-  public readonly end: Date;
-
-  /** Start date Anime. */
-  public readonly start: Date;
-
-  public constructor(data: InitArgsDateRange) {
-    super();
-    this.end = data.end;
-    this.start = data.start;
-  }
-}
-
 /** Anime. */
-export class Anime extends Immerable {
+export class Anime<T> extends Immerable {
 
   /** ID. */
   public readonly id: number;
@@ -49,7 +33,7 @@ export class Anime extends Immerable {
   public readonly titleJapanese: string;
 
   /** Release and end dates. */
-  public readonly aired: DateRange;
+  public readonly aired: T;
 
   /** Anime type. */
   public readonly type: Type;
@@ -57,7 +41,7 @@ export class Anime extends Immerable {
   /** Anime status. */
   public readonly status: Status;
 
-  public constructor(data: InitArgsAnime) {
+  public constructor(data: InitArgsAnime<T>) {
     super();
     this.id = data.id;
     this.image = data.image;
@@ -69,5 +53,4 @@ export class Anime extends Immerable {
   }
 }
 
-type InitArgsDateRange = OmitImmerable<DateRange>;
-type InitArgsAnime = OmitImmerable<Anime>;
+type InitArgsAnime<T> = OmitImmerable<Anime<T>>;

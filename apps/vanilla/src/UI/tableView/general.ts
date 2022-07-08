@@ -1,4 +1,5 @@
 import { Anime } from '@js-camp/core/models/anime';
+import { DateRange } from '@js-camp/core/models/dateRange';
 
 import { Page } from '../../constants/classes';
 
@@ -9,7 +10,7 @@ import { fillTableAnime } from './table';
 interface TableViewData {
 
   /** List of anime contained in the table. */
-  readonly animeList: readonly Anime[];
+  readonly animeList: readonly Anime<DateRange>[];
 
   /** The total number of anime on which the pagination is based. */
   readonly totalAnimeCount: number;

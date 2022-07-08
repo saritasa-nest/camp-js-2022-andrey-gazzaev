@@ -1,15 +1,5 @@
-/** Aired DTO. */
-interface AiredDto {
-
-  /** End date Anime. */
-  readonly end: string;
-
-  /** Start date Anime. */
-  readonly start: string;
-}
-
 /** Anime DTO. */
-export interface AnimeDto {
+export interface AnimeDto<T> {
 
   /** ID. */
   readonly id: number;
@@ -30,7 +20,7 @@ export interface AnimeDto {
   readonly title_jpn: string;
 
   /** Release and end dates. */
-  readonly aired: AiredDto;
+  readonly aired: T;
 
   /** Anime type (TV, OVA, MOVIE, SPECIAL, ONA, MUSIC). */
   readonly type: string;
