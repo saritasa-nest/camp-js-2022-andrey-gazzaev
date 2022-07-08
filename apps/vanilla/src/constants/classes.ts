@@ -5,7 +5,7 @@ export namespace SelectorElement {
   export const SELECT_SORT_ORDERING = 'sort-ordering';
 }
 
-/** The class names for the catalog-block. */
+/** The class names for the table-block. */
 export namespace TableBlock {
   export const TABLE = 'table-block__table';
   export const PAGINATION = 'table-block__pagination';

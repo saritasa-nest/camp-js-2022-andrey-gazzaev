@@ -5,7 +5,7 @@ import { AnimeData } from '../types/anime';
 import { SortSettings } from '../types/sortSettings';
 
 import { fetchAnime } from './api/anime';
-import { getValueFromLocalStorage } from './domain/localStorage';
+import { getValueFromLocalStorage, setValueToLocalStorage } from './domain/localStorage';
 
 /**
  * Creates a URL address to get the page with the anime, taking into account the offset.
@@ -41,8 +41,9 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
     const { results: animeList, count: totalAnimeCount } = await fetchAnime(urlGetAnime);
 
     return { animeList, totalAnimeCount, currentPageNumber };
-
   } catch (error: unknown) {
+    setValueToLocalStorage(LocalStorageKey.SORT_SETTINGS, null);
+
     return null;
   }
 }

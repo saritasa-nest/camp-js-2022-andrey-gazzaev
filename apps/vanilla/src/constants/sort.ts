@@ -3,7 +3,7 @@ import { Status } from '@js-camp/core/models/anime';
 import { SortOption, SortSettings } from '../types/sortSettings';
 
 /** Possible options ordering type. */
-export enum Ordering {
+enum SortField {
   TitleEnglish = 'title_eng',
   TitleJapanese = 'title_jpn',
   Aired = 'aired',
@@ -11,7 +11,7 @@ export enum Ordering {
 
 /** Default sort settings. */
 export const DEFAULT_SORT_SETTINGS: SortSettings = {
-  ordering: Ordering.TitleEnglish,
+  ordering: SortField.TitleEnglish,
   direction: '',
   status: Status.Airing,
 };
@@ -19,9 +19,9 @@ export const DEFAULT_SORT_SETTINGS: SortSettings = {
 /** Options in ordering select. */
 export const OPTIONS_FOR_ORDERING: readonly SortOption[] =
   [
-    { text: 'Title in English', value: Ordering.TitleEnglish },
-    { text: 'Title in Japanese', value: Ordering.TitleJapanese },
-    { text: 'Aired Start', value: Ordering.Aired },
+    { text: 'Title in English', value: SortField.TitleEnglish },
+    { text: 'Title in Japanese', value: SortField.TitleJapanese },
+    { text: 'Aired Start', value: SortField.Aired },
   ];
 
 /** Options in direction select. */

@@ -1,3 +1,5 @@
+import { Status, Type } from '../models/anime';
+
 /** Anime DTO. */
 export interface AnimeDto<T> {
 
@@ -23,8 +25,8 @@ export interface AnimeDto<T> {
   readonly aired: T;
 
   /** Anime type (TV, OVA, MOVIE, SPECIAL, ONA, MUSIC). */
-  readonly type: string;
+  readonly type: Type ;
 
   /** Anime status (airing, finished, not yet airing). */
-  readonly status: string;
+  readonly status: Status;
 }
