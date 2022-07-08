@@ -1,8 +1,6 @@
-
-import { TableBlock } from '../constants/classes';
-import { Pagination } from '../constants/pagination';
-
-import { changeAnimeData } from './public';
+import { TableBlock } from '../../constants/classes';
+import { Pagination } from '../../constants/pagination';
+import { changeAnimeData } from '../../services/general';
 
 /**
  * Defines pagination boundaries relative to the current page.

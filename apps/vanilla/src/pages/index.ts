@@ -1,16 +1,16 @@
 import { renderHeader } from '../UI/header/header';
-import { LocalStorageKeys } from '../constants/localStorage';
+import { LocalStorageKey } from '../constants/localStorage';
 import { Pagination } from '../constants/pagination';
 import { DEFAULT_SORT_SETTINGS } from '../constants/sort';
-import { getLocalStorage, setLocalStorage } from '../scripts/localStorage';
-import { changeAnimeData } from '../scripts/public';
-import { initSortElements } from '../scripts/sort';
+import { getValueFromLocalStorage, setValueToLocalStorage } from '../services/domain/localStorage';
+import { initSortElements } from '../UI/tableView/sort';
 import { SortSettings } from '../types/sortSettings';
+import { changeAnimeData } from '../services/general';
 
 /** Adds sorting settings to local storage if they are not there. */
 function initSortSettings(): void {
-  if (getLocalStorage<SortSettings>(LocalStorageKeys.SORT_SETTINGS) === null) {
-    setLocalStorage<SortSettings>(LocalStorageKeys.SORT_SETTINGS, DEFAULT_SORT_SETTINGS);
+  if (getValueFromLocalStorage<SortSettings>(LocalStorageKey.SORT_SETTINGS) === null) {
+    setValueToLocalStorage<SortSettings>(LocalStorageKey.SORT_SETTINGS, DEFAULT_SORT_SETTINGS);
   }
 }
 
