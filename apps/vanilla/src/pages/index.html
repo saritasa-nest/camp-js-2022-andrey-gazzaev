@@ -39,20 +39,30 @@
       <h2 id="catalog-anime" class="title">Table with anime</h2>
       <div class="table-block">
         <form class="table-block__sort-settings form">
-          <label class="form__label field">
-            <span class="form__label-text">Sort by:</span>
-            <select name="ordering" class="form__select sort-field"></select>
-          </label>
 
-          <label class="form__label field">
-            <span class="form__label-text">Ordering:</span>
-            <select name="direction" class="form__select sort-ordering"></select>
-          </label>
+          <div class="field">
+            <label class="form__label field" for="sort-field">
+              <span class="form__label-text">Sort by:</span>
+            </label>
+            <select name="fields" class="form__select sort-field" id="sort-field"></select>
+          </div>
 
-          <label class="form__label field">
-            <span class="form__label-text">Filter by status:</span>
-            <select name="status" class="form__select sort-status"></select>
-          </label>
+
+          <div class="field">
+            <label class="form__label field" for="sort-ordering">
+              <span class="form__label-text">Ordering:</span>
+            </label>
+            <select name="ordering" class="form__select sort-ordering" id="sort-ordering"></select>
+          </div>
+
+          <div class="field">
+            <label class="form__label " for="sort-status">
+              <span class="form__label-text">Filter by status:</span>
+            </label>
+            <select name="status" class="form__select sort-status" id="sort-status"></select>
+          </div>
+
+
         </form>
 
         <table class="table-block__table table" aria-label="anime" aria-describedby="catalog-anime">
