@@ -19,8 +19,6 @@
 }
 
 .form__input {
-  background: none;
-  border: none;
   color: var(--form-default-color);
   font-size: var(--default-text-size);
   border-bottom: 2px solid var(--form-default-color);
@@ -31,7 +29,6 @@
 .form__button {
   color: var(--form-default-color);
   font-size: var(--default-text-size);
-  background: none;
   background-color: var(--form-background);
   border: 1px solid var(--form-default-color);
   border-radius: 5px;

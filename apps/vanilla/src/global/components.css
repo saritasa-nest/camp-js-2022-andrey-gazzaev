@@ -26,11 +26,6 @@ a:hover,
   outline: 0;
 }
 
-.page {
-  margin: 0;
-  padding: 0;
-}
-
 .error {
   color: var(--error-text-color);
   font-size: var(--default-text-size);

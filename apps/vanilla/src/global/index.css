@@ -1,4 +1,5 @@
 @import url("@js-camp/theme/src/index.css");
+@import url("./cssReset.css");
 @import url("./base.css");
 @import url("./components.css");
 @import url("./variables.css");

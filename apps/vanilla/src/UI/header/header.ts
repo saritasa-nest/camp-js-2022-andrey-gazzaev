@@ -12,7 +12,7 @@ const SIGN_OUT_BUTTON = 'sign-out';
 /** Signs out from account. */
 function handleSingOut(): void {
   setValueToLocalStorage(LocalStorageKey.TOKENS, null);
-  changeHeader();
+  renderHeader();
 }
 
 /** Creates a logout button. */
