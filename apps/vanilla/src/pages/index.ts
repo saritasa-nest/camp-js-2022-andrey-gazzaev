@@ -14,11 +14,11 @@ function initSortSettings(): void {
   }
 }
 
-/** Table initialization and pagination. */
-function initTable(): void {
+/** Initialization home page. */
+function initHomePage(): void {
   initSortSettings();
   initSortElements();
   handleChangeAnimeData(FIRST_PAGE_NUMBER);
 }
 
-window.addEventListener('DOMContentLoaded', initTable);
+window.addEventListener('DOMContentLoaded', initHomePage);
