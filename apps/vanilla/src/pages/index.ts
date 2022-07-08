@@ -15,10 +15,8 @@ function initSortSettings(): void {
   }
 }
 
-/**
- * Table initialization and pagination.
- */
-const initPage = (): void => {
+/** Initialization home page. */
+function initHomePage(): void {
   renderHeader();
 
   initSortSettings();
@@ -26,4 +24,4 @@ const initPage = (): void => {
   handleChangeAnimeData(FIRST_PAGE_NUMBER);
 }
 
-window.addEventListener('DOMContentLoaded', initPage);
+window.addEventListener('DOMContentLoaded', initHomePage);

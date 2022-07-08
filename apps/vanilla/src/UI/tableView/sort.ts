@@ -1,9 +1,11 @@
 import { SelectorElement } from '../../constants/classes';
 import { LocalStorageKey } from '../../constants/localStorage';
-import { FIRST_PAGE_NUMBER, OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS } from '../../constants/pagination';
-import { PaginationOptions, SelectOptions } from '../../types/paginationSettings';
+import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
+import { PaginationOptions } from '../../types/paginationSettings';
 import { getValueFromLocalStorage, setValueToLocalStorage } from '../../services/domain/localStorage';
+import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS } from '../../constants/select';
 import { isSortField, isSortOrdering, isStatus } from '../../helpers/guards';
+import { SelectOptions } from '../../types/select';
 
 import { handleChangeAnimeData } from './general';
 
