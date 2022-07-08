@@ -1,11 +1,14 @@
-/** Error coming from the server. */
-export class HttpError extends Error {
+import { OmitImmerable } from './immerable';
 
-  /** Error description. */
+/** Error coming from the server. */
+export class HttpError {
+
+  /** Error Description. */
   public readonly detail: string;
 
-  public constructor(detail: string) {
-    super();
-    this.detail = detail;
+  public constructor(error: InitArgsHttpError) {
+    this.detail = error.detail;
   }
 }
+
+type InitArgsHttpError = OmitImmerable<HttpError>;

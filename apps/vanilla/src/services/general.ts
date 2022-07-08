@@ -31,7 +31,6 @@ function getUrlAnime(offset: number, sort: SortSettings): string {
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
   const localSortSettings = getValueFromLocalStorage<SortSettings>(LocalStorageKey.SORT_SETTINGS);
-
   const currentOffset = currentPageNumber * Pagination.DEFAULT_LIMIT;
   const urlGetAnime = localSortSettings !== null ?
     getUrlAnime(currentOffset, localSortSettings) :
