@@ -1,4 +1,4 @@
-import { HttpErrorDto } from '@js-camp/core/dtos/httpError.dto';
+import { HttpErrorDto } from '../../dtos/httpError.dto';
 
 /**
  * Checks if the error is of type HttpErrorDto.
