@@ -68,9 +68,9 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
   const urlGetAnime = getUrlAnime(currentOffset, localPaginationOptions);
 
   try {
-    const { results: animeList, count: totalAnimeCount } = await fetchAnime(urlGetAnime);
+    const { results: list, count: totalCount } = await fetchAnime(urlGetAnime);
 
-    return { animeList, totalAnimeCount, currentPageNumber, limit: localPaginationOptions.limit };
+    return { list, totalCount, currentPageNumber, limit: localPaginationOptions.limit };
   } catch (error: unknown) {
     LocalStorageService.setValue(LocalStorageKey.PAGINATION_SETTINGS, null);
     return null;

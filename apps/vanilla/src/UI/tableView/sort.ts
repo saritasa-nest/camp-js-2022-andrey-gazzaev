@@ -63,11 +63,9 @@ export function initSortElements(): void {
     const selectElement = document.querySelector<HTMLSelectElement>(`.${select.selector}`);
 
     if (selectElement !== null) {
-      // Selects should consist of pre-prepared options elements.
       select.options.forEach(option => selectElement.append(createOption(option.text, [], option.value)));
 
-      // Depending on the choice, the table should change.
-      return selectElement.addEventListener(
+      selectElement.addEventListener(
         'change',
         () => handleChangePaginationOptions(selectElement.value),
       );
