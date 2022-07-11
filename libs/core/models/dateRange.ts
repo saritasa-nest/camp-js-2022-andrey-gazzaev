@@ -4,10 +4,10 @@ import { Immerable, OmitImmerable } from './immerable';
 export class DateRange extends Immerable {
 
   /** End date. */
-  public readonly end: Date;
+  public readonly end: Date | null;
 
   /** Start date. */
-  public readonly start: Date;
+  public readonly start: Date | null;
 
   public constructor(data: InitArgsDateRange) {
     super();
