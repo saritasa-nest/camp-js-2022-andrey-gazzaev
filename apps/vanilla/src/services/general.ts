@@ -5,11 +5,15 @@ import { LocalStorageKey } from '../constants/localStorage';
 
 import { checkTokenValidity, getRefreshedToken } from './api/auth';
 import { fetchUserProfile } from './api/user';
-import { getValueFromLocalStorage, setValueToLocalStorage } from './domain/localStorage';
+import { LocalStorageService } from './domain/localStorage';
 
-/** Changes header depending on the user. */
+/**
+ * Changes header depending on the user.
+ * @returns Return information about the user if the token is valid,
+ * false if the tokens have expired, true if there were no tokens.
+ */
 export async function changeHeader(): Promise<User | boolean> {
-  const tokens = getValueFromLocalStorage<Tokens>(LocalStorageKey.TOKENS);
+  const tokens = LocalStorageService.getValueFromLocalStorage<Tokens>(LocalStorageKey.TOKENS);
   if (tokens !== null) {
     try {
       const isTokenValid = await checkTokenValidity(tokens.access);
@@ -21,7 +25,7 @@ export async function changeHeader(): Promise<User | boolean> {
 
       return await fetchUserProfile();
     } catch (error: unknown) {
-      setValueToLocalStorage(LocalStorageKey.TOKENS, null);
+      LocalStorageService.setValueToLocalStorage(LocalStorageKey.TOKENS, null);
 
       return false;
     }

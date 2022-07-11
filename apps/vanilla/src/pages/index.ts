@@ -1,8 +1,6 @@
 import { renderHeader } from '../UI/header/header';
 
-/**
- * Initializations page.
- */
+/** Initializations page. */
 function initPage(): void {
   renderHeader();
 }

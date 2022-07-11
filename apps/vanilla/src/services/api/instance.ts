@@ -3,11 +3,11 @@ import axios, { AxiosInstance } from 'axios';
 import { HttpError } from '@js-camp/core/models/httpError';
 import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
 import { Tokens } from '@js-camp/core/models/tokens';
+import { isHttpErrorDto } from '@js-camp/core/utils/guards/error.guard';
 
-import { isHttpErrorDto } from '../../helpers/guards';
 import { FetchHeader } from '../../constants/fetch';
 import { LocalStorageKey } from '../../constants/localStorage';
-import { getValueFromLocalStorage } from '../domain/localStorage';
+import { LocalStorageService } from '../domain/localStorage';
 
 /**
  * Generates HttpError from general error.
@@ -34,7 +34,7 @@ export const defaultRequestInstance: AxiosInstance = axios.create({
 });
 
 defaultRequestInstance.interceptors.request.use(config => {
-  const tokens = getValueFromLocalStorage<Tokens>(LocalStorageKey.TOKENS);
+  const tokens = LocalStorageService.getValueFromLocalStorage<Tokens>(LocalStorageKey.TOKENS);
   if (tokens !== null && config.headers !== undefined) {
     config.headers[FetchHeader.Authorization] = `Bearer ${tokens.access}`;
   }

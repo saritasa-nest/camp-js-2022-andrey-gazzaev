@@ -4,7 +4,7 @@ import { Tokens } from '@js-camp/core/models/tokens';
 import { ErrorMessage, FormField } from '../../constants/form';
 import { LocalStorageKey } from '../../constants/localStorage';
 import { loginUser } from '../../services/api/auth';
-import { setValueToLocalStorage } from '../../services/domain/localStorage';
+import { LocalStorageService } from '../../services/domain/localStorage';
 import { getValue, goToHomePage, showError } from '../general';
 
 /**
@@ -30,7 +30,7 @@ export async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
   try {
     const tokens = await loginUser({ email, password });
 
-    setValueToLocalStorage<Tokens>(LocalStorageKey.TOKENS, tokens);
+    LocalStorageService.setValueToLocalStorage<Tokens>(LocalStorageKey.TOKENS, tokens);
 
     goToHomePage();
   } catch (error: unknown) {
