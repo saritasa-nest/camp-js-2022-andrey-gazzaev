@@ -1,11 +1,10 @@
 import { Anime } from '@js-camp/core/models/anime';
-import { DateRange } from '@js-camp/core/models/dateRange';
 
 /** Ready anime data. */
 export interface AnimeData {
 
   /** List of anime contained in the table. */
-  readonly animeList: readonly Anime<DateRange>[];
+  readonly animeList: readonly Anime[];
 
   /** The total number of anime on which the pagination is based. */
   readonly totalAnimeCount: number;
