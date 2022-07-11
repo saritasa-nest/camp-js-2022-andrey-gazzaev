@@ -8,7 +8,7 @@ import { fetchAnime } from './api/anime';
 import { isTokenValid } from './api/auth';
 import { fetchUserProfile } from './api/user';
 import { TokenService } from './domain/token';
-import { getValueFromLocalStorage, setValueToLocalStorage } from './domain/localStorage';
+import { LocalStorageService } from './domain/localStorage';
 
 /** Checks if the user is logged in. */
 async function isAuthorized(): Promise<boolean> {
@@ -58,7 +58,7 @@ function getUrlAnime(offset: number, paginationOptions: PaginationOptions): stri
  * @param currentPageNumber The page on which the change occurs.
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
-  const localPaginationOptions = getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  const localPaginationOptions = LocalStorageService.getValue<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
   if (localPaginationOptions === null) {
     return null;
   }
@@ -72,7 +72,7 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
 
     return { animeList, totalAnimeCount, currentPageNumber, limit: localPaginationOptions.limit };
   } catch (error: unknown) {
-    setValueToLocalStorage(LocalStorageKey.PAGINATION_SETTINGS, null);
+    LocalStorageService.setValue(LocalStorageKey.PAGINATION_SETTINGS, null);
     return null;
   }
 }
