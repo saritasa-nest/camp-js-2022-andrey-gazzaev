@@ -6,6 +6,7 @@ import { PaginationOptions } from '../types/paginationSettings';
 /** Anime limit when requesting a new page. */
 const DEFAULT_LIMIT = 25;
 
+/** First pagination page. */
 export const FIRST_PAGE_NUMBER = 1;
 
 /** Default sort settings. */

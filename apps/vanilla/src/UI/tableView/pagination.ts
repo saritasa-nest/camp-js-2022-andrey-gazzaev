@@ -88,10 +88,8 @@ function createSpan(text: string, classes: readonly string[]): HTMLSpanElement {
 
 /**
  * Creates pagination elements within certain borders.
- * @param prevPage Left border.
- * @param nextPage Right border.
+ * @param paginationBorders Left, right border and first, last page pagination.
  * @param currentPage Page for which you want to create a pagination.
- * @param lastPage The last page.
  * @returns Array of buttons.
  */
 function createPaginationElements({
