@@ -3,7 +3,7 @@ import { AnimeData } from '../types/anime';
 import { PaginationOptions } from '../types/paginationSettings';
 
 import { fetchAnime } from './api/anime';
-import { getValueFromLocalStorage, setValueToLocalStorage } from './domain/localStorage';
+import { LocalStorageService } from './domain/localStorage';
 
 /**
  * Creates a URL address to get the page with the anime, taking into account the offset.
@@ -28,7 +28,7 @@ function getUrlAnime(offset: number, paginationOptions: PaginationOptions): stri
  * @param currentPageNumber The page on which the change occurs.
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
-  const localPaginationOptions = getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  const localPaginationOptions = LocalStorageService.getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
   if (localPaginationOptions === null) {
     return null;
   }
@@ -42,7 +42,7 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
 
     return { animeList, totalAnimeCount, currentPageNumber, limit: localPaginationOptions.limit };
   } catch (error: unknown) {
-    setValueToLocalStorage(LocalStorageKey.PAGINATION_SETTINGS, null);
+    LocalStorageService.setValueToLocalStorage(LocalStorageKey.PAGINATION_SETTINGS, null);
     return null;
   }
 }

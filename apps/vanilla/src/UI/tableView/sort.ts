@@ -4,7 +4,7 @@ import { SelectorElement } from '../../constants/classes';
 import { LocalStorageKey } from '../../constants/localStorage';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
 import { PaginationOptions } from '../../types/paginationSettings';
-import { getValueFromLocalStorage, setValueToLocalStorage } from '../../services/domain/localStorage';
+import { LocalStorageService } from '../../services/domain/localStorage';
 import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS } from '../../constants/select';
 import { SelectOptions } from '../../types/select';
 
@@ -15,7 +15,7 @@ import { handleChangeAnimeData } from './general';
  * @param selectValue Value of sort or filter select.
  */
 function handleChangePaginationOptions(selectValue: string): void {
-  const paginationOptions = getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  const paginationOptions = LocalStorageService.getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
   if (paginationOptions !== null) {
     let { sort, filter } = paginationOptions;
 
@@ -27,7 +27,10 @@ function handleChangePaginationOptions(selectValue: string): void {
       sort = { ...paginationOptions.sort, ordering: selectValue };
     }
 
-    setValueToLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS, { ...paginationOptions, sort, filter });
+    LocalStorageService.setValueToLocalStorage<PaginationOptions>(
+      LocalStorageKey.PAGINATION_SETTINGS,
+      { ...paginationOptions, sort, filter },
+    );
   }
 
   handleChangeAnimeData(FIRST_PAGE_NUMBER);
