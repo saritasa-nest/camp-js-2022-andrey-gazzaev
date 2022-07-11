@@ -4,10 +4,10 @@ import { Anime } from '@js-camp/core/models/anime';
 export interface AnimeData {
 
   /** List of anime contained in the table. */
-  readonly animeList: readonly Anime[];
+  readonly list: readonly Anime[];
 
   /** The total number of anime on which the pagination is based. */
-  readonly totalAnimeCount: number;
+  readonly totalCount: number;
 
   /** The current page on which pagination is based. */
   readonly currentPageNumber: number;

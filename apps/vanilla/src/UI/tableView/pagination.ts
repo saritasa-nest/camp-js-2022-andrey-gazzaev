@@ -87,19 +87,18 @@ function createSpan(text: string, classes: readonly string[]): HTMLSpanElement {
 }
 
 /**
- * Creates pagination buttons within certain borders.
+ * Creates pagination elements within certain borders.
  * @param prevPage Left border.
  * @param nextPage Right border.
  * @param currentPage Page for which you want to create a pagination.
  * @param lastPage The last page.
  * @returns Array of buttons.
  */
-function createButtonPagination(
-  prevPage: number,
-  nextPage: number,
-  currentPage: number,
-  lastPage: number,
-): (HTMLButtonElement | HTMLSpanElement)[] {
+function createPaginationElements({
+  prevPage,
+  nextPage,
+  lastPage,
+}: PaginationBorders, currentPage: number): (HTMLButtonElement | HTMLSpanElement)[] {
   const buttonsPagination: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
   if (currentPage - PAGE_OFFSET > FIRST_PAGE_NUMBER) {
@@ -147,13 +146,13 @@ export function fillPaginationAnime(
   currentPage: number,
   limit: number,
 ): void {
-  const { prevPage, nextPage, lastPage } = definePaginationBoundaries(
+  const paginationBorders = definePaginationBoundaries(
     allAnimeCount,
     currentPage,
     limit,
   );
 
-  const buttonsPagination = createButtonPagination(prevPage, nextPage, currentPage, lastPage);
+  const buttonsPagination = createPaginationElements(paginationBorders, currentPage);
 
   updatePaginationElement(buttonsPagination);
 }
