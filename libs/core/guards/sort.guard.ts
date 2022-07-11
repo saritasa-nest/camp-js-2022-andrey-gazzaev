@@ -1,15 +1,5 @@
-import { Status } from '@js-camp/core/models/anime';
-import { HttpErrorDto } from '@js-camp/core/dtos/httpError.dto';
-
-import { SortField, SortOrdering } from '../types/paginationSettings';
-
-/**
- * Check if the error is of type HttpErrorDto.
- * @param error Some error.
- */
-export function isHttpErrorDto(error: unknown): error is HttpErrorDto {
-  return (error as HttpErrorDto).detail !== undefined;
-}
+import { Status } from '../models/anime';
+import { SortField, SortOrdering } from '../utils/types/sort';
 
 /**
  * Checks if a value is of a enum Status.

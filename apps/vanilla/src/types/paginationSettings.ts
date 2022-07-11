@@ -1,17 +1,5 @@
 import { Status } from '@js-camp/core/models/anime';
-
-/** Fields by which you can sort. */
-export enum SortField {
-  TitleEnglish = 'title_eng',
-  TitleJapanese = 'title_jpn',
-  Aired = 'aired',
-}
-
-/** Ordering direction. */
-export enum SortOrdering {
-  Ascending = '',
-  Descending = '-',
-}
+import { Sort, SortField, SortOrdering } from '@js-camp/core/utils/types/sort';
 
 /** Filter settings. */
 export interface Filter {
@@ -20,21 +8,11 @@ export interface Filter {
   readonly byStatusField: Status;
 }
 
-/** Sort settings. */
-export interface Sort {
-
-  /** Ordering direction. */
-  readonly ordering: SortOrdering;
-
-  /** Field by sort. */
-  readonly field: SortField;
-}
-
 /** Pagination settings. */
 export interface PaginationOptions {
 
   /** Sort settings. */
-  readonly sort: Sort;
+  readonly sort: Sort<SortOrdering, SortField>;
 
   /** Filter settings. */
   readonly filter: Filter;
