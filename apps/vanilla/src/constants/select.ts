@@ -1,6 +1,6 @@
 import { Status } from '@js-camp/core/models/anime';
+import { SortField } from '@js-camp/core/utils/types/sort';
 
-import { SortField } from '../types/paginationSettings';
 import { Option } from '../types/select';
 
 /** Options in sort field select. */

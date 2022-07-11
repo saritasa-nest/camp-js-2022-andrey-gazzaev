@@ -1,3 +1,4 @@
+import { DateRange } from './dateRange';
 import { Immerable, OmitImmerable } from './immerable';
 
 /** Possible options anime type. */
@@ -18,7 +19,7 @@ export enum Status {
 }
 
 /** Anime. */
-export class Anime<T> extends Immerable {
+export class Anime extends Immerable {
 
   /** ID. */
   public readonly id: number;
@@ -33,7 +34,7 @@ export class Anime<T> extends Immerable {
   public readonly titleJapanese: string;
 
   /** Release start and end dates. */
-  public readonly aired: T;
+  public readonly aired: DateRange;
 
   /** Anime type. */
   public readonly type: Type;
@@ -41,7 +42,7 @@ export class Anime<T> extends Immerable {
   /** Anime status. */
   public readonly status: Status;
 
-  public constructor(data: InitArgsAnime<T>) {
+  public constructor(data: InitArgsAnime) {
     super();
     this.id = data.id;
     this.image = data.image;
@@ -53,4 +54,4 @@ export class Anime<T> extends Immerable {
   }
 }
 
-type InitArgsAnime<T> = OmitImmerable<Anime<T>>;
+type InitArgsAnime = OmitImmerable<Anime>;

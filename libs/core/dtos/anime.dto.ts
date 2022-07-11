@@ -1,7 +1,9 @@
 import { Status, Type } from '../models/anime';
 
+import { DateRangeDto } from './dateRange.dto';
+
 /** Anime DTO. */
-export interface AnimeDto<T> {
+export interface AnimeDto {
 
   /** ID. */
   readonly id: number;
@@ -22,7 +24,7 @@ export interface AnimeDto<T> {
   readonly title_jpn: string;
 
   /** Release and end dates. */
-  readonly aired: T;
+  readonly aired: DateRangeDto;
 
   /** Anime type (TV, OVA, MOVIE, SPECIAL, ONA, MUSIC). */
   readonly type: Type ;

@@ -1,6 +1,7 @@
 import { Status } from '@js-camp/core/models/anime';
+import { SortField, SortOrdering } from '@js-camp/core/utils/types/sort';
 
-import { PaginationOptions, SortField, SortOrdering } from '../types/paginationSettings';
+import { PaginationOptions } from '../types/paginationSettings';
 
 /** Anime limit when requesting a new page. */
 const DEFAULT_LIMIT = 25;
