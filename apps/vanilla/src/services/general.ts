@@ -8,7 +8,7 @@ import { LocalStorageService } from './domain/localStorage';
 /**
  * Creates a URL address to get the page with the anime, taking into account the offset.
  * @param offset Offset relative to which you want to get records.
- * @param paginationOptions  Options.
+ * @param paginationOptions Pagination Options.
  * @returns Ready url.
  */
 function getUrlAnime(offset: number, paginationOptions: PaginationOptions): string {

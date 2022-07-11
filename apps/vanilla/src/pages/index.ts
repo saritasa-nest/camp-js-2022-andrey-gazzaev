@@ -1,11 +1,9 @@
 import { LocalStorageKey } from '../constants/localStorage';
-import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
+import { DEFAULT_PAGINATION_SETTINGS, FIRST_PAGE_NUMBER } from '../constants/pagination';
 import { initSortElements } from '../UI/tableView/sort';
 import { PaginationOptions } from '../types/paginationSettings';
 import { handleChangeAnimeData } from '../UI/tableView/general';
 import { LocalStorageService } from '../services/domain/localStorage';
-
-const FIRST_PAGE_NUMBER = 1;
 
 /** Adds sorting settings to local storage if they are not there. */
 function initSortSettings(): void {
