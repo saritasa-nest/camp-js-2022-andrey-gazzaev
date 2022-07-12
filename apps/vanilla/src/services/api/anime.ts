@@ -25,7 +25,7 @@ export async function fetchAnime(url: string): Promise<Pagination<Anime>> {
  * @param id ID of anime.
  */
 export async function fetchAnimeById(id: number): Promise<Anime> {
-  const url = `/api/v1/anime/anime/${id}/`;
+  const url = `/anime/anime/${id}/`;
   const response = await defaultRequestInstance.get<AnimeDto>(url);
 
   return AnimeMapper.fromDto(response.data);

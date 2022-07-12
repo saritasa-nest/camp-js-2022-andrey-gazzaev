@@ -1,0 +1,66 @@
+@import url("../../global/index.css");
+@import url("../../global/form.css");
+@import url("../../global/header.css");
+
+.details {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.anime-information {
+  display: flex;
+  justify-content: center;
+}
+
+.details__anime-title {
+  font-size: 1.25em;
+}
+
+.details__anime-synopsis {
+  font-size: 0.85em;
+  color: #686868;
+}
+
+.details__image {
+  max-width: 360px;
+  max-height: 360px;
+  margin-right: 20px;
+}
+
+.details__description {
+  max-width: 700px;
+}
+
+.list-block {
+  display: flex;
+  align-items: center;
+}
+
+.list-title {
+  margin-right: 5px;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list__item {
+  margin-right: 10px;
+}
+
+.card-item {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.anime-trailer {
+  display: flex;
+}
+
+.anime-trailer__video {
+  min-width: 460px;
+  min-height: 360px;
+}

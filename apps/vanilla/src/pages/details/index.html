@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./index.css" />
+  <title>Anime App</title>
+</head>
+
+<body class="page">
+  <header class="page__header header">
+    <h1 class="logo-text">Anime catalog</h1>
+    <div class="header__profile profile"></div>
+  </header>
+
+  <template class="standard-profile">
+    <div class="header__profile profile">
+      <ul class="profile__list">
+        <li class="profile__list-item">
+          <a class="profile__list-link link" title="Sign in to account" href="/login/">Sign in</a>
+        </li>
+        <li class="profile__list-item">
+          <a class="profile__list-link link" title="Register a new account" href="/registration/">Sign up</a>
+        </li>
+      </ul>
+    </div>
+  </template>
+
+  <template class="user-profile">
+    <div class="header__profile profile">
+      <form class="form profile__form"></form>
+    </div>
+  </template>
+
+  <section class="details">
+    <article class="anime-information">
+      <img src="" alt="Image of anime" class="details__image">
+      <div class="details__description">
+        <h2 class="details__anime-title card-item"></h2>
+        <p class="details__anime-synopsis card-item"></p>
+        <p class="details__anime-airing card-item"></p>
+        <p class="details__anime-aired card-item"></p>
+
+        <div class="list-block">
+          <span class="list-title">Studios: </span>
+          <ul class="details__list-studios list card-item"></ul>
+        </div>
+
+        <div class="list-block">
+          <span class="list-title">Genres: </span>
+          <ul class="details__list-genres list card-item"></ul>
+        </div>
+      </div>
+    </article>
+
+    <article class="anime-trailer">
+      <iframe class="anime-trailer__video" src=""
+        title="trailer" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </article>
+  </section>
+
+  <script type="module" src="./index.ts"></script>
+</body>
+
+</html>
