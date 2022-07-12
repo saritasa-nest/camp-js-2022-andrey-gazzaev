@@ -10,18 +10,18 @@ const STANDARD_PROFILE_TEMPLATE = 'standard-profile';
 const SIGN_OUT_BUTTON = 'sign-out';
 
 /** Signs out from account. */
-function handleSingOut(): void {
+function handleSignOut(): void {
   LocalStorageService.setValueToLocalStorage(LocalStorageKey.TOKENS, null);
   renderHeader();
 }
 
 /** Creates a logout button. */
-function createSingOutButton(): HTMLButtonElement {
+function createSignOutButton(): HTMLButtonElement {
   const button = document.createElement('button');
   button.innerHTML = 'Sign out';
   button.classList.add(SIGN_OUT_BUTTON, Form.BUTTON);
   button.setAttribute('type', 'button');
-  button.addEventListener('click', handleSingOut);
+  button.addEventListener('click', handleSignOut);
   return button;
 }
 
@@ -58,7 +58,7 @@ function renderUserProfile(user: User): void {
       userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName}!`;
       userGreeting.classList.add(Profile.NAME);
 
-      const signOutButton = createSingOutButton();
+      const signOutButton = createSignOutButton();
       const profileElement = profileTemplate.content.cloneNode(true);
 
       if (!(profileElement instanceof DocumentFragment)) {
