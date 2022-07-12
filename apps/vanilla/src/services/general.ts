@@ -8,22 +8,21 @@ import { fetchUserProfile } from './api/user';
 import { LocalStorageService } from './domain/localStorage';
 
 /**
- * Changes header depending on the user.
- * @returns Return information about the user if the token is valid,
- * false if the tokens have expired, true if there were no tokens.
+ * Check if the user is logged in.
+ * @param next The function to be executed if the user is logged in.
  */
-export async function changeHeader(): Promise<User | boolean> {
+async function isAuthorization<T>(next: () => Promise<T>): Promise<T | boolean> {
   const tokens = LocalStorageService.getValueFromLocalStorage<Tokens>(LocalStorageKey.TOKENS);
   if (tokens !== null) {
     try {
       const isTokenValid = await checkTokenValidity(tokens.access);
       if (isTokenValid) {
-        return await fetchUserProfile();
+        return await next();
       }
 
       await getRefreshedToken(tokens.refresh);
 
-      return await fetchUserProfile();
+      return await next();
     } catch (error: unknown) {
       LocalStorageService.setValueToLocalStorage(LocalStorageKey.TOKENS, null);
 
@@ -31,4 +30,14 @@ export async function changeHeader(): Promise<User | boolean> {
     }
   }
   return true;
+}
+
+/**
+ * Changes header depending on the user.
+ * @returns Return information about the user if the token is valid,
+ * false if the tokens have expired, true if there were no tokens.
+ */
+export function changeHeader(): Promise<User | boolean> {
+  return isAuthorization<User>(() => fetchUserProfile());
+
 }
