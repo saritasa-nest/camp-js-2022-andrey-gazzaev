@@ -1,10 +1,11 @@
+import { Anime } from '@js-camp/core/models/anime';
 import { User } from '@js-camp/core/models/user';
 
 import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
 import { AnimeData } from '../types/anime';
 import { PaginationOptions } from '../types/paginationSettings';
 
-import { fetchAnime } from './api/anime';
+import { fetchAnime, fetchAnimeById } from './api/anime';
 import { isTokenValid } from './api/auth';
 import { fetchUserProfile } from './api/user';
 import { TokenService } from './domain/token';
@@ -75,4 +76,17 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
 
     return null;
   }
+}
+
+/**
+ * Gets information about a specific anime.
+ * @param id ID anime.
+ * @returns Return information about the user if the token is valid,
+ * false if the tokens have expired, true if there were no tokens.
+ */
+export async function getDetailsAnime(id: number): Promise<Anime | null> {
+  if (await isAuthorized()) {
+    return fetchAnimeById(id);
+  }
+  return null;
 }
