@@ -90,3 +90,13 @@ export async function getDetailsAnime(id: number): Promise<Anime | null> {
   }
   return null;
 }
+
+/**
+ * Changes header depending on the user.
+ * @returns Return information about the user if the token is valid,
+ * false if the tokens have expired, true if there were no tokens.
+ */
+export function changeHeader(): Promise<User | boolean> {
+  return isAuthorization<User>(() => fetchUserProfile());
+
+}
