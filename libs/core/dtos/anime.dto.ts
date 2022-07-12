@@ -1,3 +1,5 @@
+import { GenreDto } from './genre.dto';
+import { StudioDto } from './studio.dto';
 import { DateRangeDto } from './dateRange.dto';
 
 /** Possible options anime type. */
@@ -35,7 +37,7 @@ export interface AnimeDto {
   /** Title in english. */
   readonly title_eng: string;
 
-  /**  Title in Japanese. */
+  /** Title in Japanese. */
   readonly title_jpn: string;
 
   /** Release and end dates. */
@@ -46,4 +48,19 @@ export interface AnimeDto {
 
   /** Anime status. */
   readonly status: StatusDto;
+
+  /** List of anime genres. */
+  readonly genres_data?: readonly GenreDto[];
+
+  /** List of anime producing studios. */
+  readonly studios_data?: readonly StudioDto[];
+
+  /** It's on the air. */
+  readonly airing?: boolean;
+
+  /** Anime trailer URL.. */
+  readonly trailer_youtube_id?: string;
+
+  /** Short review about anime. */
+  readonly synopsis?: string;
 }
