@@ -3,7 +3,6 @@ import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth
 import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { Tokens } from '@js-camp/core/models/tokens';
-import { User } from '@js-camp/core/models/user';
 
 import { defaultRequestInstance } from './instance';
 

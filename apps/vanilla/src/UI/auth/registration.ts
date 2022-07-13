@@ -12,7 +12,7 @@ const DEFAULT_AVATAR_URL =
  * Handle registration form submit event.
  * @param event Event form.
  */
-export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
+export function handleSubmitRegistrationForm(event: SubmitEvent): void {
   event.preventDefault();
 
   if (!(event.target instanceof HTMLFormElement)) {
@@ -40,6 +40,13 @@ export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<
   if (password.localeCompare(confirmedPassword) !== 0) {
     return showError(ErrorMessage.PASSWORD_NOT_MATCH);
   }
+
+  const user = new User({
+    avatar: DEFAULT_AVATAR_URL,
+    firstName,
+    lastName,
+    email,
+  });
 
   try {
     await registerUser({

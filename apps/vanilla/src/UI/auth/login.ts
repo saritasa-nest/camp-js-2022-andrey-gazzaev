@@ -7,7 +7,7 @@ import { getElementValue, goToHomePage, showError } from '../general';
  * Handle login form submit event.
  * @param event Event form.
  */
-export async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
+export function handleSubmitLoginForm(event: SubmitEvent): void {
   event.preventDefault();
 
   if (!(event.target instanceof HTMLFormElement)) {
