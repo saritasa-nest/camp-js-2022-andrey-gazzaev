@@ -29,7 +29,7 @@ async function isAuthorized(): Promise< boolean> {
   return false;
 }
 
-/** Gets user information. */
+/** Changes header depending on the user.*/
 export async function getUser(): Promise<User | null> {
   if (await isAuthorized()) {
     return fetchUserProfile();

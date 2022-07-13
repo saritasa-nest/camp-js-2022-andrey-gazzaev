@@ -57,7 +57,7 @@ export async function checkTokenValidity(accessToken: string): Promise<boolean> 
  * Submits a request to refresh tokens.
  * @param refreshToken Refresh token.
  */
-export async function getRefreshedToken(refreshToken: string): Promise<TokensDto> {
+export async function getRefreshedToken(refreshToken: string): Promise<Tokens> {
   const response = await defaultRequestInstance.post<TokensDto>(REFRESH_TOKEN_URL, {
     refresh: refreshToken,
   });
