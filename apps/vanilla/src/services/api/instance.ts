@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { HttpError } from '@js-camp/core/models/httpError';
 import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
-import { isHttpErrorDto } from '@js-camp/core/guards/error.guard';
+import { isHttpErrorDto } from '@js-camp/core/utils/guards/error.guard';
 
 import { FetchHeader } from '../../constants/fetch';
 import { TokenService } from '../domain/token';

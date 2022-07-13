@@ -1,5 +1,6 @@
 import { AnimeDto } from '../dtos/anime.dto';
-import { Anime, Status, Type } from '../models/anime';
+import { Anime } from '../models/anime';
+import { AnimeEnums } from '../utils/types/animeEnums';
 
 import { DateRangeMapper } from './dateRange.mapper';
 
@@ -14,8 +15,8 @@ export namespace AnimeMapper {
     dto: AnimeDto,
   ): Anime {
 
-    const status = Object.values(Status).includes(dto.status) ? dto.status : Status.Airing;
-    const type = Object.values(Type).includes(dto.type) ? dto.type : Type.Tv;
+    const status = Object.values(AnimeEnums.Status).includes(dto.status) ? dto.status : AnimeEnums.Status.Airing;
+    const type = Object.values(AnimeEnums.Type).includes(dto.type) ? dto.type : AnimeEnums.Type.Tv;
 
     return new Anime({
       id: dto.id,
