@@ -5,7 +5,7 @@ export namespace HttpErrorMapper {
 
   /**
    * Maps dto to model.
-   * @param dto Genre dto.
+   * @param dto Http error dto.
    */
   export function fromDto(dto: HttpErrorDto): HttpError {
     return new HttpError({ detail: dto.detail });

@@ -1,4 +1,4 @@
-import { User } from '../models/user';
+import { User } from '../../models/user';
 
 /** Data necessary for login. */
 export interface LoginData {

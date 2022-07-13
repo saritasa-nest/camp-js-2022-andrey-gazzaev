@@ -23,7 +23,7 @@ export function showError(error: string): void {
   }
 }
 
-/** Redirect to home page. */
+/** Redirects to home page. */
 export function goToHomePage(): void {
   const HOME_PAGE_URL = '/';
   location.href = HOME_PAGE_URL;

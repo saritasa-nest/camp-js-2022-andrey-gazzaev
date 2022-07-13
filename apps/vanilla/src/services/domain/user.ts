@@ -1,4 +1,4 @@
-import { LoginData, RegistrationData } from '@js-camp/core/interfaces/auth.interface';
+import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
 import { HttpError } from '@js-camp/core/models/httpError';
 import { Tokens } from '@js-camp/core/models/tokens';
 

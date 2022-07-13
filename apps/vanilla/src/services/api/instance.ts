@@ -38,6 +38,7 @@ defaultRequestInstance.interceptors.request.use(config => {
   if (tokens !== null && config.headers !== undefined) {
     config.headers[FetchHeader.Authorization] = `Bearer ${tokens.access}`;
   }
+
   return config;
 });
 

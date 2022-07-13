@@ -5,7 +5,7 @@ export namespace TokensMapper {
 
   /**
    * Maps dto to model.
-   * @param dto Genre dto.
+   * @param dto Tokens dto.
    */
   export function fromDto(dto: TokensDto): Tokens {
     return new Tokens({

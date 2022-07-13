@@ -12,6 +12,7 @@ const SIGN_OUT_BUTTON = 'sign-out';
 /** Signs out from account. */
 function handleSignOut(): void {
   LocalStorageService.setValue(LocalStorageKey.TOKENS, null);
+
   renderHeader();
 }
 
@@ -51,33 +52,28 @@ function renderStandardProfile(): void {
  * @param user Information about user.
  */
 function renderUserProfile(user: User): void {
-  try {
-    const profileTemplate = document.querySelector<HTMLTemplateElement>(`.${USER_PROFILE_TEMPLATE}`);
-    if (profileTemplate !== null) {
-      const userGreeting = document.createElement('span');
-      userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName}!`;
-      userGreeting.classList.add(Profile.NAME);
+  const profileTemplate = document.querySelector<HTMLTemplateElement>(`.${USER_PROFILE_TEMPLATE}`);
+  if (profileTemplate !== null) {
+    const userGreeting = document.createElement('span');
+    userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName}!`;
+    userGreeting.classList.add(Profile.NAME);
 
-      const signOutButton = createSignOutButton();
-      const profileElement = profileTemplate.content.cloneNode(true);
+    const signOutButton = createSignOutButton();
+    const profileElement = profileTemplate.content.cloneNode(true);
 
-      if (!(profileElement instanceof DocumentFragment)) {
-        return renderStandardProfile();
-      }
-
-      const form = profileElement.querySelector(`.${Profile.FORM}`);
-
-      if (form === null) {
-        return renderStandardProfile();
-      }
-
-      form.append(userGreeting, signOutButton);
-      addProfileToHeader(profileElement);
+    if (!(profileElement instanceof DocumentFragment)) {
+      return renderStandardProfile();
     }
-  } catch (error: unknown) {
-    renderStandardProfile();
-  }
 
+    const form = profileElement.querySelector(`.${Profile.FORM}`);
+
+    if (form === null) {
+      return renderStandardProfile();
+    }
+
+    form.append(userGreeting, signOutButton);
+    addProfileToHeader(profileElement);
+  }
 }
 
 /** Renders header. */
@@ -89,6 +85,8 @@ export async function renderHeader(): Promise<void> {
   } else if (LocalStorageService.getValue(LocalStorageKey.TOKENS) === null) {
     renderStandardProfile();
   } else {
+    LocalStorageService.setValue(LocalStorageKey.TOKENS, null);
+
     const URL_LOGIN_PAGE = '/login/';
     location.href = URL_LOGIN_PAGE;
   }

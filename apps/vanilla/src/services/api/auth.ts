@@ -1,5 +1,5 @@
 import { TokensDto } from '@js-camp/core/dtos/tokens.dto';
-import { LoginData, RegistrationData } from '@js-camp/core/interfaces/auth.interface';
+import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
 import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { Tokens } from '@js-camp/core/models/tokens';
@@ -57,7 +57,7 @@ export async function checkTokenValidity(accessToken: string): Promise<boolean> 
  * Submits a request to refresh tokens.
  * @param refreshToken Refresh token.
  */
-export async function getRefreshedToken(refreshToken: string): Promise<Tokens> {
+export async function fetchRefreshedToken(refreshToken: string): Promise<Tokens> {
   const response = await defaultRequestInstance.post<TokensDto>(REFRESH_TOKEN_URL, {
     refresh: refreshToken,
   });
