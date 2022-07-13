@@ -25,3 +25,14 @@ export const OPTIONS_FOR_STATUS: readonly Option[] =
     { text: 'Finished', value: AnimeEnums.Status.Finished },
     { text: 'Not yet aired', value: AnimeEnums.Status.NotYetAired },
   ];
+
+/** Options in status select. */
+export const OPTIONS_FOR_TYPE: readonly Option[] =
+[
+  { text: 'Tv', value: AnimeEnums.Type.Tv },
+  { text: 'OVA', value: AnimeEnums.Type.Ova },
+  { text: 'Movie', value: AnimeEnums.Type.Movie },
+  { text: 'Special', value: AnimeEnums.Type.Special },
+  { text: 'ONA', value: AnimeEnums.Type.Ona },
+  { text: 'Music', value: AnimeEnums.Type.Music },
+];

@@ -10,6 +10,14 @@ export function isStatus(value: string): value is AnimeEnums.Status {
 }
 
 /**
+ * Checks if a value is of a enum Type.
+ * @param value Some string.
+ */
+export function isType(value: string): value is AnimeEnums.Type {
+  return Object.values(AnimeEnums.Type).includes(value as AnimeEnums.Type);
+}
+
+/**
  * Checks if a value is of a enum SortOrdering.
  * @param value Some string.
  */

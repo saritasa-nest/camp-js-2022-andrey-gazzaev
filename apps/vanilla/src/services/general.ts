@@ -16,8 +16,9 @@ function getUrlAnime(offset: number, paginationOptions: PaginationOptions): stri
   const limitParam = ['limit', String(paginationOptions.limit)];
   const orderingParam = ['ordering', `${paginationOptions.sort.ordering}${paginationOptions.sort.field}`];
   const statusParam = ['status', paginationOptions.filter.byStatusField];
+  const typeParam = ['type', paginationOptions.filter.byTypeField];
 
-  const params = [offsetParam, limitParam, orderingParam, statusParam];
+  const params = [offsetParam, limitParam, orderingParam, statusParam, typeParam];
   const searchParams = new URLSearchParams(params);
 
   return `anime/anime/?${searchParams.toString()}`;
@@ -36,7 +37,6 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
   const currentOffset = currentPageNumber * localPaginationOptions.limit;
 
   const urlGetAnime = getUrlAnime(currentOffset, localPaginationOptions);
-
   try {
     const { results: list, count: totalCount } = await fetchAnime(urlGetAnime);
 

@@ -1,11 +1,11 @@
-import { isSortField, isSortOrdering, isStatus } from '@js-camp/core/utils/guards/sort.guard';
+import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
 
 import { SelectorElement } from '../../constants/classes';
 import { LocalStorageKey } from '../../constants/localStorage';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
 import { PaginationOptions } from '../../types/paginationSettings';
 import { LocalStorageService } from '../../services/domain/localStorage';
-import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS } from '../../constants/select';
+import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS, OPTIONS_FOR_TYPE } from '../../constants/select';
 import { SelectOptions } from '../../types/select';
 
 import { handleChangeAnimeData } from './general';
@@ -21,7 +21,11 @@ function handleChangePaginationOptions(selectValue: string): void {
 
     if (isStatus(selectValue)) {
       filter = { ...paginationOptions.filter, byStatusField: selectValue };
-    } else if (isSortField(selectValue)) {
+    } else if (isType(selectValue)) {
+      filter = { ...paginationOptions.filter, byTypeField: selectValue };
+    }
+
+    if (isSortField(selectValue)) {
       sort = { ...paginationOptions.sort, field: selectValue };
     } else if (isSortOrdering(selectValue)) {
       sort = { ...paginationOptions.sort, ordering: selectValue };
@@ -57,6 +61,7 @@ export function initSortElements(): void {
     { name: 'ordering', selector: SelectorElement.SELECT_SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
     { name: 'status', selector: SelectorElement.SELECT_SORT_STATUS, options: OPTIONS_FOR_STATUS },
     { name: 'sort', selector: SelectorElement.SELECT_SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
+    { name: 'type', selector: SelectorElement.SELECT_SORT_TYPE, options: OPTIONS_FOR_TYPE },
   ];
 
   selectors.forEach(select => {
