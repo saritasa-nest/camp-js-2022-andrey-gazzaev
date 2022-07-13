@@ -3,10 +3,12 @@
 @import url("../../global/header.css");
 
 .details {
+  position: relative;
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin: 20px;
+  margin: 20px auto;
+  max-width: 1024px;
 }
 
 .anime-information {
@@ -14,7 +16,7 @@
   justify-content: center;
 }
 
-.details__anime-title {
+.card-title {
   font-size: 1.25em;
 }
 
@@ -27,10 +29,6 @@
   max-width: 360px;
   max-height: 360px;
   margin-right: 20px;
-}
-
-.details__description {
-  max-width: 700px;
 }
 
 .list-block {
@@ -54,10 +52,6 @@
 .card-item {
   padding-top: 10px;
   padding-bottom: 10px;
-}
-
-.anime-trailer {
-  display: flex;
 }
 
 .anime-trailer__video {
