@@ -1,11 +1,11 @@
-import { Status } from '@js-camp/core/models/anime';
+import { AnimeEnums } from '@js-camp/core/utils/types/anime.enums';
 import { Sort, SortField, SortOrdering } from '@js-camp/core/utils/types/sort';
 
 /** Filter settings. */
 export interface Filter {
 
   /** Filter by status field. */
-  readonly byStatusField: Status;
+  readonly byStatusField: AnimeEnums.Status;
 }
 
 /** Pagination settings. */

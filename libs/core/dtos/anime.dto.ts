@@ -1,4 +1,4 @@
-import { AnimeEnums } from '../utils/types/animeEnums';
+import { AnimeEnums } from '../utils/types/anime.enums';
 
 import { DateRangeDto } from './dateRange.dto';
 
