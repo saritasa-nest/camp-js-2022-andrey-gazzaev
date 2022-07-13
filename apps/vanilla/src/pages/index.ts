@@ -7,8 +7,8 @@ import { LocalStorageService } from '../services/domain/localStorage';
 
 /** Adds sorting settings to local storage if they are not there. */
 function initSortSettings(): void {
-  if (LocalStorageService.getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS) === null) {
-    LocalStorageService.setValueToLocalStorage<PaginationOptions>(
+  if (LocalStorageService.getValue<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS) === null) {
+    LocalStorageService.setValue<PaginationOptions>(
       LocalStorageKey.PAGINATION_SETTINGS,
       DEFAULT_PAGINATION_SETTINGS,
     );

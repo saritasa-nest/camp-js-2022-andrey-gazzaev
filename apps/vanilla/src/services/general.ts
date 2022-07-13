@@ -28,7 +28,7 @@ function getUrlAnime(offset: number, paginationOptions: PaginationOptions): stri
  * @param currentPageNumber The page on which the change occurs.
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
-  const localPaginationOptions = LocalStorageService.getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  const localPaginationOptions = LocalStorageService.getValue<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
   if (localPaginationOptions === null) {
     return null;
   }
@@ -42,7 +42,7 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
 
     return { list, totalCount, currentPageNumber, limit: localPaginationOptions.limit };
   } catch (error: unknown) {
-    LocalStorageService.setValueToLocalStorage(LocalStorageKey.PAGINATION_SETTINGS, null);
+    LocalStorageService.setValue(LocalStorageKey.PAGINATION_SETTINGS, null);
     return null;
   }
 }
