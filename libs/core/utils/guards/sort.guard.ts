@@ -1,4 +1,4 @@
-import { AnimeEnums } from '../types/animeEnums';
+import { AnimeEnums } from '../types/anime.enums';
 import { SortField, SortOrdering } from '../types/sort';
 
 /**

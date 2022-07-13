@@ -1,4 +1,4 @@
-import { AnimeEnums } from '@js-camp/core/utils/types/animeEnums';
+import { AnimeEnums } from '@js-camp/core/utils/types/anime.enums';
 import { Sort, SortField, SortOrdering } from '@js-camp/core/utils/types/sort';
 
 /** Filter settings. */
