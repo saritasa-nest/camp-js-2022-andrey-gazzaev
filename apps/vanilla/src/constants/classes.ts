@@ -12,6 +12,7 @@ export namespace TableBlock {
   export const PAGINATION = 'table-block__pagination';
   export const PAGINATION_BUTTON_CURRENT = 'table-block__pagination-button_current';
   export const BUTTON_PAGINATION = 'table-block__pagination-button';
+  export const ERROR = 'table-block__error';
 }
 
 /** The class names for the table. */
