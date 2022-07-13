@@ -3,6 +3,7 @@ import { DateRange } from '@js-camp/core/models/dateRange';
 import { Genre } from '@js-camp/core/models/genre';
 import { Studio } from '@js-camp/core/models/studio.dto';
 
+import { Card } from '../../constants/classes';
 import { getAnime } from '../../services/general';
 
 const NO_DATA = '-';
@@ -23,7 +24,7 @@ function createListItem(itemText: string): HTMLLIElement {
  * @param imageSrc Image URL.
  */
 function setImage(imageSrc: string): void {
-  const imageElement = document.querySelector<HTMLImageElement>(`.details__image`);
+  const imageElement = document.querySelector<HTMLImageElement>(`.${Card.IMAGE}`);
   if (imageElement !== null) {
     imageElement.src = imageSrc;
   }
@@ -34,7 +35,7 @@ function setImage(imageSrc: string): void {
  * @param title Title text.
  */
 function setTitle(title: string): void {
-  const titleElement = document.querySelector(`.details__anime-title`);
+  const titleElement = document.querySelector(`.${Card.TITLE}`);
   if (titleElement !== null) {
     titleElement.innerHTML = title;
   }
@@ -45,7 +46,7 @@ function setTitle(title: string): void {
  * @param synopsis Synopsis text.
  */
 function setSynopsis(synopsis: string): void {
-  const synopsisElement = document.querySelector(`.details__anime-synopsis`);
+  const synopsisElement = document.querySelector(`.${Card.SYNOPSIS}`);
   if (synopsisElement !== null) {
     synopsisElement.innerHTML = synopsis;
   }
@@ -56,7 +57,7 @@ function setSynopsis(synopsis: string): void {
  * @param status Status text.
  */
 function setStatus(status: string): void {
-  const statusElement = document.querySelector(`.details__anime-status`);
+  const statusElement = document.querySelector(`.${Card.STATUS}`);
   if (statusElement !== null) {
     statusElement.innerHTML = `Status: ${status}`;
   }
@@ -67,7 +68,7 @@ function setStatus(status: string): void {
  * @param type Type text.
  */
 function setType(type: string): void {
-  const typeElement = document.querySelector(`.details__anime-type`);
+  const typeElement = document.querySelector(`.${Card.TYPE}`);
   if (typeElement !== null) {
     typeElement.innerHTML = `Type: ${type}`;
   }
@@ -78,7 +79,7 @@ function setType(type: string): void {
  * @param isAiring Airing option.
  */
 function setAiring(isAiring: boolean): void {
-  const airingElement = document.querySelector(`.details__anime-airing`);
+  const airingElement = document.querySelector(`.${Card.AIRING}`);
   if (airingElement !== null) {
     airingElement.innerHTML = `Airing: ${isAiring ? 'Yes' : 'No'}`;
   }
@@ -89,7 +90,7 @@ function setAiring(isAiring: boolean): void {
  * @param aired Aired date range.
  */
 function setAired(aired: DateRange): void {
-  const airedElement = document.querySelector(`.details__anime-aired`);
+  const airedElement = document.querySelector(`.${Card.AIRED}`);
   if (airedElement !== null) {
     const airedStart = aired.start ?
       aired.start.toLocaleDateString('en-GB', { timeZone: 'UTC' }) :
@@ -107,7 +108,7 @@ function setAired(aired: DateRange): void {
  * @param studios List studios.
  */
 function setStudios(studios: readonly Studio[]): void {
-  const studiosElement = document.querySelector(`.details__list-studios`);
+  const studiosElement = document.querySelector(`.${Card.STUDIOS}`);
   if (studiosElement !== null) {
     const studiosItems = studios.map(studio => createListItem(studio.name));
 
@@ -120,7 +121,7 @@ function setStudios(studios: readonly Studio[]): void {
  * @param genres List genres.
  */
 function setGenres(genres: readonly Genre[]): void {
-  const genresElement = document.querySelector(`.details__list-genres`);
+  const genresElement = document.querySelector(`.${Card.GENRES}`);
   if (genresElement !== null) {
     const genresItems = genres.map(genre => createListItem(genre.name));
 
@@ -133,7 +134,7 @@ function setGenres(genres: readonly Genre[]): void {
  * @param trailerId Video youtube id.
  */
 function setTrailer(trailerId: string | null): void {
-  const trailerElement = document.querySelector<HTMLIFrameElement>(`.anime-trailer__video`);
+  const trailerElement = document.querySelector<HTMLIFrameElement>(`.${Card.VIDEO}`);
   if (trailerElement !== null) {
     trailerElement.src = `http://www.youtube.com/embed/${trailerId}/`;
 
