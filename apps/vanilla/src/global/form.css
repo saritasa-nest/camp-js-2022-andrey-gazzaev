@@ -79,17 +79,8 @@
   margin: 10px 0;
 }
 
-.form__links-item {
-  text-align: center;
-  font-size: var(--default-text-size);
-  margin-top: 5px;
-}
-
-.form__links-item:link {
-  border-bottom: none;
-}
-
-.form__links-item:focus {
-  text-decoration: underline var(--primary-light-color);
-  outline: 0;
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
 }
