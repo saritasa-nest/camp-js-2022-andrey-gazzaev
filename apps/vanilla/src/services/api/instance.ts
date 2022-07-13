@@ -34,7 +34,7 @@ export const defaultRequestInstance: AxiosInstance = axios.create({
 });
 
 defaultRequestInstance.interceptors.request.use(config => {
-  const tokens = LocalStorageService.getValueFromLocalStorage<Tokens>(LocalStorageKey.TOKENS);
+  const tokens = LocalStorageService.getValue<Tokens>(LocalStorageKey.TOKENS);
   if (tokens !== null && config.headers !== undefined) {
     config.headers[FetchHeader.Authorization] = `Bearer ${tokens.access}`;
   }

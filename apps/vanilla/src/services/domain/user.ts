@@ -15,7 +15,7 @@ export async function login(loginData: LoginData): Promise<void> {
   try {
     const tokens = await loginUser(loginData);
 
-    LocalStorageService.setValueToLocalStorage<Tokens>(LocalStorageKey.TOKENS, tokens);
+    LocalStorageService.setValue<Tokens>(LocalStorageKey.TOKENS, tokens);
   } catch (error: unknown) {
     if (error instanceof HttpError) {
       throw error.detail;
@@ -31,7 +31,7 @@ export async function registration(registrationData: RegistrationData): Promise<
   try {
     const tokens = await registerUser(registrationData);
 
-    LocalStorageService.setValueToLocalStorage<Tokens>(LocalStorageKey.TOKENS, tokens);
+    LocalStorageService.setValue<Tokens>(LocalStorageKey.TOKENS, tokens);
   } catch (error: unknown) {
     if (error instanceof HttpError) {
       throw error.detail;

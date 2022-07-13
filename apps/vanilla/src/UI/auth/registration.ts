@@ -13,7 +13,7 @@ const DEFAULT_AVATAR_URL =
  * Handle registration form submit event.
  * @param event Event form.
  */
-export function handleSubmitRegistrationForm(event: SubmitEvent): void {
+export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
   event.preventDefault();
 
   if (!(event.target instanceof HTMLFormElement)) {
@@ -50,7 +50,7 @@ export function handleSubmitRegistrationForm(event: SubmitEvent): void {
   });
 
   try {
-    registration({ user, password });
+    await registration({ user, password });
 
     goToHomePage();
   } catch (error: unknown) {
