@@ -1,6 +1,6 @@
 import { AnimeDto } from '../dtos/anime.dto';
 import { Anime } from '../models/anime';
-import { AnimeEnums } from '../utils/types/animeEnums';
+import { AnimeEnums } from '../utils/types/anime.enums';
 
 import { DateRangeMapper } from './dateRange.mapper';
 

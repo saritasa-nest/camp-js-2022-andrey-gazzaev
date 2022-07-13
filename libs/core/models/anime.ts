@@ -1,4 +1,4 @@
-import { AnimeEnums } from '../utils/types/animeEnums';
+import { AnimeEnums } from '../utils/types/anime.enums';
 
 import { DateRange } from './dateRange';
 import { Immerable, OmitImmerable } from './immerable';
