@@ -1,4 +1,4 @@
-import { isSortField, isSortOrdering, isStatus } from '@js-camp/core/guards/sort.guard';
+import { isSortField, isSortOrdering, isStatus } from '@js-camp/core/utils/guards/sort.guard';
 
 import { SelectorElement } from '../../constants/classes';
 import { LocalStorageKey } from '../../constants/localStorage';
