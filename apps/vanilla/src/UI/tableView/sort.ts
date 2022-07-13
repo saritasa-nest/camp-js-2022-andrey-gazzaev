@@ -15,7 +15,7 @@ import { handleChangeAnimeData } from './general';
  * @param selectValue Value of sort or filter select.
  */
 function handleChangePaginationOptions(selectValue: string): void {
-  const paginationOptions = LocalStorageService.getValueFromLocalStorage<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  const paginationOptions = LocalStorageService.getValue<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
   if (paginationOptions !== null) {
     let { sort, filter } = paginationOptions;
 
@@ -27,7 +27,7 @@ function handleChangePaginationOptions(selectValue: string): void {
       sort = { ...paginationOptions.sort, ordering: selectValue };
     }
 
-    LocalStorageService.setValueToLocalStorage<PaginationOptions>(
+    LocalStorageService.setValue<PaginationOptions>(
       LocalStorageKey.PAGINATION_SETTINGS,
       { ...paginationOptions, sort, filter },
     );
