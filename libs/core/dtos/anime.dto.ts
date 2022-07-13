@@ -1,4 +1,4 @@
-import { Status, Type } from '../models/anime';
+import { AnimeEnums } from '../utils/types/animeEnums';
 
 import { DateRangeDto } from './dateRange.dto';
 
@@ -26,9 +26,9 @@ export interface AnimeDto {
   /** Release and end dates. */
   readonly aired: DateRangeDto;
 
-  /** Anime type (TV, OVA, MOVIE, SPECIAL, ONA, MUSIC). */
-  readonly type: Type ;
+  /** Anime type. */
+  readonly type: AnimeEnums.Type;
 
-  /** Anime status (airing, finished, not yet airing). */
-  readonly status: Status;
+  /** Anime status. */
+  readonly status: AnimeEnums.Status;
 }
