@@ -6,12 +6,6 @@
   background: var(--form-background);
 }
 
-.form__label {
-  display: flex;
-  flex-direction: column;
-  margin: 10px 0;
-}
-
 .form__label-text {
   color: var(--form-default-color);
   font-size: var(--default-text-size);
@@ -76,4 +70,10 @@
 .form__links-item:focus {
   text-decoration: underline var(--primary-light-color);
   outline: 0;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
 }

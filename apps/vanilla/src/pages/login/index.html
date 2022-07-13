@@ -20,22 +20,26 @@
 
         <p class="error" hidden></p>
 
-        <label class="form__label login-element">
-          <span class="form__label-text">Email</span>
+        <div class="form-field">
+          <label class="form__label">
+            <span class="form__label-text">Email</span>
+          </label>
           <input class="form__input" placeholder="example@gmail.com" name="email" type="email" required>
-        </label>
+        </div>
 
-        <label class="form__label login-element">
-          <span class="form__label-text">Password</span>
-          <input class="form__input" placeholder="Enter your password" name="password" type="password"
-            required>
-        </label>
+        <div class="form-field">
+          <label class="form__label">
+            <span class="form__label-text">Password</span>
+          </label>
+          <input class="form__input" placeholder="Enter your password" name="password" type="password" required>
+        </div>
 
         <button class="form__button" type="submit">Sign in</button>
 
         <div class="form__links">
           <a class="form__links-item link" title="Password recovery" href="#">Forgot your password</a>
-          <a class="form__links-item link" title="Register a new account" href="/registration/">Don't have an account?</a>
+          <a class="form__links-item link" title="Register a new account" href="/registration/">
+            Don't have an account?</a>
         </div>
       </form>
     </section>
