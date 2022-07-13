@@ -54,7 +54,7 @@ export class Anime extends Immerable {
   public readonly airing?: boolean;
 
   /** Anime trailer URL.. */
-  public readonly trailerYoutubeId?: string;
+  public readonly trailerYoutubeId?: string | null;
 
   /** Short review about anime. */
   public readonly synopsis?: string;

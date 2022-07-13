@@ -3,7 +3,7 @@ import { DateRange } from '@js-camp/core/models/dateRange';
 import { Genre } from '@js-camp/core/models/genre';
 import { Studio } from '@js-camp/core/models/studio.dto';
 
-import { getDetailsAnime } from '../../services/general';
+import { getAnime } from '../../services/general';
 
 const NO_DATA = '-';
 
@@ -48,6 +48,28 @@ function setSynopsis(synopsis: string): void {
   const synopsisElement = document.querySelector(`.details__anime-synopsis`);
   if (synopsisElement !== null) {
     synopsisElement.innerHTML = synopsis;
+  }
+}
+
+/**
+ * Sets status element.
+ * @param status Status text.
+ */
+function setStatus(status: string): void {
+  const statusElement = document.querySelector(`.details__anime-status`);
+  if (statusElement !== null) {
+    statusElement.innerHTML = `Status: ${status}`;
+  }
+}
+
+/**
+ * Sets type element.
+ * @param type Type text.
+ */
+function setType(type: string): void {
+  const typeElement = document.querySelector(`.details__anime-type`);
+  if (typeElement !== null) {
+    typeElement.innerHTML = `Type: ${type}`;
   }
 }
 
@@ -110,10 +132,14 @@ function setGenres(genres: readonly Genre[]): void {
  * Sets src to video.
  * @param trailerId Video youtube id.
  */
-function setTrailer(trailerId: string): void {
-  const trailerElement = document.querySelector<HTMLVideoElement>(`.anime-trailer__video`);
+function setTrailer(trailerId: string | null): void {
+  const trailerElement = document.querySelector<HTMLIFrameElement>(`.anime-trailer__video`);
   if (trailerElement !== null) {
     trailerElement.src = `http://www.youtube.com/embed/${trailerId}/`;
+
+    if (trailerId === null) {
+      trailerElement.remove();
+    }
   }
 }
 
@@ -127,6 +153,10 @@ function renderAnimeCard(anime: Anime): void {
   setTitle(`${anime.titleEnglish || NO_DATA} / ${anime.titleJapanese || NO_DATA}`);
 
   setSynopsis(`${anime.synopsis ?? NO_DATA}`);
+
+  setStatus(`${anime.status}`);
+
+  setType(`${anime.type}`);
 
   if (anime.airing !== undefined) {
     setAiring(anime.airing);
@@ -149,8 +179,8 @@ function renderAnimeCard(anime: Anime): void {
 
 /** Renders details anime. */
 export async function renderDetailsAnime(): Promise<void> {
-  const testAnimeId = 37;
-  const anime = await getDetailsAnime(testAnimeId);
+  const testAnimeId = 101;
+  const anime = await getAnime(testAnimeId);
 
   if (anime instanceof Anime) {
     return renderAnimeCard(anime);
