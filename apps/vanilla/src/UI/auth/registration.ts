@@ -1,11 +1,7 @@
-import { HttpError } from '@js-camp/core/models/httpError';
-import { Tokens } from '@js-camp/core/models/tokens';
 import { User } from '@js-camp/core/models/user';
 
 import { ErrorMessage, FormField } from '../../constants/form';
-import { LocalStorageKey } from '../../constants/localStorage';
-import { registerUser } from '../../services/api/auth';
-import { LocalStorageService } from '../../services/domain/localStorage';
+import { registration } from '../../services/domain/user';
 
 import { getValue, goToHomePage, showError } from '../general';
 
@@ -17,7 +13,7 @@ const DEFAULT_AVATAR_URL =
  * Handle registration form submit event.
  * @param event Event form.
  */
-export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
+export function handleSubmitRegistrationForm(event: SubmitEvent): void {
   event.preventDefault();
 
   if (!(event.target instanceof HTMLFormElement)) {
@@ -46,22 +42,20 @@ export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<
     return showError(ErrorMessage.PASSWORD_NOT_MATCH);
   }
 
+  const user = new User({
+    avatar: DEFAULT_AVATAR_URL,
+    firstName,
+    lastName,
+    email,
+  });
+
   try {
-    const user = new User({
-      avatar: DEFAULT_AVATAR_URL,
-      firstName,
-      lastName,
-      email,
-    });
-
-    const tokens = await registerUser({ user, password });
-
-    LocalStorageService.setValueToLocalStorage<Tokens>(LocalStorageKey.TOKENS, tokens);
+    registration({ user, password });
 
     goToHomePage();
   } catch (error: unknown) {
-    if (error instanceof HttpError) {
-      showError(error.detail);
+    if (typeof error === 'string') {
+      showError(error);
     }
   }
 }

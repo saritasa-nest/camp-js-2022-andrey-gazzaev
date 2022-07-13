@@ -1,17 +1,12 @@
-import { HttpError } from '@js-camp/core/models/httpError';
-import { Tokens } from '@js-camp/core/models/tokens';
-
 import { ErrorMessage, FormField } from '../../constants/form';
-import { LocalStorageKey } from '../../constants/localStorage';
-import { loginUser } from '../../services/api/auth';
-import { LocalStorageService } from '../../services/domain/localStorage';
+import { login } from '../../services/domain/user';
 import { getValue, goToHomePage, showError } from '../general';
 
 /**
  * Handle login form submit event.
  * @param event Event form.
  */
-export async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
+export function handleSubmitLoginForm(event: SubmitEvent): void {
   event.preventDefault();
 
   if (!(event.target instanceof HTMLFormElement)) {
@@ -28,14 +23,12 @@ export async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
   }
 
   try {
-    const tokens = await loginUser({ email, password });
-
-    LocalStorageService.setValueToLocalStorage<Tokens>(LocalStorageKey.TOKENS, tokens);
+    login({ email, password });
 
     goToHomePage();
   } catch (error: unknown) {
-    if (error instanceof HttpError) {
-      showError(error.detail);
+    if (typeof error === 'string') {
+      showError(error);
     }
   }
 }

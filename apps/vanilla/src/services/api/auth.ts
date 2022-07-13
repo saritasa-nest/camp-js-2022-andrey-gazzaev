@@ -1,30 +1,10 @@
 import { TokensDto } from '@js-camp/core/dtos/tokens.dto';
+import { LoginData, RegistrationData } from '@js-camp/core/interfaces/auth.interface';
 import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { Tokens } from '@js-camp/core/models/tokens';
-import { User } from '@js-camp/core/models/user';
 
 import { defaultRequestInstance } from './instance';
-
-/** Data necessary for login. */
-interface LoginData {
-
-  /** Email of user. */
-  readonly email: string;
-
-  /** Password of user. */
-  readonly password: string;
-}
-
-/** Data necessary for register. */
-interface RegistrationData {
-
-  /** User information. */
-  readonly user: User;
-
-  /** Password of user. */
-  readonly password: string;
-}
 
 const LOGIN_URL = 'auth/login/';
 const REGISTER_URL = 'auth/register/';
