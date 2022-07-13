@@ -53,15 +53,24 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
  * @param tableRows Array of rows.
  */
 function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
+  const catalogElement = document.querySelector(`.${TableBlock.TABLE}`);
+  const errorElement = document.querySelector(`.${TableBlock.ERROR}`);
+
+  if (errorElement !== null) {
+    errorElement.innerHTML = '';
+  }
+
+  if (catalogElement !== null) {
+    catalogElement.innerHTML = '';
+  }
+
   if (tableRows.length === 0) {
-    const errorElement = document.querySelector(`.${TableBlock.ERROR}`);
     if (errorElement !== null) {
       errorElement.innerHTML = 'Records missing.';
     }
     return;
   }
 
-  const catalogElement = document.querySelector(`.${TableBlock.TABLE}`);
   const catalogTitleRow = `
   <tr class="table__row">
     <th class="table__head"></th>
