@@ -7,8 +7,11 @@ import { PaginationOptions } from '../../types/paginationSettings';
 import { LocalStorageService } from '../../services/domain/localStorage';
 import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS } from '../../constants/select';
 import { SelectOptions } from '../../types/select';
+import { ElementData } from '../../types/element';
 
 import { handleChangeAnimeData } from './general';
+
+const NO_CLASSES: string[] = [];
 
 /**
  * Changes pagination settings.
@@ -38,32 +41,31 @@ function handleChangePaginationOptions(selectValue: string): void {
 
 /**
  * Creates a option element.
- * @param text The text that contains the element.
- * @param classes The style classes that the element contains.
- * @param value Value that contains option.
- * @returns Option element.
+ * @param optionData Information contained in the option.
  */
-function createOption(text: string, classes: readonly string[], value: string): HTMLSpanElement {
+function createOption({ text, classes, value }: ElementData): HTMLOptionElement {
   const option = document.createElement('option');
-  option.setAttribute('value', value);
-  option.innerHTML = text;
-  option.classList.add(...classes);
+  if (value !== undefined && classes !== undefined) {
+    option.setAttribute('value', value);
+    option.innerHTML = text;
+    option.classList.add(...classes);
+  }
   return option;
 }
 
 /** Adds option elements to select. */
 export function initSortElements(): void {
   const selectors: SelectOptions[] = [
-    { name: 'ordering', selector: SelectorElement.SELECT_SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
-    { name: 'status', selector: SelectorElement.SELECT_SORT_STATUS, options: OPTIONS_FOR_STATUS },
-    { name: 'sort', selector: SelectorElement.SELECT_SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
+    { name: 'ordering', selector: SelectorElement.SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
+    { name: 'status', selector: SelectorElement.SORT_STATUS, options: OPTIONS_FOR_STATUS },
+    { name: 'sort', selector: SelectorElement.SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
   ];
 
   selectors.forEach(select => {
     const selectElement = document.querySelector<HTMLSelectElement>(`.${select.selector}`);
 
     if (selectElement !== null) {
-      select.options.forEach(option => selectElement.append(createOption(option.text, [], option.value)));
+      select.options.forEach(option => selectElement.append(createOption({ text: option.text, classes: NO_CLASSES, value: option.value })));
 
       selectElement.addEventListener(
         'change',
