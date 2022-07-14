@@ -19,6 +19,9 @@ export interface PaginationOptions {
 
   /** Maximum number of entries per page. */
   readonly limit: number;
+
+  /** Offset in records. */
+  readonly offset: number;
 }
 
 /** Borders due to which pagination is built. */

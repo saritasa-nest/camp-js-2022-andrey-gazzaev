@@ -1,6 +1,6 @@
 import { User } from '@js-camp/core/models/user';
 
-import { LocalStorageKey } from '../constants/localStorage';
+import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
 import { AnimeData } from '../types/anime';
 import { PaginationOptions } from '../types/paginationSettings';
 
@@ -8,7 +8,7 @@ import { fetchAnime } from './api/anime';
 import { isTokenValid } from './api/auth';
 import { fetchUserProfile } from './api/user';
 import { TokenService } from './domain/token';
-import { LocalStorageService } from './domain/localStorage';
+import { QueryParamsService } from './domain/queryParams';
 
 /** Checks if the user is logged in. */
 async function isAuthorized(): Promise<boolean> {
@@ -37,20 +37,15 @@ export async function getUser(): Promise<User | null> {
 
 /**
  * Creates a URL address to get the page with the anime, taking into account the offset.
- * @param offset Offset relative to which you want to get records.
  * @param paginationOptions Pagination Options.
  * @returns Ready url.
  */
-function getUrlAnime(offset: number, paginationOptions: PaginationOptions): string {
-  const offsetParam = ['offset', String(offset)];
-  const limitParam = ['limit', String(paginationOptions.limit)];
-  const orderingParam = ['ordering', `${paginationOptions.sort.ordering}${paginationOptions.sort.field}`];
-  const statusParam = ['status', paginationOptions.filter.byStatusField];
-
-  const params = [offsetParam, limitParam, orderingParam, statusParam];
-  const searchParams = new URLSearchParams(params);
-
-  return `anime/anime/?${searchParams.toString()}`;
+function getUrlAnime(paginationOptions: PaginationOptions): string {
+  const params = QueryParamsService.paginationOptionsToUrlSearchParams(paginationOptions);
+  if (params !== null) {
+    return `anime/anime/?${params.toString()}`;
+  }
+  return `anime/anime/`;
 }
 
 /**
@@ -58,21 +53,26 @@ function getUrlAnime(offset: number, paginationOptions: PaginationOptions): stri
  * @param currentPageNumber The page on which the change occurs.
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
-  const localPaginationOptions = LocalStorageService.getValue<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  const localPaginationOptions = QueryParamsService.getParams();
+
   if (localPaginationOptions === null) {
     return null;
   }
 
   const currentOffset = currentPageNumber * localPaginationOptions.limit;
 
-  const urlGetAnime = getUrlAnime(currentOffset, localPaginationOptions);
+  const newPaginationOptions: PaginationOptions = { ...localPaginationOptions, offset: currentOffset };
+  QueryParamsService.setParams(newPaginationOptions);
+
+  const urlGetAnime = getUrlAnime(localPaginationOptions);
 
   try {
     const { results: list, count: totalCount } = await fetchAnime(urlGetAnime);
 
     return { list, totalCount, currentPageNumber, limit: localPaginationOptions.limit };
   } catch (error: unknown) {
-    LocalStorageService.setValue(LocalStorageKey.PAGINATION_SETTINGS, null);
+    QueryParamsService.setParams(DEFAULT_PAGINATION_SETTINGS);
+
     return null;
   }
 }
