@@ -56,11 +56,31 @@ export function initSortElements(): void {
     { name: 'sort', selector: SelectorElement.SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
   ];
 
+  const paginationOptions = QueryParamsService.getParams();
+
+  if (paginationOptions === null) {
+    return;
+  }
+
   selectors.forEach(select => {
     const selectElement = document.querySelector<HTMLSelectElement>(`.${select.selector}`);
 
     if (selectElement !== null) {
       select.options.forEach(option => selectElement.append(createOption({ text: option.text, classes: NO_CLASSES, value: option.value })));
+
+      switch (select.name) {
+        case 'ordering':
+          selectElement.value = paginationOptions.sort.ordering;
+          break;
+        case 'sort':
+          selectElement.value = paginationOptions.sort.field;
+          break;
+        case 'status':
+          selectElement.value = paginationOptions.filter.byStatusField;
+          break;
+        default:
+          break;
+      }
 
       selectElement.addEventListener(
         'change',

@@ -53,23 +53,23 @@ function getUrlAnime(paginationOptions: PaginationOptions): string {
  * @param currentPageNumber The page on which the change occurs.
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
-  const localPaginationOptions = QueryParamsService.getParams();
+  const paginationOptions = QueryParamsService.getParams();
 
-  if (localPaginationOptions === null) {
+  if (paginationOptions === null) {
     return null;
   }
 
-  const currentOffset = currentPageNumber * localPaginationOptions.limit;
+  const currentOffset = currentPageNumber * paginationOptions.limit;
 
-  const newPaginationOptions: PaginationOptions = { ...localPaginationOptions, offset: currentOffset };
+  const newPaginationOptions: PaginationOptions = { ...paginationOptions, offset: currentOffset };
   QueryParamsService.setParams(newPaginationOptions);
 
-  const urlGetAnime = getUrlAnime(localPaginationOptions);
+  const urlGetAnime = getUrlAnime(paginationOptions);
 
   try {
     const { results: list, count: totalCount } = await fetchAnime(urlGetAnime);
 
-    return { list, totalCount, currentPageNumber, limit: localPaginationOptions.limit };
+    return { list, totalCount, currentPageNumber, limit: paginationOptions.limit };
   } catch (error: unknown) {
     QueryParamsService.setParams(DEFAULT_PAGINATION_SETTINGS);
 
