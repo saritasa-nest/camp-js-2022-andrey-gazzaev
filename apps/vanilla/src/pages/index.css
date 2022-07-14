@@ -32,10 +32,6 @@
   width: 100%;
 }
 
-.form-button {
-  align-self: flex-end;
-}
-
 .table__row {
   display: flex;
 }
