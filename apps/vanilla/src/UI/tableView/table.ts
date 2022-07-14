@@ -6,10 +6,10 @@ import { Table, TableBlock } from '../../constants/classes';
 interface TableColumnDef {
 
   /** Field in anime model. */
-  field: keyof Anime;
+  readonly field: keyof Anime;
 
   /** Title of column. */
-  title: string;
+  readonly title: string;
 }
 
 const TABLE_COLUMNS: TableColumnDef[] = [
