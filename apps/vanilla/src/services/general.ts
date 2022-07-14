@@ -16,8 +16,10 @@ function getUrlAnime(offset: number, paginationOptions: PaginationOptions): stri
   const limitParam = ['limit', String(paginationOptions.limit)];
   const orderingParam = ['ordering', `${paginationOptions.sort.ordering}${paginationOptions.sort.field}`];
   const statusParam = ['status', paginationOptions.filter.byStatusField];
+  const searchParam = ['search', paginationOptions.search];
 
-  const params = [offsetParam, limitParam, orderingParam, statusParam];
+  const params = [offsetParam, limitParam, orderingParam, statusParam, searchParam];
+
   const searchParams = new URLSearchParams(params);
 
   return `anime/anime/?${searchParams.toString()}`;

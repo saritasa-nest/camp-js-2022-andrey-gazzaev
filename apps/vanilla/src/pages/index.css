@@ -26,9 +26,14 @@
 
 .sort-field,
 .sort-status,
-.sort-ordering {
+.sort-ordering,
+.sort-search {
   display: block;
   width: 100%;
+}
+
+.form-button {
+  align-self: flex-end;
 }
 
 .table__row {

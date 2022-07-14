@@ -17,6 +17,9 @@ export interface PaginationOptions {
   /** Filter settings. */
   readonly filter: Filter;
 
+  /** Search settings. */
+  readonly search: string;
+
   /** Maximum number of entries per page. */
   readonly limit: number;
 }

@@ -15,24 +15,26 @@ const NO_CLASSES: string[] = [];
 
 /**
  * Changes pagination settings.
- * @param selectValue Value of sort or filter select.
+ * @param value Value of sort, search or filter select.
  */
-function handleChangePaginationOptions(selectValue: string): void {
+function handleChangePaginationOptions(value: string): void {
   const paginationOptions = LocalStorageService.getValue<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
   if (paginationOptions !== null) {
-    let { sort, filter } = paginationOptions;
+    let { sort, filter, search } = paginationOptions;
 
-    if (isStatus(selectValue)) {
-      filter = { ...paginationOptions.filter, byStatusField: selectValue };
-    } else if (isSortField(selectValue)) {
-      sort = { ...paginationOptions.sort, field: selectValue };
-    } else if (isSortOrdering(selectValue)) {
-      sort = { ...paginationOptions.sort, ordering: selectValue };
+    if (isStatus(value)) {
+      filter = { ...paginationOptions.filter, byStatusField: value };
+    } else if (isSortField(value)) {
+      sort = { ...paginationOptions.sort, field: value };
+    } else if (isSortOrdering(value)) {
+      sort = { ...paginationOptions.sort, ordering: value };
+    } else {
+      search = value;
     }
 
     LocalStorageService.setValue<PaginationOptions>(
       LocalStorageKey.PAGINATION_SETTINGS,
-      { ...paginationOptions, sort, filter },
+      { ...paginationOptions, sort, filter, search },
     );
   }
 
@@ -73,4 +75,16 @@ export function initSortElements(): void {
       );
     }
   });
+}
+
+/** Add listener to the search. */
+export function initSearchElements(): void {
+  const searchElement = document.querySelector<HTMLInputElement>('.sort-search');
+  if (searchElement !== null) {
+    searchElement.addEventListener(
+      'input',
+      () => handleChangePaginationOptions(searchElement.value),
+
+    );
+  }
 }

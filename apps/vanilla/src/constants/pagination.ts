@@ -19,4 +19,5 @@ export const DEFAULT_PAGINATION_SETTINGS: PaginationOptions = {
     byStatusField: AnimeEnums.Status.Airing,
   },
   limit: DEFAULT_LIMIT,
+  search: '',
 };
