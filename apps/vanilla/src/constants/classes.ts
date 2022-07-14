@@ -30,9 +30,9 @@ export namespace Catalog {
 
 /** The class names sort element. */
 export namespace SelectorElement {
-  export const SELECT_SORT_STATUS = 'sort-status';
-  export const SELECT_SORT_ORDERING = 'sort-ordering';
-  export const SELECT_SORT_FIELD = 'sort-field';
+  export const SORT_STATUS = 'sort-status';
+  export const SORT_ORDERING = 'sort-ordering';
+  export const SORT_FIELD = 'sort-field';
 }
 
 /** The class names for the table-block. */
@@ -47,8 +47,8 @@ export namespace TableBlock {
 /** The class names for the table. */
 export namespace Table {
   export const ROW = 'table__row';
-  export const HEAD = 'table__head';
-  export const BODY = 'table__body';
+  export const HEAD_CELL = 'table__head-cell';
+  export const BODY_CELL = 'table__body-cell';
   export const IMAGE = 'table__image';
 }
 
