@@ -3,7 +3,7 @@ import { User } from '@js-camp/core/models/user';
 
 import { LocalStorageKey } from '../constants/localStorage';
 
-import { isTokenValid, fetchRefreshToken } from './api/auth';
+import { isTokenValid } from './api/auth';
 import { fetchUserProfile } from './api/user';
 import { LocalStorageService } from './domain/localStorage';
 
@@ -15,8 +15,6 @@ async function isAuthorized(): Promise<boolean> {
       if (await isTokenValid(tokens.access)) {
         return true;
       }
-
-      LocalStorageService.setValue(LocalStorageKey.TOKENS, await fetchRefreshToken(tokens.refresh));
 
       return true;
     } catch (error: unknown) {

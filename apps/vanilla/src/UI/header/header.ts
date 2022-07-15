@@ -80,15 +80,10 @@ function renderUserProfile(user: User): void {
 /** Renders header. */
 export async function renderHeader(): Promise<void> {
   const user = await getUser();
-
   if (user !== null) {
     renderUserProfile(user);
   } else if (LocalStorageService.getValue(LocalStorageKey.TOKENS) === null) {
     renderStandardProfile();
-  } else {
-    LocalStorageService.setValue(LocalStorageKey.TOKENS, null);
-
-    const URL_LOGIN_PAGE = '/login/';
-    location.href = URL_LOGIN_PAGE;
   }
+
 }
