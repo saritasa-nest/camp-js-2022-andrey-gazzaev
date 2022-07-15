@@ -94,19 +94,20 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
     return;
   }
 
-  const catalogTitleRow = `
-  <tr class="table__row">
-    <th class="table__head-cell"></th>
-    <th class="table__head-cell">Title in English</th>
-    <th class="table__head-cell">Title in Japanese</th>
-    <th class="table__head-cell">Aired Start</th>
-    <th class="table__head-cell">Type</th>
-    <th class="table__head-cell">Status</th>
-  </tr>`;
+  const rowHead = document.createElement('tr');
+  rowHead.classList.add(Table.ROW);
+
+  const columnsHead = TABLE_COLUMNS.map(({ title }) => {
+    const thElement = document.createElement('th');
+    thElement.classList.add(Table.HEAD_CELL);
+    thElement.innerHTML = title;
+    return thElement;
+  });
+
+  rowHead.append(...columnsHead);
 
   if (catalogElement !== null) {
-    catalogElement.innerHTML = catalogTitleRow;
-    catalogElement.append(...tableRows);
+    catalogElement.append(rowHead, ...tableRows);
   }
 }
 
