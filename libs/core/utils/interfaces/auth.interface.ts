@@ -1,5 +1,3 @@
-import { User } from '../../models/user';
-
 /** Data necessary for login. */
 export interface LoginData {
 
@@ -10,11 +8,26 @@ export interface LoginData {
   readonly password: string;
 }
 
+interface UserInfo {
+
+  /** User email. */
+  readonly email: string;
+
+  /** First name. */
+  readonly firstName: string;
+
+  /** Last name. */
+  readonly lastName: string;
+
+  /** URL to avatar image. */
+  readonly avatar: string;
+}
+
 /** Data necessary for register. */
 export interface RegistrationData {
 
   /** User information. */
-  readonly user: User;
+  readonly user: UserInfo;
 
   /** Password of user. */
   readonly password: string;

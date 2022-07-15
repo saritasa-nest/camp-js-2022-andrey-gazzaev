@@ -1,5 +1,6 @@
 import { ErrorMessage, FormField } from '../../constants/form';
-import { login } from '../../services/domain/user';
+import { loginUser } from '../../services/domain/user';
+
 import { getValue, goToHomePage, showError } from '../general';
 
 /**
@@ -23,7 +24,7 @@ export async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
   }
 
   try {
-    await login({ email, password });
+    await loginUser({ email, password });
 
     goToHomePage();
   } catch (error: unknown) {

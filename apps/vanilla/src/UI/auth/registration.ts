@@ -1,7 +1,5 @@
-import { User } from '@js-camp/core/models/user';
-
 import { ErrorMessage, FormField } from '../../constants/form';
-import { registration } from '../../services/domain/user';
+import { registerUser } from '../../services/domain/user';
 
 import { getValue, goToHomePage, showError } from '../general';
 
@@ -42,15 +40,16 @@ export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<
     return showError(ErrorMessage.PASSWORD_NOT_MATCH);
   }
 
-  const user = new User({
-    avatar: DEFAULT_AVATAR_URL,
-    firstName,
-    lastName,
-    email,
-  });
-
   try {
-    await registration({ user, password });
+    await registerUser({
+      user: {
+        avatar: DEFAULT_AVATAR_URL,
+        firstName,
+        lastName,
+        email,
+      },
+      password,
+    });
 
     goToHomePage();
   } catch (error: unknown) {

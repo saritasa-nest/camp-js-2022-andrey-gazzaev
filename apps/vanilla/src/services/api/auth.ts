@@ -3,6 +3,7 @@ import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth
 import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { Tokens } from '@js-camp/core/models/tokens';
+import { User } from '@js-camp/core/models/user';
 
 import { defaultRequestInstance } from './instance';
 
@@ -15,7 +16,7 @@ const REFRESH_TOKEN_URL = 'auth/token/refresh/';
  * Login to user account.
  * @param loginData Information required to log in to the user's account.
  */
-export async function loginUser(
+export async function login(
   loginData: LoginData,
 ): Promise<Tokens> {
   const response = await defaultRequestInstance.post<TokensDto>(LOGIN_URL, loginData);
@@ -27,8 +28,9 @@ export async function loginUser(
  * Registers a user account.
  * @param registrationData Information required to register a user account.
  */
-export async function registerUser({ user, password }: RegistrationData): Promise<Tokens> {
-  const userDto = UserMapper.toDto(user, password);
+export async function register({ user, password }: RegistrationData): Promise<Tokens> {
+  const userModel = new User(user);
+  const userDto = UserMapper.toDto(userModel, password);
   const response = await defaultRequestInstance.post<TokensDto>(REGISTER_URL, {
     ...userDto,
   });
@@ -40,7 +42,7 @@ export async function registerUser({ user, password }: RegistrationData): Promis
  * Checks if the token is valid.
  * @param accessToken Access token.
  */
-export async function checkTokenValidity(accessToken: string): Promise<boolean> {
+export async function isTokenValid(accessToken: string): Promise<boolean> {
   try {
     await defaultRequestInstance.post<TokensDto>(VERIFY_TOKEN_URL, {
       token: accessToken,
@@ -57,7 +59,7 @@ export async function checkTokenValidity(accessToken: string): Promise<boolean> 
  * Submits a request to refresh tokens.
  * @param refreshToken Refresh token.
  */
-export async function fetchRefreshedToken(refreshToken: string): Promise<Tokens> {
+export async function fetchRefreshToken(refreshToken: string): Promise<Tokens> {
   const response = await defaultRequestInstance.post<TokensDto>(REFRESH_TOKEN_URL, {
     refresh: refreshToken,
   });

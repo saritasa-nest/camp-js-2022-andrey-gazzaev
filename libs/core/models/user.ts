@@ -1,6 +1,6 @@
 import { Immerable, OmitImmerable } from './immerable';
 
-/** Genre. */
+/** User. */
 export class User extends Immerable {
 
   /** User email. */
@@ -15,7 +15,7 @@ export class User extends Immerable {
   /** URL to avatar image. */
   public readonly avatar: string;
 
-  public constructor(data: InitArgsGenre) {
+  public constructor(data: InitArgsUser) {
     super();
     this.email = data.email;
     this.firstName = data.firstName;
@@ -24,4 +24,4 @@ export class User extends Immerable {
   }
 }
 
-type InitArgsGenre = OmitImmerable<User>;
+type InitArgsUser = OmitImmerable<User>;
