@@ -3,6 +3,7 @@ import { User } from '@js-camp/core/models/user';
 import { Form, Header, Profile } from '../../constants/classes';
 import { LocalStorageKey } from '../../constants/localStorage';
 import { LocalStorageService } from '../../services/domain/localStorage';
+import { signOut } from '../../services/domain/user';
 import { getUser } from '../../services/general';
 
 const USER_PROFILE_TEMPLATE = 'user-profile';
@@ -11,7 +12,7 @@ const SIGN_OUT_BUTTON = 'sign-out';
 
 /** Signs out from account. */
 function handleSignOut(): void {
-  LocalStorageService.setValue(LocalStorageKey.TOKENS, null);
+  signOut();
 
   renderHeader();
 }

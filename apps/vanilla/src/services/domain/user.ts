@@ -38,3 +38,8 @@ export async function registerUser(registrationData: RegistrationData): Promise<
     }
   }
 }
+
+/** Sign out. */
+export function signOut(): void {
+  LocalStorageService.setValue(LocalStorageKey.TOKENS, null);
+}
