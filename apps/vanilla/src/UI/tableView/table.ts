@@ -6,13 +6,13 @@ import { Table, TableBlock } from '../../constants/classes';
 interface TableColumnDef {
 
   /** Field in anime model. */
-  field: keyof Anime;
+  readonly field: keyof Anime;
 
   /** Title of column. */
-  title: string;
+  readonly title: string;
 }
 
-const TABLE_COLUMNS: TableColumnDef[] = [
+const TABLE_COLUMNS: readonly TableColumnDef[] = [
   { field: 'image', title: 'Image' },
   { field: 'titleEnglish', title: 'Title in English' },
   { field: 'titleJapanese', title: 'Title in Japanese' },
@@ -75,7 +75,7 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
  * Renders table on the page.
  * @param tableRows Array of rows.
  */
-function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
+function updateAnimeTable(tableRows: readonly HTMLTableRowElement[]): void {
   const catalogElement = document.querySelector(`.${TableBlock.TABLE}`);
   const errorElement = document.querySelector(`.${TableBlock.ERROR}`);
 
@@ -117,5 +117,5 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
 export function fillTableAnime(animeList: readonly Anime[]): void {
   const tableRows = createTableRows(animeList);
 
-  updateTableAnime(tableRows);
+  updateAnimeTable(tableRows);
 }

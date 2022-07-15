@@ -3,7 +3,7 @@ import { isSortField, isSortOrdering, isStatus } from '@js-camp/core/utils/guard
 import { SelectorElement } from '../../constants/classes';
 import { LocalStorageKey } from '../../constants/localStorage';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
-import { PaginationOptions } from '../../types/paginationSettings';
+import { QueryOptions } from '../../types/paginationSettings';
 import { LocalStorageService } from '../../services/domain/localStorage';
 import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS } from '../../constants/select';
 import { SelectOptions } from '../../types/select';
@@ -11,14 +11,14 @@ import { ElementData } from '../../types/element';
 
 import { handleChangeAnimeData } from './general';
 
-const NO_CLASSES: string[] = [];
+const NO_CLASSES: readonly string[] = [];
 
 /**
  * Changes pagination settings.
  * @param value Value of sort, search or filter select.
  */
 function handleChangePaginationOptions(value: string): void {
-  const paginationOptions = LocalStorageService.getValue<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  const paginationOptions = LocalStorageService.getValue<QueryOptions>(LocalStorageKey.PAGINATION_SETTINGS);
   if (paginationOptions !== null) {
     let { sort, filter, search } = paginationOptions;
 
@@ -32,7 +32,7 @@ function handleChangePaginationOptions(value: string): void {
       search = value;
     }
 
-    LocalStorageService.setValue<PaginationOptions>(
+    LocalStorageService.setValue<QueryOptions>(
       LocalStorageKey.PAGINATION_SETTINGS,
       { ...paginationOptions, sort, filter, search },
     );

@@ -1,16 +1,19 @@
 import { AnimeEnums } from '@js-camp/core/utils/types/anime.enums';
 import { SortField, SortOrdering } from '@js-camp/core/utils/types/sort';
 
-import { PaginationOptions } from '../types/paginationSettings';
+import { QueryOptions } from '../types/paginationSettings';
 
 /** Anime limit when requesting a new page. */
 const DEFAULT_LIMIT = 25;
+
+/** Default search settings. */
+const DEFAULT_SEARCH = '';
 
 /** First pagination page. */
 export const FIRST_PAGE_NUMBER = 1;
 
 /** Default sort settings. */
-export const DEFAULT_PAGINATION_SETTINGS: PaginationOptions = {
+export const DEFAULT_PAGINATION_SETTINGS: QueryOptions = {
   sort: {
     field: SortField.Aired,
     ordering: SortOrdering.Ascending,
@@ -19,5 +22,5 @@ export const DEFAULT_PAGINATION_SETTINGS: PaginationOptions = {
     byStatusField: AnimeEnums.Status.Airing,
   },
   limit: DEFAULT_LIMIT,
-  search: '',
+  search: DEFAULT_SEARCH,
 };

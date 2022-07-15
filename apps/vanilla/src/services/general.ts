@@ -1,6 +1,6 @@
 import { LocalStorageKey } from '../constants/localStorage';
 import { AnimeData } from '../types/anime';
-import { PaginationOptions } from '../types/paginationSettings';
+import { QueryOptions } from '../types/paginationSettings';
 
 import { fetchAnime } from './api/anime';
 import { LocalStorageService } from './domain/localStorage';
@@ -11,7 +11,7 @@ import { LocalStorageService } from './domain/localStorage';
  * @param paginationOptions Pagination Options.
  * @returns Ready url.
  */
-function getUrlAnime(offset: number, paginationOptions: PaginationOptions): string {
+function getUrlAnime(offset: number, paginationOptions: QueryOptions): string {
   const offsetParam = ['offset', String(offset)];
   const limitParam = ['limit', String(paginationOptions.limit)];
   const orderingParam = ['ordering', `${paginationOptions.sort.ordering}${paginationOptions.sort.field}`];
@@ -30,7 +30,7 @@ function getUrlAnime(offset: number, paginationOptions: PaginationOptions): stri
  * @param currentPageNumber The page on which the change occurs.
  */
 export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
-  const localPaginationOptions = LocalStorageService.getValue<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  const localPaginationOptions = LocalStorageService.getValue<QueryOptions>(LocalStorageKey.PAGINATION_SETTINGS);
   if (localPaginationOptions === null) {
     return null;
   }

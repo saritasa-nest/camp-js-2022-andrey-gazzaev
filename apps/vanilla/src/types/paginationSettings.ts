@@ -8,8 +8,8 @@ export interface Filter {
   readonly byStatusField: AnimeEnums.Status;
 }
 
-/** Pagination settings. */
-export interface PaginationOptions {
+/** Pagination query settings. */
+export interface QueryOptions {
 
   /** Sort settings. */
   readonly sort: Sort<SortOrdering, SortField>;
@@ -17,7 +17,7 @@ export interface PaginationOptions {
   /** Filter settings. */
   readonly filter: Filter;
 
-  /** Search settings. */
+  /** Search query. */
   readonly search: string;
 
   /** Maximum number of entries per page. */
