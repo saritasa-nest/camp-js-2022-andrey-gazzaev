@@ -3,6 +3,7 @@ import { registerUser } from '../../services/domain/user';
 
 import { getValue, goToHomePage, showError } from '../general';
 
+// This is a link to an avatar that has already been uploaded to the server.
 const DEFAULT_AVATAR_URL =
   'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
   'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
