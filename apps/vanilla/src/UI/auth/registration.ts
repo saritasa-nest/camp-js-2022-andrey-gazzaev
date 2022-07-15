@@ -41,13 +41,6 @@ export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<
     return showError(ErrorMessage.PASSWORD_NOT_MATCH);
   }
 
-  const user = new User({
-    avatar: DEFAULT_AVATAR_URL,
-    firstName,
-    lastName,
-    email,
-  });
-
   try {
     await registerUser({
       user: {
