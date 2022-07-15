@@ -180,7 +180,7 @@ function renderAnimeCard(anime: Anime): void {
 
 /** Renders details anime. */
 export async function renderDetailsAnime(): Promise<void> {
-  const testAnimeId = 101;
+  const testAnimeId = 2;
   const anime = await getAnime(testAnimeId);
 
   if (anime instanceof Anime) {
