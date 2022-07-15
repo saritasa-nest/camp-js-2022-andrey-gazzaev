@@ -1,15 +1,12 @@
-import { Tokens } from '@js-camp/core/models/tokens';
 import { User } from '@js-camp/core/models/user';
-
-import { LocalStorageKey } from '../constants/localStorage';
 
 import { isTokenValid } from './api/auth';
 import { fetchUserProfile } from './api/user';
-import { LocalStorageService } from './domain/localStorage';
+import { TokenService } from './domain/token';
 
 /** Checks if the user is logged in. */
 async function isAuthorized(): Promise<boolean> {
-  const tokens = LocalStorageService.getValue<Tokens>(LocalStorageKey.TOKENS);
+  const tokens = TokenService.getTokens();
   if (tokens !== null) {
     try {
       if (await isTokenValid(tokens.access)) {

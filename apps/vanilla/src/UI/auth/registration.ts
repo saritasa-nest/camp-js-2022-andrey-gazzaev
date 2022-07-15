@@ -1,7 +1,7 @@
 import { ErrorMessage, FormField } from '../../constants/form';
 import { registerUser } from '../../services/domain/user';
 
-import { getValue, goToHomePage, showError } from '../general';
+import { getElementValue, goToHomePage, showError } from '../general';
 
 // This is a link to an avatar that has already been uploaded to the server.
 const DEFAULT_AVATAR_URL =
@@ -21,11 +21,11 @@ export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<
 
   const form = new FormData(event.target);
 
-  const email = getValue(form.get(FormField.EMAIL));
-  const firstName = getValue(form.get(FormField.FIRST_NAME));
-  const lastName = getValue(form.get(FormField.LAST_NAME));
-  const password = getValue(form.get(FormField.PASSWORD));
-  const confirmedPassword = getValue(form.get(FormField.CONFIRMED_PASSWORD));
+  const email = getElementValue(form.get(FormField.EMAIL));
+  const firstName = getElementValue(form.get(FormField.FIRST_NAME));
+  const lastName = getElementValue(form.get(FormField.LAST_NAME));
+  const password = getElementValue(form.get(FormField.PASSWORD));
+  const confirmedPassword = getElementValue(form.get(FormField.CONFIRMED_PASSWORD));
 
   if (
     email === null ||

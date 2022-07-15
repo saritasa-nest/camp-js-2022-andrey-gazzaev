@@ -1,7 +1,7 @@
 import { ErrorMessage, FormField } from '../../constants/form';
 import { loginUser } from '../../services/domain/user';
 
-import { getValue, goToHomePage, showError } from '../general';
+import { getElementValue, goToHomePage, showError } from '../general';
 
 /**
  * Handle login form submit event.
@@ -16,8 +16,8 @@ export async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
 
   const form = new FormData(event.target);
 
-  const email = getValue(form.get(FormField.EMAIL));
-  const password = getValue(form.get(FormField.PASSWORD));
+  const email = getElementValue(form.get(FormField.EMAIL));
+  const password = getElementValue(form.get(FormField.PASSWORD));
 
   if (email === null || password === null) {
     return showError(ErrorMessage.FIELD_NOT_FILLED);

@@ -1,13 +1,11 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { HttpError } from '@js-camp/core/models/httpError';
 import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
 import { isHttpErrorDto } from '@js-camp/core/utils/guards/error.guard';
-import { Tokens } from '@js-camp/core/models/tokens';
 
 import { FetchHeader } from '../../constants/fetch';
-import { LocalStorageKey } from '../../constants/localStorage';
-import { LocalStorageService } from '../domain/localStorage';
+import { TokenService } from '../domain/token';
 
 import { fetchRefreshToken } from './auth';
 
@@ -34,7 +32,7 @@ function generateError(error: unknown): HttpError {
  * @param config Previous request configuration.
  */
 function retryResponse(config: AxiosRequestConfig): Promise<AxiosResponse | null> {
-  const tokens = LocalStorageService.getValue<Tokens>(LocalStorageKey.TOKENS);
+  const tokens = TokenService.getTokens();
   if (config.url !== undefined && tokens !== null) {
     const response = defaultRequestInstance.options(config.url, {
       method: config.method,
@@ -50,7 +48,7 @@ function retryResponse(config: AxiosRequestConfig): Promise<AxiosResponse | null
 }
 
 /** Request template. */
-export const defaultRequestInstance: AxiosInstance = axios.create({
+export const defaultRequestInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     [FetchHeader.ApiKey]: import.meta.env.VITE_API_KEY,
@@ -59,7 +57,7 @@ export const defaultRequestInstance: AxiosInstance = axios.create({
 });
 
 defaultRequestInstance.interceptors.request.use(config => {
-  const tokens = LocalStorageService.getValue<Tokens>(LocalStorageKey.TOKENS);
+  const tokens = TokenService.getTokens();
   if (tokens !== null && config.headers !== undefined) {
     config.headers[FetchHeader.Authorization] = `Bearer ${tokens.access}`;
   }
@@ -67,7 +65,7 @@ defaultRequestInstance.interceptors.request.use(config => {
 });
 
 defaultRequestInstance.interceptors.response.use(config => config, async error => {
-  const tokens = LocalStorageService.getValue<Tokens>(LocalStorageKey.TOKENS);
+  const tokens = TokenService.getTokens();
 
   if (axios.isAxiosError(error) && tokens !== null) {
 
@@ -80,7 +78,7 @@ defaultRequestInstance.interceptors.response.use(config => config, async error =
     }
 
     try {
-      LocalStorageService.setValue(LocalStorageKey.TOKENS, await fetchRefreshToken(tokens.refresh));
+      TokenService.setTokens(await fetchRefreshToken(tokens.refresh));
       const response = await retryResponse(error.config);
       if (response !== null) {
         return Promise.resolve(response.data);
@@ -88,7 +86,7 @@ defaultRequestInstance.interceptors.response.use(config => config, async error =
 
       return Promise.reject(generateError(error));
     } catch {
-      LocalStorageService.setValue(LocalStorageKey.TOKENS, null);
+     TokenService.resetTokens();
 
       const URL_LOGIN_PAGE = '/login/';
       location.href = URL_LOGIN_PAGE;

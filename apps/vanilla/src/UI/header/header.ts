@@ -1,8 +1,7 @@
 import { User } from '@js-camp/core/models/user';
 
 import { Form, Header, Profile } from '../../constants/classes';
-import { LocalStorageKey } from '../../constants/localStorage';
-import { LocalStorageService } from '../../services/domain/localStorage';
+import { TokenService } from '../../services/domain/token';
 import { signOut } from '../../services/domain/user';
 import { getUser } from '../../services/general';
 
@@ -13,7 +12,6 @@ const SIGN_OUT_BUTTON = 'sign-out';
 /** Signs out from account. */
 function handleSignOut(): void {
   signOut();
-
   renderHeader();
 }
 
@@ -82,7 +80,7 @@ export async function renderHeader(): Promise<void> {
   const user = await getUser();
   if (user !== null) {
     renderUserProfile(user);
-  } else if (LocalStorageService.getValue(LocalStorageKey.TOKENS) === null) {
+  } else if (TokenService.isTokens()) {
     renderStandardProfile();
   }
 

@@ -1,9 +1,11 @@
+const ERROR_CLASS = 'error';
+
 /**
  * Gets value from input element.
  * @param element The element from which you want to get the value.
  * @returns Value of element or null.
  */
-export function getValue(element: FormDataEntryValue | null): string | null {
+export function getElementValue(element: FormDataEntryValue | null): string | null {
   if (element !== null) {
     return String(element);
   }
@@ -15,7 +17,7 @@ export function getValue(element: FormDataEntryValue | null): string | null {
  * @param error Error message.
  */
 export function showError(error: string): void {
-  const errorElement = document.querySelector('.error');
+  const errorElement = document.querySelector(`.${ERROR_CLASS}`);
 
   if (errorElement !== null) {
     errorElement.innerHTML = error;
