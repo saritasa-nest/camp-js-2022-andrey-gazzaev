@@ -80,7 +80,7 @@ export async function renderHeader(): Promise<void> {
   const user = await getUser();
   if (user !== null) {
     renderUserProfile(user);
-  } else if (TokenService.isTokens()) {
+  } else if (!TokenService.isTokens()) {
     renderStandardProfile();
   }
 
