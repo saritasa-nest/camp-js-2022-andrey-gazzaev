@@ -18,7 +18,7 @@ export async function loginUser(loginData: LoginData): Promise<void> {
     LocalStorageService.setValue<Tokens>(LocalStorageKey.TOKENS, tokens);
   } catch (error: unknown) {
     if (error instanceof HttpError) {
-      throw error.detail;
+      throw error;
     }
   }
 }
@@ -34,7 +34,7 @@ export async function registerUser(registrationData: RegistrationData): Promise<
     LocalStorageService.setValue<Tokens>(LocalStorageKey.TOKENS, tokens);
   } catch (error: unknown) {
     if (error instanceof HttpError) {
-      throw error.detail;
+      throw error;
     }
   }
 }

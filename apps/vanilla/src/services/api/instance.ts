@@ -12,6 +12,7 @@ import { LocalStorageService } from '../domain/localStorage';
 import { fetchRefreshToken } from './auth';
 
 const REFRESH_TOKEN_URL = 'auth/token/refresh/';
+const UNKNOWN_ERROR = 'Unexpected error';
 
 /**
  * Generates HttpError from general error.
@@ -25,8 +26,7 @@ function generateError(error: unknown): HttpError {
     }
   }
 
-  const UNKNOWN_ERROR = 'Unexpected error';
-  return new HttpError({ detail: UNKNOWN_ERROR });
+  return new HttpError({ detail: UNKNOWN_ERROR, message: UNKNOWN_ERROR, name: UNKNOWN_ERROR });
 }
 
 /**

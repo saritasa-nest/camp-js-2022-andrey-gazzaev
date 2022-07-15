@@ -53,8 +53,8 @@ export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<
 
     goToHomePage();
   } catch (error: unknown) {
-    if (typeof error === 'string') {
-      showError(error);
+    if (error instanceof Error) {
+      showError(error.message);
     }
   }
 }

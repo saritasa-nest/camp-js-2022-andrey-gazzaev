@@ -28,8 +28,8 @@ export async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
 
     goToHomePage();
   } catch (error: unknown) {
-    if (typeof error === 'string') {
-      showError(error);
+    if (error instanceof Error) {
+      showError(error.message);
     }
   }
 }

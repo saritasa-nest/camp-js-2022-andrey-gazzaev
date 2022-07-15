@@ -31,3 +31,14 @@ export async function getUser(): Promise<User | null> {
   }
   return null;
 }
+
+// def get_user(user_id: int) -> Promise[User | None]:
+//     """Return user from database by user id.
+
+//     Args:
+//         user_id (int): Uniquer Identifier of User
+
+//     Returns:
+//         Promise object with User or None if User doesn't exist.
+
+//     """

@@ -8,6 +8,6 @@ export namespace HttpErrorMapper {
    * @param dto Http error dto.
    */
   export function fromDto(dto: HttpErrorDto): HttpError {
-    return new HttpError({ detail: dto.detail });
+    return new HttpError({ ...dto, message: dto.detail });
   }
 }
