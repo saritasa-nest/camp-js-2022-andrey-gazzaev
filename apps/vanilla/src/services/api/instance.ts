@@ -34,15 +34,13 @@ function generateError(error: unknown): HttpError {
 function retryResponse(config: AxiosRequestConfig): Promise<AxiosResponse | null> {
   const tokens = TokenService.getTokens();
   if (config.url !== undefined && tokens !== null) {
-    const response = defaultRequestInstance.options(config.url, {
+    return defaultRequestInstance.options(config.url, {
       method: config.method,
       headers: {
         ...config.headers,
         [FetchHeader.Authorization]: `Bearer ${tokens.access}`,
       },
     });
-
-    return response;
   }
   return Promise.resolve(null);
 }
