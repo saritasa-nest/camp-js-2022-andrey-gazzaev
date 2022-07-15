@@ -4,6 +4,7 @@ import { Form, Header, Profile } from '../../constants/classes';
 import { TokenService } from '../../services/domain/token';
 import { signOut } from '../../services/domain/user';
 import { getUser } from '../../services/general';
+import { goToHomePage } from '../general';
 
 const USER_PROFILE_TEMPLATE = 'user-profile';
 const STANDARD_PROFILE_TEMPLATE = 'standard-profile';
@@ -12,6 +13,7 @@ const SIGN_OUT_BUTTON = 'sign-out';
 /** Signs out from account. */
 function handleSignOut(): void {
   signOut();
+  goToHomePage();
   renderHeader();
 }
 
