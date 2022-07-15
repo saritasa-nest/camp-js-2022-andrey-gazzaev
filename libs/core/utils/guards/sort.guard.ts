@@ -1,12 +1,13 @@
-import { AnimeEnums } from '../types/anime.enums';
+import { Status } from '../../models/anime';
+
 import { SortField, SortOrdering } from '../types/sort';
 
 /**
  * Checks if a value is of a enum Status.
  * @param value Some string.
  */
-export function isStatus(value: string): value is AnimeEnums.Status {
-  return Object.values(AnimeEnums.Status).includes(value as AnimeEnums.Status);
+export function isStatus(value: string): value is Status {
+  return Object.values(Status).includes(value as Status);
 }
 
 /**

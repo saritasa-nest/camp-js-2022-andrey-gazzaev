@@ -1,4 +1,4 @@
-import { AnimeEnums } from '@js-camp/core/utils/types/anime.enums';
+import { Status } from '@js-camp/core/models/anime';
 import { SortField, SortOrdering } from '@js-camp/core/utils/types/sort';
 
 import { PaginationOptions } from '../types/paginationSettings';
@@ -16,7 +16,7 @@ export const DEFAULT_PAGINATION_SETTINGS: PaginationOptions = {
     ordering: SortOrdering.Ascending,
   },
   filter: {
-    byStatusField: AnimeEnums.Status.Airing,
+    byStatusField: Status.Airing,
   },
   limit: DEFAULT_LIMIT,
   offset: 0,
