@@ -1,6 +1,6 @@
 {
-  "name": "saritasa-frontend-boilerplate-camp",
-  "version": "0.0.0",
+  "name": "camp-js-2022-andrey-gazzaev",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "postinstall": "ngcc --properties es2020 browser module main",
@@ -15,7 +15,7 @@
     "angular:stylelint": "nx run angular:stylelint",
     "vanilla:build": "nx run vanilla:build",
     "vanilla:serve": "nx run vanilla:serve",
-    "vanilla:lint": "nx run vanilla:lint",
+    "vanilla:lint": "nx run vanilla:lint --fix",
     "vanilla:stylelint": "nx run vanilla:stylelint"
   },
   "private": true,
@@ -93,5 +93,16 @@
     "typescript": "~4.7.2",
     "vite": "^2.9.9",
     "vite-plugin-eslint": "1.3.0"
-  }
+  },
+  "description": "Monorepo with Angular, React, Vanilla TS boilerplates for JS camp. Created with [Nx](https://nx.dev/). Update project name and description, when you start working on your own project.",
+  "main": "jest.preset.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saritasa-nest/camp-js-2022-andrey-gazzaev.git"
+  },
+  "author": "Andrey Gazzaev",
+  "bugs": {
+    "url": "https://github.com/saritasa-nest/camp-js-2022-andrey-gazzaev/issues"
+  },
+  "homepage": "https://github.com/saritasa-nest/camp-js-2022-andrey-gazzaev#readme"
 }

@@ -1,16 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./index.css" />
-    <title>Vite App</title>
-  </head>
-  <body class="default-layout">
-    <h1 class="title">Main page ⚡</h1>
-    <div class="links">
-      <a href="/example/">Go to example page</a>
-    </div>
-    <script type="module" src="./index.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="./index.css" />
+  <title>Anime catalog</title>
+</head>
+
+<body class="page">
+  <header class="page__header header">
+    <h1 class="logo-text">Anime catalog</h1>
+  </header>
+
+  <main class="page__container">
+    <section class="catalog">
+      <h2 id="catalog-anime" class="title">Table with anime</h2>
+      <div class="table-block">
+        <form class="table-block__sort-settings form">
+
+          <label class="form-label">
+            <span class="form-label__text">Sort by:</span>
+            <select name="fields" class="form-select sort-field"></select>
+          </label>
+
+          <label class="form-label">
+            <span class="form-label__text">Ordering:</span>
+            <select name="ordering" class="form-select sort-ordering"></select>
+          </label>
+
+          <label class="form-label">
+            <span class="form-label__text">Filter by status:</span>
+            <select name="status" class="form-select sort-status"></select>
+          </label>
+
+          <label class="form-label">
+            <span class="form-label__text">Search:</span>
+            <input type="search" name="search" class="sort-search">
+          </label>
+
+        </form>
+
+        <table class="table-block__table table" aria-label="anime" aria-describedby="catalog-anime">
+          <tr>
+            <th></th>
+            <th>Title in English</th>
+            <th>Title in Japanese</th>
+            <th>Aired Start</th>
+            <th>Type</th>
+            <th>Status</th>
+          </tr>
+        </table>
+
+        <p class="table-block__error"></p>
+        
+      </div>
+      <div class="table-block__pagination"></div>
+    </section>
+  </main>
+  <script type="module" src="./index.ts"></script>
+</body>
+
 </html>
