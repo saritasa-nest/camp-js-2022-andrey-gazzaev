@@ -6,8 +6,8 @@ import { QueryParamsService } from '../services/domain/queryParams';
 
 /** Adds sorting settings to local storage if they are not there. */
 function initSortSettings(): void {
-  if (QueryParamsService.getParams() === null) {
-    QueryParamsService.setParams(DEFAULT_PAGINATION_SETTINGS);
+  if (QueryParamsService.getPaginationParams() === null) {
+    QueryParamsService.setPaginationParams(DEFAULT_PAGINATION_SETTINGS);
   }
 }
 

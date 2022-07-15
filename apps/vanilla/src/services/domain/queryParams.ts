@@ -20,18 +20,18 @@ export namespace QueryParamsService {
   }
 
   /**
-   * Sets query params into url.
+   * Sets pagination query params into url.
    * @param searchParams List of params.
    */
-  export function setParams(searchParams: URLSearchParams | PaginationOptions): void {
+  export function setPaginationParams(searchParams: URLSearchParams | PaginationOptions): void {
     if (!(searchParams instanceof URLSearchParams)) {
       return window.history.pushState({}, '', `/?${paginationOptionsToUrlSearchParams(searchParams).toString()}`);
     }
     window.history.pushState({}, '', `/?${searchParams.toString()}`);
   }
 
-  /** Gets query params. */
-  export function getParams(): PaginationOptions | null {
+  /** Gets pagination query params. */
+  export function getPaginationParams(): PaginationOptions | null {
     const params = new URLSearchParams(window.location.search);
 
     const ordering = params.get('ordering');

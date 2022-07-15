@@ -16,7 +16,7 @@ const NO_CLASSES: string[] = [];
  * @param selectValue Value of sort or filter select.
  */
 function handleChangePaginationOptions(selectValue: string): void {
-  const paginationOptions = QueryParamsService.getParams();
+  const paginationOptions = QueryParamsService.getPaginationParams();
   if (paginationOptions !== null) {
     let { sort, filter } = paginationOptions;
 
@@ -28,7 +28,7 @@ function handleChangePaginationOptions(selectValue: string): void {
       sort = { ...paginationOptions.sort, ordering: selectValue };
     }
 
-    QueryParamsService.setParams({ ...paginationOptions, sort, filter });
+    QueryParamsService.setPaginationParams({ ...paginationOptions, sort, filter });
   }
 
   handleChangeAnimeData(FIRST_PAGE_NUMBER);
@@ -56,7 +56,7 @@ export function initSortElements(): void {
     { name: 'sort', selector: SelectorElement.SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
   ];
 
-  const paginationOptions = QueryParamsService.getParams();
+  const paginationOptions = QueryParamsService.getPaginationParams();
 
   if (paginationOptions === null) {
     return;
