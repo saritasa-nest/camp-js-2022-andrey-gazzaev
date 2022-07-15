@@ -22,9 +22,13 @@ function handleChangePaginationOptions(selectValue: string): void {
 
     if (isStatus(selectValue)) {
       filter = { ...paginationOptions.filter, byStatusField: selectValue };
-    } else if (isSortField(selectValue)) {
+    }
+
+    if (isSortField(selectValue)) {
       sort = { ...paginationOptions.sort, field: selectValue };
-    } else if (isSortOrdering(selectValue)) {
+    }
+
+    if (isSortOrdering(selectValue)) {
       sort = { ...paginationOptions.sort, ordering: selectValue };
     }
 
