@@ -4,7 +4,9 @@ import { Genre } from '@js-camp/core/models/genre';
 import { Studio } from '@js-camp/core/models/studio.dto';
 
 import { Card } from '../../constants/classes';
+import { QueryParamsService } from '../../services/domain/queryParams';
 import { getDetailsAnime } from '../../services/general';
+import { goToHomePage } from '../general';
 
 const NO_DATA = '-';
 
@@ -180,14 +182,20 @@ function renderAnimeCard(anime: Anime): void {
 
 /** Renders details anime. */
 export async function renderDetailsAnime(): Promise<void> {
-  const testAnimeId = 2;
-  const anime = await getDetailsAnime(testAnimeId);
 
-  if (anime instanceof Anime) {
-    return renderAnimeCard(anime);
+  // TO-DO add this function to domain layer
+  const idAnime = QueryParamsService.getDetailsParams();
+  if (idAnime !== null) {
 
+    const anime = await getDetailsAnime(idAnime);
+
+    if (anime instanceof Anime) {
+      return renderAnimeCard(anime);
+    }
+
+    const URL_LOGIN_PAGE = '/login/';
+    location.href = URL_LOGIN_PAGE;
   }
 
-  const URL_LOGIN_PAGE = '/login/';
-  location.href = URL_LOGIN_PAGE;
+  goToHomePage();
 }

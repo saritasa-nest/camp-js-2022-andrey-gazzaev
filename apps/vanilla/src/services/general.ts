@@ -60,12 +60,12 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
     return null;
   }
 
-  const currentOffset = currentPageNumber * paginationOptions.limit;
+  const currentOffset = currentPageNumber === 1 ? 0 : currentPageNumber * paginationOptions.limit;
 
   const newPaginationOptions: PaginationOptions = { ...paginationOptions, offset: currentOffset };
   QueryParamsService.setPaginationParams(newPaginationOptions);
 
-  const urlGetAnime = getUrlAnime(paginationOptions);
+  const urlGetAnime = getUrlAnime(newPaginationOptions);
 
   try {
     const { results: list, count: totalCount } = await fetchAnime(urlGetAnime);

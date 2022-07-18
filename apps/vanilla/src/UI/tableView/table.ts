@@ -1,6 +1,7 @@
 import { Anime } from '@js-camp/core/models/anime';
 
 import { Table, TableBlock } from '../../constants/classes';
+import { QueryParamsService } from '../../services/domain/queryParams';
 
 /** Information about column. */
 interface TableColumnDef {
@@ -25,6 +26,15 @@ const TABLE_COLUMNS: TableColumnDef[] = [
 export const NO_DATA = '-';
 
 /**
+ * Go to details card of anime.
+ * @param id ID of anime.
+ */
+function handleOpenDetailsCard(id: number): void {
+  QueryParamsService.setDetailsParams(Number(id));
+  window.history.go();
+}
+
+/**
  * Creates and fills table rows.
  * @param animeList List of anime entries.
  */
@@ -32,6 +42,7 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
   return animeList.map(anime => {
     const row = document.createElement('tr');
     row.classList.add(Table.ROW);
+    row.addEventListener('click', () => handleOpenDetailsCard(anime.id));
 
     TABLE_COLUMNS.forEach(({ field }) => {
       const tdElement = document.createElement('td');

@@ -26,9 +26,9 @@ export namespace QueryParamsService {
    */
   export function setPaginationParams(searchParams: URLSearchParams | PaginationOptions): void {
     if (!(searchParams instanceof URLSearchParams)) {
-      return window.history.pushState({}, '', `/?${paginationOptionsToUrlSearchParams(searchParams).toString()}`);
+      return window.history.pushState({}, '', `/list/?${paginationOptionsToUrlSearchParams(searchParams).toString()}`);
     }
-    window.history.pushState({}, '', `/?${searchParams.toString()}`);
+    window.history.pushState({}, '', `/list/?${searchParams.toString()}`);
   }
 
   /** Gets pagination query params. */
@@ -61,6 +61,26 @@ export namespace QueryParamsService {
         limit: Number(limit),
         offset: Number(offset),
       };
+    }
+    return null;
+  }
+
+  /**
+   * Sets details query params into url.
+   * @param id ID of anime.
+   */
+  export function setDetailsParams(id: number): void {
+    const idParam = ['id', String(id)];
+    const params = new URLSearchParams([idParam]);
+    window.history.pushState({}, '', `/details/?${params.toString()}`);
+  }
+
+  /** Gets details query params. */
+  export function getDetailsParams(): number | null {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id !== null) {
+      return Number(id);
     }
     return null;
   }

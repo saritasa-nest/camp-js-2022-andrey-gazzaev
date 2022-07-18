@@ -8,3 +8,4 @@ function initPage(): void {
 }
 
 window.addEventListener('DOMContentLoaded', initPage);
+window.addEventListener('popstate', () => window.history.go());

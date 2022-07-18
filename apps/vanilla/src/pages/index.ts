@@ -19,6 +19,8 @@ function initHomePage(): void {
   initSortElements();
 
   handleChangeAnimeData(FIRST_PAGE_NUMBER);
+
 }
 
 window.addEventListener('DOMContentLoaded', initHomePage);
+window.addEventListener('popstate', () => window.history.go());
