@@ -4,7 +4,7 @@ import { Genre } from '@js-camp/core/models/genre';
 import { Studio } from '@js-camp/core/models/studio.dto';
 
 import { Card } from '../../constants/classes';
-import { getAnime } from '../../services/general';
+import { getDetailsAnime } from '../../services/general';
 
 const NO_DATA = '-';
 
@@ -181,7 +181,7 @@ function renderAnimeCard(anime: Anime): void {
 /** Renders details anime. */
 export async function renderDetailsAnime(): Promise<void> {
   const testAnimeId = 2;
-  const anime = await getAnime(testAnimeId);
+  const anime = await getDetailsAnime(testAnimeId);
 
   if (anime instanceof Anime) {
     return renderAnimeCard(anime);
