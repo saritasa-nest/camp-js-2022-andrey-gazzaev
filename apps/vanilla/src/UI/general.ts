@@ -1,3 +1,5 @@
+import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+
 const ERROR_CLASS = 'error';
 
 /**
@@ -6,7 +8,7 @@ const ERROR_CLASS = 'error';
  * @returns Value of element or null.
  */
 export function getElementValue(element: FormDataEntryValue | null): string | null {
-  if (element !== null) {
+  if (isNotFalsy(element)) {
     return String(element);
   }
   return null;
@@ -19,7 +21,7 @@ export function getElementValue(element: FormDataEntryValue | null): string | nu
 export function showError(error: string): void {
   const errorElement = document.querySelector(`.${ERROR_CLASS}`);
 
-  if (errorElement !== null) {
+  if (isNotFalsy(errorElement)) {
     errorElement.innerHTML = error;
     errorElement.removeAttribute('hidden');
   }

@@ -1,3 +1,4 @@
+import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
 import { User } from '@js-camp/core/models/user';
 
 import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
@@ -13,7 +14,7 @@ import { QueryParamsService } from './domain/queryParams';
 /** Checks if the user is logged in. */
 async function isAuthorized(): Promise<boolean> {
   const tokens = TokenService.getTokens();
-  if (tokens !== null) {
+  if (isNotFalsy(tokens)) {
     try {
       if (await isTokenValid(tokens.access)) {
         return true;
@@ -42,7 +43,7 @@ export async function getUser(): Promise<User | null> {
  */
 function getUrlAnime(paginationOptions: PaginationOptions): string {
   const params = QueryParamsService.paginationOptionsToUrlSearchParams(paginationOptions);
-  if (params !== null) {
+  if (isNotFalsy(params)) {
     return `anime/anime/?${params.toString()}`;
   }
   return `anime/anime/`;
@@ -55,7 +56,7 @@ function getUrlAnime(paginationOptions: PaginationOptions): string {
 export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
   const paginationOptions = QueryParamsService.getPaginationParams();
 
-  if (paginationOptions === null) {
+  if (!isNotFalsy(paginationOptions)) {
     return null;
   }
 
@@ -64,7 +65,7 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
   const newPaginationOptions: PaginationOptions = { ...paginationOptions, offset: currentOffset };
   QueryParamsService.setPaginationParams(newPaginationOptions);
 
-  const urlGetAnime = getUrlAnime(paginationOptions);
+  const urlGetAnime = getUrlAnime(newPaginationOptions);
 
   try {
     const { results: list, count: totalCount } = await fetchAnime(urlGetAnime);

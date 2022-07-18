@@ -1,4 +1,5 @@
 import { Anime } from '@js-camp/core/models/anime';
+import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
 
 import { Table, TableBlock } from '../../constants/classes';
 
@@ -62,7 +63,7 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
           break;
 
         default:
-          if (anime[field] !== '' && anime[field] !== null && anime[field] !== undefined) {
+          if (isNotFalsy(anime[field])) {
             tdElement.innerHTML = `${anime[field]}`;
           } else {
             tdElement.innerHTML = `${NO_DATA}`;
@@ -83,16 +84,16 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
   const catalogElement = document.querySelector(`.${TableBlock.TABLE}`);
   const errorElement = document.querySelector(`.${TableBlock.ERROR}`);
 
-  if (errorElement !== null) {
+  if (isNotFalsy(errorElement)) {
     errorElement.innerHTML = '';
   }
 
-  if (catalogElement !== null) {
+  if (isNotFalsy(catalogElement)) {
     catalogElement.innerHTML = '';
   }
 
   if (tableRows.length === 0) {
-    if (errorElement !== null) {
+    if (isNotFalsy(errorElement)) {
       errorElement.innerHTML = 'Records missing.';
     }
     return;
@@ -110,7 +111,7 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
 
   rowHead.append(...columnsHead);
 
-  if (catalogElement !== null) {
+  if (isNotFalsy(catalogElement)) {
     catalogElement.append(rowHead, ...tableRows);
   }
 }

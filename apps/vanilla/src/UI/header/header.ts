@@ -1,4 +1,5 @@
 import { User } from '@js-camp/core/models/user';
+import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
 
 import { Form, Header, Profile } from '../../constants/classes';
 import { TokenService } from '../../services/domain/token';
@@ -31,7 +32,7 @@ function createSignOutButton(): HTMLButtonElement {
  */
 function addProfileToHeader(element: Element | Node | null): void {
   const headerElement = document.querySelector(`.${Header.PROFILE}`);
-  if (headerElement !== null && element !== null) {
+  if (isNotFalsy(headerElement) && isNotFalsy(element)) {
     headerElement.innerHTML = '';
     headerElement.append(element);
   }
@@ -40,7 +41,7 @@ function addProfileToHeader(element: Element | Node | null): void {
 /** Renders standard header template. */
 function renderStandardProfile(): void {
   const standardTemplate = document.querySelector<HTMLTemplateElement>(`.${STANDARD_PROFILE_TEMPLATE}`);
-  if (standardTemplate !== null) {
+  if (isNotFalsy(standardTemplate)) {
     const standardElement = standardTemplate.content.cloneNode(true);
     addProfileToHeader(standardElement);
   }
@@ -52,7 +53,7 @@ function renderStandardProfile(): void {
  */
 function renderUserProfile(user: User): void {
   const profileTemplate = document.querySelector<HTMLTemplateElement>(`.${USER_PROFILE_TEMPLATE}`);
-  if (profileTemplate !== null) {
+  if (isNotFalsy(profileTemplate)) {
     const userGreeting = document.createElement('span');
     userGreeting.innerHTML = `Hello, ${user.firstName} ${user.lastName}!`;
     userGreeting.classList.add(Profile.NAME);
@@ -66,7 +67,7 @@ function renderUserProfile(user: User): void {
 
     const form = profileElement.querySelector(`.${Profile.FORM}`);
 
-    if (form === null) {
+    if (!isNotFalsy(form)) {
       return renderStandardProfile();
     }
 
@@ -78,10 +79,10 @@ function renderUserProfile(user: User): void {
 /** Renders header. */
 export async function renderHeader(): Promise<void> {
   const user = await getUser();
-  if (user !== null) {
+
+  if (isNotFalsy(user)) {
     renderUserProfile(user);
   } else if (!TokenService.isTokens()) {
     renderStandardProfile();
   }
-
 }

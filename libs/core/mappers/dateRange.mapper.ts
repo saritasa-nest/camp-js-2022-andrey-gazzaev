@@ -1,5 +1,6 @@
 import { DateRangeDto } from '../dtos/dateRange.dto';
 import { DateRange } from '../models/dateRange';
+import { isNotFalsy } from '../utils/guards/general.guard';
 
 export namespace DateRangeMapper {
 
@@ -9,8 +10,8 @@ export namespace DateRangeMapper {
    */
   export function fromDto(dto: DateRangeDto): DateRange {
     return new DateRange({
-      end: dto.end !== null ? new Date(dto.end) : null,
-      start: dto.start !== null ? new Date(dto.start) : null,
+      end: isNotFalsy(dto.end) ? new Date(dto.end) : null,
+      start: isNotFalsy(dto.start) ? new Date(dto.start) : null,
     });
   }
 }

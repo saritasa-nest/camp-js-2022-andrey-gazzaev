@@ -1,4 +1,5 @@
 import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
+import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
 
 import { SelectorElement } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
@@ -17,7 +18,7 @@ const NO_CLASSES: string[] = [];
  */
 function handleChangePaginationOptions(selectValue: string): void {
   const paginationOptions = QueryParamsService.getPaginationParams();
-  if (paginationOptions !== null) {
+  if (isNotFalsy(paginationOptions)) {
     let { sort, filter } = paginationOptions;
 
     if (isStatus(selectValue)) {
@@ -48,7 +49,7 @@ function handleChangePaginationOptions(selectValue: string): void {
  */
 function createOption({ text, classes, value }: ElementData): HTMLOptionElement {
   const option = document.createElement('option');
-  if (value !== undefined && classes !== undefined) {
+  if (isNotFalsy(value) && isNotFalsy(classes)) {
     option.setAttribute('value', value);
     option.innerHTML = text;
     option.classList.add(...classes);
@@ -67,7 +68,7 @@ export function initSortElements(): void {
 
   const paginationOptions = QueryParamsService.getPaginationParams();
 
-  if (paginationOptions === null) {
+  if (!isNotFalsy(paginationOptions)) {
     return;
   }
 

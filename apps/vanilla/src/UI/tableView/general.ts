@@ -1,3 +1,5 @@
+import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+
 import { Page } from '../../constants/classes';
 import { PaginationService } from '../../services/domain/pagination';
 import { changeAnimeData } from '../../services/general';
@@ -12,7 +14,7 @@ import { fillTableAnime } from './table';
  */
 export async function handleChangeAnimeData(currentPageNumber: number): Promise<void> {
   const animeData = await changeAnimeData(currentPageNumber);
-  if (animeData !== null) {
+  if (isNotFalsy(animeData)) {
     return renderTableView(animeData);
   }
   return renderTableViewError();
@@ -48,7 +50,7 @@ export function renderTableView({ list, totalCount, currentPageNumber, limit }: 
 /** Renders message about table view error. */
 export function renderTableViewError(): void {
   const pageContainer = document.querySelector(`.${Page.CONTAINER}`);
-  if (pageContainer !== null) {
+  if (isNotFalsy(pageContainer)) {
     const errorTemplate = document.createElement('p');
     errorTemplate.classList.add(Page.ERROR);
 

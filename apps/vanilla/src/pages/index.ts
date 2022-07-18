@@ -1,3 +1,5 @@
+import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+
 import { renderHeader } from '../UI/header/header';
 import { initSortElements } from '../UI/tableView/sort';
 import { handleChangeAnimeData } from '../UI/tableView/general';
@@ -6,7 +8,7 @@ import { QueryParamsService } from '../services/domain/queryParams';
 
 /** Adds sorting settings to local storage if they are not there. */
 function initSortSettings(): void {
-  if (QueryParamsService.getPaginationParams() === null) {
+  if (!isNotFalsy(QueryParamsService.getPaginationParams())) {
     QueryParamsService.setPaginationParams(DEFAULT_PAGINATION_SETTINGS);
   }
 }

@@ -1,5 +1,6 @@
 import { AnimeDto, StatusDto, TypeDto } from '../dtos/anime.dto';
 import { Anime, Status, Type } from '../models/anime';
+import { isNotFalsy } from '../utils/guards/general.guard';
 
 import { DateRangeMapper } from './dateRange.mapper';
 
@@ -28,8 +29,8 @@ export namespace AnimeMapper {
     dto: AnimeDto,
   ): Anime {
 
-    const status = ANIME_STATUS_FROM_DTO_MAP[dto.status] !== undefined ? ANIME_STATUS_FROM_DTO_MAP[dto.status] : Status.Airing;
-    const type = ANIME_TYPE_FROM_DTO_MAP[dto.type] !== undefined ? ANIME_TYPE_FROM_DTO_MAP[dto.type] : Type.Tv;
+    const status = isNotFalsy(ANIME_STATUS_FROM_DTO_MAP[dto.status]) ? ANIME_STATUS_FROM_DTO_MAP[dto.status] : Status.Airing;
+    const type = isNotFalsy(ANIME_TYPE_FROM_DTO_MAP[dto.type]) ? ANIME_TYPE_FROM_DTO_MAP[dto.type] : Type.Tv;
 
     return new Anime({
       id: dto.id,
