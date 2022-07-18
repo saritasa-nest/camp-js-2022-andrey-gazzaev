@@ -23,6 +23,7 @@
 
 .table-block__sort-settings {
   display: flex;
+  flex-direction: row;
   justify-content: space-evenly;
 }
 
@@ -91,7 +92,7 @@
 }
 
 @media (max-width: 1000px) {
-  .table__head {
+  .table__head-cell {
     display: none;
     border-bottom: none;
   }
@@ -103,11 +104,15 @@
     border-bottom: 1px solid var(--table-row-border-color);
   }
 
-  .table__body {
+  .table__body-cell {
     border-bottom: 1px dotted var(--table-row-border-color);
   }
 
-  .table__body:last-child {
+  .table__body-cell:last-child {
     border-bottom: none;
+  }
+
+  .table-block__sort-settings {
+    flex-direction: column;
   }
 }
