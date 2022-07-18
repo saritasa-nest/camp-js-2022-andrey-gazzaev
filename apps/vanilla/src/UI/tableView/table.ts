@@ -62,7 +62,12 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
           break;
 
         default:
-          tdElement.innerHTML = `${anime[field] ?? NO_DATA}`;
+          if (anime[field] !== '' && anime[field] !== null && anime[field] !== undefined) {
+            tdElement.innerHTML = `${anime[field]}`;
+          } else {
+            tdElement.innerHTML = `${NO_DATA}`;
+          }
+
           row.append(tdElement);
       }
     });
