@@ -19,8 +19,15 @@ function initHomePage(): void {
 
   initSortSettings();
   initSortElements();
+  const paginationOptions = QueryParamsService.getPaginationParams();
 
-  handleChangeAnimeData(FIRST_PAGE_NUMBER);
+  if (!isNotFalsy(paginationOptions)) {
+    handleChangeAnimeData(FIRST_PAGE_NUMBER);
+    return;
+  }
+
+  const currentPage = paginationOptions.offset === 0 ? FIRST_PAGE_NUMBER : paginationOptions.offset / paginationOptions.limit;
+  handleChangeAnimeData(currentPage);
 }
 
 window.addEventListener('DOMContentLoaded', initHomePage);
