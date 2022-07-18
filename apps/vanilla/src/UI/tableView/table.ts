@@ -12,7 +12,7 @@ interface TableColumnDef {
   readonly title: string;
 }
 
-const TABLE_COLUMNS: TableColumnDef[] = [
+const TABLE_COLUMNS: readonly TableColumnDef[] = [
   { field: 'image', title: 'Image' },
   { field: 'titleEnglish', title: 'Title in English' },
   { field: 'titleJapanese', title: 'Title in Japanese' },
@@ -62,7 +62,11 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
           break;
 
         default:
-          tdElement.innerHTML = `${anime[field] || NO_DATA}`;
+          if (anime[field] !== '' && anime[field] !== null && anime[field] !== undefined) {
+            tdElement.innerHTML = `${anime[field]}`;
+          } else {
+            tdElement.innerHTML = `${NO_DATA}`;
+          }
           row.append(tdElement);
       }
     });

@@ -22,3 +22,4 @@ function initHomePage(): void {
 }
 
 window.addEventListener('DOMContentLoaded', initHomePage);
+window.addEventListener('popstate', () => window.history.go());
