@@ -62,7 +62,7 @@ export function initSortElements(): void {
     { name: 'ordering', selector: SelectorElement.SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
     { name: 'status', selector: SelectorElement.SORT_STATUS, options: OPTIONS_FOR_STATUS },
     { name: 'sort', selector: SelectorElement.SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
-    { name: 'type', selector: SelectorElement.SELECT_SORT_TYPE, options: OPTIONS_FOR_TYPE },
+    { name: 'type', selector: SelectorElement.SORT_TYPE, options: OPTIONS_FOR_TYPE },
   ];
 
   const paginationOptions = QueryParamsService.getPaginationParams();
