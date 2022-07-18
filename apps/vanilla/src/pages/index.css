@@ -1,5 +1,2 @@
-@import url("../global/index.css");
-
-.title {
-  color: var(--heading-color-1);
-}
+@import url("../global/form.css");
+@import url("../global/header.css");

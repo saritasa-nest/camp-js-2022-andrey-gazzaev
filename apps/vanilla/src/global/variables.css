@@ -1,7 +1,12 @@
 :root {
-  /* Using html color names here only for showcase,
-   * you shouldn't be using color names in real projects. */
-  --heading-color-1: gold;
-  --heading-color-2: darksalmon;
-  --heading-color-3: powderblue;
+  /* Form */
+  --form-border-color: #d4d4d4;
+  --form-default-color: #686868;
+  --form-active-color: #faa527;
+  --form-background: #fff;
+
+  /* General */
+  --error-text-color: #ee4a4a;
+  --default-text-size: 0.7em;
+  --border-color: #dbd7d2;
 }

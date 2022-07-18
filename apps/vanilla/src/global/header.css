@@ -1,0 +1,41 @@
+@import url("../global/index.css");
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.logo-text {
+  font-size: 2em;
+  font-weight: bold;
+  padding: 20px 0 20px 20px;
+}
+
+.profile {
+  padding-right: 20px;
+}
+
+.profile__form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile__user-name {
+  padding-right: 20px;
+}
+
+.sign-out {
+  padding: 10px 15px;
+  min-height: auto;
+}
+
+.profile__list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 140px;
+}
