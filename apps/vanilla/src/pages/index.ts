@@ -1,7 +1,7 @@
 import { renderHeader } from '../UI/header/header';
-import { DEFAULT_PAGINATION_SETTINGS, FIRST_PAGE_NUMBER } from '../constants/pagination';
 import { initSortElements } from '../UI/tableView/sort';
 import { handleChangeAnimeData } from '../UI/tableView/general';
+import { DEFAULT_PAGINATION_SETTINGS, FIRST_PAGE_NUMBER } from '../constants/pagination';
 import { QueryParamsService } from '../services/domain/queryParams';
 
 /** Adds sorting settings to local storage if they are not there. */

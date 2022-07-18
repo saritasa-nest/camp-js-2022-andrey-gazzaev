@@ -24,10 +24,6 @@ export namespace Header {
   export const PROFILE = 'header__profile';
 }
 
-export namespace Catalog {
-  export const BUTTON_PAGINATION = 'catalog__pagination-btn';
-}
-
 /** The class names sort element. */
 export namespace SelectorElement {
   export const SORT_STATUS = 'sort-status';
