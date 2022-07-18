@@ -1,6 +1,21 @@
-import { AnimeEnums } from '../utils/types/anime.enums';
-
 import { DateRangeDto } from './dateRange.dto';
+
+/** Possible options anime type. */
+export enum TypeDto {
+  Tv = 'TV',
+  Ova = 'OVA',
+  Movie = 'MOVIE',
+  Special = 'SPECIAL',
+  Ona = 'ONA',
+  Music = 'MUSIC',
+}
+
+/** Possible options anime status. */
+export enum StatusDto {
+  Airing = 'AIRING',
+  Finished = 'FINISHED',
+  NotYetAired = 'NOT_YET_AIRED',
+}
 
 /** Anime DTO. */
 export interface AnimeDto {
@@ -27,8 +42,8 @@ export interface AnimeDto {
   readonly aired: DateRangeDto;
 
   /** Anime type. */
-  readonly type: AnimeEnums.Type;
+  readonly type: TypeDto;
 
   /** Anime status. */
-  readonly status: AnimeEnums.Status;
+  readonly status: StatusDto;
 }

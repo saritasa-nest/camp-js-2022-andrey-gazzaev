@@ -1,3 +1,5 @@
+@import url("../global/form.css");
+@import url("../global/header.css");
 @import url("../global/index.css");
 @import url("../global/variables.css");
 
@@ -36,8 +38,8 @@
   display: flex;
 }
 
-.table__body,
-.table__head {
+.table__body-cell,
+.table__head-cell {
   display: flex;
   justify-content: center;
   align-items: center;

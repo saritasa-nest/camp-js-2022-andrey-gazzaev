@@ -6,13 +6,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link rel="stylesheet" href="./index.css" />
-  <title>Anime catalog</title>
+  <title>Anime App</title>
 </head>
 
 <body class="page">
   <header class="page__header header">
     <h1 class="logo-text">Anime catalog</h1>
+    <div class="header__profile profile"></div>
   </header>
+
+  <template class="standard-profile">
+    <div class="header__profile profile">
+      <ul class="profile__list">
+        <li class="profile__list-item">
+          <a class="profile__list-link link" title="Sign in to account" href="/login/">Sign in</a>
+        </li>
+        <li class="profile__list-item">
+          <a class="profile__list-link link" title="Register a new account" href="/registration/">Sign up</a>
+        </li>
+      </ul>
+    </div>
+  </template>
+
+  <template class="user-profile">
+    <div class="header__profile profile">
+      <form class="form profile__form"></form>
+    </div>
+  </template>
 
   <main class="page__container">
     <section class="catalog">
@@ -20,49 +40,35 @@
       <div class="table-block">
         <form class="table-block__sort-settings form">
 
-          <div class="field">
-            <label class="form__label" for="sort-field">
-              <span class="form__label-text">Sort by:</span>
-            </label>
-            <select name="fields" class="form__select sort-field" id="sort-field"></select>
-          </div>
+          <label class="form-label">
+            <span class="form-label__text">Sort by:</span>
+            <select name="fields" class="form-select sort-field"></select>
+          </label>
 
-          <div class="field">
-            <label class="form__label" for="sort-ordering">
-              <span class="form__label-text">Ordering:</span>
-            </label>
-            <select name="ordering" class="form__select sort-ordering" id="sort-ordering"></select>
-          </div>
+          <label class="form-label">
+            <span class="form-label__text">Ordering:</span>
+            <select name="ordering" class="form-select sort-ordering"></select>
+          </label>
 
-          <div class="field">
-            <label class="form__label" for="sort-status">
-              <span class="form__label-text">Filter by status:</span>
-            </label>
-            <select name="status" class="form__select sort-status" id="sort-status"></select>
-          </div>
+          <label class="form-label">
+            <span class="form-label__text">Filter by status:</span>
+            <select name="status" class="form-select sort-status"></select>
+          </label>
 
-          <div class="field">
-            <label class="form__label" for="sort-type">
-              <span class="form__label-text">Filter by type:</span>
-            </label>
-            <select name="type" class="form__select sort-type" id="sort-type"></select>
-          </div>
+          <label class="form-label">
+            <span class="form-label__text">Filter by type:</span>
+            <select name="type" class="form-select sort-type" ></select>
+          </label>
         </form>
 
         <table class="table-block__table table" aria-label="anime" aria-describedby="catalog-anime">
           <tr>
             <th></th>
-            <th>Title in English</th>
-            <th>Title in Japanese</th>
-            <th>Aired Start</th>
-            <th>Type</th>
-            <th>Status</th>
           </tr>
         </table>
 
-        <p class="table-block__error">
+        <p class="table-block__error"></p>
 
-        </p>
       </div>
       <div class="table-block__pagination"></div>
     </section>

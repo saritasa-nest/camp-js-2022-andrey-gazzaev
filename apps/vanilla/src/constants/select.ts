@@ -1,4 +1,4 @@
-import { AnimeEnums } from '@js-camp/core/utils/types/anime.enums';
+import { Status, Type } from '@js-camp/core/models/anime';
 import { SortField } from '@js-camp/core/utils/types/sort';
 
 import { Option } from '../types/select';
@@ -21,18 +21,18 @@ export const OPTIONS_FOR_ORDERING: readonly Option[] =
 /** Options in status select. */
 export const OPTIONS_FOR_STATUS: readonly Option[] =
   [
-    { text: 'Airing', value: AnimeEnums.Status.Airing },
-    { text: 'Finished', value: AnimeEnums.Status.Finished },
-    { text: 'Not yet aired', value: AnimeEnums.Status.NotYetAired },
+    { text: 'Airing', value: Status.Airing },
+    { text: 'Finished', value: Status.Finished },
+    { text: 'Not yet aired', value: Status.NotYetAired },
   ];
 
 /** Options in status select. */
 export const OPTIONS_FOR_TYPE: readonly Option[] =
-[
-  { text: 'Tv', value: AnimeEnums.Type.Tv },
-  { text: 'OVA', value: AnimeEnums.Type.Ova },
-  { text: 'Movie', value: AnimeEnums.Type.Movie },
-  { text: 'Special', value: AnimeEnums.Type.Special },
-  { text: 'ONA', value: AnimeEnums.Type.Ona },
-  { text: 'Music', value: AnimeEnums.Type.Music },
-];
+  [
+    { text: 'Tv', value: Type.Tv },
+    { text: 'OVA', value: Type.Ova },
+    { text: 'Movie', value: Type.Movie },
+    { text: 'Special', value: Type.Special },
+    { text: 'ONA', value: Type.Ona },
+    { text: 'Music', value: Type.Music },
+  ];

@@ -5,13 +5,14 @@ a,
 
   color: var(--link-color);
   text-decoration: none;
-  border-bottom: 1px solid var(--link-color);
 }
 
 a:hover,
 :link:hover,
 .link:hover {
   --link-color: var(--primary-light-color);
+
+  text-decoration: underline var(--primary-light-color);
 }
 
 .links {
@@ -20,9 +21,12 @@ a:hover,
   gap: 16px;
 }
 
-.default-layout {
-  --default-layout-width: 600px;
+.link:focus {
+  text-decoration: underline var(--primary-light-color);
+  outline: 0;
+}
 
-  margin: 80px auto 0;
-  max-width: var(--default-layout-width);
+.error {
+  color: var(--error-text-color);
+  font-size: var(--default-text-size);
 }

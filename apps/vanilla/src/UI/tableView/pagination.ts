@@ -1,63 +1,19 @@
 import { TableBlock } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
+import { ElementData } from '../../types/element';
+import { PaginationData } from '../../types/paginationSettings';
 
 import { handleChangeAnimeData } from './general';
 
+const NO_CLASSES: string[] = [];
 const ELLIPSIS = '...';
 const PAGE_OFFSET = 3;
 
-/** Borders due to which pagination is built. */
-interface PaginationBorders {
-
-  /** The first page in pagination. */
-  readonly firstPage: number;
-
-  /** The first page, taking into account the offset from the current page. */
-  readonly prevPage: number;
-
-  /** The last page, taking into account the offset from the current page. */
-  readonly nextPage: number;
-
-  /** The last page in pagination. */
-  readonly lastPage: number;
-}
-
-/**
- * Defines pagination boundaries relative to the current page.
- * @param allAnimeCount All records that the server can provide.
- * @param currentPageNumber Page for which you want to create a pagination.
- * @param limit Anime limit when requesting a new page.
- */
-function definePaginationBoundaries(
-  allAnimeCount: number,
-  currentPageNumber: number,
-  limit: number,
-): PaginationBorders {
-  const lastPage = Math.ceil(allAnimeCount / limit);
-
-  const prevPage = currentPageNumber - PAGE_OFFSET < FIRST_PAGE_NUMBER ?
-    FIRST_PAGE_NUMBER :
-    currentPageNumber - PAGE_OFFSET;
-
-  const nextPage = currentPageNumber + PAGE_OFFSET > lastPage ?
-    lastPage :
-    currentPageNumber + PAGE_OFFSET;
-
-  return {
-    firstPage: FIRST_PAGE_NUMBER,
-    prevPage,
-    nextPage,
-    lastPage,
-  };
-}
-
 /**
  * Creates a button element for pagination.
- * @param pageNumber The page number the button contains.
- * @param isCurrentPage If button is current then will add class current.
- * @returns Button element.
+ * @param buttonData Information contained in the button.
  */
-function createButton(pageNumber: number, isCurrentPage: boolean): HTMLButtonElement {
+function createButton({ text, isCurrentPage }: ElementData): HTMLButtonElement {
   const button = document.createElement('button');
 
   const classes = [TableBlock.BUTTON_PAGINATION];
@@ -68,89 +24,75 @@ function createButton(pageNumber: number, isCurrentPage: boolean): HTMLButtonEle
 
   button.classList.add(...classes);
   button.setAttribute('type', 'button');
-  button.innerHTML = String(pageNumber);
-  button.addEventListener('click', () => handleChangeAnimeData(pageNumber));
+  button.innerHTML = text;
+  button.addEventListener('click', () => handleChangeAnimeData(Number(text)));
   return button;
 }
 
 /**
  * Creates a span element.
- * @param text The text that contains the element.
- * @param classes The style classes that the element contains.
- * @returns Span element.
+ * @param spanData Information contained in the span.
  */
-function createSpan(text: string, classes: readonly string[]): HTMLSpanElement {
+function createSpan({ text, classes }: ElementData): HTMLSpanElement {
   const span = document.createElement('span');
   span.innerHTML = text;
-  span.classList.add(...classes);
+  if (classes !== undefined) {
+    span.classList.add(...classes);
+  }
   return span;
 }
 
 /**
  * Creates pagination elements within certain borders.
- * @param paginationBorders Left, right border and first, last page pagination.
- * @param currentPage Page for which you want to create a pagination.
- * @returns Array of buttons.
+ * @param paginationData Information needed to build pagination.
+ * @returns All elements that pagination contains.
  */
-function createPaginationElements({
-  prevPage,
-  nextPage,
-  lastPage,
-}: PaginationBorders, currentPage: number): (HTMLButtonElement | HTMLSpanElement)[] {
-  const buttonsPagination: (HTMLButtonElement | HTMLSpanElement)[] = [];
+function createPaginationElements({ borders, currentPage }: PaginationData): (HTMLButtonElement | HTMLSpanElement)[] {
+  const paginationElements: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
   if (currentPage - PAGE_OFFSET > FIRST_PAGE_NUMBER) {
-    buttonsPagination.push(createButton(FIRST_PAGE_NUMBER, false));
-    buttonsPagination.push(createSpan(ELLIPSIS, []));
+    paginationElements.push(createButton({ text: String(FIRST_PAGE_NUMBER), isCurrentPage: false }));
+    paginationElements.push(createSpan({ text: ELLIPSIS, classes: NO_CLASSES }));
   }
 
-  for (let index = prevPage; index <= nextPage; index++) {
-    if (index !== lastPage) {
-      const button = createButton(index, currentPage === index);
+  for (let index = borders.prevPage; index <= borders.nextPage; index++) {
+    if (index !== borders.lastPage) {
+      const button = createButton({ text: String(index), isCurrentPage: currentPage === index });
 
-      buttonsPagination.push(button);
+      paginationElements.push(button);
     }
   }
 
-  if (currentPage + PAGE_OFFSET < lastPage - 1) {
-    buttonsPagination.push(createSpan(ELLIPSIS, []));
-    buttonsPagination.push(createButton(lastPage - 1, false));
+  if (currentPage + PAGE_OFFSET < borders.lastPage - 1) {
+    paginationElements.push(createSpan({ text: ELLIPSIS, classes: NO_CLASSES }));
+    paginationElements.push(createButton({ text: String(borders.lastPage - 1), isCurrentPage: false }));
   }
 
-  return buttonsPagination;
+  return paginationElements;
 }
 
 /**
  * Renders pagination on the page.
- * @param buttons Array of buttons.
+ * @param elements Array of pagination elements.
  */
-function updatePaginationElement(buttons: readonly (HTMLButtonElement | HTMLSpanElement)[]): void {
+function updatePaginationElement(elements: readonly (HTMLButtonElement | HTMLSpanElement)[]): void {
   const paginationElement = document.querySelector(`.${TableBlock.PAGINATION}`);
 
   if (paginationElement !== null) {
     paginationElement.innerHTML = '';
-    paginationElement.append(...buttons);
+    paginationElement.append(...elements);
   }
 }
 
 /**
  * Fills the pagination element relative to the current page.
- * @param allAnimeCount All records that the server can provide.
- * @param currentPage Page for which you want to create a pagination.
- * @param limit Anime limit when requesting a new page.
+ * @param paginationData Information needed to build pagination.
  */
 export function fillPaginationAnime(
-  allAnimeCount: number,
-  currentPage: number,
-  limit: number,
+  paginationData: PaginationData,
 ): void {
-  const paginationBorders = definePaginationBoundaries(
-    allAnimeCount,
-    currentPage,
-    limit,
-  );
 
-  const buttonsPagination = createPaginationElements(paginationBorders, currentPage);
+  const paginationElements = createPaginationElements(paginationData);
 
-  updatePaginationElement(buttonsPagination);
+  updatePaginationElement(paginationElements);
 }

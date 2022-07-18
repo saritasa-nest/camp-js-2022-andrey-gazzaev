@@ -1,0 +1,11 @@
+@import url("../../global/form.css");
+@import url("../../global/index.css");
+
+.registration {
+  position: relative;
+  max-width: 215px;
+  border: 1px solid var(--form-border-color);
+  border-radius: 5px;
+  margin: 80px auto;
+  padding: 25px;
+}

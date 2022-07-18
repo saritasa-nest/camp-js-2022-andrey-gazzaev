@@ -1,4 +1,5 @@
 import { Page } from '../../constants/classes';
+import { PaginationService } from '../../services/domain/pagination';
 import { changeAnimeData } from '../../services/general';
 import { AnimeData } from '../../types/anime';
 
@@ -35,7 +36,13 @@ function goToTop(): void {
 export function renderTableView({ list, totalCount, currentPageNumber, limit }: AnimeData): void {
   goToTop();
   fillTableAnime(list);
-  fillPaginationAnime(totalCount, currentPageNumber, limit);
+
+  const paginationBorders = PaginationService.definePaginationBoundaries(
+    totalCount,
+    currentPageNumber,
+    limit,
+  );
+  fillPaginationAnime({ borders: paginationBorders, currentPage: currentPageNumber });
 }
 
 /** Renders message about table view error. */

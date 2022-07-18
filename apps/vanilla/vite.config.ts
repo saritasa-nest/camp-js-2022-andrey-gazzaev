@@ -1,3 +1,4 @@
+
 import { resolve } from 'path';
 
 import { defineConfig } from 'vite';
@@ -14,14 +15,17 @@ export default defineConfig({
       '@js-camp': resolve(__dirname, '../../libs'),
     },
   },
+
   build: {
     outDir,
     emptyOutDir: true,
     rollupOptions: {
       input: [
-        resolve(root, 'index.html')
+        resolve(root, 'index.html'),
+        resolve(root, 'login', 'index.html'),
+        resolve(root, 'registration', 'index.html'),
       ],
     },
-  }
+  },
 }
 );

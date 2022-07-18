@@ -1,22 +1,35 @@
-import { AnimeDto } from '../dtos/anime.dto';
-import { Anime } from '../models/anime';
-import { AnimeEnums } from '../utils/types/anime.enums';
+import { AnimeDto, StatusDto, TypeDto } from '../dtos/anime.dto';
+import { Anime, Status, Type } from '../models/anime';
 
 import { DateRangeMapper } from './dateRange.mapper';
+
+const ANIME_STATUS_FROM_DTO_MAP: Readonly<Record<StatusDto, Status>> = {
+  [StatusDto.Airing]: Status.Airing,
+  [StatusDto.Finished]: Status.Finished,
+  [StatusDto.NotYetAired]: Status.NotYetAired,
+};
+
+const ANIME_TYPE_FROM_DTO_MAP: Readonly<Record<TypeDto, Type>> = {
+  [TypeDto.Movie]: Type.Movie,
+  [TypeDto.Music]: Type.Music,
+  [TypeDto.Ona]: Type.Ona,
+  [TypeDto.Ova]: Type.Ova,
+  [TypeDto.Special]: Type.Special,
+  [TypeDto.Tv]: Type.Tv,
+};
 
 export namespace AnimeMapper {
 
   /**
    * Maps dto to model.
    * @param dto Anime dto.
-   * @param mapperFromDto Callback of result mapper from DTO to Model.
    */
   export function fromDto(
     dto: AnimeDto,
   ): Anime {
 
-    const status = Object.values(AnimeEnums.Status).includes(dto.status) ? dto.status : AnimeEnums.Status.Airing;
-    const type = Object.values(AnimeEnums.Type).includes(dto.type) ? dto.type : AnimeEnums.Type.Tv;
+    const status = ANIME_STATUS_FROM_DTO_MAP[dto.status] !== undefined ? ANIME_STATUS_FROM_DTO_MAP[dto.status] : Status.Airing;
+    const type = ANIME_TYPE_FROM_DTO_MAP[dto.type] !== undefined ? ANIME_TYPE_FROM_DTO_MAP[dto.type] : Type.Tv;
 
     return new Anime({
       id: dto.id,

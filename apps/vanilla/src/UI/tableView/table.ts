@@ -1,46 +1,69 @@
 import { Anime } from '@js-camp/core/models/anime';
 
-import { TableColumn, NO_DATA } from '../../constants/animeTable';
 import { Table, TableBlock } from '../../constants/classes';
+
+/** Information about column. */
+interface TableColumnDef {
+
+  /** Field in anime model. */
+  readonly field: keyof Anime;
+
+  /** Title of column. */
+  readonly title: string;
+}
+
+const TABLE_COLUMNS: TableColumnDef[] = [
+  { field: 'image', title: 'Image' },
+  { field: 'titleEnglish', title: 'Title in English' },
+  { field: 'titleJapanese', title: 'Title in Japanese' },
+  { field: 'aired', title: 'Aired Start' },
+  { field: 'type', title: 'Type' },
+  { field: 'status', title: 'Status' },
+];
+
+/** Missing data in a cell. */
+export const NO_DATA = '-';
 
 /**
  * Creates and fills table rows.
  * @param animeList List of anime entries.
- * @returns Array of rows.
  */
 function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
   return animeList.map(anime => {
     const row = document.createElement('tr');
     row.classList.add(Table.ROW);
 
-    Object.values(TableColumn).forEach(column => {
-      const thElement = document.createElement('td');
-      thElement.classList.add(Table.BODY);
+    TABLE_COLUMNS.forEach(({ field }) => {
+      const tdElement = document.createElement('td');
+      tdElement.classList.add(Table.BODY_CELL);
 
       const imageElement = document.createElement('img');
       imageElement.classList.add(Table.IMAGE);
 
-      const airedStart = anime[TableColumn.Aired].start;
-      const airedColumnText = airedStart !== null ?
-        new Date(airedStart).toUTCString() :
-        NO_DATA;
+      let airedStart = null;
+      let airedColumnText = null;
 
-      switch (column) {
-        case TableColumn.Image:
-          imageElement.src = anime[column];
-          imageElement.alt = `Image of anime ${anime.titleEnglish}`;
-          thElement.append(imageElement);
-          row.append(thElement);
+      switch (field) {
+        case 'image':
+          imageElement.src = anime[field];
+          imageElement.alt = `Screensaver of the anime on which the title is written - ${anime.titleEnglish || anime.titleJapanese}`;
+          tdElement.append(imageElement);
+          row.append(tdElement);
           break;
 
-        case TableColumn.Aired:
-          thElement.innerHTML = airedColumnText;
-          row.append(thElement);
+        case 'aired':
+          airedStart = anime[field].start;
+          airedColumnText = airedStart !== null ?
+            new Date(airedStart).toUTCString() :
+            NO_DATA;
+
+          tdElement.innerHTML = airedColumnText;
+          row.append(tdElement);
           break;
 
         default:
-          thElement.innerHTML = `${anime[column] || NO_DATA}`;
-          row.append(thElement);
+          tdElement.innerHTML = `${anime[field] || NO_DATA}`;
+          row.append(tdElement);
       }
     });
 
@@ -68,26 +91,23 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
     if (errorElement !== null) {
       errorElement.innerHTML = 'Records missing.';
     }
-
-    if (catalogElement !== null) {
-      catalogElement.innerHTML = '';
-    }
     return;
   }
 
-  const catalogTitleRow = `
-  <tr class="table__row">
-    <th class="table__head"></th>
-    <th class="table__head">Title in English</th>
-    <th class="table__head">Title in Japanese</th>
-    <th class="table__head">Aired Start</th>
-    <th class="table__head">Type</th>
-    <th class="table__head">Status</th>
-  </tr>`;
+  const rowHead = document.createElement('tr');
+  rowHead.classList.add(Table.ROW);
+
+  const columnsHead = TABLE_COLUMNS.map(({ title }) => {
+    const thElement = document.createElement('th');
+    thElement.classList.add(Table.HEAD_CELL);
+    thElement.innerHTML = title;
+    return thElement;
+  });
+
+  rowHead.append(...columnsHead);
 
   if (catalogElement !== null) {
-    catalogElement.innerHTML = catalogTitleRow;
-    catalogElement.append(...tableRows);
+    catalogElement.append(rowHead, ...tableRows);
   }
 }
 

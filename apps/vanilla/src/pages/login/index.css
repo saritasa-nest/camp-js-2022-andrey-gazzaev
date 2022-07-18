@@ -1,0 +1,11 @@
+@import url("../../global/index.css");
+@import url("../../global/form.css");
+
+.login {
+  position: relative;
+  border: 1px solid var(--form-border-color);
+  border-radius: 5px;
+  padding: 25px;
+  margin: 80px auto;
+  max-width: 215px;
+}

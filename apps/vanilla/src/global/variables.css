@@ -1,4 +1,17 @@
 :root {
+  /* Form */
+  --form-border-color: #d4d4d4;
+  --form-default-color: #686868;
+  --form-active-color: #faa527;
+  --form-background: #fff;
+
+  /* General */
+  --error-text-color: #ee4a4a;
+  --default-text-size: 0.7em;
+  --heading-color-1: #ffd700;
+  --heading-color-2: #e9967a;
+  --heading-color-3: #b0e0e6;
+
   /* Pagination */
   --pagination-button-active-color: #ffcf48;
   --pagination-button-font-size: 1.5em;

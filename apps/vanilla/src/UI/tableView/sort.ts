@@ -1,21 +1,22 @@
 import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
 
 import { SelectorElement } from '../../constants/classes';
-import { LocalStorageKey } from '../../constants/localStorage';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
-import { PaginationOptions } from '../../types/paginationSettings';
-import { LocalStorageService } from '../../services/domain/localStorage';
 import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS, OPTIONS_FOR_TYPE } from '../../constants/select';
 import { SelectOptions } from '../../types/select';
+import { ElementData } from '../../types/element';
+import { QueryParamsService } from '../../services/domain/queryParams';
 
 import { handleChangeAnimeData } from './general';
+
+const NO_CLASSES: string[] = [];
 
 /**
  * Changes pagination settings.
  * @param selectValue Value of sort or filter select.
  */
 function handleChangePaginationOptions(selectValue: string): void {
-  const paginationOptions = LocalStorageService.getValue<PaginationOptions>(LocalStorageKey.PAGINATION_SETTINGS);
+  const paginationOptions = QueryParamsService.getPaginationParams();
   if (paginationOptions !== null) {
     let { sort, filter } = paginationOptions;
 
@@ -27,14 +28,13 @@ function handleChangePaginationOptions(selectValue: string): void {
 
     if (isSortField(selectValue)) {
       sort = { ...paginationOptions.sort, field: selectValue };
-    } else if (isSortOrdering(selectValue)) {
+    }
+
+    if (isSortOrdering(selectValue)) {
       sort = { ...paginationOptions.sort, ordering: selectValue };
     }
 
-    LocalStorageService.setValue<PaginationOptions>(
-      LocalStorageKey.PAGINATION_SETTINGS,
-      { ...paginationOptions, sort, filter },
-    );
+    QueryParamsService.setPaginationParams({ ...paginationOptions, sort, filter });
   }
 
   handleChangeAnimeData(FIRST_PAGE_NUMBER);
@@ -42,33 +42,52 @@ function handleChangePaginationOptions(selectValue: string): void {
 
 /**
  * Creates a option element.
- * @param text The text that contains the element.
- * @param classes The style classes that the element contains.
- * @param value Value that contains option.
- * @returns Option element.
+ * @param optionData Information contained in the option.
  */
-function createOption(text: string, classes: readonly string[], value: string): HTMLSpanElement {
+function createOption({ text, classes, value }: ElementData): HTMLOptionElement {
   const option = document.createElement('option');
-  option.setAttribute('value', value);
-  option.innerHTML = text;
-  option.classList.add(...classes);
+  if (value !== undefined && classes !== undefined) {
+    option.setAttribute('value', value);
+    option.innerHTML = text;
+    option.classList.add(...classes);
+  }
   return option;
 }
 
 /** Adds option elements to select. */
 export function initSortElements(): void {
   const selectors: SelectOptions[] = [
-    { name: 'ordering', selector: SelectorElement.SELECT_SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
-    { name: 'status', selector: SelectorElement.SELECT_SORT_STATUS, options: OPTIONS_FOR_STATUS },
-    { name: 'sort', selector: SelectorElement.SELECT_SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
+    { name: 'ordering', selector: SelectorElement.SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
+    { name: 'status', selector: SelectorElement.SORT_STATUS, options: OPTIONS_FOR_STATUS },
+    { name: 'sort', selector: SelectorElement.SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
     { name: 'type', selector: SelectorElement.SELECT_SORT_TYPE, options: OPTIONS_FOR_TYPE },
   ];
+
+  const paginationOptions = QueryParamsService.getPaginationParams();
+
+  if (paginationOptions === null) {
+    return;
+  }
 
   selectors.forEach(select => {
     const selectElement = document.querySelector<HTMLSelectElement>(`.${select.selector}`);
 
     if (selectElement !== null) {
-      select.options.forEach(option => selectElement.append(createOption(option.text, [], option.value)));
+      select.options.forEach(option => selectElement.append(createOption({ text: option.text, classes: NO_CLASSES, value: option.value })));
+
+      switch (select.name) {
+        case 'ordering':
+          selectElement.value = paginationOptions.sort.ordering;
+          break;
+        case 'sort':
+          selectElement.value = paginationOptions.sort.field;
+          break;
+        case 'status':
+          selectElement.value = paginationOptions.filter.byStatusField;
+          break;
+        default:
+          break;
+      }
 
       selectElement.addEventListener(
         'change',
