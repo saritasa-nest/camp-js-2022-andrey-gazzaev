@@ -1,4 +1,4 @@
-import { Status } from '../../models/anime';
+import { Status, Type } from '../../models/anime';
 
 import { SortField, SortOrdering } from '../types/sort';
 
@@ -8,6 +8,14 @@ import { SortField, SortOrdering } from '../types/sort';
  */
 export function isStatus(value: string): value is Status {
   return Object.values(Status).includes(value as Status);
+}
+
+/**
+ * Checks if a value is of a enum Type.
+ * @param value Some string.
+ */
+export function isType(value: string): value is Type {
+  return Object.values(Type).includes(value as Type);
 }
 
 /**

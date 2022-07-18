@@ -1,8 +1,8 @@
-import { isSortField, isSortOrdering, isStatus } from '@js-camp/core/utils/guards/sort.guard';
+import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
 
 import { SelectorElement } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
-import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS } from '../../constants/select';
+import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS, OPTIONS_FOR_TYPE } from '../../constants/select';
 import { SelectOptions } from '../../types/select';
 import { ElementData } from '../../types/element';
 import { QueryParamsService } from '../../services/domain/queryParams';
@@ -22,6 +22,10 @@ function handleChangePaginationOptions(selectValue: string): void {
 
     if (isStatus(selectValue)) {
       filter = { ...paginationOptions.filter, byStatusField: selectValue };
+    }
+
+    if (isType(selectValue)) {
+      filter = { ...paginationOptions.filter, byTypeField: selectValue };
     }
 
     if (isSortField(selectValue)) {
@@ -58,6 +62,7 @@ export function initSortElements(): void {
     { name: 'ordering', selector: SelectorElement.SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
     { name: 'status', selector: SelectorElement.SORT_STATUS, options: OPTIONS_FOR_STATUS },
     { name: 'sort', selector: SelectorElement.SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
+    { name: 'type', selector: SelectorElement.SELECT_SORT_TYPE, options: OPTIONS_FOR_TYPE },
   ];
 
   const paginationOptions = QueryParamsService.getPaginationParams();
@@ -81,6 +86,9 @@ export function initSortElements(): void {
           break;
         case 'status':
           selectElement.value = paginationOptions.filter.byStatusField;
+          break;
+        case 'type':
+          selectElement.value = paginationOptions.filter.byTypeField;
           break;
         default:
           break;

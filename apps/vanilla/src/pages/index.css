@@ -28,7 +28,8 @@
 
 .sort-field,
 .sort-status,
-.sort-ordering {
+.sort-ordering,
+.sort-type {
   display: block;
   width: 100%;
 }
