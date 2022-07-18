@@ -1,4 +1,4 @@
-import { isSortField, isSortOrdering, isStatus } from '@js-camp/core/utils/guards/sort.guard';
+import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
 import { SortOrdering } from '@js-camp/core/utils/types/sort';
 
 import { PaginationOptions } from '../../types/paginationSettings';
@@ -14,8 +14,9 @@ export namespace QueryParamsService {
     const limitParam = ['limit', String(paginationOptions.limit)];
     const orderingParam = ['ordering', `${paginationOptions.sort.ordering}${paginationOptions.sort.field}`];
     const statusParam = ['status', paginationOptions.filter.byStatusField];
+    const typeParam = ['type', paginationOptions.filter.byTypeField];
 
-    const params = [offsetParam, limitParam, orderingParam, statusParam];
+    const params = [offsetParam, limitParam, orderingParam, statusParam, typeParam];
     return new URLSearchParams(params);
   }
 
@@ -37,16 +38,17 @@ export namespace QueryParamsService {
     const ordering = params.get('ordering');
     const offset = params.get('offset');
     const status = params.get('status');
+    const type = params.get('type');
     const limit = params.get('limit');
 
-    if (ordering === null || status === null || limit === null) {
+    if (ordering === null || status === null || limit === null || type === null) {
       return null;
     }
 
     const field = ordering.replace('-', '');
     const direction = ordering.includes('-') ? SortOrdering.Descending : SortOrdering.Ascending;
 
-    if (isSortField(field) && isSortOrdering(direction) && isStatus(status)) {
+    if (isSortField(field) && isSortOrdering(direction) && isStatus(status) && isType(type)) {
       return {
         sort: {
           field,
@@ -54,6 +56,7 @@ export namespace QueryParamsService {
         },
         filter: {
           byStatusField: status,
+          byTypeField: type,
         },
         limit: Number(limit),
         offset: Number(offset),

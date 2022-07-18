@@ -29,6 +29,7 @@ export namespace SelectorElement {
   export const SORT_STATUS = 'sort-status';
   export const SORT_ORDERING = 'sort-ordering';
   export const SORT_FIELD = 'sort-field';
+  export const SELECT_SORT_TYPE = 'sort-type';
 }
 
 /** The class names for the table-block. */

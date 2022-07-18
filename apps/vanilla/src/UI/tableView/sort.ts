@@ -22,7 +22,9 @@ function handleChangePaginationOptions(selectValue: string): void {
 
     if (isStatus(selectValue)) {
       filter = { ...paginationOptions.filter, byStatusField: selectValue };
-    } else if (isType(selectValue)) {
+    }
+
+    if (isType(selectValue)) {
       filter = { ...paginationOptions.filter, byTypeField: selectValue };
     }
 
@@ -84,6 +86,9 @@ export function initSortElements(): void {
           break;
         case 'status':
           selectElement.value = paginationOptions.filter.byStatusField;
+          break;
+        case 'type':
+          selectElement.value = paginationOptions.filter.byTypeField;
           break;
         default:
           break;
