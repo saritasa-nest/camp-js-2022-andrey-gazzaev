@@ -1,7 +1,7 @@
 import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
 import { User } from '@js-camp/core/models/user';
 
-import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
+import { DEFAULT_PAGINATION_SETTINGS, FIRST_PAGE_NUMBER } from '../constants/pagination';
 import { AnimeData } from '../types/anime';
 import { PaginationOptions } from '../types/paginationSettings';
 
@@ -60,7 +60,7 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
     return null;
   }
 
-  const currentOffset = currentPageNumber * paginationOptions.limit;
+  const currentOffset = currentPageNumber === FIRST_PAGE_NUMBER ? 0 : currentPageNumber * paginationOptions.limit;
 
   const newPaginationOptions: PaginationOptions = { ...paginationOptions, offset: currentOffset };
   QueryParamsService.setPaginationParams(newPaginationOptions);
