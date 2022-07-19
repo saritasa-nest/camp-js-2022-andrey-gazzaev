@@ -1,6 +1,7 @@
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
 import { PaginationBorders } from '../../types/paginationSettings';
 
+/** Functionality for working with pagination. */
 export namespace PaginationService {
 
   const PAGE_OFFSET = 3;

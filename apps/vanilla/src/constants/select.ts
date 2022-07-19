@@ -3,6 +3,7 @@ import { SortField } from '@js-camp/core/utils/types/sort';
 
 import { Option } from '../types/select';
 
+/** All possible sorting and filtering options. */
 export namespace Options {
 
   /** Options in sort field select. */

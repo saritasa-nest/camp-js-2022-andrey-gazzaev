@@ -4,6 +4,7 @@ import { SortOrdering } from '@js-camp/core/utils/types/sort';
 
 import { PaginationOptions } from '../../types/paginationSettings';
 
+/** Functionality for working with query parameters. */
 export namespace QueryParamsService {
 
   /**
