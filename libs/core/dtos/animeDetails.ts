@@ -1,8 +1,8 @@
-import { AnimeDto } from './anime.dto';
+import { AnimeBaseDto } from './anime.dto';
 import { GenreDto } from './genre.dto';
 import { StudioDto } from './studio.dto';
 
-export interface AnimeDetailsDto extends AnimeDto {
+export interface AnimeDetailsDto extends AnimeBaseDto {
 
   /** List of anime genres. */
   readonly genres_data?: readonly GenreDto[];
