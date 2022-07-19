@@ -7,19 +7,19 @@ import { Studio } from './studio.dto';
 export class AnimeDetails extends AnimeBase {
 
   /** List of anime genres. */
-  public readonly genresData?: readonly Genre[];
+  public readonly genresData: readonly Genre[];
 
   /** List of anime producing studios. */
-  public readonly studiosData?: readonly Studio[];
+  public readonly studiosData: readonly Studio[];
 
   /** It's on the air. */
-  public readonly airing?: boolean;
+  public readonly airing: boolean;
 
   /** Anime trailer URL.. */
-  public readonly trailerYoutubeId?: string | null;
+  public readonly trailerYoutubeId: string | null;
 
   /** Short review about anime. */
-  public readonly synopsis?: string;
+  public readonly synopsis: string;
 
   public constructor(data: InitArgsAnimeDetails) {
     super(data);

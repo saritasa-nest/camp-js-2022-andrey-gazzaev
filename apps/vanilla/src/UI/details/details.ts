@@ -7,8 +7,10 @@ import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { Card } from '../../constants/classes';
 import { getDetailsAnime } from '../../services/general';
+import { getDomElement } from '../general';
 
 const NO_DATA = '-';
+const LIST_ITEM_CLASS = 'list__item';
 
 /**
  * Creates list item with text.
@@ -16,7 +18,7 @@ const NO_DATA = '-';
  */
 function createListItem(itemText: string): HTMLLIElement {
   const listItem = document.createElement('li');
-  listItem.classList.add('list__item');
+  listItem.classList.add(LIST_ITEM_CLASS);
   listItem.innerHTML = itemText;
   return listItem;
 }
@@ -26,10 +28,8 @@ function createListItem(itemText: string): HTMLLIElement {
  * @param imageSrc Image URL.
  */
 function setImage(imageSrc: string): void {
-  const imageElement = document.querySelector<HTMLImageElement>(`.${Card.IMAGE}`);
-  if (imageElement !== null) {
-    imageElement.src = imageSrc;
-  }
+  const imageElement = getDomElement<HTMLImageElement>(document, `.${Card.IMAGE}`);
+  imageElement.src = imageSrc;
 }
 
 /**
@@ -37,10 +37,8 @@ function setImage(imageSrc: string): void {
  * @param title Title text.
  */
 function setTitle(title: string): void {
-  const titleElement = document.querySelector(`.${Card.TITLE}`);
-  if (titleElement !== null) {
-    titleElement.innerHTML = title;
-  }
+  const titleElement = getDomElement(document, `.${Card.TITLE}`);
+  titleElement.innerHTML = title;
 }
 
 /**
@@ -48,10 +46,8 @@ function setTitle(title: string): void {
  * @param synopsis Synopsis text.
  */
 function setSynopsis(synopsis: string): void {
-  const synopsisElement = document.querySelector(`.${Card.SYNOPSIS}`);
-  if (synopsisElement !== null) {
-    synopsisElement.innerHTML = synopsis;
-  }
+  const synopsisElement = getDomElement(document, `.${Card.SYNOPSIS}`);
+  synopsisElement.innerHTML = synopsis;
 }
 
 /**
@@ -59,10 +55,8 @@ function setSynopsis(synopsis: string): void {
  * @param status Status text.
  */
 function setStatus(status: string): void {
-  const statusElement = document.querySelector(`.${Card.STATUS}`);
-  if (statusElement !== null) {
-    statusElement.innerHTML = `Status: ${status}`;
-  }
+  const statusElement = getDomElement(document, `.${Card.STATUS}`);
+  statusElement.innerHTML = `Status: ${status}`;
 }
 
 /**
@@ -70,10 +64,8 @@ function setStatus(status: string): void {
  * @param type Type text.
  */
 function setType(type: string): void {
-  const typeElement = document.querySelector(`.${Card.TYPE}`);
-  if (typeElement !== null) {
-    typeElement.innerHTML = `Type: ${type}`;
-  }
+  const typeElement = getDomElement(document, `.${Card.TYPE}`);
+  typeElement.innerHTML = `Type: ${type}`;
 }
 
 /**
@@ -81,10 +73,8 @@ function setType(type: string): void {
  * @param isAiring Airing option.
  */
 function setAiring(isAiring: boolean): void {
-  const airingElement = document.querySelector(`.${Card.AIRING}`);
-  if (airingElement !== null) {
-    airingElement.innerHTML = `Airing: ${isAiring ? 'Yes' : 'No'}`;
-  }
+  const airingElement = getDomElement(document, `.${Card.AIRING}`);
+  airingElement.innerHTML = `Airing: ${isAiring ? 'Yes' : 'No'}`;
 }
 
 /**
@@ -92,17 +82,17 @@ function setAiring(isAiring: boolean): void {
  * @param aired Aired date range.
  */
 function setAired(aired: DateRange): void {
-  const airedElement = document.querySelector(`.${Card.AIRED}`);
-  if (airedElement !== null) {
-    const airedStart = aired.start ?
-      aired.start.toLocaleDateString('en-GB', { timeZone: 'UTC' }) :
-      NO_DATA;
+  const airedElement = getDomElement(document, `.${Card.AIRED}`);
+  const airedStart = aired.start ?
+    aired.start.toLocaleDateString('en-GB', { timeZone: 'UTC' }) :
+    NO_DATA;
 
-    const airedEnd = aired.end ?
-      aired.end.toLocaleDateString('en-GB', { timeZone: 'UTC' }) :
-      NO_DATA;
-    airedElement.innerHTML = `Aired: from ${airedStart} to ${airedEnd}`;
-  }
+  const airedEnd = aired.end ?
+    aired.end.toLocaleDateString('en-GB', { timeZone: 'UTC' }) :
+    NO_DATA;
+
+  airedElement.innerHTML = `Aired: from ${airedStart} to ${airedEnd}`;
+
 }
 
 /**
@@ -110,12 +100,9 @@ function setAired(aired: DateRange): void {
  * @param studios List studios.
  */
 function setStudios(studios: readonly Studio[]): void {
-  const studiosElement = document.querySelector(`.${Card.STUDIOS}`);
-  if (studiosElement !== null) {
-    const studiosItems = studios.map(studio => createListItem(studio.name));
-
-    studiosElement.append(...studiosItems);
-  }
+  const studiosElement = getDomElement(document, `.${Card.STUDIOS}`);
+  const studiosItems = studios.map(studio => createListItem(studio.name));
+  studiosElement.append(...studiosItems);
 }
 
 /**
@@ -123,12 +110,9 @@ function setStudios(studios: readonly Studio[]): void {
  * @param genres List genres.
  */
 function setGenres(genres: readonly Genre[]): void {
-  const genresElement = document.querySelector(`.${Card.GENRES}`);
-  if (genresElement !== null) {
-    const genresItems = genres.map(genre => createListItem(genre.name));
-
-    genresElement.append(...genresItems);
-  }
+  const genresElement = getDomElement(document, `.${Card.GENRES}`);
+  const genresItems = genres.map(genre => createListItem(genre.name));
+  genresElement.append(...genresItems);
 }
 
 /**
@@ -136,13 +120,10 @@ function setGenres(genres: readonly Genre[]): void {
  * @param trailerId Video youtube id.
  */
 function setTrailer(trailerId: string | null): void {
-  const trailerElement = document.querySelector<HTMLIFrameElement>(`.${Card.VIDEO}`);
-  if (trailerElement !== null) {
-    trailerElement.src = `http://www.youtube.com/embed/${trailerId}/`;
-
-    if (trailerId === null) {
-      trailerElement.remove();
-    }
+  const trailerElement = getDomElement<HTMLIFrameElement>(document, `.${Card.VIDEO}`);
+  trailerElement.src = `http://www.youtube.com/embed/${trailerId}/`;
+  if (!isDefine(trailerId) === null) {
+    trailerElement.remove();
   }
 }
 
@@ -152,32 +133,15 @@ function setTrailer(trailerId: string | null): void {
  */
 function renderAnimeCard(anime: AnimeDetails): void {
   setImage(anime.image);
-
   setTitle(`${anime.titleEnglish || NO_DATA} / ${anime.titleJapanese || NO_DATA}`);
-
   setSynopsis(`${anime.synopsis ?? NO_DATA}`);
-
   setStatus(`${anime.status}`);
-
   setType(`${anime.type}`);
-
-  if (anime.airing !== undefined) {
-    setAiring(anime.airing);
-  }
-
+  setAiring(anime.airing);
   setAired(anime.aired);
-
-  if (anime.studiosData !== undefined) {
-    setStudios(anime.studiosData);
-  }
-
-  if (anime.genresData !== undefined) {
-    setGenres(anime.genresData);
-  }
-
-  if (anime.trailerYoutubeId !== undefined) {
-    setTrailer(anime.trailerYoutubeId);
-  }
+  setStudios(anime.studiosData);
+  setGenres(anime.genresData);
+  setTrailer(anime.trailerYoutubeId);
 }
 
 /** Renders details anime. */

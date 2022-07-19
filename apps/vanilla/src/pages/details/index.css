@@ -23,8 +23,8 @@
 }
 
 .details__anime-synopsis {
-  font-size: 0.85em;
-  color: #686868;
+  font-size: var(--default-text-size);
+  color: var(--synopsis-text-color);
 }
 
 .details__image {

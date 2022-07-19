@@ -66,8 +66,8 @@ export namespace AnimeMapper {
       throw new Error(`Unknown value: ${dto.type}`);
     }
 
-    const genresData = dto.genres_data !== undefined ? dto.genres_data.map(genre => GenreMapper.fromDto(genre)) : undefined;
-    const studiosData = dto.studios_data !== undefined ? dto.studios_data.map(studio => StudioMapper.fromDto(studio)) : undefined;
+    const genresData = dto.genres_data.map(genre => GenreMapper.fromDto(genre));
+    const studiosData = dto.studios_data.map(studio => StudioMapper.fromDto(studio));
 
     return new AnimeDetails({
       id: dto.id,

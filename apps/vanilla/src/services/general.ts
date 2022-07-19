@@ -38,6 +38,19 @@ export async function getUser(): Promise<User | null> {
   return null;
 }
 
+/** Gets information about a specific anime. */
+export async function getDetailsAnime(): Promise<AnimeDetails | null> {
+  const id = QueryParamsService.getDetailsParams();
+  if (!isDefine(id)) {
+    return null;
+  }
+
+  if (await isAuthorized()) {
+    return fetchAnimeById(id);
+  }
+  return null;
+}
+
 /**
  * Creates a URL address to get the page with the anime, taking into account the offset.
  * @param paginationOptions Pagination Options.
@@ -78,17 +91,4 @@ export async function changeAnimePage(currentPageNumber: number): Promise<AnimeP
 
     return null;
   }
-}
-
-/** Gets information about a specific anime. */
-export async function getDetailsAnime(): Promise<AnimeDetails | null> {
-  const id = QueryParamsService.getDetailsParams();
-  if (!isDefine(id)) {
-    return null;
-  }
-
-  if (await isAuthorized()) {
-    return fetchAnimeById(id);
-  }
-  return null;
 }
