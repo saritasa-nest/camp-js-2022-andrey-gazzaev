@@ -80,13 +80,13 @@ export async function changeAnimePage(currentPageNumber: number): Promise<AnimeP
   }
 }
 
-/**
- * Gets information about a specific anime.
- * @param id ID anime.
- * @returns Return information about the user if the token is valid,
- * false if the tokens have expired, true if there were no tokens.
- */
-export async function getDetailsAnime(id: number): Promise<AnimeDetails | null> {
+/** Gets information about a specific anime. */
+export async function getDetailsAnime(): Promise<AnimeDetails | null> {
+  const id = QueryParamsService.getDetailsParams();
+  if (!isDefine(id)) {
+    return null;
+  }
+
   if (await isAuthorized()) {
     return fetchAnimeById(id);
   }
