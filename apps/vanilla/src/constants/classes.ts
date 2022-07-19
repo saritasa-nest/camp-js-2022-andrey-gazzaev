@@ -67,4 +67,7 @@ export namespace Card {
   export const GENRES = 'details__list-genres';
   export const IMAGE = 'details__image';
   export const VIDEO = 'details__video';
+  export const MODAL_BOX = 'modal-box';
+  export const MODAL_OVERLAY = 'overlay';
+  export const MODAL_IMAGE = 'modal-box__image';
 }

@@ -30,7 +30,9 @@ function createListItem(itemText: string): HTMLLIElement {
  */
 function setImage(imageSrc: string): void {
   const imageElement = getDomElement<HTMLImageElement>(document, `.${Card.IMAGE}`);
+  const modalImageElement = getDomElement<HTMLImageElement>(document, `.${Card.MODAL_IMAGE}`);
   imageElement.src = imageSrc;
+  modalImageElement.src = imageSrc;
 }
 
 /**

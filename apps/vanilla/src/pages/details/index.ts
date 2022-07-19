@@ -1,4 +1,5 @@
 import { renderDetailsAnime } from '../../UI/details/details';
+import { setLightBox } from '../../UI/details/lightBox';
 import { getDomElement } from '../../UI/general';
 import { renderHeader } from '../../UI/header/header';
 
@@ -11,6 +12,7 @@ function initPage(): void {
   getDomElement(document, `.${BACK_LINK_CLASS}`).addEventListener('click', () => window.history.back());
 
   renderDetailsAnime();
+  setLightBox();
 }
 
 window.addEventListener('DOMContentLoaded', initPage);

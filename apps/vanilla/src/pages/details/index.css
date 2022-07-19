@@ -29,6 +29,7 @@
 
 .details__image {
   width: 360px;
+  cursor: zoom-in;
 }
 
 .list-block {
@@ -57,6 +58,51 @@
 .details__video {
   min-width: 360px;
   min-height: 280px;
+}
+
+.modal-box {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: #030303e6;
+  transition: all 0.33s ease-out;
+  z-index: 1;
+}
+
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  cursor: zoom-out;
+  z-index: 1;
+}
+
+.modal-box__image {
+  background: white;
+  position: absolute;
+  max-height: 90%;
+  max-width: 90%;
+  padding: 20px;
+  border-radius: 5px;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal-box__image-block .modal-box__image {
+  max-height: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.invisible {
+  opacity: 0;
+  transform: translateY(-120%);
 }
 
 @media (max-width: 1000px) {
