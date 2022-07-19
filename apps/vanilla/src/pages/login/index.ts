@@ -1,13 +1,11 @@
 import { Login } from '../../constants/classes';
 import { handleSubmitLoginForm } from '../../UI/auth/login';
+import { getDomElement } from '../../UI/general';
 
 /** Initializations login form. */
 function initLoginForm(): void {
-  const loginForm = document.querySelector<HTMLFormElement>(`.${Login.FORM}`);
-
-  if (loginForm !== null) {
-    loginForm.addEventListener('submit', handleSubmitLoginForm);
-  }
+  const loginForm = getDomElement<HTMLFormElement>(document, `.${Login.FORM}`);
+  loginForm.addEventListener('submit', handleSubmitLoginForm);
 }
 
 window.addEventListener('DOMContentLoaded', initLoginForm);

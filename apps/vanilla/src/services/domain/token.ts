@@ -4,6 +4,7 @@ import { LocalStorageKey } from '../../constants/localStorage';
 
 import { LocalStorageService } from './localStorage';
 
+/** Functionality for working with Token. */
 export namespace TokenService {
 
   /** Checks if the token exists in local storage. */

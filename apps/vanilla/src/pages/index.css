@@ -1,2 +1,118 @@
 @import url("../global/form.css");
 @import url("../global/header.css");
+@import url("../global/index.css");
+@import url("../global/variables.css");
+
+.catalog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.table-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: var(--min-laptop-width);
+}
+
+.table {
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.table-block__sort-settings {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.sort-field,
+.sort-status,
+.sort-ordering,
+.sort-type {
+  display: block;
+  width: 100%;
+}
+
+.table__row {
+  display: flex;
+}
+
+.table__body-cell,
+.table__head-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid var(--table-row-border-color);
+  width: var(--max-width-table-col);
+}
+
+.table__image {
+  max-width: var(--max-width-table-col);
+}
+
+.table-block__pagination {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.table-block__pagination-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 75px;
+  min-width: 35px;
+  min-height: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: var(--pagination-button-font-size);
+  cursor: pointer;
+}
+
+.table-block__pagination-button_current {
+  background-color: var(--pagination-button-active-color);
+  border-color: var(--pagination-button-active-color);
+}
+
+.table-block__pagination-button:hover {
+  border-color: var(--border-color-hover);
+}
+
+.title,
+.table,
+.table-block__sort-settings {
+  margin-bottom: 30px;
+}
+
+@media (max-width: 1000px) {
+  .table__head-cell {
+    display: none;
+    border-bottom: none;
+  }
+
+  .table__row {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--table-row-border-color);
+  }
+
+  .table__body-cell {
+    border-bottom: 1px dotted var(--table-row-border-color);
+  }
+
+  .table__body-cell:last-child {
+    border-bottom: none;
+  }
+
+  .table-block__sort-settings {
+    flex-direction: column;
+  }
+}

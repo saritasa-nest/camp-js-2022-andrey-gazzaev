@@ -8,6 +8,7 @@ export interface LoginData {
   readonly password: string;
 }
 
+/** Information about user. */
 interface UserInfo {
 
   /** User email. */
