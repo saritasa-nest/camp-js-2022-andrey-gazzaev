@@ -1,10 +1,10 @@
-import { Anime } from '@js-camp/core/models/anime';
+import { AnimeBase } from '@js-camp/core/models/anime';
 
 /** Ready anime data. */
 export interface AnimePage {
 
   /** List of anime contained in the table. */
-  readonly list: readonly Anime[];
+  readonly list: readonly AnimeBase[];
 
   /** The total number of anime on which the pagination is based. */
   readonly totalCount: number;

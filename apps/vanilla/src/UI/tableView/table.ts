@@ -1,5 +1,4 @@
-import { Anime } from '@js-camp/core/models/anime';
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { AnimeBase } from '@js-camp/core/models/anime';
 
 import { Table, TableBlock } from '../../constants/classes';
 import { getDomElement } from '../general';
@@ -8,7 +7,7 @@ import { getDomElement } from '../general';
 interface TableColumnDef {
 
   /** Field in anime model. */
-  readonly field: keyof Anime;
+  readonly field: keyof AnimeBase;
 
   /** Title of column. */
   readonly title: string;
@@ -30,7 +29,7 @@ export const NO_DATA = '-';
  * Creates and fills table rows.
  * @param animeList List of anime entries.
  */
-function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
+function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[] {
   return animeList.map(anime => {
     const row = document.createElement('tr');
     row.classList.add(Table.ROW);
@@ -64,11 +63,7 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
           break;
 
         default:
-          if (isDefine(anime[field]) && anime[field] !== '') {
-            tdElement.innerHTML = `${anime[field]}`;
-          } else {
-            tdElement.innerHTML = `${NO_DATA}`;
-          }
+          tdElement.innerHTML = `${anime[field] || NO_DATA}`;
           row.append(tdElement);
       }
     });
@@ -111,7 +106,7 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
  * Fills the table with information about anime.
  * @param animeList List of anime entries.
  */
-export function fillTableAnime(animeList: readonly Anime[]): void {
+export function fillTableAnime(animeList: readonly AnimeBase[]): void {
   const tableRows = createTableRows(animeList);
 
   updateTableAnime(tableRows);

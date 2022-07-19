@@ -1,5 +1,5 @@
-import { AnimeDto, StatusDto, TypeDto } from '../dtos/anime.dto';
-import { Anime, Status, Type } from '../models/anime';
+import { AnimeBaseDto, StatusDto, TypeDto } from '../dtos/anime.dto';
+import { AnimeBase, Status, Type } from '../models/anime';
 import { isDefine } from '../utils/guards/general.guard';
 
 import { DateRangeMapper } from './dateRange.mapper';
@@ -26,13 +26,13 @@ export namespace AnimeMapper {
    * @param dto Anime dto.
    */
   export function fromDto(
-    dto: AnimeDto,
-  ): Anime {
+    dto: AnimeBaseDto,
+  ): AnimeBase {
 
     const status = isDefine(ANIME_STATUS_FROM_DTO_MAP[dto.status]) ? ANIME_STATUS_FROM_DTO_MAP[dto.status] : Status.Airing;
     const type = isDefine(ANIME_TYPE_FROM_DTO_MAP[dto.type]) ? ANIME_TYPE_FROM_DTO_MAP[dto.type] : Type.Tv;
 
-    return new Anime({
+    return new AnimeBase({
       id: dto.id,
       image: dto.image,
       titleEnglish: dto.title_eng,

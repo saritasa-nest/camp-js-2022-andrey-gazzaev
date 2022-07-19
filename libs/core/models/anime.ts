@@ -19,7 +19,7 @@ export enum Status {
 }
 
 /** Anime. */
-export class Anime extends Immerable {
+export class AnimeBase extends Immerable {
 
   /** ID. */
   public readonly id: number;
@@ -54,4 +54,4 @@ export class Anime extends Immerable {
   }
 }
 
-type InitArgsAnime = OmitImmerable<Anime>;
+type InitArgsAnime = OmitImmerable<AnimeBase>;
