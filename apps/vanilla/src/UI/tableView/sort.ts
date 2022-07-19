@@ -3,7 +3,7 @@ import { isSortField, isSortOrdering, isStatus } from '@js-camp/core/utils/guard
 import { SelectorElement } from '../../constants/classes';
 import { LocalStorageKey } from '../../constants/localStorage';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
-import { QueryOptions } from '../../types/paginationSettings';
+import { QueryOptions } from '../../types/animeSettings';
 import { LocalStorageService } from '../../services/domain/localStorage';
 import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS } from '../../constants/select';
 import { SelectOptions } from '../../types/select';
@@ -14,27 +14,27 @@ import { handleChangeAnimeData } from './general';
 const NO_CLASSES: readonly string[] = [];
 
 /**
- * Changes pagination settings.
+ * Changes anime settings.
  * @param value Value of sort, search or filter select.
  */
-function handleChangePaginationOptions(value: string): void {
-  const paginationOptions = LocalStorageService.getValue<QueryOptions>(LocalStorageKey.PAGINATION_SETTINGS);
-  if (paginationOptions !== null) {
-    let { sort, filter, search } = paginationOptions;
+function handleChangeAnimeOptions(value: string): void {
+  const animeOptions = LocalStorageService.getValue<QueryOptions>(LocalStorageKey.ANIME_SETTINGS);
+  if (animeOptions !== null) {
+    let { sort, filter, search } = animeOptions;
 
     if (isStatus(value)) {
-      filter = { ...paginationOptions.filter, byStatusField: value };
+      filter = { ...animeOptions.filter, byStatusField: value };
     } else if (isSortField(value)) {
-      sort = { ...paginationOptions.sort, field: value };
+      sort = { ...animeOptions.sort, field: value };
     } else if (isSortOrdering(value)) {
-      sort = { ...paginationOptions.sort, ordering: value };
+      sort = { ...animeOptions.sort, ordering: value };
     } else {
       search = value;
     }
 
     LocalStorageService.setValue<QueryOptions>(
-      LocalStorageKey.PAGINATION_SETTINGS,
-      { ...paginationOptions, sort, filter, search },
+      LocalStorageKey.ANIME_SETTINGS,
+      { ...animeOptions, sort, filter, search },
     );
   }
 
@@ -71,7 +71,7 @@ export function initSortElements(): void {
 
       selectElement.addEventListener(
         'change',
-        () => handleChangePaginationOptions(selectElement.value),
+        () => handleChangeAnimeOptions(selectElement.value),
       );
     }
   });
@@ -83,7 +83,7 @@ export function initSearchElements(): void {
   if (searchElement !== null) {
     searchElement.addEventListener(
       'input',
-      () => handleChangePaginationOptions(searchElement.value),
+      () => handleChangeAnimeOptions(searchElement.value),
 
     );
   }

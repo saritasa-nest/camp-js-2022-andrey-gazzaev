@@ -8,7 +8,7 @@ export interface Filter {
   readonly byStatusField: AnimeEnums.Status;
 }
 
-/** Pagination query settings. */
+/** Anime query settings. */
 export interface QueryOptions {
 
   /** Sort settings. */
