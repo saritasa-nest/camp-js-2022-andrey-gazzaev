@@ -22,8 +22,6 @@ export namespace LocalStorageService {
    * @param value Some value that needs to be stored.
    */
   export function setValue<T>(key: string, value: T): void {
-    if (isDefine(value)) {
-      localStorage.setItem(key, JSON.stringify(value));
-    }
+    localStorage.setItem(key, JSON.stringify(value));
   }
 }

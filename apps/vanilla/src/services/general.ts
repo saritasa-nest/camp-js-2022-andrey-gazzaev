@@ -53,7 +53,7 @@ function getUrlAnime(paginationOptions: PaginationOptions): string {
  * Changes anime and pagination data relative to the current page.
  * @param currentPageNumber The page on which the change occurs.
  */
-export async function changeAnimeData(currentPageNumber: number): Promise<AnimePage | null> {
+export async function changeAnimePage(currentPageNumber: number): Promise<AnimePage | null> {
   const paginationOptions = QueryParamsService.getPaginationParams();
 
   if (!isDefine(paginationOptions)) {

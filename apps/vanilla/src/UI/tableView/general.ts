@@ -2,7 +2,7 @@ import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { Page } from '../../constants/classes';
 import { PaginationService } from '../../services/domain/pagination';
-import { changeAnimeData } from '../../services/general';
+import { changeAnimePage } from '../../services/general';
 import { AnimePage } from '../../types/anime';
 import { getDomElement } from '../general';
 
@@ -13,10 +13,10 @@ import { fillTableAnime } from './table';
  * Handles the anime data change event.
  * @param currentPageNumber The page on which the change occurs.
  */
-export async function handleChangeAnimeData(currentPageNumber: number): Promise<void> {
-  const animeData = await changeAnimeData(currentPageNumber);
-  if (isDefine(animeData)) {
-    return renderTableView(animeData);
+export async function handleChangeAnimePage(currentPageNumber: number): Promise<void> {
+  const animePage = await changeAnimePage(currentPageNumber);
+  if (isDefine(animePage)) {
+    return renderTableView(animePage);
   }
   return renderTableViewError();
 }

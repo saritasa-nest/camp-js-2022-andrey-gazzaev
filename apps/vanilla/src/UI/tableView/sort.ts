@@ -9,7 +9,7 @@ import { ElementAttributesValues } from '../../types/element';
 import { QueryParamsService } from '../../services/domain/queryParams';
 import { getDomElement } from '../general';
 
-import { handleChangeAnimeData } from './general';
+import { handleChangeAnimePage } from './general';
 
 const NO_CLASSES: string[] = [];
 
@@ -41,7 +41,7 @@ function handleChangePaginationOptions(selectValue: string): void {
     QueryParamsService.setPaginationParams({ ...paginationOptions, sort, filter });
   }
 
-  handleChangeAnimeData(FIRST_PAGE_NUMBER);
+  handleChangeAnimePage(FIRST_PAGE_NUMBER);
 }
 
 /**

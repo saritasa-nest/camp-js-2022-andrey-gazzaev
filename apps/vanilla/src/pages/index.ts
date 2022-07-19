@@ -2,7 +2,7 @@ import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { renderHeader } from '../UI/header/header';
 import { initSortElements } from '../UI/tableView/sort';
-import { handleChangeAnimeData } from '../UI/tableView/general';
+import { handleChangeAnimePage } from '../UI/tableView/general';
 import { DEFAULT_PAGINATION_SETTINGS, FIRST_PAGE_NUMBER } from '../constants/pagination';
 import { QueryParamsService } from '../services/domain/queryParams';
 
@@ -24,12 +24,12 @@ function initHomePage(): void {
   const paginationOptions = QueryParamsService.getPaginationParams();
 
   if (!isDefine(paginationOptions)) {
-    handleChangeAnimeData(FIRST_PAGE_NUMBER);
+    handleChangeAnimePage(FIRST_PAGE_NUMBER);
     return;
   }
 
   const currentPage = paginationOptions.offset === 0 ? FIRST_PAGE_NUMBER : paginationOptions.offset / paginationOptions.limit;
-  handleChangeAnimeData(currentPage);
+  handleChangeAnimePage(currentPage);
 }
 
 window.addEventListener('DOMContentLoaded', initHomePage);

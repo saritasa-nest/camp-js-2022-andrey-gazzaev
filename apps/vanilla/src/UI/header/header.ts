@@ -2,7 +2,6 @@ import { User } from '@js-camp/core/models/user';
 import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { Form, Header, Profile } from '../../constants/classes';
-import { TokenService } from '../../services/domain/token';
 import { signOut } from '../../services/domain/user';
 import { getUser } from '../../services/general';
 import { getDomElement } from '../general';
@@ -76,7 +75,7 @@ export async function renderHeader(): Promise<void> {
   const user = await getUser();
   if (isDefine(user)) {
     renderUserProfile(user);
-  } else if (!TokenService.isTokens()) {
+  } else {
     renderStandardProfile();
   }
 }
