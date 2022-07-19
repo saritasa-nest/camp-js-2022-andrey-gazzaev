@@ -1,4 +1,4 @@
-import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { ErrorMessage, FormField } from '../../constants/form';
 import { loginUser } from '../../services/domain/user';
@@ -21,7 +21,7 @@ export async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
   const email = getElementValue(form.get(FormField.EMAIL));
   const password = getElementValue(form.get(FormField.PASSWORD));
 
-  if (!isNotFalsy(email) || !isNotFalsy(password)) {
+  if (!isDefine(email) || !isDefine(password)) {
     return showError(ErrorMessage.FIELD_NOT_FILLED);
   }
 

@@ -1,4 +1,4 @@
-import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 /** Functionality for working with local storage. */
 export namespace LocalStorageService {
@@ -10,7 +10,7 @@ export namespace LocalStorageService {
    */
   export function getValue<T>(key: string): T | null {
     const localValue = localStorage.getItem(key);
-    if (isNotFalsy(localValue)) {
+    if (isDefine(localValue)) {
       return JSON.parse(localValue);
     }
     return null;
@@ -22,7 +22,7 @@ export namespace LocalStorageService {
    * @param value Some value that needs to be stored.
    */
   export function setValue<T>(key: string, value: T): void {
-    if (isNotFalsy(value)) {
+    if (isDefine(value)) {
       localStorage.setItem(key, JSON.stringify(value));
     }
   }

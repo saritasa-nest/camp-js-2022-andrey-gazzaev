@@ -1,9 +1,10 @@
-import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { TableBlock } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
 import { ElementData } from '../../types/element';
 import { PaginationData } from '../../types/paginationSettings';
+import { getDomElement } from '../general';
 
 import { handleChangeAnimeData } from './general';
 
@@ -38,7 +39,7 @@ function createButton({ text, isCurrentPage }: ElementData): HTMLButtonElement {
 function createSpan({ text, classes }: ElementData): HTMLSpanElement {
   const span = document.createElement('span');
   span.innerHTML = text;
-  if (isNotFalsy(classes)) {
+  if (isDefine(classes)) {
     span.classList.add(...classes);
   }
   return span;
@@ -78,12 +79,9 @@ function createPaginationElements({ borders, currentPage }: PaginationData): (HT
  * @param elements Array of pagination elements.
  */
 function updatePaginationElement(elements: readonly (HTMLButtonElement | HTMLSpanElement)[]): void {
-  const paginationElement = document.querySelector(`.${TableBlock.PAGINATION}`);
-
-  if (isNotFalsy(paginationElement)) {
-    paginationElement.innerHTML = '';
-    paginationElement.append(...elements);
-  }
+  const paginationElement = getDomElement(document, `.${TableBlock.PAGINATION}`);
+  paginationElement.innerHTML = '';
+  paginationElement.append(...elements);
 }
 
 /**

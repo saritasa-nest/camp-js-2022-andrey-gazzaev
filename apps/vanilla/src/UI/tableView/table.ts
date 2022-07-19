@@ -1,7 +1,8 @@
 import { Anime } from '@js-camp/core/models/anime';
-import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { Table, TableBlock } from '../../constants/classes';
+import { getDomElement } from '../general';
 
 /** Information about column. */
 interface TableColumnDef {
@@ -63,7 +64,7 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
           break;
 
         default:
-          if (isNotFalsy(anime[field])) {
+          if (isDefine(anime[field]) && anime[field] !== '') {
             tdElement.innerHTML = `${anime[field]}`;
           } else {
             tdElement.innerHTML = `${NO_DATA}`;
@@ -81,21 +82,14 @@ function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
  * @param tableRows Array of rows.
  */
 function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
-  const catalogElement = document.querySelector(`.${TableBlock.TABLE}`);
-  const errorElement = document.querySelector(`.${TableBlock.ERROR}`);
+  const catalogElement = getDomElement(document, `.${TableBlock.TABLE}`);
+  const errorElement = getDomElement(document, `.${TableBlock.ERROR}`);
 
-  if (isNotFalsy(errorElement)) {
-    errorElement.innerHTML = '';
-  }
-
-  if (isNotFalsy(catalogElement)) {
-    catalogElement.innerHTML = '';
-  }
+  errorElement.innerHTML = '';
+  catalogElement.innerHTML = '';
 
   if (tableRows.length === 0) {
-    if (isNotFalsy(errorElement)) {
-      errorElement.innerHTML = 'Records missing.';
-    }
+    errorElement.innerHTML = 'Records missing.';
     return;
   }
 
@@ -110,10 +104,7 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
   });
 
   rowHead.append(...columnsHead);
-
-  if (isNotFalsy(catalogElement)) {
-    catalogElement.append(rowHead, ...tableRows);
-  }
+  catalogElement.append(rowHead, ...tableRows);
 }
 
 /**

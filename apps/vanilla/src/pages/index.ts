@@ -1,4 +1,4 @@
-import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { renderHeader } from '../UI/header/header';
 import { initSortElements } from '../UI/tableView/sort';
@@ -8,7 +8,7 @@ import { QueryParamsService } from '../services/domain/queryParams';
 
 /** Adds sorting settings to local storage if they are not there. */
 function initSortSettings(): void {
-  if (!isNotFalsy(QueryParamsService.getPaginationParams())) {
+  if (!isDefine(QueryParamsService.getPaginationParams())) {
     QueryParamsService.setPaginationParams(DEFAULT_PAGINATION_SETTINGS);
   }
 }
@@ -19,9 +19,11 @@ function initHomePage(): void {
 
   initSortSettings();
   initSortElements();
+
+  // TO DO add this domain layer
   const paginationOptions = QueryParamsService.getPaginationParams();
 
-  if (!isNotFalsy(paginationOptions)) {
+  if (!isDefine(paginationOptions)) {
     handleChangeAnimeData(FIRST_PAGE_NUMBER);
     return;
   }

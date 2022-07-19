@@ -1,5 +1,5 @@
 import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
-import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { SelectorElement } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
@@ -7,6 +7,7 @@ import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS, OPTIO
 import { SelectOptions } from '../../types/select';
 import { ElementData } from '../../types/element';
 import { QueryParamsService } from '../../services/domain/queryParams';
+import { getDomElement } from '../general';
 
 import { handleChangeAnimeData } from './general';
 
@@ -18,7 +19,7 @@ const NO_CLASSES: string[] = [];
  */
 function handleChangePaginationOptions(selectValue: string): void {
   const paginationOptions = QueryParamsService.getPaginationParams();
-  if (isNotFalsy(paginationOptions)) {
+  if (isDefine(paginationOptions)) {
     let { sort, filter } = paginationOptions;
 
     if (isStatus(selectValue)) {
@@ -49,7 +50,7 @@ function handleChangePaginationOptions(selectValue: string): void {
  */
 function createOption({ text, classes, value }: ElementData): HTMLOptionElement {
   const option = document.createElement('option');
-  if (isNotFalsy(value) && isNotFalsy(classes)) {
+  if (isDefine(value) && isDefine(classes)) {
     option.setAttribute('value', value);
     option.innerHTML = text;
     option.classList.add(...classes);
@@ -68,37 +69,35 @@ export function initSortElements(): void {
 
   const paginationOptions = QueryParamsService.getPaginationParams();
 
-  if (!isNotFalsy(paginationOptions)) {
+  if (!isDefine(paginationOptions)) {
     return;
   }
 
   selectors.forEach(select => {
-    const selectElement = document.querySelector<HTMLSelectElement>(`.${select.selector}`);
+    const selectElement = getDomElement<HTMLSelectElement>(document, `.${select.selector}`);
 
-    if (selectElement !== null) {
-      select.options.forEach(option => selectElement.append(createOption({ text: option.text, classes: NO_CLASSES, value: option.value })));
+    select.options.forEach(option => selectElement.append(createOption({ text: option.text, classes: NO_CLASSES, value: option.value })));
 
-      switch (select.name) {
-        case 'ordering':
-          selectElement.value = paginationOptions.sort.ordering;
-          break;
-        case 'sort':
-          selectElement.value = paginationOptions.sort.field;
-          break;
-        case 'status':
-          selectElement.value = paginationOptions.filter.byStatusField;
-          break;
-        case 'type':
-          selectElement.value = paginationOptions.filter.byTypeField;
-          break;
-        default:
-          break;
-      }
-
-      selectElement.addEventListener(
-        'change',
-        () => handleChangePaginationOptions(selectElement.value),
-      );
+    switch (select.name) {
+      case 'ordering':
+        selectElement.value = paginationOptions.sort.ordering;
+        break;
+      case 'sort':
+        selectElement.value = paginationOptions.sort.field;
+        break;
+      case 'status':
+        selectElement.value = paginationOptions.filter.byStatusField;
+        break;
+      case 'type':
+        selectElement.value = paginationOptions.filter.byTypeField;
+        break;
+      default:
+        break;
     }
+
+    selectElement.addEventListener(
+      'change',
+      () => handleChangePaginationOptions(selectElement.value),
+    );
   });
 }

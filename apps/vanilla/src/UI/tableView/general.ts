@@ -1,9 +1,10 @@
-import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { Page } from '../../constants/classes';
 import { PaginationService } from '../../services/domain/pagination';
 import { changeAnimeData } from '../../services/general';
 import { AnimeData } from '../../types/anime';
+import { getDomElement } from '../general';
 
 import { fillPaginationAnime } from './pagination';
 import { fillTableAnime } from './table';
@@ -14,7 +15,7 @@ import { fillTableAnime } from './table';
  */
 export async function handleChangeAnimeData(currentPageNumber: number): Promise<void> {
   const animeData = await changeAnimeData(currentPageNumber);
-  if (isNotFalsy(animeData)) {
+  if (isDefine(animeData)) {
     return renderTableView(animeData);
   }
   return renderTableViewError();
@@ -49,15 +50,14 @@ export function renderTableView({ list, totalCount, currentPageNumber, limit }: 
 
 /** Renders message about table view error. */
 export function renderTableViewError(): void {
-  const pageContainer = document.querySelector(`.${Page.CONTAINER}`);
-  if (isNotFalsy(pageContainer)) {
-    const errorTemplate = document.createElement('p');
-    errorTemplate.classList.add(Page.ERROR);
+  const pageContainer = getDomElement(document, `.${Page.CONTAINER}`);
 
-    const ERROR_MESSAGE = 'Ooops... Something went wrong';
-    errorTemplate.innerHTML = ERROR_MESSAGE;
+  const errorTemplate = document.createElement('p');
+  errorTemplate.classList.add(Page.ERROR);
 
-    pageContainer.innerHTML = '';
-    pageContainer.append(errorTemplate);
-  }
+  const ERROR_MESSAGE = 'Ooops... Something went wrong';
+  errorTemplate.innerHTML = ERROR_MESSAGE;
+
+  pageContainer.innerHTML = '';
+  pageContainer.append(errorTemplate);
 }

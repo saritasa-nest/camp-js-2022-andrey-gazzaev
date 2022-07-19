@@ -1,4 +1,4 @@
-import { isNotFalsy } from '@js-camp/core/utils/guards/general.guard';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
 import { SortOrdering } from '@js-camp/core/utils/types/sort';
 
@@ -42,7 +42,7 @@ export namespace QueryParamsService {
     const type = params.get('type');
     const limit = params.get('limit');
 
-    if (!isNotFalsy(ordering) || !isNotFalsy(status) || !isNotFalsy(limit) || !isNotFalsy(type)) {
+    if (!isDefine(ordering) || !isDefine(status) || !isDefine(limit) || !isDefine(type)) {
       return null;
     }
 
