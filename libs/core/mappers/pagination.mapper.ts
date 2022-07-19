@@ -13,11 +13,19 @@ export namespace PaginationMapper {
     mapperFromDto: (resultDto: Dto) => Model,
   ): Pagination<Model> {
 
+    const results = dto.results.map(result => {
+      try {
+         return mapperFromDto(result);
+      } catch {
+        return null;
+      }
+    }).filter((result): result is Model => result !== null);
+
     return new Pagination<Model>({
       count: dto.count,
       next: dto.next,
       previous: dto.previous,
-      results: dto.results.map(result => mapperFromDto(result)),
+      results,
     });
   }
 }
