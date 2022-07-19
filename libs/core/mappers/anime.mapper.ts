@@ -29,8 +29,13 @@ export namespace AnimeMapper {
     dto: AnimeBaseDto,
   ): AnimeBase {
 
-    const status = isDefine(ANIME_STATUS_FROM_DTO_MAP[dto.status]) ? ANIME_STATUS_FROM_DTO_MAP[dto.status] : Status.Airing;
-    const type = isDefine(ANIME_TYPE_FROM_DTO_MAP[dto.type]) ? ANIME_TYPE_FROM_DTO_MAP[dto.type] : Type.Tv;
+    if (!isDefine(ANIME_STATUS_FROM_DTO_MAP[dto.status])) {
+      throw new Error(`Unknown value: ${dto.status}`);
+    }
+
+    if (!isDefine(ANIME_TYPE_FROM_DTO_MAP[dto.type])) {
+      throw new Error(`Unknown value: ${dto.type}`);
+    }
 
     return new AnimeBase({
       id: dto.id,
@@ -38,8 +43,8 @@ export namespace AnimeMapper {
       titleEnglish: dto.title_eng,
       titleJapanese: dto.title_jpn,
       aired: DateRangeMapper.fromDto(dto.aired),
-      status,
-      type,
+      status: ANIME_STATUS_FROM_DTO_MAP[dto.status],
+      type: ANIME_TYPE_FROM_DTO_MAP[dto.type],
     });
 
   }
