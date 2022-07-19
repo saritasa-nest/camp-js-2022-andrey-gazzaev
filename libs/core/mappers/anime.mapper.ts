@@ -1,5 +1,7 @@
 import { AnimeDto, StatusDto, TypeDto } from '../dtos/anime.dto';
-import { Anime, Status, Type } from '../models/anime';
+import { AnimeBase, Status, Type } from '../models/anime';
+import { AnimeDetailsDto } from '../dtos/animeDetails';
+import { AnimeDetails } from '../models/animeDetails';
 
 import { GenreMapper } from './genre.mapper';
 import { StudioMapper } from './studio.mapper';
@@ -29,7 +31,27 @@ export namespace AnimeMapper {
    */
   export function fromDto(
     dto: AnimeDto,
-  ): Anime {
+  ): AnimeBase {
+
+    const status = ANIME_STATUS_FROM_DTO_MAP[dto.status] !== undefined ? ANIME_STATUS_FROM_DTO_MAP[dto.status] : Status.Airing;
+    const type = ANIME_TYPE_FROM_DTO_MAP[dto.type] !== undefined ? ANIME_TYPE_FROM_DTO_MAP[dto.type] : Type.Tv;
+
+    return new AnimeBase({
+      id: dto.id,
+      image: dto.image,
+      titleEnglish: dto.title_eng,
+      titleJapanese: dto.title_jpn,
+      aired: DateRangeMapper.fromDto(dto.aired),
+      status,
+      type,
+    });
+  }
+
+  /**
+   * Maps dto to model.
+   * @param dto Anime details dto.
+   */
+  export function fromDetailsDto(dto: AnimeDetailsDto): AnimeDetails {
 
     const status = ANIME_STATUS_FROM_DTO_MAP[dto.status] !== undefined ? ANIME_STATUS_FROM_DTO_MAP[dto.status] : Status.Airing;
     const type = ANIME_TYPE_FROM_DTO_MAP[dto.type] !== undefined ? ANIME_TYPE_FROM_DTO_MAP[dto.type] : Type.Tv;
@@ -37,7 +59,7 @@ export namespace AnimeMapper {
     const genresData = dto.genres_data !== undefined ? dto.genres_data.map(genre => GenreMapper.fromDto(genre)) : undefined;
     const studiosData = dto.studios_data !== undefined ? dto.studios_data.map(studio => StudioMapper.fromDto(studio)) : undefined;
 
-    return new Anime({
+    return new AnimeDetails({
       id: dto.id,
       image: dto.image,
       titleEnglish: dto.title_eng,
@@ -51,6 +73,5 @@ export namespace AnimeMapper {
       genresData,
       studiosData,
     });
-
   }
 }

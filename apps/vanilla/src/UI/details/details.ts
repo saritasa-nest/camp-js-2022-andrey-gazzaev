@@ -1,4 +1,5 @@
-import { Anime } from '@js-camp/core/models/anime';
+
+import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 import { DateRange } from '@js-camp/core/models/dateRange';
 import { Genre } from '@js-camp/core/models/genre';
 import { Studio } from '@js-camp/core/models/studio.dto';
@@ -150,7 +151,7 @@ function setTrailer(trailerId: string | null): void {
  * Renders anime card.
  * @param anime Information about anime.
  */
-function renderAnimeCard(anime: Anime): void {
+function renderAnimeCard(anime: AnimeDetails): void {
   setImage(anime.image);
 
   setTitle(`${anime.titleEnglish || NO_DATA} / ${anime.titleJapanese || NO_DATA}`);
@@ -189,12 +190,14 @@ export async function renderDetailsAnime(): Promise<void> {
 
     const anime = await getDetailsAnime(idAnime);
 
-    if (anime instanceof Anime) {
+    if (anime instanceof AnimeDetails) {
       return renderAnimeCard(anime);
     }
 
     const URL_LOGIN_PAGE = '/login/';
     location.href = URL_LOGIN_PAGE;
+
+    return;
   }
 
   goToHomePage();

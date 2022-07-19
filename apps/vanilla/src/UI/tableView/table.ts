@@ -1,4 +1,4 @@
-import { Anime } from '@js-camp/core/models/anime';
+import { AnimeBase } from '@js-camp/core/models/anime';
 
 import { Table, TableBlock } from '../../constants/classes';
 import { QueryParamsService } from '../../services/domain/queryParams';
@@ -7,7 +7,7 @@ import { QueryParamsService } from '../../services/domain/queryParams';
 interface TableColumnDef {
 
   /** Field in anime model. */
-  readonly field: keyof Anime;
+  readonly field: keyof AnimeBase;
 
   /** Title of column. */
   readonly title: string;
@@ -38,7 +38,7 @@ function handleOpenDetailsCard(id: number): void {
  * Creates and fills table rows.
  * @param animeList List of anime entries.
  */
-function createTableRows(animeList: readonly Anime[]): HTMLTableRowElement[] {
+function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[] {
   return animeList.map(anime => {
     const row = document.createElement('tr');
     row.classList.add(Table.ROW);
@@ -131,7 +131,7 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
  * Fills the table with information about anime.
  * @param animeList List of anime entries.
  */
-export function fillTableAnime(animeList: readonly Anime[]): void {
+export function fillTableAnime(animeList: readonly AnimeBase[]): void {
   const tableRows = createTableRows(animeList);
 
   updateTableAnime(tableRows);

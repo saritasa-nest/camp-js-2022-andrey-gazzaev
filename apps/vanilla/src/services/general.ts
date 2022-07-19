@@ -1,4 +1,4 @@
-import { Anime } from '@js-camp/core/models/anime';
+import { AnimeBase } from '@js-camp/core/models/anime';
 import { User } from '@js-camp/core/models/user';
 
 import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
@@ -84,7 +84,7 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
  * @returns Return information about the user if the token is valid,
  * false if the tokens have expired, true if there were no tokens.
  */
-export async function getDetailsAnime(id: number): Promise<Anime | null> {
+export async function getDetailsAnime(id: number): Promise<AnimeBase | null> {
   if (await isAuthorized()) {
     return fetchAnimeById(id);
   }
