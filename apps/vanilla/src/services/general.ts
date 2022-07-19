@@ -2,7 +2,7 @@ import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 import { User } from '@js-camp/core/models/user';
 
 import { DEFAULT_PAGINATION_SETTINGS, FIRST_PAGE_NUMBER } from '../constants/pagination';
-import { AnimeData } from '../types/anime';
+import { AnimePage } from '../types/anime';
 import { PaginationOptions } from '../types/paginationSettings';
 
 import { fetchAnime } from './api/anime';
@@ -53,7 +53,7 @@ function getUrlAnime(paginationOptions: PaginationOptions): string {
  * Changes anime and pagination data relative to the current page.
  * @param currentPageNumber The page on which the change occurs.
  */
-export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
+export async function changeAnimeData(currentPageNumber: number): Promise<AnimePage | null> {
   const paginationOptions = QueryParamsService.getPaginationParams();
 
   if (!isDefine(paginationOptions)) {

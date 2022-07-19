@@ -5,7 +5,7 @@ import { SelectorElement } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
 import { Options } from '../../constants/select';
 import { SelectOptions } from '../../types/select';
-import { ElementData } from '../../types/element';
+import { ElementAttributesValues } from '../../types/element';
 import { QueryParamsService } from '../../services/domain/queryParams';
 import { getDomElement } from '../general';
 
@@ -48,7 +48,7 @@ function handleChangePaginationOptions(selectValue: string): void {
  * Creates a option element.
  * @param optionData Information contained in the option.
  */
-function createOption({ text, classes, value }: ElementData): HTMLOptionElement {
+function createOption({ text, classes, value }: ElementAttributesValues): HTMLOptionElement {
   const option = document.createElement('option');
   if (isDefine(value) && isDefine(classes)) {
     option.setAttribute('value', value);

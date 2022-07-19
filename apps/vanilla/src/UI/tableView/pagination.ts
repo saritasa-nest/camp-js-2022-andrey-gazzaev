@@ -2,7 +2,7 @@ import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { TableBlock } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
-import { ElementData } from '../../types/element';
+import { ElementAttributesValues } from '../../types/element';
 import { PaginationData } from '../../types/paginationSettings';
 import { getDomElement } from '../general';
 
@@ -16,7 +16,7 @@ const PAGE_OFFSET = 3;
  * Creates a button element for pagination.
  * @param buttonData Information contained in the button.
  */
-function createButton({ text, isCurrentPage }: ElementData): HTMLButtonElement {
+function createButton({ text, isCurrentPage }: ElementAttributesValues): HTMLButtonElement {
   const button = document.createElement('button');
 
   const classes = [TableBlock.BUTTON_PAGINATION];
@@ -36,7 +36,7 @@ function createButton({ text, isCurrentPage }: ElementData): HTMLButtonElement {
  * Creates a span element.
  * @param spanData Information contained in the span.
  */
-function createSpan({ text, classes }: ElementData): HTMLSpanElement {
+function createSpan({ text, classes }: ElementAttributesValues): HTMLSpanElement {
   const span = document.createElement('span');
   span.innerHTML = text;
   if (isDefine(classes)) {

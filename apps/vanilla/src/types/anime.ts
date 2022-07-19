@@ -1,7 +1,7 @@
 import { Anime } from '@js-camp/core/models/anime';
 
 /** Ready anime data. */
-export interface AnimeData {
+export interface AnimePage {
 
   /** List of anime contained in the table. */
   readonly list: readonly Anime[];

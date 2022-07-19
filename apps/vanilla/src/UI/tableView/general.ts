@@ -3,7 +3,7 @@ import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 import { Page } from '../../constants/classes';
 import { PaginationService } from '../../services/domain/pagination';
 import { changeAnimeData } from '../../services/general';
-import { AnimeData } from '../../types/anime';
+import { AnimePage } from '../../types/anime';
 import { getDomElement } from '../general';
 
 import { fillPaginationAnime } from './pagination';
@@ -36,7 +36,7 @@ function goToTop(): void {
  * Renders UI component related to table view.
  * @param tableViewData Data about table view.
  */
-export function renderTableView({ list, totalCount, currentPageNumber, limit }: AnimeData): void {
+export function renderTableView({ list, totalCount, currentPageNumber, limit }: AnimePage): void {
   goToTop();
   fillTableAnime(list);
 
