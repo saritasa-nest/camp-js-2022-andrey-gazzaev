@@ -16,15 +16,16 @@ const NO_CLASSES: string[] = [];
 /**
  * Changes pagination settings.
  * @param selectValue Value of sort or filter select.
+ * @param selectName Name of sort or filter select.
  */
-function handleChangePaginationOptions(selectValue: string): void {
+function handleChangePaginationOptions(selectValue: string, selectName: string): void {
   const paginationOptions = QueryParamsService.getPaginationParams();
   if (isDefine(paginationOptions)) {
     let { sort, filter } = paginationOptions;
 
-    if (isStatus(selectValue) || selectValue === '') {
+    if (selectName === 'status' && (isStatus(selectValue) || selectValue === '')) {
       filter = { ...paginationOptions.filter, byStatusField: selectValue };
-    } else if (isType(selectValue) || selectValue === '') {
+    } else if (selectName === 'type' && (isType(selectValue) || selectValue === '')) {
       filter = { ...paginationOptions.filter, byTypeField: selectValue };
     }
 
@@ -95,7 +96,7 @@ export function initSortElements(): void {
 
     selectElement.addEventListener(
       'change',
-      () => handleChangePaginationOptions(selectElement.value),
+      () => handleChangePaginationOptions(selectElement.value, select.name),
     );
   });
 }
