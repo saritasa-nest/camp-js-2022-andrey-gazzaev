@@ -10,6 +10,7 @@ import { getDetailsAnime } from '../../services/general';
 import { getDomElement } from '../general';
 
 const NO_DATA = '-';
+const NO_DETAILS_DATA = 'None';
 const LIST_ITEM_CLASS = 'list__item';
 
 /**
@@ -103,6 +104,9 @@ function setStudios(studios: readonly Studio[]): void {
   const studiosElement = getDomElement(document, `.${Card.STUDIOS}`);
   const studiosItems = studios.map(studio => createListItem(studio.name));
   studiosElement.append(...studiosItems);
+  if (studiosItems.length === 0) {
+    studiosElement.append(createListItem(NO_DETAILS_DATA));
+  }
 }
 
 /**
@@ -113,6 +117,9 @@ function setGenres(genres: readonly Genre[]): void {
   const genresElement = getDomElement(document, `.${Card.GENRES}`);
   const genresItems = genres.map(genre => createListItem(genre.name));
   genresElement.append(...genresItems);
+  if (genresItems.length === 0) {
+    genresElement.append(createListItem(NO_DETAILS_DATA));
+  }
 }
 
 /**
