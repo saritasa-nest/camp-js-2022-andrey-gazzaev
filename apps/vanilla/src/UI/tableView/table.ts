@@ -1,6 +1,7 @@
 import { AnimeBase } from '@js-camp/core/models/anime';
 
 import { Table, TableBlock } from '../../constants/classes';
+import { QueryParamsService } from '../../services/domain/queryParams';
 import { getDomElement } from '../general';
 
 /** Information about column. */
@@ -26,6 +27,15 @@ const TABLE_COLUMNS: readonly TableColumnDef[] = [
 export const NO_DATA = '-';
 
 /**
+ * Go to details card of anime.
+ * @param id ID of anime.
+ */
+function handleOpenDetailsCard(id: number): void {
+  QueryParamsService.setDetailsParams(Number(id));
+  window.history.go();
+}
+
+/**
  * Creates and fills table rows.
  * @param animeList List of anime entries.
  */
@@ -33,6 +43,7 @@ function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[]
   return animeList.map(anime => {
     const row = document.createElement('tr');
     row.classList.add(Table.ROW);
+    row.addEventListener('click', () => handleOpenDetailsCard(anime.id));
 
     TABLE_COLUMNS.forEach(({ field }) => {
       const tdElement = document.createElement('td');
@@ -63,7 +74,12 @@ function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[]
           break;
 
         default:
-          tdElement.innerHTML = `${anime[field] || NO_DATA}`;
+          if (anime[field] !== '' && anime[field] !== null && anime[field] !== undefined) {
+            tdElement.innerHTML = `${anime[field]}`;
+          } else {
+            tdElement.innerHTML = `${NO_DATA}`;
+          }
+
           row.append(tdElement);
       }
     });

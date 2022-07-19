@@ -4,7 +4,7 @@ import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 import { Form, Header, Profile } from '../../constants/classes';
 import { signOut } from '../../services/domain/user';
 import { getUser } from '../../services/general';
-import { getDomElement } from '../general';
+import { goToHomePage, getDomElement } from '../general';
 
 const USER_PROFILE_TEMPLATE = 'user-profile';
 const STANDARD_PROFILE_TEMPLATE = 'standard-profile';
@@ -13,6 +13,7 @@ const SIGN_OUT_BUTTON = 'sign-out';
 /** Signs out from account. */
 function handleSignOut(): void {
   signOut();
+  goToHomePage();
   renderHeader();
 }
 

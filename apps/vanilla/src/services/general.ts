@@ -1,3 +1,4 @@
+import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 import { User } from '@js-camp/core/models/user';
 
@@ -5,7 +6,7 @@ import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
 import { AnimePage } from '../types/anime';
 import { PaginationOptions } from '../types/paginationSettings';
 
-import { fetchAnime } from './api/anime';
+import { fetchAnime, fetchAnimeById } from './api/anime';
 import { isTokenValid } from './api/auth';
 import { fetchUserProfile } from './api/user';
 import { TokenService } from './domain/token';
@@ -33,6 +34,19 @@ async function isAuthorized(): Promise<boolean> {
 export async function getUser(): Promise<User | null> {
   if (await isAuthorized()) {
     return fetchUserProfile();
+  }
+  return null;
+}
+
+/** Gets information about a specific anime. */
+export async function getDetailsAnime(): Promise<AnimeDetails | null> {
+  const id = QueryParamsService.getDetailsParams();
+  if (!isDefine(id)) {
+    return null;
+  }
+
+  if (await isAuthorized()) {
+    return fetchAnimeById(id);
   }
   return null;
 }

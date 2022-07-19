@@ -10,6 +10,7 @@
   color: var(--form-default-color);
   font-size: var(--default-text-size);
   padding-left: 10px;
+  min-height: 35px;
 }
 
 .form__input {
@@ -54,7 +55,7 @@
 .form__links {
   display: flex;
   flex-direction: column;
-  max-width: 215px;
+  background: #fff;
 }
 
 .form__links-item {
@@ -73,6 +74,12 @@
 }
 
 .form-label {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.form-field {
   display: flex;
   flex-direction: column;
   margin: 10px 0;

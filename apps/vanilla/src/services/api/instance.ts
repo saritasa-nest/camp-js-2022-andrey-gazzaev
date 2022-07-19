@@ -51,6 +51,7 @@ export const defaultRequestInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     [FetchHeader.ApiKey]: import.meta.env.VITE_API_KEY,
+
   },
 });
 
@@ -59,6 +60,7 @@ defaultRequestInstance.interceptors.request.use(config => {
   if (isDefine(tokens) && isDefine(config.headers)) {
     config.headers[FetchHeader.Authorization] = `Bearer ${tokens.access}`;
   }
+
   return config;
 });
 
