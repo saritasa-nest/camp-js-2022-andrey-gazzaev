@@ -5,10 +5,10 @@ import { Sort, SortField, SortOrdering } from '@js-camp/core/utils/types/sort';
 export interface Filter {
 
   /** Filter by type field. */
-  readonly byTypeField: Type;
+  readonly byTypeField: Type | '';
 
   /** Filter by status field. */
-  readonly byStatusField: Status;
+  readonly byStatusField: Status | '';
 }
 
 /** Pagination settings. */

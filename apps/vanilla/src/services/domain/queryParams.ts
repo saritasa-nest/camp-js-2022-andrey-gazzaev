@@ -50,7 +50,7 @@ export namespace QueryParamsService {
     const field = ordering.replace('-', '');
     const direction = ordering.includes('-') ? SortOrdering.Descending : SortOrdering.Ascending;
 
-    if (isSortField(field) && isSortOrdering(direction) && isStatus(status) && isType(type)) {
+    if (isSortField(field) && isSortOrdering(direction) && (isStatus(status) || status === '') && (isType(type) || type === '')) {
       return {
         sort: {
           field,

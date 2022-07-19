@@ -7,7 +7,7 @@ import { PaginationOptions } from '../types/paginationSettings';
 const DEFAULT_LIMIT = 25;
 
 /** Anime offset when requesting a new page. */
-const DEFAULT_OFFSET = 0;
+export const DEFAULT_OFFSET = 0;
 
 /** First pagination page. */
 export const FIRST_PAGE_NUMBER = 1;

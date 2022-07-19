@@ -13,6 +13,7 @@ export enum SortField {
   TitleEnglish = 'title_eng',
   TitleJapanese = 'title_jpn',
   Aired = 'aired',
+  Status = 'status',
 }
 
 /** Ordering direction. */

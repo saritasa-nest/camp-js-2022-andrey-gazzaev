@@ -12,6 +12,7 @@ export namespace Options {
       { text: 'Title in English', value: SortField.TitleEnglish },
       { text: 'Title in Japanese', value: SortField.TitleJapanese },
       { text: 'Aired Start', value: SortField.Aired },
+      { text: 'Status', value: SortField.Status },
     ];
 
   /** Options in ordering select. */
@@ -24,6 +25,7 @@ export namespace Options {
   /** Options in status select. */
   export const STATUS: readonly Option[] =
     [
+      { text: 'All', value: '' },
       { text: 'Airing', value: Status.Airing },
       { text: 'Finished', value: Status.Finished },
       { text: 'Not yet aired', value: Status.NotYetAired },
@@ -32,6 +34,7 @@ export namespace Options {
   /** Options in status select. */
   export const TYPE: readonly Option[] =
     [
+      { text: 'All', value: '' },
       { text: 'Tv', value: Type.Tv },
       { text: 'OVA', value: Type.Ova },
       { text: 'Movie', value: Type.Movie },

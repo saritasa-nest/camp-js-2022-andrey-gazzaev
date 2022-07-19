@@ -22,11 +22,9 @@ function handleChangePaginationOptions(selectValue: string): void {
   if (isDefine(paginationOptions)) {
     let { sort, filter } = paginationOptions;
 
-    if (isStatus(selectValue)) {
+    if (isStatus(selectValue) || selectValue === '') {
       filter = { ...paginationOptions.filter, byStatusField: selectValue };
-    }
-
-    if (isType(selectValue)) {
+    } else if (isType(selectValue) || selectValue === '') {
       filter = { ...paginationOptions.filter, byTypeField: selectValue };
     }
 

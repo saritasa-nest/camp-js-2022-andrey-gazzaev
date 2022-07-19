@@ -1,7 +1,7 @@
 import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 import { User } from '@js-camp/core/models/user';
 
-import { DEFAULT_PAGINATION_SETTINGS, FIRST_PAGE_NUMBER } from '../constants/pagination';
+import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
 import { AnimePage } from '../types/anime';
 import { PaginationOptions } from '../types/paginationSettings';
 
@@ -10,6 +10,7 @@ import { isTokenValid } from './api/auth';
 import { fetchUserProfile } from './api/user';
 import { TokenService } from './domain/token';
 import { QueryParamsService } from './domain/queryParams';
+import { PaginationService } from './domain/pagination';
 
 /** Checks if the user is logged in. */
 async function isAuthorized(): Promise<boolean> {
@@ -60,7 +61,7 @@ export async function changeAnimePage(currentPageNumber: number): Promise<AnimeP
     return null;
   }
 
-  const currentOffset = currentPageNumber === FIRST_PAGE_NUMBER ? 0 : currentPageNumber * paginationOptions.limit;
+  const currentOffset = PaginationService.getCurrentOffset(currentPageNumber, paginationOptions.limit);
 
   const newPaginationOptions: PaginationOptions = { ...paginationOptions, offset: currentOffset };
   QueryParamsService.setPaginationParams(newPaginationOptions);
