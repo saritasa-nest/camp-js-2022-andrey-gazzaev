@@ -37,6 +37,13 @@
 
 .table__row {
   display: flex;
+  border-bottom: 1px solid var(--table-row-border-color);
+  cursor: pointer;
+}
+
+.table__row:hover {
+  display: flex;
+  background-color: var(--table-background-hover);
 }
 
 .table__body-cell,
@@ -45,7 +52,6 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  border-bottom: 1px solid var(--table-row-border-color);
   width: var(--max-width-table-col);
 }
 
