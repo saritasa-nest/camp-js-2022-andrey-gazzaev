@@ -1,9 +1,12 @@
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+
 import { TableBlock } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
-import { ElementData } from '../../types/element';
+import { ElementAttributesValues } from '../../types/element';
 import { PaginationData } from '../../types/paginationSettings';
+import { getDomElement } from '../general';
 
-import { handleChangeAnimeData } from './general';
+import { handleChangeAnimePage } from './general';
 
 const NO_CLASSES: string[] = [];
 const ELLIPSIS = '...';
@@ -13,7 +16,7 @@ const PAGE_OFFSET = 3;
  * Creates a button element for pagination.
  * @param buttonData Information contained in the button.
  */
-function createButton({ text, isCurrentPage }: ElementData): HTMLButtonElement {
+function createButton({ text, isCurrentPage }: ElementAttributesValues): HTMLButtonElement {
   const button = document.createElement('button');
 
   const classes = [TableBlock.BUTTON_PAGINATION];
@@ -25,7 +28,7 @@ function createButton({ text, isCurrentPage }: ElementData): HTMLButtonElement {
   button.classList.add(...classes);
   button.setAttribute('type', 'button');
   button.innerHTML = text;
-  button.addEventListener('click', () => handleChangeAnimeData(Number(text)));
+  button.addEventListener('click', () => handleChangeAnimePage(Number(text)));
   return button;
 }
 
@@ -33,10 +36,10 @@ function createButton({ text, isCurrentPage }: ElementData): HTMLButtonElement {
  * Creates a span element.
  * @param spanData Information contained in the span.
  */
-function createSpan({ text, classes }: ElementData): HTMLSpanElement {
+function createSpan({ text, classes }: ElementAttributesValues): HTMLSpanElement {
   const span = document.createElement('span');
   span.innerHTML = text;
-  if (classes !== undefined) {
+  if (isDefine(classes)) {
     span.classList.add(...classes);
   }
   return span;
@@ -76,12 +79,9 @@ function createPaginationElements({ borders, currentPage }: PaginationData): (HT
  * @param elements Array of pagination elements.
  */
 function updatePaginationElement(elements: readonly (HTMLButtonElement | HTMLSpanElement)[]): void {
-  const paginationElement = document.querySelector(`.${TableBlock.PAGINATION}`);
-
-  if (paginationElement !== null) {
-    paginationElement.innerHTML = '';
-    paginationElement.append(...elements);
-  }
+  const paginationElement = getDomElement(document, `.${TableBlock.PAGINATION}`);
+  paginationElement.innerHTML = '';
+  paginationElement.append(...elements);
 }
 
 /**

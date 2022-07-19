@@ -2,6 +2,7 @@ import { AnimeBase } from '@js-camp/core/models/anime';
 
 import { Table, TableBlock } from '../../constants/classes';
 import { QueryParamsService } from '../../services/domain/queryParams';
+import { getDomElement } from '../general';
 
 /** Information about column. */
 interface TableColumnDef {
@@ -13,7 +14,7 @@ interface TableColumnDef {
   readonly title: string;
 }
 
-const TABLE_COLUMNS: TableColumnDef[] = [
+const TABLE_COLUMNS: readonly TableColumnDef[] = [
   { field: 'image', title: 'Image' },
   { field: 'titleEnglish', title: 'Title in English' },
   { field: 'titleJapanese', title: 'Title in Japanese' },
@@ -92,21 +93,14 @@ function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[]
  * @param tableRows Array of rows.
  */
 function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
-  const catalogElement = document.querySelector(`.${TableBlock.TABLE}`);
-  const errorElement = document.querySelector(`.${TableBlock.ERROR}`);
+  const catalogElement = getDomElement(document, `.${TableBlock.TABLE}`);
+  const errorElement = getDomElement(document, `.${TableBlock.ERROR}`);
 
-  if (errorElement !== null) {
-    errorElement.innerHTML = '';
-  }
-
-  if (catalogElement !== null) {
-    catalogElement.innerHTML = '';
-  }
+  errorElement.innerHTML = '';
+  catalogElement.innerHTML = '';
 
   if (tableRows.length === 0) {
-    if (errorElement !== null) {
-      errorElement.innerHTML = 'Records missing.';
-    }
+    errorElement.innerHTML = 'Records missing.';
     return;
   }
 
@@ -121,10 +115,7 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
   });
 
   rowHead.append(...columnsHead);
-
-  if (catalogElement !== null) {
-    catalogElement.append(rowHead, ...tableRows);
-  }
+  catalogElement.append(rowHead, ...tableRows);
 }
 
 /**

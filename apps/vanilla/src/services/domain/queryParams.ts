@@ -1,8 +1,10 @@
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
 import { SortOrdering } from '@js-camp/core/utils/types/sort';
 
 import { PaginationOptions } from '../../types/paginationSettings';
 
+/** Functionality for working with query parameters. */
 export namespace QueryParamsService {
 
   /**
@@ -41,14 +43,14 @@ export namespace QueryParamsService {
     const type = params.get('type');
     const limit = params.get('limit');
 
-    if (ordering === null || status === null || limit === null || type === null) {
+    if (!isDefine(ordering) || !isDefine(status) || !isDefine(limit) || !isDefine(type)) {
       return null;
     }
 
     const field = ordering.replace('-', '');
     const direction = ordering.includes('-') ? SortOrdering.Descending : SortOrdering.Ascending;
 
-    if (isSortField(field) && isSortOrdering(direction) && isStatus(status) && isType(type)) {
+    if (isSortField(field) && isSortOrdering(direction) && (isStatus(status) || status === '') && (isType(type) || type === '')) {
       return {
         sort: {
           field,

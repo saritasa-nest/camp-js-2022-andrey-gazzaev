@@ -1,5 +1,5 @@
 /** Information contained in the element. */
-export interface ElementData {
+export interface ElementAttributesValues {
 
   /** Element text. */
   readonly text: string;

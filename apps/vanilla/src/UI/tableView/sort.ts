@@ -1,13 +1,15 @@
 import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { SelectorElement } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
-import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS, OPTIONS_FOR_TYPE } from '../../constants/select';
+import { Options } from '../../constants/select';
 import { SelectOptions } from '../../types/select';
-import { ElementData } from '../../types/element';
+import { ElementAttributesValues } from '../../types/element';
 import { QueryParamsService } from '../../services/domain/queryParams';
+import { getDomElement } from '../general';
 
-import { handleChangeAnimeData } from './general';
+import { handleChangeAnimePage } from './general';
 
 const NO_CLASSES: string[] = [];
 
@@ -17,14 +19,12 @@ const NO_CLASSES: string[] = [];
  */
 function handleChangePaginationOptions(selectValue: string): void {
   const paginationOptions = QueryParamsService.getPaginationParams();
-  if (paginationOptions !== null) {
+  if (isDefine(paginationOptions)) {
     let { sort, filter } = paginationOptions;
 
-    if (isStatus(selectValue)) {
+    if (isStatus(selectValue) || selectValue === '') {
       filter = { ...paginationOptions.filter, byStatusField: selectValue };
-    }
-
-    if (isType(selectValue)) {
+    } else if (isType(selectValue) || selectValue === '') {
       filter = { ...paginationOptions.filter, byTypeField: selectValue };
     }
 
@@ -39,16 +39,16 @@ function handleChangePaginationOptions(selectValue: string): void {
     QueryParamsService.setPaginationParams({ ...paginationOptions, sort, filter });
   }
 
-  handleChangeAnimeData(FIRST_PAGE_NUMBER);
+  handleChangeAnimePage(FIRST_PAGE_NUMBER);
 }
 
 /**
  * Creates a option element.
  * @param optionData Information contained in the option.
  */
-function createOption({ text, classes, value }: ElementData): HTMLOptionElement {
+function createOption({ text, classes, value }: ElementAttributesValues): HTMLOptionElement {
   const option = document.createElement('option');
-  if (value !== undefined && classes !== undefined) {
+  if (isDefine(value) && isDefine(classes)) {
     option.setAttribute('value', value);
     option.innerHTML = text;
     option.classList.add(...classes);
@@ -59,45 +59,43 @@ function createOption({ text, classes, value }: ElementData): HTMLOptionElement 
 /** Adds option elements to select. */
 export function initSortElements(): void {
   const selectors: SelectOptions[] = [
-    { name: 'ordering', selector: SelectorElement.SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
-    { name: 'status', selector: SelectorElement.SORT_STATUS, options: OPTIONS_FOR_STATUS },
-    { name: 'sort', selector: SelectorElement.SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
-    { name: 'type', selector: SelectorElement.SORT_TYPE, options: OPTIONS_FOR_TYPE },
+    { name: 'ordering', selector: SelectorElement.SORT_ORDERING, options: Options.ORDERING },
+    { name: 'status', selector: SelectorElement.SORT_STATUS, options: Options.STATUS },
+    { name: 'sort', selector: SelectorElement.SORT_FIELD, options: Options.SORT_FIELD },
+    { name: 'type', selector: SelectorElement.SORT_TYPE, options: Options.TYPE },
   ];
 
   const paginationOptions = QueryParamsService.getPaginationParams();
 
-  if (paginationOptions === null) {
+  if (!isDefine(paginationOptions)) {
     return;
   }
 
   selectors.forEach(select => {
-    const selectElement = document.querySelector<HTMLSelectElement>(`.${select.selector}`);
+    const selectElement = getDomElement<HTMLSelectElement>(document, `.${select.selector}`);
 
-    if (selectElement !== null) {
-      select.options.forEach(option => selectElement.append(createOption({ text: option.text, classes: NO_CLASSES, value: option.value })));
+    select.options.forEach(option => selectElement.append(createOption({ text: option.text, classes: NO_CLASSES, value: option.value })));
 
-      switch (select.name) {
-        case 'ordering':
-          selectElement.value = paginationOptions.sort.ordering;
-          break;
-        case 'sort':
-          selectElement.value = paginationOptions.sort.field;
-          break;
-        case 'status':
-          selectElement.value = paginationOptions.filter.byStatusField;
-          break;
-        case 'type':
-          selectElement.value = paginationOptions.filter.byTypeField;
-          break;
-        default:
-          break;
-      }
-
-      selectElement.addEventListener(
-        'change',
-        () => handleChangePaginationOptions(selectElement.value),
-      );
+    switch (select.name) {
+      case 'ordering':
+        selectElement.value = paginationOptions.sort.ordering;
+        break;
+      case 'sort':
+        selectElement.value = paginationOptions.sort.field;
+        break;
+      case 'status':
+        selectElement.value = paginationOptions.filter.byStatusField;
+        break;
+      case 'type':
+        selectElement.value = paginationOptions.filter.byTypeField;
+        break;
+      default:
+        break;
     }
+
+    selectElement.addEventListener(
+      'change',
+      () => handleChangePaginationOptions(selectElement.value),
+    );
   });
 }

@@ -1,5 +1,5 @@
-import { AnimeDto } from '@js-camp/core/dtos/anime.dto';
 import { AnimeDetailsDto } from '@js-camp/core/dtos/animeDetails';
+import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
@@ -14,9 +14,9 @@ import { defaultRequestInstance } from './instance';
  * @param url Request address.
  */
 export async function fetchAnime(url: string): Promise<Pagination<AnimeBase>> {
-  const response = await defaultRequestInstance.get<PaginationDto<AnimeDto>>(url);
+  const response = await defaultRequestInstance.get<PaginationDto<AnimeBaseDto>>(url);
 
-  return PaginationMapper.fromDto<AnimeDto, AnimeBase>(
+  return PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
     response.data,
     animeDto => AnimeMapper.fromDto(animeDto),
   );

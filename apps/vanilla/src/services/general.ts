@@ -1,8 +1,9 @@
-import { AnimeBase } from '@js-camp/core/models/anime';
+import { AnimeDetails } from '@js-camp/core/models/animeDetails';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 import { User } from '@js-camp/core/models/user';
 
 import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
-import { AnimeData } from '../types/anime';
+import { AnimePage } from '../types/anime';
 import { PaginationOptions } from '../types/paginationSettings';
 
 import { fetchAnime, fetchAnimeById } from './api/anime';
@@ -10,11 +11,12 @@ import { isTokenValid } from './api/auth';
 import { fetchUserProfile } from './api/user';
 import { TokenService } from './domain/token';
 import { QueryParamsService } from './domain/queryParams';
+import { PaginationService } from './domain/pagination';
 
 /** Checks if the user is logged in. */
 async function isAuthorized(): Promise<boolean> {
   const tokens = TokenService.getTokens();
-  if (tokens !== null) {
+  if (isDefine(tokens)) {
     try {
       if (await isTokenValid(tokens.access)) {
         return true;
@@ -43,7 +45,7 @@ export async function getUser(): Promise<User | null> {
  */
 function getUrlAnime(paginationOptions: PaginationOptions): string {
   const params = QueryParamsService.paginationOptionsToUrlSearchParams(paginationOptions);
-  if (params !== null) {
+  if (isDefine(params)) {
     return `anime/anime/?${params.toString()}`;
   }
   return `anime/anime/`;
@@ -53,14 +55,14 @@ function getUrlAnime(paginationOptions: PaginationOptions): string {
  * Changes anime and pagination data relative to the current page.
  * @param currentPageNumber The page on which the change occurs.
  */
-export async function changeAnimeData(currentPageNumber: number): Promise<AnimeData | null> {
+export async function changeAnimePage(currentPageNumber: number): Promise<AnimePage | null> {
   const paginationOptions = QueryParamsService.getPaginationParams();
 
-  if (paginationOptions === null) {
+  if (!isDefine(paginationOptions)) {
     return null;
   }
 
-  const currentOffset = currentPageNumber === 1 ? 0 : currentPageNumber * paginationOptions.limit;
+  const currentOffset = PaginationService.getCurrentOffset(currentPageNumber, paginationOptions.limit);
 
   const newPaginationOptions: PaginationOptions = { ...paginationOptions, offset: currentOffset };
   QueryParamsService.setPaginationParams(newPaginationOptions);
@@ -84,7 +86,7 @@ export async function changeAnimeData(currentPageNumber: number): Promise<AnimeD
  * @returns Return information about the user if the token is valid,
  * false if the tokens have expired, true if there were no tokens.
  */
-export async function getDetailsAnime(id: number): Promise<AnimeBase | null> {
+export async function getDetailsAnime(id: number): Promise<AnimeDetails | null> {
   if (await isAuthorized()) {
     return fetchAnimeById(id);
   }

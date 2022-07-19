@@ -18,7 +18,7 @@ export enum StatusDto {
 }
 
 /** Anime DTO. */
-export interface AnimeDto {
+export interface AnimeBaseDto {
 
   /** ID. */
   readonly id: number;

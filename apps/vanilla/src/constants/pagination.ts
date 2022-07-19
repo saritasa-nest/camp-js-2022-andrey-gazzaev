@@ -6,6 +6,9 @@ import { PaginationOptions } from '../types/paginationSettings';
 /** Anime limit when requesting a new page. */
 const DEFAULT_LIMIT = 25;
 
+/** Anime offset when requesting a new page. */
+export const DEFAULT_OFFSET = 0;
+
 /** First pagination page. */
 export const FIRST_PAGE_NUMBER = 1;
 
@@ -16,9 +19,9 @@ export const DEFAULT_PAGINATION_SETTINGS: PaginationOptions = {
     ordering: SortOrdering.Ascending,
   },
   filter: {
-    byTypeField: Type.Movie,
+    byTypeField: Type.Tv,
     byStatusField: Status.Airing,
   },
   limit: DEFAULT_LIMIT,
-  offset: 0,
+  offset: DEFAULT_OFFSET,
 };

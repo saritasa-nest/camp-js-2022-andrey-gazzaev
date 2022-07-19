@@ -1,7 +1,10 @@
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+
 import { Page } from '../../constants/classes';
 import { PaginationService } from '../../services/domain/pagination';
-import { changeAnimeData } from '../../services/general';
-import { AnimeData } from '../../types/anime';
+import { changeAnimePage } from '../../services/general';
+import { AnimePage } from '../../types/anime';
+import { getDomElement } from '../general';
 
 import { fillPaginationAnime } from './pagination';
 import { fillTableAnime } from './table';
@@ -10,10 +13,10 @@ import { fillTableAnime } from './table';
  * Handles the anime data change event.
  * @param currentPageNumber The page on which the change occurs.
  */
-export async function handleChangeAnimeData(currentPageNumber: number): Promise<void> {
-  const animeData = await changeAnimeData(currentPageNumber);
-  if (animeData !== null) {
-    return renderTableView(animeData);
+export async function handleChangeAnimePage(currentPageNumber: number): Promise<void> {
+  const animePage = await changeAnimePage(currentPageNumber);
+  if (isDefine(animePage)) {
+    return renderTableView(animePage);
   }
   return renderTableViewError();
 }
@@ -33,7 +36,7 @@ function goToTop(): void {
  * Renders UI component related to table view.
  * @param tableViewData Data about table view.
  */
-export function renderTableView({ list, totalCount, currentPageNumber, limit }: AnimeData): void {
+export function renderTableView({ list, totalCount, currentPageNumber, limit }: AnimePage): void {
   goToTop();
   fillTableAnime(list);
 
@@ -47,15 +50,14 @@ export function renderTableView({ list, totalCount, currentPageNumber, limit }: 
 
 /** Renders message about table view error. */
 export function renderTableViewError(): void {
-  const pageContainer = document.querySelector(`.${Page.CONTAINER}`);
-  if (pageContainer !== null) {
-    const errorTemplate = document.createElement('p');
-    errorTemplate.classList.add(Page.ERROR);
+  const pageContainer = getDomElement(document, `.${Page.CONTAINER}`);
 
-    const ERROR_MESSAGE = 'Ooops... Something went wrong';
-    errorTemplate.innerHTML = ERROR_MESSAGE;
+  const errorTemplate = document.createElement('p');
+  errorTemplate.classList.add(Page.ERROR);
 
-    pageContainer.innerHTML = '';
-    pageContainer.append(errorTemplate);
-  }
+  const ERROR_MESSAGE = 'Ooops... Something went wrong';
+  errorTemplate.innerHTML = ERROR_MESSAGE;
+
+  pageContainer.innerHTML = '';
+  pageContainer.append(errorTemplate);
 }
