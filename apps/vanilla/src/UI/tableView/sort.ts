@@ -3,7 +3,7 @@ import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { SelectorElement } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
-import { OPTIONS_FOR_ORDERING, OPTIONS_FOR_SORT_FIELD, OPTIONS_FOR_STATUS, OPTIONS_FOR_TYPE } from '../../constants/select';
+import { Options } from '../../constants/select';
 import { SelectOptions } from '../../types/select';
 import { ElementData } from '../../types/element';
 import { QueryParamsService } from '../../services/domain/queryParams';
@@ -61,10 +61,10 @@ function createOption({ text, classes, value }: ElementData): HTMLOptionElement 
 /** Adds option elements to select. */
 export function initSortElements(): void {
   const selectors: SelectOptions[] = [
-    { name: 'ordering', selector: SelectorElement.SORT_ORDERING, options: OPTIONS_FOR_ORDERING },
-    { name: 'status', selector: SelectorElement.SORT_STATUS, options: OPTIONS_FOR_STATUS },
-    { name: 'sort', selector: SelectorElement.SORT_FIELD, options: OPTIONS_FOR_SORT_FIELD },
-    { name: 'type', selector: SelectorElement.SORT_TYPE, options: OPTIONS_FOR_TYPE },
+    { name: 'ordering', selector: SelectorElement.SORT_ORDERING, options: Options.ORDERING },
+    { name: 'status', selector: SelectorElement.SORT_STATUS, options: Options.STATUS },
+    { name: 'sort', selector: SelectorElement.SORT_FIELD, options: Options.SORT_FIELD },
+    { name: 'type', selector: SelectorElement.SORT_TYPE, options: Options.TYPE },
   ];
 
   const paginationOptions = QueryParamsService.getPaginationParams();
