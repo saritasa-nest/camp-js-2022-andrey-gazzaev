@@ -54,24 +54,3 @@ export namespace Page {
   export const CONTAINER = 'page__container';
   export const ERROR = 'page__error';
 }
-
-/** The class names for the card of details block. */
-export namespace Card {
-  export const TITLE = 'details__anime-title';
-  export const SYNOPSIS = 'details__anime-synopsis';
-  export const TYPE = 'details__anime-type';
-  export const STATUS = 'details__anime-status';
-  export const AIRING = 'details__anime-airing';
-  export const AIRED = 'details__anime-aired';
-  export const STUDIOS = 'details__list-studios';
-  export const GENRES = 'details__list-genres';
-  export const IMAGE = 'details__image';
-  export const VIDEO = 'details__video';
-}
-
-/** The class names for the image modal block. */
-export namespace Modal {
-  export const BOX = 'modal-box';
-  export const OVERLAY = 'overlay';
-  export const IMAGE = 'modal-box__image';
-}
