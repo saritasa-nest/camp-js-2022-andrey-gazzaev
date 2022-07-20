@@ -67,7 +67,11 @@ export namespace Card {
   export const GENRES = 'details__list-genres';
   export const IMAGE = 'details__image';
   export const VIDEO = 'details__video';
-  export const MODAL_BOX = 'modal-box';
-  export const MODAL_OVERLAY = 'overlay';
-  export const MODAL_IMAGE = 'modal-box__image';
+}
+
+/** The class names for the image modal block. */
+export namespace Modal {
+  export const BOX = 'modal-box';
+  export const OVERLAY = 'overlay';
+  export const IMAGE = 'modal-box__image';
 }

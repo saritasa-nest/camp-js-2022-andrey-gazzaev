@@ -1,4 +1,5 @@
 import { AnimeBase } from '@js-camp/core/models/anime';
+import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
 import { Table, TableBlock } from '../../constants/classes';
 import { QueryParamsService } from '../../services/domain/queryParams';
@@ -31,7 +32,7 @@ export const NO_DATA = '-';
  * @param id ID of anime.
  */
 function handleOpenDetailsCard(id: number): void {
-  QueryParamsService.setDetailsParams(Number(id));
+  QueryParamsService.setDetailsParams(id);
   window.history.go();
 }
 
@@ -74,7 +75,7 @@ function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[]
           break;
 
         default:
-          if (anime[field] !== '' && anime[field] !== null && anime[field] !== undefined) {
+          if (isDefine(anime[field]) && anime[field] !== '') {
             tdElement.innerHTML = `${anime[field]}`;
           } else {
             tdElement.innerHTML = `${NO_DATA}`;

@@ -4,7 +4,7 @@ import { Genre } from '@js-camp/core/models/genre';
 import { Studio } from '@js-camp/core/models/studio.dto';
 import { isDefine } from '@js-camp/core/utils/guards/general.guard';
 
-import { Card } from '../../constants/classes';
+import { Card, Modal } from '../../constants/classes';
 import { getDetailsAnime } from '../../services/general';
 import { getDomElement } from '../general';
 
@@ -29,7 +29,7 @@ function createListItem(itemText: string): HTMLLIElement {
  */
 function setImage(imageSrc: string): void {
   const imageElement = getDomElement<HTMLImageElement>(document, `.${Card.IMAGE}`);
-  const modalImageElement = getDomElement<HTMLImageElement>(document, `.${Card.MODAL_IMAGE}`);
+  const modalImageElement = getDomElement<HTMLImageElement>(document, `.${Modal.IMAGE}`);
   imageElement.src = imageSrc;
   modalImageElement.src = imageSrc;
 }

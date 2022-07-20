@@ -14,7 +14,6 @@ const SIGN_OUT_BUTTON = 'sign-out';
 function handleSignOut(): void {
   signOut();
   goToHomePage();
-  renderHeader();
 }
 
 /** Creates a logout button. */

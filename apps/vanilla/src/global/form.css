@@ -55,7 +55,7 @@
 .form__links {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: var(--form-background);
 }
 
 .form__links-item {
