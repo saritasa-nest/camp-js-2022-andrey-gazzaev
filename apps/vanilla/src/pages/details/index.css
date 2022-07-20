@@ -18,7 +18,7 @@
   margin-right: 20px;
 }
 
-.card-title {
+.details__anime-title {
   font-size: var(--title-text-size);
 }
 
