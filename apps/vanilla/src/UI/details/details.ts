@@ -1,4 +1,3 @@
-
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 import { DateRange } from '@js-camp/core/models/dateRange';
 import { Genre } from '@js-camp/core/models/genre';
@@ -131,7 +130,7 @@ function setGenres(genres: readonly Genre[]): void {
 function setTrailer(trailerId: string | null): void {
   const trailerElement = getDomElement<HTMLIFrameElement>(document, `.${Card.VIDEO}`);
   trailerElement.src = `http://www.youtube.com/embed/${trailerId}/`;
-  if (!isDefine(trailerId) === null) {
+  if (!isDefine(trailerId)) {
     trailerElement.remove();
   }
 }
