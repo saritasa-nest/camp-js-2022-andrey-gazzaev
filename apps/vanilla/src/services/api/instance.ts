@@ -51,7 +51,6 @@ export const defaultRequestInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     [FetchHeader.ApiKey]: import.meta.env.VITE_API_KEY,
-
   },
 });
 

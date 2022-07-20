@@ -15,6 +15,7 @@ export default defineConfig({
       '@js-camp': resolve(__dirname, '../../libs'),
     },
   },
+
   build: {
     outDir,
     emptyOutDir: true,
