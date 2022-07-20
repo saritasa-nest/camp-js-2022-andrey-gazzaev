@@ -2,7 +2,7 @@ import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 import { DateRange } from '@js-camp/core/models/dateRange';
 import { Genre } from '@js-camp/core/models/genre';
 import { Studio } from '@js-camp/core/models/studio.dto';
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { getDetailsAnime } from '../../services/general';
 import { getDomElement } from '../general';
@@ -142,7 +142,7 @@ function setGenres(genres: readonly Genre[]): void {
 function setTrailer(trailerId: string | null): void {
   const trailerElement = getDomElement<HTMLIFrameElement>(document, `.${detailsClass.VIDEO}`);
   trailerElement.src = `http://www.youtube.com/embed/${trailerId}/`;
-  if (!isDefine(trailerId)) {
+  if (!isDefined(trailerId)) {
     trailerElement.remove();
   }
 }
@@ -168,7 +168,7 @@ function renderAnimedetailsClass(anime: AnimeDetails): void {
 export async function renderDetailsAnime(): Promise<void> {
   const anime = await getDetailsAnime();
 
-  if (isDefine(anime)) {
+  if (isDefined(anime)) {
     return renderAnimedetailsClass(anime);
   }
 

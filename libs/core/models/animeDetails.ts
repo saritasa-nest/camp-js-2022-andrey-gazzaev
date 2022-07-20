@@ -15,7 +15,7 @@ export class AnimeDetails extends AnimeBase {
   /** It's on the air. */
   public readonly airing: boolean;
 
-  /** Anime trailer URL.. */
+  /** Anime trailer URL. */
   public readonly trailerYoutubeId: string | null;
 
   /** Short review about anime. */

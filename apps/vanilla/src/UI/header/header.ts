@@ -1,5 +1,5 @@
 import { User } from '@js-camp/core/models/user';
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { Form, Header, Profile } from '../../constants/classes';
 import { signOut } from '../../services/domain/user';
@@ -73,7 +73,7 @@ function renderUserProfile(user: User): void {
 /** Renders header. */
 export async function renderHeader(): Promise<void> {
   const user = await getUser();
-  if (isDefine(user)) {
+  if (isDefined(user)) {
     renderUserProfile(user);
   } else {
     renderStandardProfile();

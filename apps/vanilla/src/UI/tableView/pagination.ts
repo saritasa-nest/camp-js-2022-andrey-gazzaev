@@ -1,4 +1,4 @@
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { TableBlock } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
@@ -39,7 +39,7 @@ function createButton({ text, isCurrentPage }: ElementAttributesValues): HTMLBut
 function createSpan({ text, classes }: ElementAttributesValues): HTMLSpanElement {
   const span = document.createElement('span');
   span.innerHTML = text;
-  if (isDefine(classes)) {
+  if (isDefined(classes)) {
     span.classList.add(...classes);
   }
   return span;

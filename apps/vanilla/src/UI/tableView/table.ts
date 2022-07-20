@@ -1,5 +1,5 @@
 import { AnimeBase } from '@js-camp/core/models/anime';
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { Table, TableBlock } from '../../constants/classes';
 import { QueryParamsService } from '../../services/domain/queryParams';
@@ -75,7 +75,7 @@ function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[]
           break;
 
         default:
-          if (isDefine(anime[field]) && anime[field] !== '') {
+          if (isDefined(anime[field]) && anime[field] !== '') {
             tdElement.innerHTML = `${anime[field]}`;
           } else {
             tdElement.innerHTML = `${NO_DATA}`;

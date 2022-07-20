@@ -1,5 +1,5 @@
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 import { User } from '@js-camp/core/models/user';
 
 import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
@@ -16,7 +16,7 @@ import { PaginationService } from './domain/pagination';
 /** Checks if the user is logged in. */
 async function isAuthorized(): Promise<boolean> {
   const tokens = TokenService.getTokens();
-  if (isDefine(tokens)) {
+  if (isDefined(tokens)) {
     try {
       if (await isTokenValid(tokens.access)) {
         return true;
@@ -41,7 +41,7 @@ export async function getUser(): Promise<User | null> {
 /** Gets information about a specific anime. */
 export async function getDetailsAnime(): Promise<AnimeDetails | null> {
   const id = QueryParamsService.getDetailsParams();
-  if (!isDefine(id)) {
+  if (!isDefined(id)) {
     return null;
   }
 
@@ -58,7 +58,7 @@ export async function getDetailsAnime(): Promise<AnimeDetails | null> {
  */
 function getUrlAnime(paginationOptions: PaginationOptions): string {
   const params = QueryParamsService.paginationOptionsToUrlSearchParams(paginationOptions);
-  if (isDefine(params)) {
+  if (isDefined(params)) {
     return `anime/anime/?${params.toString()}`;
   }
   return `anime/anime/`;
@@ -71,7 +71,7 @@ function getUrlAnime(paginationOptions: PaginationOptions): string {
 export async function changeAnimePage(currentPageNumber: number): Promise<AnimePage | null> {
   const paginationOptions = QueryParamsService.getPaginationParams();
 
-  if (!isDefine(paginationOptions)) {
+  if (!isDefined(paginationOptions)) {
     return null;
   }
 

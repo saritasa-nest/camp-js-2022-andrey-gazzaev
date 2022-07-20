@@ -1,5 +1,5 @@
 import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { SelectorElement } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
@@ -20,7 +20,7 @@ const NO_CLASSES: string[] = [];
  */
 function handleChangePaginationOptions(selectValue: string, selectName: string): void {
   const paginationOptions = QueryParamsService.getPaginationParams();
-  if (isDefine(paginationOptions)) {
+  if (isDefined(paginationOptions)) {
     let { sort, filter } = paginationOptions;
 
     if (selectName === 'status' && (isStatus(selectValue) || selectValue === '')) {
@@ -49,7 +49,7 @@ function handleChangePaginationOptions(selectValue: string, selectName: string):
  */
 function createOption({ text, classes, value }: ElementAttributesValues): HTMLOptionElement {
   const option = document.createElement('option');
-  if (isDefine(value) && isDefine(classes)) {
+  if (isDefined(value) && isDefined(classes)) {
     option.setAttribute('value', value);
     option.innerHTML = text;
     option.classList.add(...classes);
@@ -68,7 +68,7 @@ export function initSortElements(): void {
 
   const paginationOptions = QueryParamsService.getPaginationParams();
 
-  if (!isDefine(paginationOptions)) {
+  if (!isDefined(paginationOptions)) {
     return;
   }
 

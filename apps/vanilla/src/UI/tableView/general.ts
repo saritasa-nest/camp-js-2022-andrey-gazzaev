@@ -1,4 +1,4 @@
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { Page } from '../../constants/classes';
 import { PaginationService } from '../../services/domain/pagination';
@@ -15,7 +15,7 @@ import { fillTableAnime } from './table';
  */
 export async function handleChangeAnimePage(currentPageNumber: number): Promise<void> {
   const animePage = await changeAnimePage(currentPageNumber);
-  if (isDefine(animePage)) {
+  if (isDefined(animePage)) {
     return renderTableView(animePage);
   }
   return renderTableViewError();

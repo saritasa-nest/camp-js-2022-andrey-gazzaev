@@ -1,4 +1,4 @@
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 const ERROR_CLASS = 'error';
 const ELEMENT_NOT_FOUND = 'Element not found';
@@ -15,7 +15,7 @@ export function getDomElement<T extends Element>(
   selector: string,
 ): T {
   const element = parentElement.querySelector<T>(selector);
-  if (isDefine(element)) {
+  if (isDefined(element)) {
     return element;
   }
 
@@ -28,7 +28,7 @@ export function getDomElement<T extends Element>(
  * @returns Value of element or null.
  */
 export function getElementValue(element: FormDataEntryValue | null): string | null {
-  if (isDefine(element)) {
+  if (isDefined(element)) {
     return String(element);
   }
   return null;

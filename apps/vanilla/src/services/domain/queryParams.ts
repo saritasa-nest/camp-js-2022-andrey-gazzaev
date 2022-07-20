@@ -1,4 +1,4 @@
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 import { isSortField, isSortOrdering, isStatus, isType } from '@js-camp/core/utils/guards/sort.guard';
 import { SortOrdering } from '@js-camp/core/utils/types/sort';
 
@@ -53,7 +53,7 @@ export namespace QueryParamsService {
     const status = params.get(Param.Status);
     const type = params.get(Param.Type);
 
-    if (!isDefine(ordering) || !isDefine(status) || !isDefine(limit) || !isDefine(type)) {
+    if (!isDefined(ordering) || !isDefined(status) || !isDefined(limit) || !isDefined(type)) {
       return null;
     }
 
@@ -91,7 +91,7 @@ export namespace QueryParamsService {
   export function getDetailsParams(): number | null {
     const params = new URLSearchParams(window.location.search);
     const id = params.get(Param.Id);
-    if (isDefine(id)) {
+    if (isDefined(id)) {
       return Number(id);
     }
     return null;

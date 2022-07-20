@@ -66,6 +66,8 @@
   width: 100%;
   background: var(--modal-background-color);
   transition: all 0.33s ease-out;
+
+  /* "z-index: 1" is used by image modal. */
   z-index: 1;
 }
 
@@ -76,7 +78,6 @@
   top: 0;
   left: 0;
   cursor: zoom-out;
-  z-index: 2;
 }
 
 .modal-box__image {
@@ -86,7 +87,6 @@
   max-width: 90%;
   padding: 20px;
   border-radius: 5px;
-  z-index: 3;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
