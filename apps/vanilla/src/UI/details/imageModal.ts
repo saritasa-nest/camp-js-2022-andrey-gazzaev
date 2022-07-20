@@ -3,8 +3,8 @@ import { getDomElement } from '../general';
 
 const INVISIBLE_CLASS = 'invisible';
 
-/** Sets modal light box. */
-export function setLightBox(): void {
+/** Sets image modal. */
+export function setImageModal(): void {
   const modalBox = getDomElement<HTMLDivElement>(document, `.${Card.MODAL_BOX}`);
   const overlay = getDomElement<HTMLDivElement>(document, `.${Card.MODAL_OVERLAY}`);
   const imageElement = getDomElement<HTMLImageElement>(document, `.${Card.IMAGE}`);
