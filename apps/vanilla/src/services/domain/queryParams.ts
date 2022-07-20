@@ -91,7 +91,7 @@ export namespace QueryParamsService {
   export function getDetailsParams(): number | null {
     const params = new URLSearchParams(window.location.search);
     const id = params.get(Param.Id);
-    if (id !== null) {
+    if (isDefine(id)) {
       return Number(id);
     }
     return null;

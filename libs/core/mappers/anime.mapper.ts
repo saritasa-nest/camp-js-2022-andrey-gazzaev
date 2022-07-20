@@ -32,7 +32,6 @@ export namespace AnimeMapper {
   export function fromDto(
     dto: AnimeBaseDto,
   ): AnimeBase {
-
     if (!isDefine(ANIME_STATUS_FROM_DTO_MAP[dto.status])) {
       throw new Error(`Unknown value: ${dto.status}`);
     }
@@ -57,7 +56,6 @@ export namespace AnimeMapper {
    * @param dto Anime details dto.
    */
   export function fromDetailsDto(dto: AnimeDetailsDto): AnimeDetails {
-
     if (!isDefine(ANIME_STATUS_FROM_DTO_MAP[dto.status])) {
       throw new Error(`Unknown value: ${dto.status}`);
     }
