@@ -7,18 +7,28 @@ import { PaginationOptions } from '../../types/paginationSettings';
 /** Functionality for working with query parameters. */
 export namespace QueryParamsService {
 
+  /** All possible query parameters. */
+  enum Param {
+    Offset = 'offset',
+    Limit = 'limit',
+    Ordering = 'ordering',
+    Status = 'status',
+    Type = 'type',
+    Id = 'id',
+  }
+
   /**
    * Converts paginationOptions to UrlSearchParams.
    * @param paginationOptions Pagination options.
    */
   export function paginationOptionsToUrlSearchParams(paginationOptions: PaginationOptions): URLSearchParams {
-    const offsetParam = ['offset', String(paginationOptions.offset)];
-    const limitParam = ['limit', String(paginationOptions.limit)];
-    const orderingParam = ['ordering', `${paginationOptions.sort.ordering}${paginationOptions.sort.field}`];
-    const statusParam = ['status', paginationOptions.filter.byStatusField];
-    const typeParam = ['type', paginationOptions.filter.byTypeField];
+    const offset = [Param.Offset, String(paginationOptions.offset)];
+    const limit = [Param.Limit, String(paginationOptions.limit)];
+    const ordering = [Param.Ordering, `${paginationOptions.sort.ordering}${paginationOptions.sort.field}`];
+    const status = [Param.Status, paginationOptions.filter.byStatusField];
+    const type = [Param.Type, paginationOptions.filter.byTypeField];
 
-    const params = [offsetParam, limitParam, orderingParam, statusParam, typeParam];
+    const params = [offset, limit, ordering, status, type];
     return new URLSearchParams(params);
   }
 
@@ -37,11 +47,11 @@ export namespace QueryParamsService {
   export function getPaginationParams(): PaginationOptions | null {
     const params = new URLSearchParams(window.location.search);
 
-    const ordering = params.get('ordering');
-    const offset = params.get('offset');
-    const status = params.get('status');
-    const type = params.get('type');
-    const limit = params.get('limit');
+    const offset = params.get(Param.Offset);
+    const limit = params.get(Param.Limit);
+    const ordering = params.get(Param.Ordering);
+    const status = params.get(Param.Status);
+    const type = params.get(Param.Type);
 
     if (!isDefine(ordering) || !isDefine(status) || !isDefine(limit) || !isDefine(type)) {
       return null;
@@ -72,7 +82,7 @@ export namespace QueryParamsService {
    * @param id ID of anime.
    */
   export function setDetailsParams(id: number): void {
-    const idParam = ['id', String(id)];
+    const idParam = [Param.Id, String(id)];
     const params = new URLSearchParams([idParam]);
     window.history.pushState({}, '', `/details/?${params.toString()}`);
   }
@@ -80,7 +90,7 @@ export namespace QueryParamsService {
   /** Gets details query params. */
   export function getDetailsParams(): number | null {
     const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
+    const id = params.get(Param.Id);
     if (id !== null) {
       return Number(id);
     }
