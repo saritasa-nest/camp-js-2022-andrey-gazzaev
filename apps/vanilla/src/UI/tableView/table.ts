@@ -31,7 +31,7 @@ export const NO_DATA = '-';
  * Go to details card of anime.
  * @param id ID of anime.
  */
-function handleOpenDetailsCard(id: number): void {
+function handleDetailsCardOpen(id: number): void {
   QueryParamsService.setDetailsParams(id);
   window.history.go();
 }
@@ -44,7 +44,7 @@ function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[]
   return animeList.map(anime => {
     const row = document.createElement('tr');
     row.classList.add(Table.ROW);
-    row.addEventListener('click', () => handleOpenDetailsCard(anime.id));
+    row.addEventListener('click', () => handleDetailsCardOpen(anime.id));
 
     TABLE_COLUMNS.forEach(({ field }) => {
       const tdElement = document.createElement('td');
@@ -93,7 +93,7 @@ function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[]
  * Renders table on the page.
  * @param tableRows Array of rows.
  */
-function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
+function updateAnimeTable(tableRows: readonly HTMLTableRowElement[]): void {
   const catalogElement = getDomElement(document, `.${TableBlock.TABLE}`);
   const errorElement = getDomElement(document, `.${TableBlock.ERROR}`);
 
@@ -123,8 +123,8 @@ function updateTableAnime(tableRows: readonly HTMLTableRowElement[]): void {
  * Fills the table with information about anime.
  * @param animeList List of anime entries.
  */
-export function fillTableAnime(animeList: readonly AnimeBase[]): void {
+export function fillAnimeTable(animeList: readonly AnimeBase[]): void {
   const tableRows = createTableRows(animeList);
 
-  updateTableAnime(tableRows);
+  updateAnimeTable(tableRows);
 }

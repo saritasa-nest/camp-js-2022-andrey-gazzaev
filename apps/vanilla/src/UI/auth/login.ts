@@ -6,10 +6,10 @@ import { loginUser } from '../../services/domain/user';
 import { getElementValue, goToHomePage, showError } from '../general';
 
 /**
- * Handle login form submit event.
+ * Handles login form submit event.
  * @param event Event form.
  */
-export async function handleSubmitLoginForm(event: SubmitEvent): Promise<void> {
+export async function handleLoginFormSubmit(event: SubmitEvent): Promise<void> {
   event.preventDefault();
 
   if (!(event.target instanceof HTMLFormElement)) {

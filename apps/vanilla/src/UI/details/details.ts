@@ -148,10 +148,10 @@ function setTrailer(trailerId: string | null): void {
 }
 
 /**
- * Renders anime card.
+ * Adds anime elements to card.
  * @param anime Information about anime.
  */
-function renderAnimedetailsClass(anime: AnimeDetails): void {
+function addAnimeDetails(anime: AnimeDetails): void {
   setImage(anime.image);
   setTitle(`${anime.titleEnglish || NO_DATA} / ${anime.titleJapanese || NO_DATA}`);
   setSynopsis(`${anime.synopsis ?? NO_DATA}`);
@@ -165,11 +165,11 @@ function renderAnimedetailsClass(anime: AnimeDetails): void {
 }
 
 /** Renders details anime. */
-export async function renderDetailsAnime(): Promise<void> {
+export async function renderAnimeDetails(): Promise<void> {
   const anime = await getDetailsAnime();
 
   if (isDefined(anime)) {
-    return renderAnimedetailsClass(anime);
+    return addAnimeDetails(anime);
   }
 
   const URL_LOGIN_PAGE = '/login/';

@@ -1,4 +1,4 @@
-import { renderDetailsAnime } from '../../UI/details/details';
+import { renderAnimeDetails } from '../../UI/details/details';
 import { setImageModal } from '../../UI/details/imageModal';
 import { getDomElement } from '../../UI/general';
 import { renderHeader } from '../../UI/header/header';
@@ -11,7 +11,7 @@ function initPage(): void {
 
   getDomElement(document, `.${BACK_LINK_CLASS}`).addEventListener('click', () => window.history.back());
 
-  renderDetailsAnime();
+  renderAnimeDetails();
   setImageModal();
 }
 

@@ -56,7 +56,7 @@ export async function getDetailsAnime(): Promise<AnimeDetails | null> {
  * @param paginationOptions Pagination Options.
  * @returns Ready url.
  */
-function getUrlAnime(paginationOptions: PaginationOptions): string {
+function getAnimeUrl(paginationOptions: PaginationOptions): string {
   const params = QueryParamsService.paginationOptionsToUrlSearchParams(paginationOptions);
   if (isDefined(params)) {
     return `anime/anime/?${params.toString()}`;
@@ -80,10 +80,10 @@ export async function changeAnimePage(currentPageNumber: number): Promise<AnimeP
   const newPaginationOptions: PaginationOptions = { ...paginationOptions, offset: currentOffset };
   QueryParamsService.setPaginationParams(newPaginationOptions);
 
-  const urlGetAnime = getUrlAnime(newPaginationOptions);
+  const animeUrl = getAnimeUrl(newPaginationOptions);
 
   try {
-    const { results: list, count: totalCount } = await fetchAnime(urlGetAnime);
+    const { results: list, count: totalCount } = await fetchAnime(animeUrl);
 
     return { list, totalCount, currentPageNumber, limit: paginationOptions.limit };
   } catch (error: unknown) {

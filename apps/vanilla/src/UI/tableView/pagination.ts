@@ -6,7 +6,7 @@ import { ElementAttributesValues } from '../../types/element';
 import { PaginationData } from '../../types/paginationSettings';
 import { getDomElement } from '../general';
 
-import { handleChangeAnimePage } from './general';
+import { handleAnimePageChange } from './general';
 
 const NO_CLASSES: string[] = [];
 const ELLIPSIS = '...';
@@ -28,7 +28,7 @@ function createButton({ text, isCurrentPage }: ElementAttributesValues): HTMLBut
   button.classList.add(...classes);
   button.setAttribute('type', 'button');
   button.innerHTML = text;
-  button.addEventListener('click', () => handleChangeAnimePage(Number(text)));
+  button.addEventListener('click', () => handleAnimePageChange(Number(text)));
   return button;
 }
 

@@ -2,7 +2,7 @@ import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { renderHeader } from '../UI/header/header';
 import { initSortElements } from '../UI/tableView/sort';
-import { handleChangeAnimePage } from '../UI/tableView/general';
+import { handleAnimePageChange } from '../UI/tableView/general';
 import { DEFAULT_PAGINATION_SETTINGS } from '../constants/pagination';
 import { QueryParamsService } from '../services/domain/queryParams';
 import { PaginationService } from '../services/domain/pagination';
@@ -22,7 +22,7 @@ function initHomePage(): void {
   initSortElements();
 
   const currentPage = PaginationService.getCurrentPage();
-  handleChangeAnimePage(currentPage);
+  handleAnimePageChange(currentPage);
 }
 
 window.addEventListener('DOMContentLoaded', initHomePage);

@@ -32,7 +32,7 @@ function generateError(error: unknown): HttpError {
  * Re-request.
  * @param config Previous request configuration.
  */
-function retryResponse(config: AxiosRequestConfig): Promise<AxiosResponse | null> {
+function retryRequest(config: AxiosRequestConfig): Promise<AxiosResponse | null> {
   const tokens = TokenService.getTokens();
   if (isDefined(config.url) && isDefined(tokens)) {
     return defaultRequestInstance.options(config.url, {
@@ -78,7 +78,7 @@ defaultRequestInstance.interceptors.response.use(config => config, async error =
 
     try {
       TokenService.setTokens(await fetchRefreshToken(tokens.refresh));
-      const response = await retryResponse(error.config);
+      const response = await retryRequest(error.config);
       if (isDefined(response)) {
         return Promise.resolve(response.data);
       }

@@ -14,10 +14,10 @@ import { defaultRequestInstance } from './instance';
  * @param url Request address.
  */
 export async function fetchAnime(url: string): Promise<Pagination<AnimeBase>> {
-  const response = await defaultRequestInstance.get<PaginationDto<AnimeBaseDto>>(url);
+  const { data } = await defaultRequestInstance.get<PaginationDto<AnimeBaseDto>>(url);
 
   return PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
-    response.data,
+    data,
     animeDto => AnimeMapper.fromDto(animeDto),
   );
 }
@@ -28,7 +28,7 @@ export async function fetchAnime(url: string): Promise<Pagination<AnimeBase>> {
  */
 export async function fetchAnimeById(id: number): Promise<AnimeDetails> {
   const url = `/anime/anime/${id}/`;
-  const response = await defaultRequestInstance.get<AnimeDetailsDto>(url);
+  const { data } = await defaultRequestInstance.get<AnimeDetailsDto>(url);
 
-  return AnimeMapper.fromDetailsDto(response.data);
+  return AnimeMapper.fromDetailsDto(data);
 }

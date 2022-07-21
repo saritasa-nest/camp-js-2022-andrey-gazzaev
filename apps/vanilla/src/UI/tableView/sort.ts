@@ -9,7 +9,7 @@ import { ElementAttributesValues } from '../../types/element';
 import { QueryParamsService } from '../../services/domain/queryParams';
 import { getDomElement } from '../general';
 
-import { handleChangeAnimePage } from './general';
+import { handleAnimePageChange } from './general';
 
 const NO_CLASSES: string[] = [];
 
@@ -18,7 +18,7 @@ const NO_CLASSES: string[] = [];
  * @param selectValue Value of sort or filter select.
  * @param selectName Name of sort or filter select.
  */
-function handleChangePaginationOptions(selectValue: string, selectName: string): void {
+function handlePaginationOptionsChange(selectValue: string, selectName: string): void {
   const paginationOptions = QueryParamsService.getPaginationParams();
   if (isDefined(paginationOptions)) {
     let { sort, filter } = paginationOptions;
@@ -40,7 +40,7 @@ function handleChangePaginationOptions(selectValue: string, selectName: string):
     QueryParamsService.setPaginationParams({ ...paginationOptions, sort, filter });
   }
 
-  handleChangeAnimePage(FIRST_PAGE_NUMBER);
+  handleAnimePageChange(FIRST_PAGE_NUMBER);
 }
 
 /**
@@ -96,7 +96,7 @@ export function initSortElements(): void {
 
     selectElement.addEventListener(
       'change',
-      () => handleChangePaginationOptions(selectElement.value, select.name),
+      () => handlePaginationOptionsChange(selectElement.value, select.name),
     );
   });
 }

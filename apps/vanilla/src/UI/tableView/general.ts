@@ -7,13 +7,13 @@ import { AnimePage } from '../../types/anime';
 import { getDomElement } from '../general';
 
 import { fillPaginationAnime } from './pagination';
-import { fillTableAnime } from './table';
+import { fillAnimeTable } from './table';
 
 /**
  * Handles the anime data change event.
  * @param currentPageNumber The page on which the change occurs.
  */
-export async function handleChangeAnimePage(currentPageNumber: number): Promise<void> {
+export async function handleAnimePageChange(currentPageNumber: number): Promise<void> {
   const animePage = await changeAnimePage(currentPageNumber);
   if (isDefined(animePage)) {
     return renderTableView(animePage);
@@ -38,7 +38,7 @@ function goToTop(): void {
  */
 export function renderTableView({ list, totalCount, currentPageNumber, limit }: AnimePage): void {
   goToTop();
-  fillTableAnime(list);
+  fillAnimeTable(list);
 
   const paginationBorders = PaginationService.definePaginationBoundaries(
     totalCount,
