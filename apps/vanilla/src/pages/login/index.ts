@@ -4,7 +4,7 @@ import { getDomElement } from '../../UI/general';
 
 /** Initializations login form. */
 function initLoginForm(): void {
-  const loginForm = getDomElement<HTMLFormElement>(document, `.${Login.FORM}`);
+  const loginForm = getDomElement<HTMLFormElement>(`.${Login.FORM}`);
   loginForm.addEventListener('submit', handleLoginFormSubmit);
 }
 

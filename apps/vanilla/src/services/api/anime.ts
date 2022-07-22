@@ -23,7 +23,7 @@ export async function fetchAnime(url: string): Promise<Pagination<AnimeBase>> {
 }
 
 /**
- * Request to the server to get anime by id.
+ * Request to the server to get anime by ID.
  * @param id ID of anime.
  */
 export async function fetchAnimeById(id: number): Promise<AnimeDetails> {

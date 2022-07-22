@@ -31,14 +31,14 @@ function createSignOutButton(): HTMLButtonElement {
  * @param element Profile element.
  */
 function addProfileToHeader(element: Element | Node): void {
-  const headerElement = getDomElement(document, `.${Header.PROFILE}`);
+  const headerElement = getDomElement(`.${Header.PROFILE}`);
   headerElement.innerHTML = '';
   headerElement.append(element);
 }
 
 /** Renders standard header template. */
 function renderStandardProfile(): void {
-  const standardTemplate = getDomElement<HTMLTemplateElement>(document, `.${STANDARD_PROFILE_TEMPLATE}`);
+  const standardTemplate = getDomElement<HTMLTemplateElement>(`.${STANDARD_PROFILE_TEMPLATE}`);
 
   const standardElement = standardTemplate.content.cloneNode(true);
   addProfileToHeader(standardElement);
@@ -57,14 +57,14 @@ function renderUserProfile(user: User): void {
 
   const signOutButton = createSignOutButton();
 
-  const profileTemplate = getDomElement<HTMLTemplateElement>(document, `.${USER_PROFILE_TEMPLATE}`);
+  const profileTemplate = getDomElement<HTMLTemplateElement>(`.${USER_PROFILE_TEMPLATE}`);
   const profileElement = profileTemplate.content.cloneNode(true);
 
   if (!(profileElement instanceof DocumentFragment)) {
     return renderStandardProfile();
   }
 
-  const form = getDomElement(profileElement, `.${Profile.FORM}`);
+  const form = getDomElement(`.${Profile.FORM}`, profileElement);
   form.append(userGreeting, signOutButton);
 
   addProfileToHeader(profileElement);

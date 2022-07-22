@@ -79,7 +79,7 @@ function createPaginationElements({ borders, currentPage }: PaginationData): (HT
  * @param elements Array of pagination elements.
  */
 function updatePaginationElement(elements: readonly (HTMLButtonElement | HTMLSpanElement)[]): void {
-  const paginationElement = getDomElement(document, `.${TableBlock.PAGINATION}`);
+  const paginationElement = getDomElement(`.${TableBlock.PAGINATION}`);
   paginationElement.innerHTML = '';
   paginationElement.append(...elements);
 }

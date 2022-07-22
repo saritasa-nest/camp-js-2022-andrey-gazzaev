@@ -39,7 +39,7 @@ export async function getUser(): Promise<User | null> {
 }
 
 /** Gets information about a specific anime. */
-export async function getDetailsAnime(): Promise<AnimeDetails | null> {
+export async function getAnimeDetails(): Promise<AnimeDetails | null> {
   const id = QueryParamsService.getDetailsParams();
   if (!isDefined(id)) {
     return null;

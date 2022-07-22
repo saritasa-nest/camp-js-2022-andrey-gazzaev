@@ -64,7 +64,7 @@
   position: fixed;
   height: 100%;
   width: 100%;
-  background: var(--modal-background-color);
+  background-color: var(--modal-background-color);
   transition: all 0.33s ease-out;
 
   /* "z-index: 1" is used by image modal. */
@@ -81,7 +81,7 @@
 }
 
 .modal-box__image {
-  background: var(--image-background-color);
+  background-color: var(--image-background-color);
   position: absolute;
   max-height: 90%;
   max-width: 90%;

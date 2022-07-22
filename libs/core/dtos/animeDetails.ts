@@ -10,10 +10,10 @@ export interface AnimeDetailsDto extends AnimeBaseDto {
   /** List of anime producing studios. */
   readonly studios_data: readonly StudioDto[];
 
-  /** It's on the air. */
+  /** Whether it is airing. */
   readonly airing: boolean;
 
-  /** Anime trailer URL.. */
+  /** Anime trailer ID. */
   readonly trailer_youtube_id: string;
 
   /** Short review about anime. */

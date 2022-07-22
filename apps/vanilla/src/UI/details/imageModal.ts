@@ -11,9 +11,9 @@ export namespace ModalClass {
 
 /** Sets image modal. */
 export function setImageModal(): void {
-  const modalBox = getDomElement<HTMLDivElement>(document, `.${ModalClass.BOX}`);
-  const overlay = getDomElement<HTMLDivElement>(document, `.${ModalClass.OVERLAY}`);
-  const imageElement = getDomElement<HTMLImageElement>(document, '.details__image');
+  const modalBox = getDomElement<HTMLDivElement>(`.${ModalClass.BOX}`);
+  const overlay = getDomElement<HTMLDivElement>(`.${ModalClass.OVERLAY}`);
+  const imageElement = getDomElement<HTMLImageElement>('.details__image');
 
   imageElement.addEventListener('click', () => modalBox.classList.remove(INVISIBLE_CLASS));
   overlay.addEventListener('click', () => modalBox.classList.add(INVISIBLE_CLASS));

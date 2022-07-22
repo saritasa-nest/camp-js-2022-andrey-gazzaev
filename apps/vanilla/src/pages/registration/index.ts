@@ -4,7 +4,7 @@ import { getDomElement } from '../../UI/general';
 
 /** Initializations registration form. */
 function initRegistrationForm(): void {
-  const registrationForm = getDomElement<HTMLFormElement>(document, `.${Registration.FORM}`);
+  const registrationForm = getDomElement<HTMLFormElement>(`.${Registration.FORM}`);
   registrationForm.addEventListener('submit', handleRegistrationFormSubmit);
 }
 

@@ -56,6 +56,8 @@ function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[]
       let airedStart = null;
       let airedColumnText = null;
 
+      const animeCellInfo = anime[field];
+
       switch (field) {
         case 'image':
           imageElement.src = anime[field];
@@ -75,8 +77,8 @@ function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[]
           break;
 
         default:
-          if (isDefined(anime[field]) && anime[field] !== '') {
-            tdElement.innerHTML = `${anime[field]}`;
+          if (isDefined(animeCellInfo) && animeCellInfo !== '') {
+            tdElement.innerHTML = `${animeCellInfo}`;
           } else {
             tdElement.innerHTML = `${NO_DATA}`;
           }
@@ -94,8 +96,8 @@ function createTableRows(animeList: readonly AnimeBase[]): HTMLTableRowElement[]
  * @param tableRows Array of rows.
  */
 function updateAnimeTable(tableRows: readonly HTMLTableRowElement[]): void {
-  const catalogElement = getDomElement(document, `.${TableBlock.TABLE}`);
-  const errorElement = getDomElement(document, `.${TableBlock.ERROR}`);
+  const catalogElement = getDomElement(`.${TableBlock.TABLE}`);
+  const errorElement = getDomElement(`.${TableBlock.ERROR}`);
 
   errorElement.innerHTML = '';
   catalogElement.innerHTML = '';

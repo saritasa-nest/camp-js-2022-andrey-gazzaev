@@ -3,7 +3,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  background: var(--form-background);
+  background-color: var(--form-background);
 }
 
 .form-label__text {
@@ -55,7 +55,7 @@
 .form__links {
   display: flex;
   flex-direction: column;
-  background: var(--form-background);
+  background-color: var(--form-background);
 }
 
 .form__links-item {
@@ -76,11 +76,13 @@
 .form-label {
   display: flex;
   flex-direction: column;
-  margin: 10px 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .form-field {
   display: flex;
   flex-direction: column;
-  margin: 10px 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

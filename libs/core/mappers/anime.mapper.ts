@@ -69,7 +69,7 @@ export namespace AnimeMapper {
 
     return new AnimeDetails({
       ...AnimeMapper.fromDto(dto),
-      airing: dto.airing ?? false,
+      isAiring: dto.airing ?? false,
       synopsis: dto.synopsis,
       trailerYoutubeId: dto.trailer_youtube_id,
       genresData,

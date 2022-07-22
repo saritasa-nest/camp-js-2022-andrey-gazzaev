@@ -50,7 +50,7 @@ export function renderTableView({ list, totalCount, currentPageNumber, limit }: 
 
 /** Renders message about table view error. */
 export function renderTableViewError(): void {
-  const pageContainer = getDomElement(document, `.${Page.CONTAINER}`);
+  const pageContainer = getDomElement(`.${Page.CONTAINER}`);
 
   const errorTemplate = document.createElement('p');
   errorTemplate.classList.add(Page.ERROR);

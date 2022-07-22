@@ -9,7 +9,7 @@ const BACK_LINK_CLASS = 'back-link';
 function initPage(): void {
   renderHeader();
 
-  getDomElement(document, `.${BACK_LINK_CLASS}`).addEventListener('click', () => window.history.back());
+  getDomElement(`.${BACK_LINK_CLASS}`).addEventListener('click', () => window.history.back());
 
   renderAnimeDetails();
   setImageModal();

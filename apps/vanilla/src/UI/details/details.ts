@@ -4,10 +4,10 @@ import { Genre } from '@js-camp/core/models/genre';
 import { Studio } from '@js-camp/core/models/studio.dto';
 import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
-import { getDetailsAnime } from '../../services/general';
+import { getAnimeDetails } from '../../services/general';
 import { getDomElement } from '../general';
 
-namespace detailsClass {
+namespace DetailsClass {
   export const TITLE = 'details__anime-title';
   export const SYNOPSIS = 'details__anime-synopsis';
   export const TYPE = 'details__anime-type';
@@ -23,10 +23,11 @@ namespace detailsClass {
 const NO_DATA = '-';
 const NO_DETAILS_DATA = 'None';
 const LIST_ITEM_CLASS = 'list__item';
+const MODAL_IMAGE_SELECTOR = '.modal-box__image';
 
 /**
  * Creates list item with text.
- * @param itemText Text inner li.
+ * @param itemText List inner text.
  */
 function createListItem(itemText: string): HTMLLIElement {
   const listItem = document.createElement('li');
@@ -40,8 +41,8 @@ function createListItem(itemText: string): HTMLLIElement {
  * @param imageSrc Image URL.
  */
 function setImage(imageSrc: string): void {
-  const imageElement = getDomElement<HTMLImageElement>(document, `.${detailsClass.IMAGE}`);
-  const modalImageElement = getDomElement<HTMLImageElement>(document, '.modal-box__image');
+  const imageElement = getDomElement<HTMLImageElement>(`.${DetailsClass.IMAGE}`);
+  const modalImageElement = getDomElement<HTMLImageElement>(MODAL_IMAGE_SELECTOR);
   imageElement.src = imageSrc;
   modalImageElement.src = imageSrc;
 }
@@ -51,7 +52,7 @@ function setImage(imageSrc: string): void {
  * @param title Title text.
  */
 function setTitle(title: string): void {
-  const titleElement = getDomElement(document, `.${detailsClass.TITLE}`);
+  const titleElement = getDomElement(`.${DetailsClass.TITLE}`);
   titleElement.innerHTML = title;
 }
 
@@ -60,7 +61,7 @@ function setTitle(title: string): void {
  * @param synopsis Synopsis text.
  */
 function setSynopsis(synopsis: string): void {
-  const synopsisElement = getDomElement(document, `.${detailsClass.SYNOPSIS}`);
+  const synopsisElement = getDomElement(`.${DetailsClass.SYNOPSIS}`);
   synopsisElement.innerHTML = synopsis;
 }
 
@@ -69,7 +70,7 @@ function setSynopsis(synopsis: string): void {
  * @param status Status text.
  */
 function setStatus(status: string): void {
-  const statusElement = getDomElement(document, `.${detailsClass.STATUS}`);
+  const statusElement = getDomElement(`.${DetailsClass.STATUS}`);
   statusElement.innerHTML = `Status: ${status}`;
 }
 
@@ -78,7 +79,7 @@ function setStatus(status: string): void {
  * @param type Type text.
  */
 function setType(type: string): void {
-  const typeElement = getDomElement(document, `.${detailsClass.TYPE}`);
+  const typeElement = getDomElement(`.${DetailsClass.TYPE}`);
   typeElement.innerHTML = `Type: ${type}`;
 }
 
@@ -87,7 +88,7 @@ function setType(type: string): void {
  * @param isAiring Airing option.
  */
 function setAiring(isAiring: boolean): void {
-  const airingElement = getDomElement(document, `.${detailsClass.AIRING}`);
+  const airingElement = getDomElement(`.${DetailsClass.AIRING}`);
   airingElement.innerHTML = `Airing: ${isAiring ? 'Yes' : 'No'}`;
 }
 
@@ -96,7 +97,7 @@ function setAiring(isAiring: boolean): void {
  * @param aired Aired date range.
  */
 function setAired(aired: DateRange): void {
-  const airedElement = getDomElement(document, `.${detailsClass.AIRED}`);
+  const airedElement = getDomElement(`.${DetailsClass.AIRED}`);
   const airedStart = aired.start ?
     aired.start.toLocaleDateString('en-GB', { timeZone: 'UTC' }) :
     NO_DATA;
@@ -114,7 +115,7 @@ function setAired(aired: DateRange): void {
  * @param studios List studios.
  */
 function setStudios(studios: readonly Studio[]): void {
-  const studiosElement = getDomElement(document, `.${detailsClass.STUDIOS}`);
+  const studiosElement = getDomElement(`.${DetailsClass.STUDIOS}`);
   const studiosItems = studios.map(studio => createListItem(studio.name));
   studiosElement.append(...studiosItems);
   if (studiosItems.length === 0) {
@@ -127,7 +128,7 @@ function setStudios(studios: readonly Studio[]): void {
  * @param genres List genres.
  */
 function setGenres(genres: readonly Genre[]): void {
-  const genresElement = getDomElement(document, `.${detailsClass.GENRES}`);
+  const genresElement = getDomElement(`.${DetailsClass.GENRES}`);
   const genresItems = genres.map(genre => createListItem(genre.name));
   genresElement.append(...genresItems);
   if (genresItems.length === 0) {
@@ -140,7 +141,7 @@ function setGenres(genres: readonly Genre[]): void {
  * @param trailerId Video youtube id.
  */
 function setTrailer(trailerId: string | null): void {
-  const trailerElement = getDomElement<HTMLIFrameElement>(document, `.${detailsClass.VIDEO}`);
+  const trailerElement = getDomElement<HTMLIFrameElement>(`.${DetailsClass.VIDEO}`);
   trailerElement.src = `http://www.youtube.com/embed/${trailerId}/`;
   if (!isDefined(trailerId)) {
     trailerElement.remove();
@@ -157,7 +158,7 @@ function addAnimeDetails(anime: AnimeDetails): void {
   setSynopsis(`${anime.synopsis ?? NO_DATA}`);
   setStatus(`${anime.status}`);
   setType(`${anime.type}`);
-  setAiring(anime.airing);
+  setAiring(anime.isAiring);
   setAired(anime.aired);
   setStudios(anime.studiosData);
   setGenres(anime.genresData);
@@ -166,7 +167,7 @@ function addAnimeDetails(anime: AnimeDetails): void {
 
 /** Renders details anime. */
 export async function renderAnimeDetails(): Promise<void> {
-  const anime = await getDetailsAnime();
+  const anime = await getAnimeDetails();
 
   if (isDefined(anime)) {
     return addAnimeDetails(anime);

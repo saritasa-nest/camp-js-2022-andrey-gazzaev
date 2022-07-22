@@ -12,10 +12,10 @@ export class AnimeDetails extends AnimeBase {
   /** List of anime producing studios. */
   public readonly studiosData: readonly Studio[];
 
-  /** It's on the air. */
-  public readonly airing: boolean;
+  /** Whether it is airing. */
+  public readonly isAiring: boolean;
 
-  /** Anime trailer URL. */
+  /** Anime trailer ID. */
   public readonly trailerYoutubeId: string | null;
 
   /** Short review about anime. */
@@ -25,7 +25,7 @@ export class AnimeDetails extends AnimeBase {
     super(data);
     this.genresData = data.genresData;
     this.studiosData = data.studiosData;
-    this.airing = data.airing;
+    this.isAiring = data.isAiring;
     this.trailerYoutubeId = data.trailerYoutubeId;
     this.synopsis = data.synopsis;
   }

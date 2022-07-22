@@ -11,8 +11,8 @@ const ELEMENT_NOT_FOUND = 'Element not found';
  * This can happen if the element has not been added to the HTML structure.
  */
 export function getDomElement<T extends Element>(
-  parentElement: Document | Element | DocumentFragment,
   selector: string,
+  parentElement: Document | Element | DocumentFragment = document,
 ): T {
   const element = parentElement.querySelector<T>(selector);
   if (isDefined(element)) {
@@ -39,7 +39,7 @@ export function getElementValue(element: FormDataEntryValue | null): string | nu
  * @param error Error message.
  */
 export function showError(error: string): void {
-  const errorElement = getDomElement(document, `.${ERROR_CLASS}`);
+  const errorElement = getDomElement(`.${ERROR_CLASS}`);
   errorElement.innerHTML = error;
   errorElement.removeAttribute('hidden');
 

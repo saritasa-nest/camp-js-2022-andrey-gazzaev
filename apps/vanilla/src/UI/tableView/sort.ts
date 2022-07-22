@@ -73,7 +73,7 @@ export function initSortElements(): void {
   }
 
   selectors.forEach(select => {
-    const selectElement = getDomElement<HTMLSelectElement>(document, `.${select.selector}`);
+    const selectElement = getDomElement<HTMLSelectElement>(`.${select.selector}`);
 
     select.options.forEach(option => selectElement.append(createOption({ text: option.text, classes: NO_CLASSES, value: option.value })));
 
