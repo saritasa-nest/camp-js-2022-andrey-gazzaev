@@ -1,5 +1,3 @@
-import { isDefined } from '@js-camp/core/utils/guards/general.guard';
-
 import { ErrorMessage, FormField } from '../../constants/form';
 import { registerUser } from '../../services/domain/user';
 
@@ -28,16 +26,6 @@ export async function handleRegistrationFormSubmit(event: SubmitEvent): Promise<
   const lastName = getElementValue(form.get(FormField.LAST_NAME));
   const password = getElementValue(form.get(FormField.PASSWORD));
   const confirmedPassword = getElementValue(form.get(FormField.CONFIRMED_PASSWORD));
-
-  if (
-    !isDefined(email) ||
-    !isDefined(firstName) ||
-    !isDefined(lastName) ||
-    !isDefined(password) ||
-    !isDefined(confirmedPassword)
-  ) {
-    return showError(ErrorMessage.FIELD_NOT_FILLED);
-  }
 
   if (password.localeCompare(confirmedPassword) !== 0) {
     return showError(ErrorMessage.PASSWORD_NOT_MATCH);

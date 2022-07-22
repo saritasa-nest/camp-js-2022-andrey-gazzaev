@@ -1,6 +1,4 @@
-import { isDefined } from '@js-camp/core/utils/guards/general.guard';
-
-import { ErrorMessage, FormField } from '../../constants/form';
+import { FormField } from '../../constants/form';
 import { loginUser } from '../../services/domain/user';
 
 import { getElementValue, goToHomePage, showError } from '../general';
@@ -20,10 +18,6 @@ export async function handleLoginFormSubmit(event: SubmitEvent): Promise<void> {
 
   const email = getElementValue(form.get(FormField.EMAIL));
   const password = getElementValue(form.get(FormField.PASSWORD));
-
-  if (!isDefined(email) || !isDefined(password)) {
-    return showError(ErrorMessage.FIELD_NOT_FILLED);
-  }
 
   try {
     await loginUser({ email, password });

@@ -27,11 +27,11 @@ export function getDomElement<T extends Element>(
  * @param element The element from which you want to get the value.
  * @returns Value of element or null.
  */
-export function getElementValue(element: FormDataEntryValue | null): string | null {
+export function getElementValue(element: FormDataEntryValue | null): string {
   if (isDefined(element)) {
     return String(element);
   }
-  return null;
+  throw new Error(`Form element not found`);
 }
 
 /**
