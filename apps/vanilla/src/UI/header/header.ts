@@ -1,10 +1,10 @@
 import { User } from '@js-camp/core/models/user';
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { Form, Header, Profile } from '../../constants/classes';
 import { signOut } from '../../services/domain/user';
 import { getUser } from '../../services/general';
-import { getDomElement } from '../general';
+import { goToHomePage, getDomElement } from '../general';
 
 const USER_PROFILE_TEMPLATE = 'user-profile';
 const STANDARD_PROFILE_TEMPLATE = 'standard-profile';
@@ -13,7 +13,7 @@ const SIGN_OUT_BUTTON = 'sign-out';
 /** Signs out from account. */
 function handleSignOut(): void {
   signOut();
-  renderHeader();
+  goToHomePage();
 }
 
 /** Creates a logout button. */
@@ -31,14 +31,14 @@ function createSignOutButton(): HTMLButtonElement {
  * @param element Profile element.
  */
 function addProfileToHeader(element: Element | Node): void {
-  const headerElement = getDomElement(document, `.${Header.PROFILE}`);
+  const headerElement = getDomElement(`.${Header.PROFILE}`);
   headerElement.innerHTML = '';
   headerElement.append(element);
 }
 
 /** Renders standard header template. */
 function renderStandardProfile(): void {
-  const standardTemplate = getDomElement<HTMLTemplateElement>(document, `.${STANDARD_PROFILE_TEMPLATE}`);
+  const standardTemplate = getDomElement<HTMLTemplateElement>(`.${STANDARD_PROFILE_TEMPLATE}`);
 
   const standardElement = standardTemplate.content.cloneNode(true);
   addProfileToHeader(standardElement);
@@ -57,14 +57,14 @@ function renderUserProfile(user: User): void {
 
   const signOutButton = createSignOutButton();
 
-  const profileTemplate = getDomElement<HTMLTemplateElement>(document, `.${USER_PROFILE_TEMPLATE}`);
+  const profileTemplate = getDomElement<HTMLTemplateElement>(`.${USER_PROFILE_TEMPLATE}`);
   const profileElement = profileTemplate.content.cloneNode(true);
 
   if (!(profileElement instanceof DocumentFragment)) {
     return renderStandardProfile();
   }
 
-  const form = getDomElement(profileElement, `.${Profile.FORM}`);
+  const form = getDomElement(`.${Profile.FORM}`, profileElement);
   form.append(userGreeting, signOutButton);
 
   addProfileToHeader(profileElement);
@@ -73,7 +73,7 @@ function renderUserProfile(user: User): void {
 /** Renders header. */
 export async function renderHeader(): Promise<void> {
   const user = await getUser();
-  if (isDefine(user)) {
+  if (isDefined(user)) {
     renderUserProfile(user);
   } else {
     renderStandardProfile();

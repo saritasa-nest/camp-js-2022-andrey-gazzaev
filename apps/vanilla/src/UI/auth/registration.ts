@@ -1,5 +1,3 @@
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
-
 import { ErrorMessage, FormField } from '../../constants/form';
 import { registerUser } from '../../services/domain/user';
 
@@ -14,7 +12,7 @@ const DEFAULT_AVATAR_URL =
  * Handle registration form submit event.
  * @param event Event form.
  */
-export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<void> {
+export async function handleRegistrationFormSubmit(event: SubmitEvent): Promise<void> {
   event.preventDefault();
 
   if (!(event.target instanceof HTMLFormElement)) {
@@ -28,16 +26,6 @@ export async function handleSubmitRegistrationForm(event: SubmitEvent): Promise<
   const lastName = getElementValue(form.get(FormField.LAST_NAME));
   const password = getElementValue(form.get(FormField.PASSWORD));
   const confirmedPassword = getElementValue(form.get(FormField.CONFIRMED_PASSWORD));
-
-  if (
-    !isDefine(email) ||
-    !isDefine(firstName) ||
-    !isDefine(lastName) ||
-    !isDefine(password) ||
-    !isDefine(confirmedPassword)
-  ) {
-    return showError(ErrorMessage.FIELD_NOT_FILLED);
-  }
 
   if (password.localeCompare(confirmedPassword) !== 0) {
     return showError(ErrorMessage.PASSWORD_NOT_MATCH);

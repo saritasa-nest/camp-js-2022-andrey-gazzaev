@@ -1,4 +1,4 @@
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 /** Functionality for working with local storage. */
 export namespace LocalStorageService {
@@ -10,7 +10,7 @@ export namespace LocalStorageService {
    */
   export function getValue<T>(key: string): T | null {
     const localValue = localStorage.getItem(key);
-    if (isDefine(localValue)) {
+    if (isDefined(localValue)) {
       return JSON.parse(localValue);
     }
     return null;

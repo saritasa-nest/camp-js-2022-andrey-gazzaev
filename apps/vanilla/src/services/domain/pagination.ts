@@ -1,4 +1,4 @@
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { DEFAULT_OFFSET, FIRST_PAGE_NUMBER } from '../../constants/pagination';
 import { PaginationBorders } from '../../types/paginationSettings';
@@ -43,7 +43,7 @@ export namespace PaginationService {
   export function getCurrentPage(): number {
     const paginationOptions = QueryParamsService.getPaginationParams();
 
-    if (!isDefine(paginationOptions)) {
+    if (!isDefined(paginationOptions)) {
       return FIRST_PAGE_NUMBER;
     }
 

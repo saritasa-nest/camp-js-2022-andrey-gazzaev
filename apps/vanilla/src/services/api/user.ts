@@ -8,7 +8,7 @@ const USER_PROFILE_URL = 'users/profile/';
 
 /** Gets user information from the server. */
 export async function fetchUserProfile(): Promise<User> {
-  const response = await defaultRequestInstance.get<UserDto>(USER_PROFILE_URL);
+  const { data } = await defaultRequestInstance.get<UserDto>(USER_PROFILE_URL);
 
-  return UserMapper.fromDto(response.data);
+  return UserMapper.fromDto(data);
 }

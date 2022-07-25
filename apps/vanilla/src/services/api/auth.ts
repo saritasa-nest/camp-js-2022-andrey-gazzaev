@@ -19,9 +19,9 @@ const REFRESH_TOKEN_URL = 'auth/token/refresh/';
 export async function login(
   loginData: LoginData,
 ): Promise<Tokens> {
-  const response = await defaultRequestInstance.post<TokensDto>(LOGIN_URL, loginData);
+  const { data } = await defaultRequestInstance.post<TokensDto>(LOGIN_URL, loginData);
 
-  return TokensMapper.fromDto(response.data);
+  return TokensMapper.fromDto(data);
 }
 
 /**
@@ -31,11 +31,11 @@ export async function login(
 export async function register({ user, password }: RegistrationData): Promise<Tokens> {
   const userModel = new User(user);
   const userDto = UserMapper.toDto(userModel, password);
-  const response = await defaultRequestInstance.post<TokensDto>(REGISTER_URL, {
+  const { data } = await defaultRequestInstance.post<TokensDto>(REGISTER_URL, {
     ...userDto,
   });
 
-  return TokensMapper.fromDto(response.data);
+  return TokensMapper.fromDto(data);
 }
 
 /**
@@ -60,9 +60,9 @@ export async function isTokenValid(accessToken: string): Promise<boolean> {
  * @param refreshToken Refresh token.
  */
 export async function fetchRefreshToken(refreshToken: string): Promise<Tokens> {
-  const response = await defaultRequestInstance.post<TokensDto>(REFRESH_TOKEN_URL, {
+  const { data } = await defaultRequestInstance.post<TokensDto>(REFRESH_TOKEN_URL, {
     refresh: refreshToken,
   });
 
-  return TokensMapper.fromDto(response.data);
+  return TokensMapper.fromDto(data);
 }

@@ -1,4 +1,4 @@
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 const ERROR_CLASS = 'error';
 const ELEMENT_NOT_FOUND = 'Element not found';
@@ -11,11 +11,11 @@ const ELEMENT_NOT_FOUND = 'Element not found';
  * This can happen if the element has not been added to the HTML structure.
  */
 export function getDomElement<T extends Element>(
-  parentElement: Document | Element | DocumentFragment,
   selector: string,
+  parentElement: Document | Element | DocumentFragment = document,
 ): T {
   const element = parentElement.querySelector<T>(selector);
-  if (isDefine(element)) {
+  if (isDefined(element)) {
     return element;
   }
 
@@ -27,11 +27,11 @@ export function getDomElement<T extends Element>(
  * @param element The element from which you want to get the value.
  * @returns Value of element or null.
  */
-export function getElementValue(element: FormDataEntryValue | null): string | null {
-  if (isDefine(element)) {
+export function getElementValue(element: FormDataEntryValue | null): string {
+  if (isDefined(element)) {
     return String(element);
   }
-  return null;
+  throw new Error(`Form element not found`);
 }
 
 /**
@@ -39,7 +39,7 @@ export function getElementValue(element: FormDataEntryValue | null): string | nu
  * @param error Error message.
  */
 export function showError(error: string): void {
-  const errorElement = getDomElement(document, `.${ERROR_CLASS}`);
+  const errorElement = getDomElement(`.${ERROR_CLASS}`);
   errorElement.innerHTML = error;
   errorElement.removeAttribute('hidden');
 

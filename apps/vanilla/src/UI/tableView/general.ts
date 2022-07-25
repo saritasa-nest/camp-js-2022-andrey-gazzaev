@@ -1,4 +1,4 @@
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { Page } from '../../constants/classes';
 import { PaginationService } from '../../services/domain/pagination';
@@ -7,15 +7,15 @@ import { AnimePage } from '../../types/anime';
 import { getDomElement } from '../general';
 
 import { fillPaginationAnime } from './pagination';
-import { fillTableAnime } from './table';
+import { fillAnimeTable } from './table';
 
 /**
  * Handles the anime data change event.
  * @param currentPageNumber The page on which the change occurs.
  */
-export async function handleChangeAnimePage(currentPageNumber: number): Promise<void> {
+export async function handleAnimePageChange(currentPageNumber: number): Promise<void> {
   const animePage = await changeAnimePage(currentPageNumber);
-  if (isDefine(animePage)) {
+  if (isDefined(animePage)) {
     return renderTableView(animePage);
   }
   return renderTableViewError();
@@ -38,7 +38,7 @@ function goToTop(): void {
  */
 export function renderTableView({ list, totalCount, currentPageNumber, limit }: AnimePage): void {
   goToTop();
-  fillTableAnime(list);
+  fillAnimeTable(list);
 
   const paginationBorders = PaginationService.definePaginationBoundaries(
     totalCount,
@@ -50,7 +50,7 @@ export function renderTableView({ list, totalCount, currentPageNumber, limit }: 
 
 /** Renders message about table view error. */
 export function renderTableViewError(): void {
-  const pageContainer = getDomElement(document, `.${Page.CONTAINER}`);
+  const pageContainer = getDomElement(`.${Page.CONTAINER}`);
 
   const errorTemplate = document.createElement('p');
   errorTemplate.classList.add(Page.ERROR);

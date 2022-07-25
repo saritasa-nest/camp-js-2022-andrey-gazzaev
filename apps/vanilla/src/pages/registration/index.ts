@@ -1,11 +1,11 @@
 import { Registration } from '../../constants/classes';
-import { handleSubmitRegistrationForm } from '../../UI/auth/registration';
+import { handleRegistrationFormSubmit } from '../../UI/auth/registration';
 import { getDomElement } from '../../UI/general';
 
 /** Initializations registration form. */
 function initRegistrationForm(): void {
-  const registrationForm = getDomElement<HTMLFormElement>(document, `.${Registration.FORM}`);
-  registrationForm.addEventListener('submit', handleSubmitRegistrationForm);
+  const registrationForm = getDomElement<HTMLFormElement>(`.${Registration.FORM}`);
+  registrationForm.addEventListener('submit', handleRegistrationFormSubmit);
 }
 
 window.addEventListener('DOMContentLoaded', initRegistrationForm);

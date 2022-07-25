@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./index.css" />
+  <title>Anime App</title>
+</head>
+
+<body class="page">
+  <div class="modal-box invisible">
+    <div class="overlay"></div>
+    <div class="modal-box__image-block">
+      <img class="modal-box__image" src="" alt="Poster" />
+    </div>
+  </div>
+
+  <header class="page__header header">
+    <h1 class="logo-text">Anime catalog</h1>
+    <div class="header__profile profile"></div>
+  </header>
+
+  <template class="standard-profile">
+    <div class="header__profile profile">
+      <ul class="profile__list">
+        <li class="profile__list-item">
+          <a class="profile__list-link link" href="/login/">Sign in</a>
+        </li>
+        <li class="profile__list-item">
+          <a class="profile__list-link link" href="/registration/">Sign up</a>
+        </li>
+      </ul>
+    </div>
+  </template>
+
+  <template class="user-profile">
+    <div class="header__profile profile">
+      <form class="form profile__form"></form>
+    </div>
+  </template>
+
+  <a class="link back-link" title="Go to home page" href="#" >Go to home page</a>
+
+  <section class="details">
+    <h2 class="title">Anime details</h2>
+    <div class="anime-view">
+      <img src="" alt="Anime banner" class="details__image">
+      <iframe class="details__video card-item" src="" title="trailer" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+
+    <div class="anime-information">
+      <h2 class="details__anime-title card-item"></h2>
+      <p class="details__anime-synopsis card-item"></p>
+      <p class="details__anime-type card-item"></p>
+      <p class="details__anime-status card-item"></p>
+      <p class="details__anime-airing card-item"></p>
+      <p class="details__anime-aired card-item"></p>
+      <div class="list-block card-item">
+        <span class="list-title">Studios: </span>
+        <ul class="details__list-studios list"></ul>
+      </div>
+      <div class="list-block card-item">
+        <span class="list-title">Genres: </span>
+        <ul class="details__list-genres list"></ul>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="./index.ts"></script>
+</body>
+
+</html>

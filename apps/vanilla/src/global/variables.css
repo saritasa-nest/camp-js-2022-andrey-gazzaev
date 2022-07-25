@@ -7,22 +7,30 @@
 
   /* General */
   --error-text-color: #ee4a4a;
-  --default-text-size: 0.7em;
+  --default-text-size: 0.85em;
   --heading-color-1: #ffd700;
   --heading-color-2: #e9967a;
   --heading-color-3: #b0e0e6;
+  --border-color: #dbd7d2;
+  --border-color-hover: #ffcf48;
+  --min-laptop-width: 1024px;
+  --table-row-border-button-color: #ddd;
 
   /* Pagination */
   --pagination-button-active-color: #ffcf48;
   --pagination-button-font-size: 1.5em;
 
   /* Anime table. */
+  --table-background-hover: #ececec;
   --table-columns-number: 6;
   --table-row-border-color: #ddd;
   --max-width-table-col: calc(var(--min-laptop-width) / var(--table-columns-number));
 
-  /* General. */
-  --border-color: #dbd7d2;
-  --border-color-hover: #ffcf48;
-  --min-laptop-width: 1024px;
+  /* Details */
+  --title-text-size: 1.25em;
+  --synopsis-text-color: #686868;
+
+  /* Image modal */
+  --modal-background-color: #030303e6;
+  --image-background-color: #fff;
 }

@@ -1,0 +1,108 @@
+@import url("../../global/index.css");
+@import url("../../global/form.css");
+@import url("../../global/header.css");
+
+.details {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin: 20px auto;
+  max-width: 1024px;
+}
+
+.anime-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.details__anime-title {
+  font-size: var(--title-text-size);
+}
+
+.details__anime-synopsis {
+  font-size: var(--default-text-size);
+  color: var(--synopsis-text-color);
+}
+
+.details__image {
+  width: 360px;
+  cursor: zoom-in;
+}
+
+.list-block {
+  display: flex;
+  align-items: center;
+}
+
+.list-title {
+  margin-right: 5px;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list__item {
+  margin-right: 10px;
+}
+
+.card-item {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.details__video {
+  min-width: 360px;
+  min-height: 280px;
+}
+
+.modal-box {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: var(--modal-background-color);
+  transition: all 0.33s ease-out;
+
+  /* "z-index: 1" is used by image modal. */
+  z-index: 1;
+}
+
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  cursor: zoom-out;
+}
+
+.modal-box__image {
+  background-color: var(--image-background-color);
+  position: absolute;
+  max-height: 90%;
+  max-width: 90%;
+  padding: 20px;
+  border-radius: 5px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.invisible {
+  opacity: 0;
+  transform: translateY(-120%);
+}
+
+@media (max-width: 1000px) {
+  .details {
+    flex-direction: column-reverse;
+  }
+
+  .card-item {
+    margin: 10px;
+  }
+}

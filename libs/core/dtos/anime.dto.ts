@@ -35,7 +35,7 @@ export interface AnimeBaseDto {
   /** Title in english. */
   readonly title_eng: string;
 
-  /**  Title in Japanese. */
+  /** Title in Japanese. */
   readonly title_jpn: string;
 
   /** Release and end dates. */

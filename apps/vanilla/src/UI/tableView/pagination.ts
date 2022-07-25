@@ -1,4 +1,4 @@
-import { isDefine } from '@js-camp/core/utils/guards/general.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { TableBlock } from '../../constants/classes';
 import { FIRST_PAGE_NUMBER } from '../../constants/pagination';
@@ -6,7 +6,7 @@ import { ElementAttributesValues } from '../../types/element';
 import { PaginationData } from '../../types/paginationSettings';
 import { getDomElement } from '../general';
 
-import { handleChangeAnimePage } from './general';
+import { handleAnimePageChange } from './general';
 
 const NO_CLASSES: string[] = [];
 const ELLIPSIS = '...';
@@ -28,7 +28,7 @@ function createButton({ text, isCurrentPage }: ElementAttributesValues): HTMLBut
   button.classList.add(...classes);
   button.setAttribute('type', 'button');
   button.innerHTML = text;
-  button.addEventListener('click', () => handleChangeAnimePage(Number(text)));
+  button.addEventListener('click', () => handleAnimePageChange(Number(text)));
   return button;
 }
 
@@ -39,7 +39,7 @@ function createButton({ text, isCurrentPage }: ElementAttributesValues): HTMLBut
 function createSpan({ text, classes }: ElementAttributesValues): HTMLSpanElement {
   const span = document.createElement('span');
   span.innerHTML = text;
-  if (isDefine(classes)) {
+  if (isDefined(classes)) {
     span.classList.add(...classes);
   }
   return span;
@@ -79,7 +79,7 @@ function createPaginationElements({ borders, currentPage }: PaginationData): (HT
  * @param elements Array of pagination elements.
  */
 function updatePaginationElement(elements: readonly (HTMLButtonElement | HTMLSpanElement)[]): void {
-  const paginationElement = getDomElement(document, `.${TableBlock.PAGINATION}`);
+  const paginationElement = getDomElement(`.${TableBlock.PAGINATION}`);
   paginationElement.innerHTML = '';
   paginationElement.append(...elements);
 }

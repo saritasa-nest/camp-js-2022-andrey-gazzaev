@@ -42,7 +42,7 @@ export class AnimeBase extends Immerable {
   /** Anime status. */
   public readonly status: Status;
 
-  public constructor(data: InitArgsAnime) {
+  public constructor(data: InitArgsAnimeBase) {
     super();
     this.id = data.id;
     this.image = data.image;
@@ -51,7 +51,8 @@ export class AnimeBase extends Immerable {
     this.aired = data.aired;
     this.type = data.type;
     this.status = data.status;
+
   }
 }
 
-type InitArgsAnime = OmitImmerable<AnimeBase>;
+type InitArgsAnimeBase = OmitImmerable<AnimeBase>;
