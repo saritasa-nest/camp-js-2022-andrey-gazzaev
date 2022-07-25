@@ -1,43 +1,26 @@
+import { map, Observable } from 'rxjs';
+
 import { Component } from '@angular/core';
+import { AnimeBase } from '@js-camp/core/models/anime';
 
-interface PeriodicElement {
-
-  /** Name. */
-  readonly name: string;
-
-  /** Position. */
-  readonly position: number;
-
-  /** Weight. */
-  readonly weight: number;
-
-  /** Symbol. */
-  readonly symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
+import { AnimeService } from '../../../core/services/anime.service';
 
 /** Table view component. */
 @Component({
-  selector: 'camp-table-view',
+  selector: 'anime-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css'],
 })
 export class TableViewComponent {
-  /** Columns names. */
-  public readonly displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  /** Table columns names. */
+  public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
-  /** Source data fot table. */
-  public readonly dataSource = ELEMENT_DATA;
+  /** Anime list. */
+  public readonly animeList$: Observable<readonly AnimeBase[]>;
+
+  public constructor(private readonly animeService: AnimeService) {
+    this.animeList$ = this.animeService.fetchAnimeList().pipe(
+      map(pagination => pagination.results),
+    );
+  }
 }

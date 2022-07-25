@@ -1,17 +1,26 @@
-.demo-table {
-  width: 100%;
+.table-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.mat-row .mat-cell {
-  border-bottom: 1px solid transparent;
-  border-top: 1px solid transparent;
-  cursor: pointer;
+.spinner {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
 }
 
-.mat-row:hover .mat-cell {
-  border-color: #686868;
+.mat-header-cell {
+  text-align: center;
+  font-size: 1rem;
 }
 
-.demo-row-is-clicked {
-  font-weight: bold;
+.mat-cell {
+  width: 150px;
+  text-align: center;
+}
+
+.table-image {
+  max-width: 150px;
+  height: 150px;
 }

@@ -14,6 +14,10 @@ const routes: Routes = [
         m => m.TableViewModule,
       ),
   },
+  {
+    path: '**',
+    redirectTo: 'catalog',
+  },
 ];
 
 /** App routing module. */
@@ -21,4 +25,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
