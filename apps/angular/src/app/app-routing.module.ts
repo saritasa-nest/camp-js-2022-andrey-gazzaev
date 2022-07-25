@@ -10,8 +10,8 @@ const routes: Routes = [
   {
     path: 'catalog',
     loadChildren: () =>
-      import('./features/table-view/table-view.module').then(
-        m => m.TableViewModule,
+      import('./features/anime/anime.module').then(
+        m => m.AnimeModule,
       ),
   },
   {

@@ -3,7 +3,7 @@ import { map, Observable } from 'rxjs';
 import { Component } from '@angular/core';
 import { AnimeBase } from '@js-camp/core/models/anime';
 
-import { AnimeService } from '../../../core/services/anime.service';
+import { AnimeService } from '../../../../core/services/anime.service';
 
 /** Table view component. */
 @Component({
@@ -12,6 +12,7 @@ import { AnimeService } from '../../../core/services/anime.service';
   styleUrls: ['./table-view.component.css'],
 })
 export class TableViewComponent {
+
   /** Table columns names. */
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
@@ -23,4 +24,5 @@ export class TableViewComponent {
       map(pagination => pagination.results),
     );
   }
+
 }

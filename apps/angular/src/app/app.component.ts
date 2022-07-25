@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 /** App component. */
 @Component({
-  selector: 'anime-root',
+  selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: [],
 })
