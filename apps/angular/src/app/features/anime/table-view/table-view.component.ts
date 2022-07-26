@@ -7,7 +7,7 @@ import { AnimeService } from '../../../../core/services/anime.service';
 
 /** Table view component. */
 @Component({
-  selector: 'anime-table-view',
+  selector: 'app-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css'],
 })
