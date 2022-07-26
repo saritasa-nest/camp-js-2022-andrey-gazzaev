@@ -5,15 +5,9 @@
   align-items: center;
 }
 
-.spinner {
-  position: absolute;
-  top: 50%;
-  bottom: 50%;
-}
-
 .mat-header-cell {
   text-align: center;
-  font-size: 1rem;
+  font-size: var(--table-head-text-size);
 }
 
 .mat-cell {
@@ -24,4 +18,17 @@
 .table-image {
   max-width: 150px;
   height: 150px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading__spinner {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(-50%, -50%);
 }

@@ -21,10 +21,10 @@ export class AnimeService {
   private readonly animeListUrl: URL;
 
   public constructor(
+    config: AppConfigService,
     private readonly http: HttpClient,
-    private readonly config: AppConfigService,
   ) {
-    this.animeListUrl = new URL(`anime/anime/`, this.config.apiUrl);
+    this.animeListUrl = new URL(`anime/anime/`, config.apiUrl);
   }
 
   /** Request to the server to get anime. */

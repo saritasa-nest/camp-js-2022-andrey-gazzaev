@@ -17,12 +17,15 @@ export class TableViewComponent {
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
   /** Anime list. */
-  public readonly animeList$: Observable<readonly AnimeBase[]>;
+  public readonly animeList$: Observable<readonly AnimeBase[]> | undefined;
 
   public constructor(private readonly animeService: AnimeService) {
-    this.animeList$ = this.animeService.fetchAnimeList().pipe(
+    this.animeList$ = this.getAnimeList();
+  }
+
+  private getAnimeList(): Observable<readonly AnimeBase[]> {
+    return this.animeService.fetchAnimeList().pipe(
       map(pagination => pagination.results),
     );
   }
-
 }
