@@ -1,4 +1,4 @@
-import { catchError, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
@@ -94,18 +94,16 @@ export class QueryParamsService {
    */
   public getAnimeListHttpParams(pageNumber: number): Observable<HttpParams> {
     return this.route.queryParams.pipe(
-      switchMap(params => {
+      map(params => {
         const searchQueryParams = this.getQueryParamsAnimeList(params);
         const newParams = { ...searchQueryParams, offset: pageNumber * searchQueryParams.limit };
         const httpParams = this.searchQueryParamsToHttpParams(newParams);
         this.updateUrl(newParams);
-        return of(httpParams);
+        return httpParams;
       }),
       catchError(() => {
         this.updateUrl(DEFAULT_PAGINATION_SETTINGS);
-        return of(
-          this.searchQueryParamsToHttpParams(DEFAULT_PAGINATION_SETTINGS),
-        );
+        return of(this.searchQueryParamsToHttpParams(DEFAULT_PAGINATION_SETTINGS));
       }),
     );
   }
