@@ -1,6 +1,8 @@
 import { map, Observable } from 'rxjs';
 
 import { Component } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+
 import { AnimeBase } from '@js-camp/core/models/anime';
 
 import { AnimeService } from '../../../../core/services/anime.service';
@@ -13,19 +15,35 @@ import { AnimeService } from '../../../../core/services/anime.service';
 })
 export class TableViewComponent {
 
+  /** Current page number. */
+  public animeListCount = 0;
+
+  /** Current page number. */
+  public currentPage = 0;
+
   /** Table columns names. */
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
   /** Anime list. */
-  public readonly animeList$: Observable<readonly AnimeBase[]> | undefined;
+  public animeList$: Observable<readonly AnimeBase[]> | undefined;
 
   public constructor(private readonly animeService: AnimeService) {
-    this.animeList$ = this.getAnimeList();
+    this.animeList$ = this.getAnimeList(this.currentPage);
   }
 
-  private getAnimeList(): Observable<readonly AnimeBase[]> {
-    return this.animeService.fetchAnimeList().pipe(
-      map(pagination => pagination.results),
-    );
+  /**
+   * Handlers paginator change.
+   * @param event Paginator event.
+   */
+  public handlePage(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    this.animeList$ = this.getAnimeList(this.currentPage);
+  }
+
+  private getAnimeList(pageNumber: number): Observable<readonly AnimeBase[]> {
+    return this.animeService.fetchAnimeList(pageNumber).pipe(map(pagination => {
+      this.animeListCount = pagination.count;
+      return pagination.results;
+    }));
   }
 }

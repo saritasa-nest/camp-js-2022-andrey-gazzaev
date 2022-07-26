@@ -1,25 +1,39 @@
-<section *ngIf="animeList$ | async as anime; else load" class="table-view ">
-  <div class="table-container mat-elevation-z8 ">
+<section
+  *ngIf="animeList$ | async as animeList; else load"
+  class="table-view"
+>
+  <div class="table-container mat-elevation-z8">
     <h2 id="anime-catalog" class="mat-title">Anime table</h2>
 
-    <table [dataSource]="anime" mat-table aria-label="anime"
-      aria-describedby="catalog-anime">
-
+    <table
+      [dataSource]="animeList"
+      mat-table
+      aria-label="anime"
+      aria-describedby="catalog-anime"
+    >
       <ng-container matColumnDef="image">
         <th mat-header-cell *matHeaderCellDef>Image</th>
         <td mat-cell *matCellDef="let anime">
-          <img class="table-image" [src]="anime.image" alt="Poster anime - {{ anime.titleEnglish || 'no title' }}" />
+          <img
+            class="table-image"
+            [src]="anime.image"
+            alt="Poster anime - {{ anime.titleEnglish || 'no title' }}"
+          />
         </td>
       </ng-container>
 
       <ng-container matColumnDef="title-english">
         <th mat-header-cell *matHeaderCellDef>Title in English</th>
-        <td mat-cell *matCellDef="let anime">{{ anime.titleEnglish || "-" }}</td>
+        <td mat-cell *matCellDef="let anime">
+          {{ anime.titleEnglish || "-" }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="title-japanese">
         <th mat-header-cell *matHeaderCellDef>Title in Japanese</th>
-        <td mat-cell *matCellDef="let anime">{{ anime.titleJapanese || "-" }}</td>
+        <td mat-cell *matCellDef="let anime">
+          {{ anime.titleJapanese || "-" }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="aired-start">
@@ -41,10 +55,16 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
     </table>
 
-    <mat-paginator [length]="200" [pageSizeOptions]="[10, 50, 100]" class="table-pagination" aria-label="Select page">
+    <mat-paginator
+      [length]="animeListCount"
+      [pageIndex]="currentPage"
+      [pageSize]="25"
+      (page)="handlePage($event)"
+      class="table-pagination"
+      aria-label="Select page"
+    >
     </mat-paginator>
   </div>
 </section>
