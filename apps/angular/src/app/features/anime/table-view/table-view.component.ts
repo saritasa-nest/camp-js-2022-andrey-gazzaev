@@ -21,6 +21,9 @@ export class TableViewComponent {
   /** Current page number. */
   public currentPage = 0;
 
+  /** Current page number. */
+  public pageSize = 0;
+
   /** Table columns names. */
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
@@ -43,6 +46,7 @@ export class TableViewComponent {
   private getAnimeList(pageNumber: number): Observable<readonly AnimeBase[]> {
     return this.animeService.fetchAnimeList(pageNumber).pipe(map(pagination => {
       this.animeListCount = pagination.count;
+      this.pageSize = pagination.results.length;
       return pagination.results;
     }));
   }

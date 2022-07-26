@@ -31,7 +31,7 @@ enum Param {
 }
 
 /** Anime limit when requesting a new page. */
-const DEFAULT_LIMIT = 25;
+const DEFAULT_LIMIT = 5;
 
 /** Anime offset when requesting a new page. */
 export const DEFAULT_OFFSET = 0;
@@ -109,5 +109,4 @@ export class QueryParamsService {
       }),
     );
   }
-
 }
