@@ -1,6 +1,6 @@
 import { map, Observable } from 'rxjs';
 
-import { Component } from '@angular/core';
+import { Component, TrackByFunction } from '@angular/core';
 import { AnimeBase } from '@js-camp/core/models/anime';
 
 import { AnimeService } from '../../../../core/services/anime.service';
@@ -28,4 +28,11 @@ export class TableViewComponent {
       map(pagination => pagination.results),
     );
   }
+
+  /**
+   * Tracks anime by ID.
+   * @param _index Anime's index into array.
+   * @param anime Object of hero.
+   */
+  public trackItem: TrackByFunction<AnimeBase> = (_index: number, anime: AnimeBase): number => anime.id;
 }

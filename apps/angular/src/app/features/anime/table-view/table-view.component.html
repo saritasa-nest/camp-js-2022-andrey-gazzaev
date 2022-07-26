@@ -3,12 +3,13 @@
 
   <table
     [dataSource]="anime"
+    [trackBy]="trackItem"
     mat-table
     class="mat-elevation-z8 demo-table"
     aria-label="anime"
     aria-describedby="catalog-anime"
   >
-  
+
     <ng-container matColumnDef="image">
       <th mat-header-cell *matHeaderCellDef>Image</th>
       <td mat-cell *matCellDef="let anime">

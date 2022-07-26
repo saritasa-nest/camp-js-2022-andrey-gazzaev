@@ -4,7 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AnimeComponent } from './anime.component';
-import { TableViewRoutingModule } from './anime-routing.module';
+import { AnimeRoutingModule } from './anime-routing.module';
 import { TableViewComponent } from './table-view/table-view.component';
 
 /** Table view module. */
@@ -13,7 +13,7 @@ import { TableViewComponent } from './table-view/table-view.component';
   imports: [
     CommonModule,
     MatTableModule,
-    TableViewRoutingModule,
+    AnimeRoutingModule,
     MatProgressSpinnerModule,
   ],
 })
