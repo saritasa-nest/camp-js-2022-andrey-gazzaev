@@ -1,11 +1,17 @@
 import { map, Observable } from 'rxjs';
 
 import { Component } from '@angular/core';
+import { Sort, SortDirection } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 
 import { AnimeBase } from '@js-camp/core/models/anime';
 
 import { AnimeService } from '../../../../core/services/anime.service';
+
+interface TableSort {
+  field: string;
+  ordering: SortDirection;
+}
 
 /** Table view component. */
 @Component({
@@ -24,6 +30,11 @@ export class TableViewComponent {
   /** Current page number. */
   public pageSize = 0;
 
+  public sort: TableSort = {
+    field: 'title_eng',
+    ordering: 'asc',
+  }
+
   /** Table columns names. */
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
@@ -31,20 +42,32 @@ export class TableViewComponent {
   public animeList$: Observable<readonly AnimeBase[]> | undefined;
 
   public constructor(private readonly animeService: AnimeService) {
-    this.animeList$ = this.getAnimeList(this.currentPage);
+    this.animeList$ = this.getAnimeList();
   }
 
   /**
-   * Handlers paginator change.
+   * Handlers pagination change.
    * @param event Paginator event.
    */
-  public handlePage(event: PageEvent): void {
+  public handlePaginationChange(event: PageEvent): void {
     this.currentPage = event.pageIndex;
-    this.animeList$ = this.getAnimeList(this.currentPage);
+
+    this.animeList$ = this.getAnimeList();
   }
 
-  private getAnimeList(pageNumber: number): Observable<readonly AnimeBase[]> {
-    return this.animeService.fetchAnimeList(pageNumber).pipe(map(pagination => {
+  /**
+   * Handlers pagination change.
+   * @param sort Paginator event.
+   */
+  public handleSortChange(sort: Sort): void {
+    this.sort.field = sort.active;
+    this.sort.ordering = sort.direction === '' ? 'asc' : 'desc';
+
+    this.animeList$ = this.getAnimeList();
+  }
+
+  private getAnimeList(): Observable<readonly AnimeBase[]> {
+    return this.animeService.fetchAnimeList(this.currentPage, this.sort).pipe(map(pagination => {
       this.animeListCount = pagination.count;
       this.pageSize = pagination.results.length;
       return pagination.results;

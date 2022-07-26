@@ -32,9 +32,10 @@ export class AnimeService {
   /**
    * Request to the server to get anime.
    * @param pageNumber The page number to get anime list.
+   * @param sort Sort options.
    */
-  public fetchAnimeList(pageNumber: number): Observable<Pagination<AnimeBase>> {
-    return this.queryParamsService.getAnimeListHttpParams(pageNumber)
+  public fetchAnimeList(pageNumber: number, sort: { field: string; ordering: string; }): Observable<Pagination<AnimeBase>> {
+    return this.queryParamsService.getAnimeListHttpParams(pageNumber, sort)
       .pipe(
         switchMap(params => this.http.get<PaginationDto<AnimeBaseDto>>(this.animeListUrl.toString(), {
           params,
