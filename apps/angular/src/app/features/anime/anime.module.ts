@@ -14,8 +14,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PlaceholderPipe } from '../../../shared/pipes/placeholder.pipe';
 
 import { AnimeComponent } from './anime.component';
-import { TableViewComponent } from './table-view/table-view.component';
 import { AnimeRoutingModule } from './anime-routing.module';
+import { TableViewComponent } from './table-view/table-view.component';
 
 /** Anime module. */
 @NgModule({

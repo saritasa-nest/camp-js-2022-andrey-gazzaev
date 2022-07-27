@@ -5,8 +5,8 @@ import { Component } from '@angular/core';
   selector: 'app',
   templateUrl: './app.component.html',
   styleUrls: [
-    '../theme/css-reset.css',
     '../theme/styles.css',
+    '../theme/css-reset.css',
     '../theme/variables.css',
   ],
 })
