@@ -114,7 +114,7 @@ export class TableViewComponent {
       .filter(filter => filter.isSelect)
       .map(filter => filter.field);
 
-    if (arraysEqual<String>(this.filter.byType, newFilter)) {
+    if (arraysEqual<string>(this.filter.byType, newFilter)) {
       return;
     }
 

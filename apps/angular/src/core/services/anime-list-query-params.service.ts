@@ -172,13 +172,13 @@ export class AnimeListQueryParamsService {
    * @param params Anime list params.
    */
   private animeListParamsToHttpParams(params: AnimeListQueryParams): HttpParams {
-    const queryParams = new HttpParams()
+    return new HttpParams()
       .set(ParamName.Limit, params.limit)
       .set(ParamName.Offset, params.offset)
       .set(ParamName.Ordering, `${params.ordering}`)
       .set(ParamName.TypeIn, `${params.type}`)
       .set(ParamName.Search, params.search);
-    return queryParams;
+
   }
 
   /**
