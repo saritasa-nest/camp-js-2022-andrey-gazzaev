@@ -27,5 +27,6 @@ export interface AnimeListParams {
   /** Filter setting. */
   filter: FilterSetting;
 
+  /** Search query. */
   search: string;
 }

@@ -27,6 +27,7 @@ interface AnimeListQueryParams {
   /** Offset in records. */
   readonly offset: number;
 
+  /** Search query. */
   readonly search: string;
 }
 

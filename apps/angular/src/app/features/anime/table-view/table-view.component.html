@@ -105,7 +105,7 @@
   <ul>
     <li *ngFor="let filter of filterListByType">
       <mat-checkbox
-        [(ngModel)]="filter.selected"
+        [(ngModel)]="filter.isSelect"
         (click)="$event.stopPropagation()"
       >
         {{ filter.title }}

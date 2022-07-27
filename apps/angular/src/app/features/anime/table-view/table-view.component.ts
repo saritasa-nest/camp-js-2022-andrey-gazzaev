@@ -24,6 +24,18 @@ interface TableFilter {
   byType: string[];
 }
 
+interface FilterCell {
+
+  /** Key of filter. */
+  field: string;
+
+  /** Name of filter. */
+  title: string;
+
+  /** Is a filter selected. */
+  isSelect: boolean;
+}
+
 const DEFAULT_SORT_FIELD = 'title_eng';
 const DEFAULT_SORT_ORDERING = 'asc';
 
@@ -51,33 +63,7 @@ export class TableViewComponent {
   };
 
   /** All possible type filters. */
-  public filterListByType = [
-    {
-      field: 'TV',
-      title: 'TV',
-      selected: false,
-    }, {
-      field: 'OVA',
-      title: 'OVA',
-      selected: false,
-    }, {
-      field: 'MOVIE',
-      title: 'Movie',
-      selected: false,
-    }, {
-      field: 'SPECIAL',
-      title: 'Special',
-      selected: false,
-    }, {
-      field: 'ONA',
-      title: 'ONA',
-      selected: false,
-    }, {
-      field: 'MUSIC',
-      title: 'Music',
-      selected: false,
-    },
-  ];
+  public filterListByType: FilterCell[] = [];
 
   /** Selected filter. */
   public filter: TableFilter = {
@@ -95,6 +81,7 @@ export class TableViewComponent {
 
   public constructor(private readonly animeService: AnimeService) {
     this.animeList$ = this.getAnimeList();
+    this.fillFilterListByType();
   }
 
   /**
@@ -123,7 +110,7 @@ export class TableViewComponent {
   /** Handles filter change. */
   public handleFilterChange(): void {
     const newFilter = this.filterListByType
-      .filter(filter => filter.selected)
+      .filter(filter => filter.isSelect)
       .map(filter => filter.field);
 
     if (arraysEqual<String>(this.filter.byType, newFilter)) {
@@ -140,7 +127,12 @@ export class TableViewComponent {
   }
 
   private getAnimeList(): Observable<readonly AnimeBase[]> {
-    return this.animeService.fetchAnimeList({ pageNumber: this.currentPage, sort: this.sort, filter: this.filter, search: this.search })
+    return this.animeService.fetchAnimeList({
+      pageNumber: this.currentPage,
+      sort: this.sort,
+      filter: this.filter,
+      search: this.search,
+    })
       .pipe(
         map(pagination => {
           this.animeListCount = pagination.count;
@@ -148,5 +140,15 @@ export class TableViewComponent {
           return pagination.results;
         }),
       );
+  }
+
+  private fillFilterListByType(): void {
+    const types = this.animeService.getAnimeTypes();
+
+    this.filterListByType = types.map(type => ({
+      field: type,
+      title: type,
+      isSelect: false,
+    }));
   }
 }

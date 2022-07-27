@@ -3,7 +3,7 @@ import { map, Observable, switchMap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { AnimeBase } from '@js-camp/core/models/anime';
+import { AnimeBase, Type } from '@js-camp/core/models/anime';
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
@@ -47,5 +47,10 @@ export class AnimeService {
           ),
         ),
       );
+  }
+
+  /** Gets all anime types. */
+  public getAnimeTypes(): string[] {
+    return Object.values(Type);
   }
 }

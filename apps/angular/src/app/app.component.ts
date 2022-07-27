@@ -4,6 +4,10 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app',
   templateUrl: './app.component.html',
-  styleUrls: [],
+  styleUrls: [
+    '../theme/css-reset.css',
+    '../theme/styles.css',
+    '../theme/variables.css',
+  ],
 })
-export class AppComponent {}
+export class AppComponent { }
