@@ -5,8 +5,9 @@ import { Sort, SortDirection } from '@angular/material/sort';
 import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 
 import { AnimeBase } from '@js-camp/core/models/anime';
-import arraysEqual from '@js-camp/angular/core/utils/array-equal';
-import { AnimeService } from '@js-camp/angular/core/services/anime.service';
+
+import arraysEqual from '../../../../core/utils/array-equal';
+import { AnimeService } from '../../../../core/services/anime.service';
 
 interface TableSort {
 
