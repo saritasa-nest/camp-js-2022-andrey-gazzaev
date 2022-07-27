@@ -9,7 +9,7 @@ import { AnimeComponent } from './anime.component';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { TableViewComponent } from './table-view/table-view.component';
 
-/** Table view module. */
+/** Anime module. */
 @NgModule({
   declarations: [AnimeComponent, TableViewComponent, PlaceholderPipe],
   imports: [
