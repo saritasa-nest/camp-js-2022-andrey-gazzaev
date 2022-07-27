@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppConfigService } from '../core/services/app-config.service';
-import { ApiInterceptor } from '../core/interceptors/api-interceptor.interceptor';
+import { AppConfigService } from '@js-camp/angular/core/services/app-config.service';
+import { ApiInterceptor } from '@js-camp/angular/core/interceptors/api-interceptor.interceptor';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -32,4 +32,4 @@ const httpInterceptorProviders = [
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
