@@ -11,13 +11,15 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { PlaceholderPipe } from '../../../shared/pipes/placeholder.pipe';
+
 import { AnimeComponent } from './anime.component';
-import { TableViewRoutingModule } from './anime-routing.module';
+import { AnimeRoutingModule } from './anime-routing.module';
 import { TableViewComponent } from './table-view/table-view.component';
 
 /** Table view module. */
 @NgModule({
-  declarations: [AnimeComponent, TableViewComponent],
+  declarations: [AnimeComponent, TableViewComponent, PlaceholderPipe],
   imports: [
     FormsModule,
     CommonModule,
@@ -29,7 +31,8 @@ import { TableViewComponent } from './table-view/table-view.component';
     MatButtonModule,
     MatCheckboxModule,
     MatPaginatorModule,
-    TableViewRoutingModule,
+    AnimeRoutingModule,
+    AnimeRoutingModule,
     MatProgressSpinnerModule,
   ],
 })

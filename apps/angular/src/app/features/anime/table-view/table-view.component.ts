@@ -1,8 +1,8 @@
 import { map, Observable } from 'rxjs';
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
+import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 
 import { AnimeBase } from '@js-camp/core/models/anime';
 
@@ -152,4 +152,13 @@ export class TableViewComponent {
       isSelect: false,
     }));
   }
+
+  /**
+   * Tracks anime by ID.
+   * @param _index Anime's index into array.
+   * @param anime Object of hero.
+   */
+  public trackItem: TrackByFunction<AnimeBase> = function(_index: number, anime: AnimeBase): number {
+    return anime.id;
+  };
 }

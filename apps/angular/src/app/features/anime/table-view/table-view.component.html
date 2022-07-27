@@ -1,12 +1,18 @@
 <section class="table-view">
   <h2 id="anime-catalog" class="mat-title">Anime table</h2>
   <div
-    *ngIf="animeList$ | async as animeList; else load"
+    *ngIf="animeList$ | async as animeList; else loading"
     class="table-container mat-elevation-z8"
   >
     <mat-form-field class="anime-search" appearance="fill">
       <mat-label>Search anime</mat-label>
-      <input matInput placeholder="Your anime title" [(ngModel)]="search" (change)="handleSearchChange()" type="search" />
+      <input
+        matInput
+        placeholder="Your anime title"
+        [(ngModel)]="search"
+        (change)="handleSearchChange()"
+        type="search"
+      />
     </mat-form-field>
 
     <table
@@ -35,7 +41,7 @@
           Title in English
         </th>
         <td mat-cell *matCellDef="let anime">
-          {{ anime.titleEnglish || "-" }}
+          {{ anime.titleEnglish | placeholder }}
         </td>
       </ng-container>
 
@@ -44,7 +50,7 @@
           Title in Japanese
         </th>
         <td mat-cell *matCellDef="let anime">
-          {{ anime.titleJapanese || "-" }}
+          {{ anime.titleJapanese | placeholder }}
         </td>
       </ng-container>
 
@@ -53,7 +59,7 @@
           Start of aired
         </th>
         <td mat-cell *matCellDef="let anime">
-          {{ anime.aired.start | date: "YYYY.MM.dd" }}
+          {{ anime.aired.start | date: "YYYY.MM.dd" | placeholder }}
         </td>
       </ng-container>
 
@@ -95,7 +101,7 @@
   </div>
 </section>
 
-<ng-template #load>
+<ng-template #loading>
   <div class="loading">
     <mat-spinner class="loading__spinner"></mat-spinner>
   </div>
