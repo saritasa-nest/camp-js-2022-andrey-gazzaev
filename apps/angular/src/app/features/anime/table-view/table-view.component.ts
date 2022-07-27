@@ -1,6 +1,6 @@
 import { map, Observable } from 'rxjs';
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
 
@@ -44,6 +44,7 @@ const DEFAULT_SORT_ORDERING = 'asc';
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableViewComponent {
 
