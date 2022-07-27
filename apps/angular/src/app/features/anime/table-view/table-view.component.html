@@ -1,6 +1,9 @@
-<section *ngIf="animeList$ | async as animeList; else load" class="table-view">
-  <div class="table-container mat-elevation-z8">
-    <h2 id="anime-catalog" class="mat-title">Anime table</h2>
+<section class="table-view">
+  <h2 id="anime-catalog" class="mat-title">Anime table</h2>
+  <div
+    *ngIf="animeList$ | async as animeList; else load"
+    class="table-container mat-elevation-z8"
+  >
 
     <table
       [dataSource]="animeList"
@@ -97,9 +100,12 @@
 <mat-menu #typeFilterMenu="matMenu" (closed)="handleFilterChange()">
   <ul>
     <li *ngFor="let filter of filterListByType">
-      <mat-checkbox [(ngModel)]="filter.selected" (click) = "$event.stopPropagation()" >{{
-        filter.title
-      }}</mat-checkbox>
+      <mat-checkbox
+        [(ngModel)]="filter.selected"
+        (click)="$event.stopPropagation()"
+      >
+        {{ filter.title }}
+      </mat-checkbox>
     </li>
   </ul>
 </mat-menu>

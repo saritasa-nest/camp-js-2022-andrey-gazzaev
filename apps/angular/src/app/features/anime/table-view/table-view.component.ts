@@ -20,6 +20,7 @@ interface TableSort {
 
 interface TableFilter {
 
+  /** Collection of values by type. */
   byType: string[];
 }
 
@@ -116,12 +117,11 @@ export class TableViewComponent {
     this.animeList$ = this.getAnimeList();
   }
 
-  /**
-   * Handles Filter change.
-   *
-   */
+  /** Handles filter change. */
   public handleFilterChange(): void {
-    const newFilter = this.filterListByType.filter(filter => filter.selected).map(filter => filter.field);
+    const newFilter = this.filterListByType
+      .filter(filter => filter.selected)
+      .map(filter => filter.field);
 
     if (arraysEqual<String>(this.filter.byType, newFilter)) {
       return;

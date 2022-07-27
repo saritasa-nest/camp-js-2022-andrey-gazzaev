@@ -9,35 +9,10 @@ import { Pagination } from '@js-camp/core/models/pagination';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
+import { AnimeListParams } from '@js-camp/core/utils/interfaces/anime.interface';
 
 import { AppConfigService } from './app-config.service';
 import { QueryParamsService } from './query-params.service';
-
-interface SortSetting {
-
-  /** The field by which to sort. */
-  field: string;
-
-  /** The sort direction. */
-  direction: string;
-}
-
-interface FilterSetting {
-
-  byType: string[];
-}
-
-
-interface AnimeListParams {
-
-  /** The page number to be returned. */
-  pageNumber: number;
-
-  /** Sort setting. */
-  sort: SortSetting;
-
-  filter: FilterSetting;
-}
 
 /** Anime service. */
 @Injectable({

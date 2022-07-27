@@ -3,11 +3,13 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Sort, SortField, SortOrdering as SortDirection } from '@js-camp/core/utils/types/sort';
 import { isSortField, isSortOrdering, isType } from '@js-camp/core/utils/guards/sort.guard';
+import { Sort, SortField, SortOrdering as SortDirection } from '@js-camp/core/utils/types/sort';
+
+import { AnimeListParams } from '@js-camp/core/utils/interfaces/anime.interface';
 
 /** Params for request anime list. */
-interface AnimeListParams {
+interface AnimeListQueryParams {
 
   /** Sort settings. */
   readonly sort: Sort<SortDirection, SortField>;
@@ -31,31 +33,6 @@ interface QueryParams {
   [key: string]: string;
 }
 
-interface NewSortSetting {
-
-  /** The field by which to sort. */
-  field: string;
-
-  /** The sort direction. */
-  direction: string;
-}
-
-interface NewFilterSetting {
-
-  byType: string[];
-}
-
-interface NewAnimeListParams {
-
-  /** The page number to be returned. */
-  pageNumber: number;
-
-  /** Sort setting. */
-  sort: NewSortSetting;
-
-  filter: NewFilterSetting;
-}
-
 /** All possible query parameters. */
 enum Param {
   Offset = 'offset',
@@ -73,7 +50,7 @@ const DEFAULT_LIMIT = 5;
 const DEFAULT_OFFSET = 0;
 
 /** Default sort settings. */
-const DEFAULT_PAGINATION_SETTINGS: AnimeListParams = {
+const DEFAULT_ANIME_LIST_QUERY_PARAMS: AnimeListQueryParams = {
   sort: {
     field: SortField.TitleEnglish,
     direction: SortDirection.Ascending,
@@ -101,13 +78,13 @@ export class QueryParamsService {
    * Gets anime list http params for specific query.
    * @param newParams New query parameters that should be in the request.
    */
-  public getAnimeListHttpParams({ pageNumber, sort, filter }: NewAnimeListParams): Observable<HttpParams> {
+  public getAnimeListHttpParams({ pageNumber, sort, filter }: AnimeListParams): Observable<HttpParams> {
     return this.route.queryParams.pipe(
       map(params => {
-        const animeListParams = this.getAnimeListParams(params);
-        const newAnimeListParams: AnimeListParams = {
-          ...animeListParams,
-          offset: pageNumber * animeListParams.limit,
+        const animeListQueryParams = this.getAnimeListQueryParams(params);
+        const newAnimeListQueryParams: AnimeListQueryParams = {
+          ...animeListQueryParams,
+          offset: pageNumber * animeListQueryParams.limit,
           sort: {
             field: isSortField(sort.field) ? sort.field : SortField.TitleEnglish,
             direction: sort.direction === 'asc' ? SortDirection.Ascending : SortDirection.Descending,
@@ -117,14 +94,14 @@ export class QueryParamsService {
           },
         };
 
-        this.setUrl(this.animeListParamsToQueryParams(newAnimeListParams));
+        this.setUrl(this.animeListParamsToQueryParams(newAnimeListQueryParams));
 
-        return this.animeListParamsToHttpParams(newAnimeListParams);
+        return this.animeListParamsToHttpParams(newAnimeListQueryParams);
       }),
       catchError(() => {
-        this.setUrl(this.animeListParamsToQueryParams(DEFAULT_PAGINATION_SETTINGS));
+        this.setUrl(this.animeListParamsToQueryParams(DEFAULT_ANIME_LIST_QUERY_PARAMS));
 
-        return of(this.animeListParamsToHttpParams(DEFAULT_PAGINATION_SETTINGS));
+        return of(this.animeListParamsToHttpParams(DEFAULT_ANIME_LIST_QUERY_PARAMS));
       }),
     );
   }
@@ -133,7 +110,7 @@ export class QueryParamsService {
    * Gets anime list params from URL query params.
    * @param params URL query params.
    */
-  private getAnimeListParams(params: QueryParams): AnimeListParams {
+  private getAnimeListQueryParams(params: QueryParams): AnimeListQueryParams {
     const limit = params[Param.Limit];
     const offset = params[Param.Offset];
     const ordering = params[Param.Ordering];
@@ -158,14 +135,14 @@ export class QueryParamsService {
         },
       };
     }
-    return DEFAULT_PAGINATION_SETTINGS;
+    return DEFAULT_ANIME_LIST_QUERY_PARAMS;
   }
 
   /**
    * Converts anime list params to query params.
    * @param params Anime list params.
    */
-  private animeListParamsToQueryParams(params: AnimeListParams): QueryParams {
+  private animeListParamsToQueryParams(params: AnimeListQueryParams): QueryParams {
     return {
       [Param.Limit]: String(params.limit),
       [Param.Offset]: String(params.offset),
@@ -178,7 +155,7 @@ export class QueryParamsService {
    * Converts anime list params to http params.
    * @param params Anime list params.
    */
-  private animeListParamsToHttpParams(params: AnimeListParams): HttpParams {
+  private animeListParamsToHttpParams(params: AnimeListQueryParams): HttpParams {
     const queryParams = new HttpParams()
       .set(Param.Limit, params.limit)
       .set(Param.Offset, params.offset)
