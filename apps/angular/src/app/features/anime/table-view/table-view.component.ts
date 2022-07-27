@@ -9,9 +9,16 @@ import { AnimeBase } from '@js-camp/core/models/anime';
 import { AnimeService } from '../../../../core/services/anime.service';
 
 interface TableSort {
+
+  /** The field by which to sort. */
   field: string;
-  ordering: SortDirection;
+
+  /** The sort order. */
+  direction: SortDirection;
 }
+
+const DEFAULT_SORT_FIELD = 'title_eng';
+const DEFAULT_SORT_ORDERING = 'asc';
 
 /** Table view component. */
 @Component({
@@ -21,25 +28,26 @@ interface TableSort {
 })
 export class TableViewComponent {
 
-  /** Current page number. */
+  /** Total number of records for the current query. */
   public animeListCount = 0;
 
   /** Current page number. */
   public currentPage = 0;
 
-  /** Current page number. */
+  /** Number of records per page. */
   public pageSize = 0;
 
+  /** Current sort settings. */
   public sort: TableSort = {
-    field: 'title_eng',
-    ordering: 'asc',
-  }
+    field: DEFAULT_SORT_FIELD,
+    direction: DEFAULT_SORT_ORDERING,
+  };
 
   /** Table columns names. */
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
   /** Anime list. */
-  public animeList$: Observable<readonly AnimeBase[]> | undefined;
+  public animeList$: Observable<readonly AnimeBase[]>;
 
   public constructor(private readonly animeService: AnimeService) {
     this.animeList$ = this.getAnimeList();
@@ -61,16 +69,21 @@ export class TableViewComponent {
    */
   public handleSortChange(sort: Sort): void {
     this.sort.field = sort.active;
-    this.sort.ordering = sort.direction === '' ? 'asc' : 'desc';
+
+    // Need to remove the value '' from sort.direction
+    this.sort.direction = sort.direction === '' ? 'asc' : 'desc';
 
     this.animeList$ = this.getAnimeList();
   }
 
   private getAnimeList(): Observable<readonly AnimeBase[]> {
-    return this.animeService.fetchAnimeList(this.currentPage, this.sort).pipe(map(pagination => {
-      this.animeListCount = pagination.count;
-      this.pageSize = pagination.results.length;
-      return pagination.results;
-    }));
+    return this.animeService.fetchAnimeList({ pageNumber: this.currentPage, sort: this.sort })
+      .pipe(
+        map(pagination => {
+          this.animeListCount = pagination.count;
+          this.pageSize = pagination.results.length;
+          return pagination.results;
+        }),
+      );
   }
 }

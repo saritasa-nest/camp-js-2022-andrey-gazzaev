@@ -2,7 +2,7 @@
 export interface Sort<Order, Field> {
 
   /** Ordering direction. */
-  readonly ordering: Order;
+  readonly direction: Order;
 
   /** Field by sort. */
   readonly field: Field;

@@ -8,12 +8,12 @@
       matSort
       (matSortChange)="handleSortChange($event)"
       [matSortActive]="sort.field"
-      [matSortDirection]="sort.ordering"
+      [matSortDirection]="sort.direction"
       aria-label="anime"
       aria-describedby="catalog-anime"
     >
       <ng-container matColumnDef="image">
-        <th mat-header-cell *matHeaderCellDef class="table-head-cell">Image</th>
+        <th mat-header-cell *matHeaderCellDef>Image</th>
         <td mat-cell *matCellDef="let anime">
           <img
             class="table-image"
@@ -24,7 +24,7 @@
       </ng-container>
 
       <ng-container matColumnDef="title-english">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="title_eng" class="table-head-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="title_eng">
           Title in English
         </th>
         <td mat-cell *matCellDef="let anime">
@@ -33,7 +33,7 @@
       </ng-container>
 
       <ng-container matColumnDef="title-japanese">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="title_jpn" class="table-head-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="title_jpn">
           Title in Japanese
         </th>
         <td mat-cell *matCellDef="let anime">
@@ -42,7 +42,7 @@
       </ng-container>
 
       <ng-container matColumnDef="aired-start">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="aired" class="table-head-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="aired">
           Start of aired
         </th>
         <td mat-cell *matCellDef="let anime">
@@ -51,7 +51,7 @@
       </ng-container>
 
       <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef class="table-head-cell">
+        <th mat-header-cell *matHeaderCellDef>
           Type
           <button
             mat-icon-button
@@ -66,7 +66,7 @@
       </ng-container>
 
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="status" class="table-head-cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="status">
           Status
         </th>
         <td mat-cell *matCellDef="let anime">{{ anime.status }}</td>
@@ -98,8 +98,9 @@
   <section class="example-section">
     <h4>Select your toppings:</h4>
     <p><mat-checkbox formControlName="pepperoni">Pepperoni</mat-checkbox></p>
-    <p><mat-checkbox formControlName="extracheese">Extra Cheese</mat-checkbox></p>
+    <p>
+      <mat-checkbox formControlName="extracheese">Extra Cheese</mat-checkbox>
+    </p>
     <p><mat-checkbox formControlName="mushroom">Mushroom</mat-checkbox></p>
   </section>
-
 </mat-menu>
