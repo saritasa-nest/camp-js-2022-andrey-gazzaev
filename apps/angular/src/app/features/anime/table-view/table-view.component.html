@@ -55,9 +55,9 @@
           Type
           <button
             mat-icon-button
-            [matMenuTriggerFor]="menu"
+            [matMenuTriggerFor]="typeFilterMenu"
             type="button"
-            aria-label="Example icon-button with a menu"
+            aria-label="Filter by type selection menu"
           >
             <mat-icon>filter_alt</mat-icon>
           </button>
@@ -94,13 +94,12 @@
   </div>
 </ng-template>
 
-<mat-menu #menu="matMenu">
-  <section class="example-section">
-    <h4>Select your toppings:</h4>
-    <p><mat-checkbox formControlName="pepperoni">Pepperoni</mat-checkbox></p>
-    <p>
-      <mat-checkbox formControlName="extracheese">Extra Cheese</mat-checkbox>
-    </p>
-    <p><mat-checkbox formControlName="mushroom">Mushroom</mat-checkbox></p>
-  </section>
+<mat-menu #typeFilterMenu="matMenu" (closed)="handleFilterChange()">
+  <ul>
+    <li *ngFor="let filter of filterListByType">
+      <mat-checkbox [(ngModel)]="filter.selected" (click) = "$event.stopPropagation()" >{{
+        filter.title
+      }}</mat-checkbox>
+    </li>
+  </ul>
 </mat-menu>

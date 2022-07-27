@@ -24,8 +24,8 @@ const httpInterceptorProviders = [
   imports: [
     SharedModule,
     BrowserModule,
-    HttpClientModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
   ],
   providers: [

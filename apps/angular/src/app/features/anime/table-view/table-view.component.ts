@@ -1,11 +1,12 @@
 import { map, Observable } from 'rxjs';
 
 import { Component } from '@angular/core';
-import { Sort, SortDirection } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
+import { Sort, SortDirection } from '@angular/material/sort';
 
 import { AnimeBase } from '@js-camp/core/models/anime';
 
+import arraysEqual from '../../../../core/utils/array-equal';
 import { AnimeService } from '../../../../core/services/anime.service';
 
 interface TableSort {
@@ -15,6 +16,11 @@ interface TableSort {
 
   /** The sort order. */
   direction: SortDirection;
+}
+
+interface TableFilter {
+
+  byType: string[];
 }
 
 const DEFAULT_SORT_FIELD = 'title_eng';
@@ -41,6 +47,40 @@ export class TableViewComponent {
   public sort: TableSort = {
     field: DEFAULT_SORT_FIELD,
     direction: DEFAULT_SORT_ORDERING,
+  };
+
+  /** All possible type filters. */
+  public filterListByType = [
+    {
+      field: 'TV',
+      title: 'TV',
+      selected: false,
+    }, {
+      field: 'OVA',
+      title: 'OVA',
+      selected: false,
+    }, {
+      field: 'MOVIE',
+      title: 'Movie',
+      selected: false,
+    }, {
+      field: 'SPECIAL',
+      title: 'Special',
+      selected: false,
+    }, {
+      field: 'ONA',
+      title: 'ONA',
+      selected: false,
+    }, {
+      field: 'MUSIC',
+      title: 'Music',
+      selected: false,
+    },
+  ];
+
+  /** Selected filter. */
+  public filter: TableFilter = {
+    byType: [],
   };
 
   /** Table columns names. */
@@ -76,8 +116,23 @@ export class TableViewComponent {
     this.animeList$ = this.getAnimeList();
   }
 
+  /**
+   * Handles Filter change.
+   *
+   */
+  public handleFilterChange(): void {
+    const newFilter = this.filterListByType.filter(filter => filter.selected).map(filter => filter.field);
+
+    if (arraysEqual<String>(this.filter.byType, newFilter)) {
+      return;
+    }
+
+    this.filter.byType = newFilter;
+    this.animeList$ = this.getAnimeList();
+  }
+
   private getAnimeList(): Observable<readonly AnimeBase[]> {
-    return this.animeService.fetchAnimeList({ pageNumber: this.currentPage, sort: this.sort })
+    return this.animeService.fetchAnimeList({ pageNumber: this.currentPage, sort: this.sort, filter: this.filter })
       .pipe(
         map(pagination => {
           this.animeListCount = pagination.count;

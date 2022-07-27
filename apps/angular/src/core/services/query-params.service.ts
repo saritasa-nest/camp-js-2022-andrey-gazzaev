@@ -4,8 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sort, SortField, SortOrdering as SortDirection } from '@js-camp/core/utils/types/sort';
-import { isSortField, isSortOrdering } from '@js-camp/core/utils/guards/sort.guard';
-import { Type } from '@js-camp/core/models/anime';
+import { isSortField, isSortOrdering, isType } from '@js-camp/core/utils/guards/sort.guard';
 
 /** Params for request anime list. */
 interface AnimeListParams {
@@ -41,13 +40,20 @@ interface NewSortSetting {
   direction: string;
 }
 
+interface NewFilterSetting {
+
+  byType: string[];
+}
+
 interface NewAnimeListParams {
 
   /** The page number to be returned. */
   pageNumber: number;
 
   /** Sort setting. */
-  sort: NewSortSetting ;
+  sort: NewSortSetting;
+
+  filter: NewFilterSetting;
 }
 
 /** All possible query parameters. */
@@ -73,7 +79,7 @@ const DEFAULT_PAGINATION_SETTINGS: AnimeListParams = {
     direction: SortDirection.Ascending,
   },
   filter: {
-    byType: [Type.Tv, Type.Ova],
+    byType: [],
   },
   limit: DEFAULT_LIMIT,
   offset: DEFAULT_OFFSET,
@@ -95,7 +101,7 @@ export class QueryParamsService {
    * Gets anime list http params for specific query.
    * @param newParams New query parameters that should be in the request.
    */
-  public getAnimeListHttpParams({ pageNumber, sort }: NewAnimeListParams): Observable<HttpParams> {
+  public getAnimeListHttpParams({ pageNumber, sort, filter }: NewAnimeListParams): Observable<HttpParams> {
     return this.route.queryParams.pipe(
       map(params => {
         const animeListParams = this.getAnimeListParams(params);
@@ -105,6 +111,9 @@ export class QueryParamsService {
           sort: {
             field: isSortField(sort.field) ? sort.field : SortField.TitleEnglish,
             direction: sort.direction === 'asc' ? SortDirection.Ascending : SortDirection.Descending,
+          },
+          filter: {
+            byType: filter.byType.every(type => isType(type)) ? filter.byType : [''],
           },
         };
 

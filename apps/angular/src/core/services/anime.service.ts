@@ -22,6 +22,12 @@ interface SortSetting {
   direction: string;
 }
 
+interface FilterSetting {
+
+  byType: string[];
+}
+
+
 interface AnimeListParams {
 
   /** The page number to be returned. */
@@ -29,6 +35,8 @@ interface AnimeListParams {
 
   /** Sort setting. */
   sort: SortSetting;
+
+  filter: FilterSetting;
 }
 
 /** Anime service. */
@@ -49,10 +57,10 @@ export class AnimeService {
 
   /**
    * Requests to the server to get anime.
-   * @param params Parameters for generating a request.
+   * @param animeListParams Parameters for generating a request.
    */
-  public fetchAnimeList({ pageNumber, sort }: AnimeListParams): Observable<Pagination<AnimeBase>> {
-    return this.queryParamsService.getAnimeListHttpParams({ pageNumber, sort })
+  public fetchAnimeList(animeListParams: AnimeListParams): Observable<Pagination<AnimeBase>> {
+    return this.queryParamsService.getAnimeListHttpParams(animeListParams)
       .pipe(
         switchMap(params => this.http.get<PaginationDto<AnimeBaseDto>>(this.animeListUrl.toString(), {
           params,
