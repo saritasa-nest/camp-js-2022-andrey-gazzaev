@@ -34,5 +34,7 @@ export class TableViewComponent {
    * @param _index Anime's index into array.
    * @param anime Object of hero.
    */
-  public trackItem: TrackByFunction<AnimeBase> = (_index: number, anime: AnimeBase): number => anime.id;
+  public trackItem: TrackByFunction<AnimeBase> = function(_index: number, anime: AnimeBase): number {
+    return anime.id;
+  };
 }

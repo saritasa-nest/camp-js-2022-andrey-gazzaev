@@ -7,7 +7,6 @@ import { ApiInterceptor } from '../core/interceptors/api-interceptor.interceptor
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { SharedModule } from './../shared/shared.module';
 
 const httpInterceptorProviders = [
   {
@@ -21,7 +20,6 @@ const httpInterceptorProviders = [
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    SharedModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
