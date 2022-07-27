@@ -24,7 +24,7 @@ interface TableFilter {
   byType: string[];
 }
 
-interface FilterCell {
+interface FilterItem {
 
   /** Key of filter. */
   field: string;
@@ -37,7 +37,7 @@ interface FilterCell {
 }
 
 const DEFAULT_SORT_FIELD = 'title_eng';
-const DEFAULT_SORT_ORDERING = 'asc';
+const DEFAULT_SORT_DIRECTION = 'asc';
 
 /** Table view component. */
 @Component({
@@ -52,7 +52,7 @@ export class TableViewComponent {
   public animeListCount = 0;
 
   /** Current page number. */
-  public currentPage = 0;
+  public currentPageNumber = 0;
 
   /** Number of records per page. */
   public pageSize = 0;
@@ -60,11 +60,11 @@ export class TableViewComponent {
   /** Current sort settings. */
   public sort: TableSort = {
     field: DEFAULT_SORT_FIELD,
-    direction: DEFAULT_SORT_ORDERING,
+    direction: DEFAULT_SORT_DIRECTION,
   };
 
   /** All possible type filters. */
-  public filterListByType: FilterCell[] = [];
+  public filterListByType: FilterItem[] = [];
 
   /** Selected filter. */
   public filter: TableFilter = {
@@ -90,14 +90,14 @@ export class TableViewComponent {
    * @param event Paginator event.
    */
   public handlePaginationChange(event: PageEvent): void {
-    this.currentPage = event.pageIndex;
+    this.currentPageNumber = event.pageIndex;
 
     this.animeList$ = this.getAnimeList();
   }
 
   /**
-   * Handlers pagination change.
-   * @param sort Paginator event.
+   * Handlers sort change.
+   * @param sort Sort state.
    */
   public handleSortChange(sort: Sort): void {
     this.sort.field = sort.active;
@@ -127,9 +127,18 @@ export class TableViewComponent {
     this.animeList$ = this.getAnimeList();
   }
 
+  /**
+   * Tracks anime by ID.
+   * @param _index Anime's index into array.
+   * @param anime Object of hero.
+   */
+  public trackItem: TrackByFunction<AnimeBase> = function(_index: number, anime: AnimeBase): number {
+    return anime.id;
+  };
+
   private getAnimeList(): Observable<readonly AnimeBase[]> {
     return this.animeService.fetchAnimeList({
-      pageNumber: this.currentPage,
+      pageNumber: this.currentPageNumber,
       sort: this.sort,
       filter: this.filter,
       search: this.search,
@@ -152,13 +161,4 @@ export class TableViewComponent {
       isSelect: false,
     }));
   }
-
-  /**
-   * Tracks anime by ID.
-   * @param _index Anime's index into array.
-   * @param anime Object of hero.
-   */
-  public trackItem: TrackByFunction<AnimeBase> = function(_index: number, anime: AnimeBase): number {
-    return anime.id;
-  };
 }

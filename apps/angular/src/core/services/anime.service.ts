@@ -12,7 +12,7 @@ import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { AnimeListParams } from '@js-camp/core/utils/interfaces/anime.interface';
 
 import { AppConfigService } from './app-config.service';
-import { QueryParamsService } from './query-params.service';
+import { AnimeListQueryParamsService } from './anime-list-query-params.service';
 
 /** Anime service. */
 @Injectable({
@@ -25,7 +25,7 @@ export class AnimeService {
   public constructor(
     config: AppConfigService,
     private readonly http: HttpClient,
-    private readonly queryParamsService: QueryParamsService,
+    private readonly queryParamsService: AnimeListQueryParamsService,
   ) {
     this.animeListUrl = new URL(`anime/anime/`, config.apiUrl);
   }
