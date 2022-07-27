@@ -5,6 +5,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -23,6 +24,7 @@ import { TableViewComponent } from './table-view/table-view.component';
     MatMenuModule,
     MatSortModule,
     MatIconModule,
+    MatInputModule,
     MatTableModule,
     MatButtonModule,
     MatCheckboxModule,

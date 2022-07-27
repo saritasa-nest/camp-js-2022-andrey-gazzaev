@@ -26,6 +26,8 @@ interface AnimeListQueryParams {
 
   /** Offset in records. */
   readonly offset: number;
+
+  readonly search: string;
 }
 
 /** Standard form query params. */
@@ -38,9 +40,8 @@ enum Param {
   Offset = 'offset',
   Limit = 'limit',
   Ordering = 'ordering',
-  Status = 'status',
   TypeIn = 'type__in',
-  Id = 'id',
+  Search = 'search',
 }
 
 /** Anime limit when requesting a new page. */
@@ -60,6 +61,7 @@ const DEFAULT_ANIME_LIST_QUERY_PARAMS: AnimeListQueryParams = {
   },
   limit: DEFAULT_LIMIT,
   offset: DEFAULT_OFFSET,
+  search: '',
 };
 
 const ERROR_NOT_PARAMS = ' Parameters not found';
@@ -78,7 +80,7 @@ export class QueryParamsService {
    * Gets anime list http params for specific query.
    * @param newParams New query parameters that should be in the request.
    */
-  public getAnimeListHttpParams({ pageNumber, sort, filter }: AnimeListParams): Observable<HttpParams> {
+  public getAnimeListHttpParams({ pageNumber, sort, filter, search }: AnimeListParams): Observable<HttpParams> {
     return this.route.queryParams.pipe(
       map(params => {
         const animeListQueryParams = this.getAnimeListQueryParams(params);
@@ -92,6 +94,7 @@ export class QueryParamsService {
           filter: {
             byType: filter.byType.every(type => isType(type)) ? filter.byType : [''],
           },
+          search,
         };
 
         this.setUrl(this.animeListParamsToQueryParams(newAnimeListQueryParams));
@@ -115,8 +118,9 @@ export class QueryParamsService {
     const offset = params[Param.Offset];
     const ordering = params[Param.Ordering];
     const type = params[Param.TypeIn];
+    const search = params[Param.Search];
 
-    if (limit === undefined || offset === undefined || ordering === undefined || type === undefined) {
+    if (limit === undefined || offset === undefined || ordering === undefined || type === undefined || search === undefined) {
       throw new Error(ERROR_NOT_PARAMS);
     }
 
@@ -133,6 +137,7 @@ export class QueryParamsService {
         filter: {
           byType: type.split(','),
         },
+        search,
       };
     }
     return DEFAULT_ANIME_LIST_QUERY_PARAMS;
@@ -148,6 +153,7 @@ export class QueryParamsService {
       [Param.Offset]: String(params.offset),
       [Param.Ordering]: `${params.sort.direction}${params.sort.field}`,
       [Param.TypeIn]: `${params.filter.byType.toString()}`,
+      [Param.Search]: params.search,
     };
   }
 
@@ -160,7 +166,8 @@ export class QueryParamsService {
       .set(Param.Limit, params.limit)
       .set(Param.Offset, params.offset)
       .set(Param.Ordering, `${params.sort.direction}${params.sort.field}`)
-      .set(Param.TypeIn, `${params.filter.byType.toString()}`);
+      .set(Param.TypeIn, `${params.filter.byType.toString()}`)
+      .set(Param.Search, params.search);
     return queryParams;
   }
 

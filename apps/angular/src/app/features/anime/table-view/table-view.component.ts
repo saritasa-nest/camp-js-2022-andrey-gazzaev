@@ -84,6 +84,9 @@ export class TableViewComponent {
     byType: [],
   };
 
+  /** Value of search input. */
+  public search = '';
+
   /** Table columns names. */
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
@@ -131,8 +134,13 @@ export class TableViewComponent {
     this.animeList$ = this.getAnimeList();
   }
 
+  /** Handles search input change. */
+  public handleSearchChange(): void {
+    this.animeList$ = this.getAnimeList();
+  }
+
   private getAnimeList(): Observable<readonly AnimeBase[]> {
-    return this.animeService.fetchAnimeList({ pageNumber: this.currentPage, sort: this.sort, filter: this.filter })
+    return this.animeService.fetchAnimeList({ pageNumber: this.currentPage, sort: this.sort, filter: this.filter, search: this.search })
       .pipe(
         map(pagination => {
           this.animeListCount = pagination.count;
