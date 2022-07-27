@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 /** Anime catalog page. */
 @Component({
-  selector: 'anime',
+  selector: 'app-anime',
   templateUrl: './anime.component.html',
   styleUrls: [],
 })

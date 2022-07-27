@@ -7,7 +7,7 @@ import { AnimeService } from '../../../../core/services/anime.service';
 
 /** Table view component. */
 @Component({
-  selector: 'anime-table-view',
+  selector: 'app-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css'],
 })
@@ -17,7 +17,7 @@ export class TableViewComponent {
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
   /** Anime list. */
-  public readonly animeList$: Observable<readonly AnimeBase[]> | undefined;
+  public readonly animeList$: Observable<readonly AnimeBase[]>;
 
   public constructor(private readonly animeService: AnimeService) {
     this.animeList$ = this.getAnimeList();
