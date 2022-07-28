@@ -11,7 +11,7 @@
 
 .mat-header-cell {
   text-align: center;
-  font-size: var(--table-head-text-size);
+  font-size: var(--table-head-cell-text-size);
 }
 
 .mat-cell {
@@ -29,19 +29,29 @@
   display: block;
 }
 
-.loading {
+.anime-search {
+  width: 100%;
+}
+
+.table-column-type .mat-select-arrow-wrapper {
+  display: none;
+}
+
+.table-head-cell .mat-header-cell {
+  text-align: center;
+}
+
+.table-head-cell .mat-sort-header-container {
+  justify-content: center;
+}
+
+.table-column-type .mat-select-value {
+  color: inherit;
+}
+
+.table-column-type__trigger {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.loading__spinner {
-  position: absolute;
-  top: 50%;
-  bottom: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.anime-search {
-  width: 100%;
+  color: inherit;
 }

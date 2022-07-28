@@ -1,12 +1,12 @@
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, map, Observable, startWith, switchMap } from 'rxjs';
 
+import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
-import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction, ViewEncapsulation } from '@angular/core';
 
 import { AnimeBase } from '@js-camp/core/models/anime';
 
-import arraysEqual from '../../../../core/utils/array-equal';
 import { AnimeService } from '../../../../core/services/anime.service';
 
 interface TableSort {
@@ -16,12 +16,6 @@ interface TableSort {
 
   /** The sort order. */
   direction: SortDirection;
-}
-
-interface TableFilter {
-
-  /** Collection of values by type. */
-  byType: string[];
 }
 
 interface FilterItem {
@@ -45,44 +39,69 @@ const DEFAULT_SORT_DIRECTION = 'asc';
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class TableViewComponent {
 
   /** Total number of records for the current query. */
   public animeListCount = 0;
 
-  /** Current page number. */
-  public currentPageNumber = 0;
-
   /** Number of records per page. */
   public pageSize = 0;
-
-  /** Current sort settings. */
-  public sort: TableSort = {
-    field: DEFAULT_SORT_FIELD,
-    direction: DEFAULT_SORT_DIRECTION,
-  };
 
   /** All possible type filters. */
   public filterListByType: FilterItem[] = [];
 
-  /** Selected filter. */
-  public filter: TableFilter = {
-    byType: [],
-  };
-
   /** Value of search input. */
-  public search = '';
+  public readonly search = new FormControl('');
+
+  /** Filter by type. */
+  public readonly typeFilter = new FormControl<string[]>(['TV']);
+
+  /** Current sort settings. */
+  public readonly sort$ = new BehaviorSubject<TableSort>({
+    field: DEFAULT_SORT_FIELD,
+    direction: DEFAULT_SORT_DIRECTION,
+  });
+
+  /** Current page number. */
+  public readonly currentPageNumber$ = new BehaviorSubject<number>(0);
 
   /** Table columns names. */
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
   /** Anime list. */
-  public animeList$: Observable<readonly AnimeBase[]>;
+  public readonly animeList$: Observable<readonly AnimeBase[]> | undefined;
 
   public constructor(private readonly animeService: AnimeService) {
-    this.animeList$ = this.getAnimeList();
     this.fillFilterListByType();
+
+    const params$ = this.search.valueChanges.pipe(
+      debounceTime(1000),
+      startWith(''),
+      combineLatestWith(
+        this.currentPageNumber$,
+        this.typeFilter.valueChanges.pipe(
+          startWith(['TV']),
+          debounceTime(1000),
+        ),
+        this.sort$,
+      ),
+    );
+
+    this.animeList$ = params$.pipe(
+      switchMap(([search, pageNumber, typeFilter, sort]) => this.animeService.fetchAnimeList({
+        pageNumber,
+        sort,
+        filter: { byType: typeFilter?.length ? typeFilter : [] },
+        search: search ? search : '',
+      })),
+      map(pagination => {
+        this.animeListCount = pagination.count;
+        this.pageSize = pagination.results.length;
+        return pagination.results;
+      }),
+    );
   }
 
   /**
@@ -90,9 +109,7 @@ export class TableViewComponent {
    * @param event Paginator event.
    */
   public handlePaginationChange(event: PageEvent): void {
-    this.currentPageNumber = event.pageIndex;
-
-    this.animeList$ = this.getAnimeList();
+    this.currentPageNumber$.next(event.pageIndex);
   }
 
   /**
@@ -100,31 +117,11 @@ export class TableViewComponent {
    * @param sort Sort state.
    */
   public handleSortChange(sort: Sort): void {
-    this.sort.field = sort.active;
-
     // Need to remove the value '' from sort.direction
-    this.sort.direction = sort.direction === '' ? 'asc' : 'desc';
-
-    this.animeList$ = this.getAnimeList();
-  }
-
-  /** Handles filter change. */
-  public handleFilterChange(): void {
-    const newFilter = this.filterListByType
-      .filter(filter => filter.isSelect)
-      .map(filter => filter.field);
-
-    if (arraysEqual<string>(this.filter.byType, newFilter)) {
-      return;
-    }
-
-    this.filter.byType = newFilter;
-    this.animeList$ = this.getAnimeList();
-  }
-
-  /** Handles search input change. */
-  public handleSearchChange(): void {
-    this.animeList$ = this.getAnimeList();
+    this.sort$.next({
+      field: sort.active,
+      direction: sort.direction === '' ? 'asc' : 'desc',
+    });
   }
 
   /**
@@ -135,22 +132,6 @@ export class TableViewComponent {
   public trackItem: TrackByFunction<AnimeBase> = function(_index: number, anime: AnimeBase): number {
     return anime.id;
   };
-
-  private getAnimeList(): Observable<readonly AnimeBase[]> {
-    return this.animeService.fetchAnimeList({
-      pageNumber: this.currentPageNumber,
-      sort: this.sort,
-      filter: this.filter,
-      search: this.search,
-    })
-      .pipe(
-        map(pagination => {
-          this.animeListCount = pagination.count;
-          this.pageSize = pagination.results.length;
-          return pagination.results;
-        }),
-      );
-  }
 
   private fillFilterListByType(): void {
     const types = this.animeService.getAnimeTypes();

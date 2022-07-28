@@ -1,32 +1,29 @@
 <section class="table-view">
   <h2 id="anime-catalog" class="mat-title">Anime table</h2>
-  <div
-    *ngIf="animeList$ | async as animeList; else loading"
-    class="table-container mat-elevation-z8"
-  >
+  <div class="table-container mat-elevation-z8">
     <mat-form-field class="anime-search" appearance="fill">
       <mat-label>Search anime</mat-label>
       <input
         matInput
         placeholder="Your anime title"
-        [(ngModel)]="search"
-        (change)="handleSearchChange()"
+        [formControl]="search"
         type="search"
       />
     </mat-form-field>
 
     <table
+      *ngIf="animeList$ | async as animeList; else loading"
       [dataSource]="animeList"
       mat-table
       matSort
       (matSortChange)="handleSortChange($event)"
-      [matSortActive]="sort.field"
-      [matSortDirection]="sort.direction"
+      [matSortActive]="(sort$ | async)!.field"
+      [matSortDirection]="(sort$ | async)!.direction"
       aria-label="anime"
       aria-describedby="catalog-anime"
     >
       <ng-container matColumnDef="image">
-        <th mat-header-cell *matHeaderCellDef>Image</th>
+        <th mat-header-cell *matHeaderCellDef class="table-head-cell"></th>
         <td mat-cell *matCellDef="let anime">
           <img
             class="table-image"
@@ -37,7 +34,12 @@
       </ng-container>
 
       <ng-container matColumnDef="title-english">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="title_eng">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="title_eng"
+          class="table-head-cell"
+        >
           Title in English
         </th>
         <td mat-cell *matCellDef="let anime">
@@ -46,7 +48,12 @@
       </ng-container>
 
       <ng-container matColumnDef="title-japanese">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="title_jpn">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="title_jpn"
+          class="table-head-cell"
+        >
           Title in Japanese
         </th>
         <td mat-cell *matCellDef="let anime">
@@ -55,7 +62,12 @@
       </ng-container>
 
       <ng-container matColumnDef="aired-start">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="aired">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="aired"
+          class="table-head-cell"
+        >
           Start of aired
         </th>
         <td mat-cell *matCellDef="let anime">
@@ -64,22 +76,28 @@
       </ng-container>
 
       <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef>
-          Type
-          <button
-            mat-icon-button
-            [matMenuTriggerFor]="typeFilterMenu"
-            type="button"
-            aria-label="Filter by type selection menu"
-          >
-            <mat-icon>filter_alt</mat-icon>
-          </button>
+        <th mat-header-cell *matHeaderCellDef class="table-column-type">
+          <mat-select [formControl]="typeFilter" multiple>
+            <mat-select-trigger class="table-column-type__trigger">
+              Type <mat-icon>filter_alt</mat-icon>
+            </mat-select-trigger>
+            <mat-option
+              [value]="filter.field"
+              *ngFor="let filter of filterListByType"
+              >{{ filter.title }}</mat-option
+            >
+          </mat-select>
         </th>
         <td mat-cell *matCellDef="let anime">{{ anime.type }}</td>
       </ng-container>
 
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="status">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="status"
+          class="table-head-cell"
+        >
           Status
         </th>
         <td mat-cell *matCellDef="let anime">{{ anime.status }}</td>
@@ -88,10 +106,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-
     <mat-paginator
       [length]="animeListCount"
-      [pageIndex]="currentPageNumber"
+      [pageIndex]="currentPageNumber$ | async"
       [pageSize]="pageSize"
       (page)="handlePaginationChange($event)"
       class="table-pagination"
@@ -106,16 +123,3 @@
     <mat-spinner class="loading__spinner"></mat-spinner>
   </div>
 </ng-template>
-
-<mat-menu #typeFilterMenu="matMenu" (closed)="handleFilterChange()">
-  <ul>
-    <li *ngFor="let filter of filterListByType">
-      <mat-checkbox
-        [(ngModel)]="filter.isSelect"
-        (click)="$event.stopPropagation()"
-      >
-        {{ filter.title }}
-      </mat-checkbox>
-    </li>
-  </ul>
-</mat-menu>

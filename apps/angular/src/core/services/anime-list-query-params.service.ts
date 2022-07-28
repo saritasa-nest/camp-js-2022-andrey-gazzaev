@@ -178,7 +178,6 @@ export class AnimeListQueryParamsService {
       .set(ParamName.Ordering, `${params.ordering}`)
       .set(ParamName.TypeIn, `${params.type}`)
       .set(ParamName.Search, params.search);
-
   }
 
   /**

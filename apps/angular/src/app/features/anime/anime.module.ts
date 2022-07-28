@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
@@ -7,8 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { PlaceholderPipe } from '../../../shared/pipes/placeholder.pipe';
@@ -32,10 +33,12 @@ import { TableViewComponent } from './table-view/table-view.component';
     MatIconModule,
     MatInputModule,
     MatTableModule,
+    MatSelectModule,
     MatButtonModule,
     MatCheckboxModule,
     MatPaginatorModule,
     AnimeRoutingModule,
+    ReactiveFormsModule,
     MatProgressSpinnerModule,
   ],
 })
