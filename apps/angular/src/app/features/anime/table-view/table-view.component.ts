@@ -77,23 +77,22 @@ export class TableViewComponent {
     this.fillFilterListByType();
 
     const params$ = this.search.valueChanges.pipe(
-      debounceTime(1000),
       startWith(''),
       combineLatestWith(
         this.currentPageNumber$,
         this.typeFilter.valueChanges.pipe(
           startWith(['TV']),
-          debounceTime(1000),
         ),
         this.sort$,
       ),
+      debounceTime(500),
     );
 
     this.animeList$ = params$.pipe(
       switchMap(([search, pageNumber, typeFilter, sort]) => this.animeService.fetchAnimeList({
         pageNumber,
         sort,
-        filter: { byType: typeFilter?.length ? typeFilter : [] },
+        filter: { byType: typeFilter ? typeFilter : ['TV'] },
         search: search ? search : '',
       })),
       map(pagination => {

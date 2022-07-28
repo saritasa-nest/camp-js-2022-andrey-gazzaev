@@ -16,17 +16,39 @@ export interface FilterSetting {
 }
 
 /** Params for for anime list request. */
-export interface AnimeListParams {
+export interface AnimeListQuery {
 
   /** The page number to be returned. */
-  pageNumber: number;
+  readonly pageNumber: number;
 
   /** Sort setting. */
-  sort: SortSetting;
+  readonly sort: SortSetting;
 
   /** Filter setting. */
-  filter: FilterSetting;
+  readonly filter: FilterSetting;
 
   /** Search query. */
-  search: string;
+  readonly search: string;
+
+  /** Maximum number of entries per page.*/
+  readonly limit: number;
+}
+
+/** Params for request anime list. */
+export interface AnimeListQueryParams {
+
+  /** Sort settings. */
+  readonly ordering: string;
+
+  /** Filter by type. */
+  readonly type: string;
+
+  /** Maximum number of entries per page. */
+  readonly limit: number;
+
+  /** Offset in records. */
+  readonly offset: number;
+
+  /** Search query. */
+  readonly search: string;
 }

@@ -17,7 +17,7 @@ export enum SortField {
 }
 
 /** Ordering direction. */
-export enum SortOrdering {
+export enum SortDirection {
   Ascending = '',
   Descending = '-',
 }
