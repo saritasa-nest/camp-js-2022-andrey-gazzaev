@@ -99,7 +99,6 @@ export class AnimeService {
             animeDto => AnimeMapper.fromDto(animeDto),
           ),
         ),
-
       );
   }
 
