@@ -3,7 +3,7 @@
  * @param array0 First array.
  * @param array1 Second array.
  */
-export default function arraysEqual<T>(array0: T[], array1: T[]): boolean {
+export function arraysEqual<T>(array0: T[], array1: T[]): boolean {
   if (array0 === array1) {
     return true;
   }
