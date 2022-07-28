@@ -1,4 +1,4 @@
-:host {
+:root {
   --max-width-table: 1024px;
   --table-head-cell-text-size: 1rem;
 }
