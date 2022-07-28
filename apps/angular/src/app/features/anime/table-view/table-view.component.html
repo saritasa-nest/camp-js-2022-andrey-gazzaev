@@ -1,4 +1,7 @@
-<section *ngIf="animeList$ | async as animeList; else loading" class="table-view">
+<section
+  *ngIf="animeList$ | async as animeList; else loading"
+  class="table-view"
+>
   <h2 id="anime-catalog" class="mat-title">Anime table</h2>
 
   <table
@@ -7,7 +10,7 @@
     mat-table
     class="mat-elevation-z8 demo-table"
     aria-label="anime"
-    aria-describedby="catalog-anime"
+    aria-describedby="anime-catalog"
   >
     <ng-container matColumnDef="image">
       <th mat-header-cell *matHeaderCellDef>Image</th>
@@ -15,9 +18,7 @@
         <img
           class="table-image"
           [src]="anime.image"
-          alt="Poster anime - {{
-            anime.titleEnglish || anime.titleJapanese || 'no title'
-          }}"
+          alt="Poster anime - {{ anime.imageTitle }}"
         />
       </td>
     </ng-container>

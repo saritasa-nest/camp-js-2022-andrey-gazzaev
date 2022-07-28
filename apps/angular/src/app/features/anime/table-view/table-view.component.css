@@ -1,3 +1,7 @@
+:host {
+  --table-head-cell-text-size: 1rem;
+}
+
 .table-view {
   display: flex;
   flex-direction: column;
