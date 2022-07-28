@@ -1,6 +1,11 @@
+:host {
+  --max-width-table: 1024px;
+  --table-head-cell-text-size: 1rem;
+}
+
 .table-view {
   margin-inline: auto;
-  max-width: 1024px;
+  max-width: var(--max-width-table);
 }
 
 .table-container {

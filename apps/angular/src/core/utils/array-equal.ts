@@ -1,23 +1,23 @@
 /**
  * Comparing the values of two arrays.
- * @param s0 First array.
- * @param s1 Second array.
+ * @param array0 First array.
+ * @param array1 Second array.
  */
-export default function arraysEqual<T>(s0: T[], s1: T[]): boolean {
-  if (s0 === s1) {
+export default function arraysEqual<T>(array0: T[], array1: T[]): boolean {
+  if (array0 === array1) {
     return true;
   }
 
-  if (s0 === null || s1 === null) {
+  if (array0 === null || array1 === null) {
     return false;
   }
 
-  if (s0.length !== s1.length) {
+  if (array0.length !== array1.length) {
     return false;
   }
 
-  for (let i = 0; i < s0.length; ++i) {
-    if (s0[i] !== s1[i]) {
+  for (let i = 0; i < array0.length; ++i) {
+    if (array0[i] !== array1[i]) {
       return false;
     }
   }

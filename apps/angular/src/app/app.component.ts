@@ -7,7 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: [
     '../theme/styles.css',
     '../theme/css-reset.css',
-    '../theme/variables.css',
   ],
 })
 export class AppComponent { }
