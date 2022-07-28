@@ -1,0 +1,66 @@
+<section
+  *ngIf="animeList$ | async as animeList; else loading"
+  class="table-view"
+>
+  <h2 id="anime-catalog" class="mat-title">Anime table</h2>
+
+  <table
+    [dataSource]="animeList"
+    [trackBy]="trackItem"
+    mat-table
+    class="mat-elevation-z8 demo-table"
+    aria-label="anime"
+    aria-describedby="anime-catalog"
+  >
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef>Image</th>
+      <td mat-cell *matCellDef="let anime">
+        <img
+          class="table-image"
+          [src]="anime.image"
+          alt="Poster anime - {{ anime.imageTitle }}"
+        />
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="title-english">
+      <th mat-header-cell *matHeaderCellDef>Title in English</th>
+      <td mat-cell *matCellDef="let anime">
+        {{ anime.titleEnglish | placeholder }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="title-japanese">
+      <th mat-header-cell *matHeaderCellDef>Title in Japanese</th>
+      <td mat-cell *matCellDef="let anime">
+        {{ anime.titleJapanese | placeholder }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="aired-start">
+      <th mat-header-cell *matHeaderCellDef>Start of aired</th>
+      <td mat-cell *matCellDef="let anime">
+        {{ anime.aired.start | date: "YYYY.MM.dd" | placeholder }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>Type</th>
+      <td mat-cell *matCellDef="let anime">{{ anime.type }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let anime">{{ anime.status }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</section>
+
+<ng-template #loading>
+  <div class="loading">
+    <mat-spinner class="loading__spinner"></mat-spinner>
+  </div>
+</ng-template>

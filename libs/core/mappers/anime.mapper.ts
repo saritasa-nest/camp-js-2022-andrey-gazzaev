@@ -45,6 +45,7 @@ export namespace AnimeMapper {
       image: dto.image,
       titleEnglish: dto.title_eng,
       titleJapanese: dto.title_jpn,
+      imageTitle: dto.title_eng || dto.title_jpn || 'no title',
       aired: DateRangeMapper.fromDto(dto.aired),
       status: ANIME_STATUS_FROM_DTO_MAP[dto.status],
       type: ANIME_TYPE_FROM_DTO_MAP[dto.type],

@@ -1,0 +1,38 @@
+:host {
+  --table-head-cell-text-size: 1rem;
+}
+
+.table-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-header-cell {
+  text-align: center;
+  font-size: var(--table-head-text-size);
+}
+
+.mat-cell {
+  width: 150px;
+  text-align: center;
+}
+
+.table-image {
+  max-width: 150px;
+  height: 150px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading__spinner {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(-50%, -50%);
+}

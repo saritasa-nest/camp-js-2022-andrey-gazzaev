@@ -2,8 +2,11 @@ import { Component } from '@angular/core';
 
 /** App component. */
 @Component({
-  selector: 'camp-root',
+  selector: 'app',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: [
+    '../theme/styles.css',
+    '../theme/css-reset.css',
+  ],
 })
 export class AppComponent {}
