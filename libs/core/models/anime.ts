@@ -33,6 +33,9 @@ export class AnimeBase extends Immerable {
   /** Title in Japanese. */
   public readonly titleJapanese: string;
 
+  /** Title for alt image. */
+  public readonly imageTitle: string;
+
   /** Release start and end dates. */
   public readonly aired: DateRange;
 
@@ -51,7 +54,7 @@ export class AnimeBase extends Immerable {
     this.aired = data.aired;
     this.type = data.type;
     this.status = data.status;
-
+    this.imageTitle = data.imageTitle;
   }
 }
 
