@@ -1,4 +1,4 @@
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { first, map, Observable, switchMap, tap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -56,6 +56,7 @@ export class AnimeService {
    */
   public fetchAnimeList(animeListOptions: AnimeListOptions): Observable<Pagination<AnimeBase>> {
     const animeListHttpParams$ = this.route.queryParams.pipe(
+      first(),
       map(params => {
         const currentAnimeListOptions = this.getAnimeListOptions(params);
 
@@ -68,10 +69,10 @@ export class AnimeService {
 
     return animeListHttpParams$
       .pipe(
+        tap(params => this.setUrl(params.toString())),
         switchMap(params => this.http.get<PaginationDto<AnimeBaseDto>>(
           this.animeListUrl.toString(), { params },
         )),
-        tap(params => this.setUrl(params.toString())),
         map(
           pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
             pagination,
