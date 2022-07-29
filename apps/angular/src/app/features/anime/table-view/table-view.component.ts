@@ -1,4 +1,4 @@
-import { BehaviorSubject, combineLatestWith, debounceTime, map, Observable, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, map, Observable, startWith, switchMap, tap, timer } from 'rxjs';
 
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
@@ -47,7 +47,7 @@ export class TableViewComponent {
   public animeListCount = 0;
 
   /** Number of records per page. */
-  public pageSize = 0;
+  public pageSize = 5;
 
   /** All possible type filters. */
   public filterListByType: FilterItem[] = [];
@@ -74,32 +74,39 @@ export class TableViewComponent {
   public readonly animeList$: Observable<readonly AnimeBase[]> | undefined;
 
   public constructor(private readonly animeService: AnimeService) {
-    this.fillFilterListByType();
+    this.setFilterListByType();
+    this.setPageSize();
 
-    const params$ = this.search.valueChanges.pipe(
-      startWith(''),
+    const timer$ = timer(500);
+
+    const params$ = timer$.pipe(
       combineLatestWith(
-        this.currentPageNumber$,
+        this.search.valueChanges.pipe(
+          startWith(''),
+          tap(() => this.currentPageNumber$.next(0)),
+        ),
         this.typeFilter.valueChanges.pipe(
           startWith(['TV']),
+          tap(() => this.currentPageNumber$.next(0)),
         ),
+        this.currentPageNumber$,
         this.sort$,
       ),
-      debounceTime(500),
     );
 
     this.animeList$ = params$.pipe(
-      switchMap(([search, pageNumber, typeFilter, sort]) => this.animeService.fetchAnimeList({
+      switchMap(([_, search, typeFilter, pageNumber, sort]) => this.animeService.fetchAnimeList({
         pageNumber,
         sort,
         filter: { byType: typeFilter !== null ? typeFilter : ['TV'] },
         search: search !== null ? search : '',
+        limit: this.pageSize,
       })),
       map(animeList => {
         this.animeListCount = animeList.count;
-        this.pageSize = animeList.results.length;
         return animeList.results;
       }),
+      tap(() => this.goToTop()),
     );
   }
 
@@ -132,7 +139,7 @@ export class TableViewComponent {
     return anime.id;
   };
 
-  private fillFilterListByType(): void {
+  private setFilterListByType(): void {
     const types = this.animeService.getAnimeTypes();
 
     this.filterListByType = types.map(type => ({
@@ -140,5 +147,19 @@ export class TableViewComponent {
       title: type,
       isSelect: false,
     }));
+  }
+
+  private setPageSize(): void {
+    this.pageSize = this.animeService.getLimit();
+  }
+
+  private goToTop(): void {
+    const TOP_OF_PAGE = 0;
+    const SCROLL_EVENT = 'smooth';
+
+    window.scrollTo({
+      top: TOP_OF_PAGE,
+      behavior: SCROLL_EVENT,
+    });
   }
 }

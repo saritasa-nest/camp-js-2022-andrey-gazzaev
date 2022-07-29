@@ -26,7 +26,7 @@ enum ParamName {
 }
 
 namespace DefaultParamValue {
-  export const LIMIT = 5;
+  export const LIMIT = 25;
   export const OFFSET = 0;
   export const SEARCH = '';
   export const ORDERING = `${SortDirection.Ascending}${SortField.TitleEnglish}`;
@@ -84,6 +84,11 @@ export class AnimeService {
   /** Gets all anime types. */
   public getAnimeTypes(): string[] {
     return Object.values(Type);
+  }
+
+  /** Gets page limit. */
+  public getLimit(): number {
+    return DefaultParamValue.LIMIT;
   }
 
   /**
