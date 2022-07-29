@@ -34,7 +34,7 @@ export interface AnimeListOptions {
   readonly limit?: number;
 }
 
-/** Params for request anime list. */
+/** The value that contains the url. */
 export interface AnimeListQueryParams {
 
   /** Sort settings. */

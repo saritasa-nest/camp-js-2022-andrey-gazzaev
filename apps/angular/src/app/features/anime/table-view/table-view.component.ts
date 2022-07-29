@@ -139,6 +139,7 @@ export class TableViewComponent {
     return anime.id;
   };
 
+  /** Sets filter by type. */
   private setFilterListByType(): void {
     const types = this.animeService.getAnimeTypes();
 
@@ -149,10 +150,12 @@ export class TableViewComponent {
     }));
   }
 
+  /** Sets page size. */
   private setPageSize(): void {
     this.pageSize = this.animeService.getLimit();
   }
 
+  /** Go to top page. */
   private goToTop(): void {
     const TOP_OF_PAGE = 0;
     const SCROLL_EVENT = 'smooth';
