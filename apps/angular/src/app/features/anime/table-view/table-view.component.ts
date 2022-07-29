@@ -92,13 +92,13 @@ export class TableViewComponent {
       switchMap(([search, pageNumber, typeFilter, sort]) => this.animeService.fetchAnimeList({
         pageNumber,
         sort,
-        filter: { byType: typeFilter ? typeFilter : ['TV'] },
-        search: search ? search : '',
+        filter: { byType: typeFilter !== null ? typeFilter : ['TV'] },
+        search: search !== null ? search : '',
       })),
-      map(pagination => {
-        this.animeListCount = pagination.count;
-        this.pageSize = pagination.results.length;
-        return pagination.results;
+      map(animeList => {
+        this.animeListCount = animeList.count;
+        this.pageSize = animeList.results.length;
+        return animeList.results;
       }),
     );
   }

@@ -16,7 +16,7 @@ export interface FilterSetting {
 }
 
 /** Params for for anime list request. */
-export interface AnimeListQuery {
+export interface AnimeListOptions {
 
   /** The page number to be returned. */
   readonly pageNumber: number;
@@ -31,7 +31,7 @@ export interface AnimeListQuery {
   readonly search: string;
 
   /** Maximum number of entries per page.*/
-  readonly limit: number;
+  readonly limit?: number;
 }
 
 /** Params for request anime list. */

@@ -12,7 +12,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { PlaceholderPipe } from '../../../shared/pipes/placeholder.pipe';
+import { SharedModule } from '../../../shared/shared.module';
 
 import { AnimeComponent } from './anime.component';
 import { AnimeRoutingModule } from './anime-routing.module';
@@ -23,11 +23,11 @@ import { TableViewComponent } from './table-view/table-view.component';
   declarations: [
     AnimeComponent,
     TableViewComponent,
-    PlaceholderPipe,
   ],
   imports: [
     FormsModule,
     CommonModule,
+    SharedModule,
     MatMenuModule,
     MatSortModule,
     MatIconModule,

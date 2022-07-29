@@ -8,6 +8,7 @@ import { ApiInterceptor } from '../core/interceptors/api-interceptor.interceptor
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AnimeModule } from './features/anime/anime.module';
 
 const httpInterceptorProviders = [
   {
@@ -21,6 +22,7 @@ const httpInterceptorProviders = [
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    AnimeModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
