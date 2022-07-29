@@ -1,1 +1,19 @@
-<p>login works!</p>
+<form class="auth-form" [formGroup]="loginForm">
+  <header>
+    <h1 class="auth-form__heading">Log In</h1>
+  </header>
+
+  <mat-error *ngIf="loginForm.touched && loginForm.controls.email.invalid">{{loginForm.controls.email.errors | json}}</mat-error>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Enter your email</mat-label>
+    <input matInput placeholder="pat@example.com" formControlName="email">
+
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Enter your password</mat-label>
+    <input matInput formControlName="password">
+  </mat-form-field>
+
+</form>
