@@ -68,10 +68,10 @@ export class AnimeService {
 
     return animeListHttpParams$
       .pipe(
-        tap(params => this.setUrl(params.toString())),
         switchMap(params => this.http.get<PaginationDto<AnimeBaseDto>>(
           this.animeListUrl.toString(), { params },
         )),
+        tap(params => this.setUrl(params.toString())),
         map(
           pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
             pagination,

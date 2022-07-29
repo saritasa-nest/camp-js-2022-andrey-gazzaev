@@ -1,4 +1,4 @@
-import { BehaviorSubject, combineLatestWith, map, Observable, startWith, switchMap, tap, timer } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, map, Observable, startWith, switchMap, tap } from 'rxjs';
 
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
@@ -77,9 +77,7 @@ export class TableViewComponent {
     this.setFilterListByType();
     this.setPageSize();
 
-    const timer$ = timer(500);
-
-    const params$ = timer$.pipe(
+    const params$ = this.currentPageNumber$.pipe(
       combineLatestWith(
         this.search.valueChanges.pipe(
           startWith(''),
@@ -89,13 +87,13 @@ export class TableViewComponent {
           startWith(['TV']),
           tap(() => this.currentPageNumber$.next(0)),
         ),
-        this.currentPageNumber$,
         this.sort$,
       ),
+      debounceTime(500),
     );
 
     this.animeList$ = params$.pipe(
-      switchMap(([_, search, typeFilter, pageNumber, sort]) => this.animeService.fetchAnimeList({
+      switchMap(([pageNumber, search, typeFilter, sort]) => this.animeService.fetchAnimeList({
         pageNumber,
         sort,
         filter: { byType: typeFilter !== null ? typeFilter : ['TV'] },
