@@ -1,4 +1,4 @@
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -55,30 +55,18 @@ export class AnimeService {
    * @param animeListOptions Parameters for generating a request.
    */
   public fetchAnimeList(animeListOptions: AnimeListOptions): Observable<Pagination<AnimeBase>> {
-    const animeListHttpParams$ = this.route.queryParams.pipe(
-      map(params => {
-        const currentAnimeListOptions = this.getAnimeListOptions(params);
+    const animeListHttpParams = this.animeListOptionsToHttpParams({
+      ...animeListOptions,
+    });
 
-        return this.animeListOptionsToHttpParams({
-          ...currentAnimeListOptions,
-          ...animeListOptions,
-        });
-      }),
-    );
+    this.setUrl(animeListHttpParams.toString());
 
-    return animeListHttpParams$
-      .pipe(
-        switchMap(params => this.http.get<PaginationDto<AnimeBaseDto>>(
-          this.animeListUrl.toString(), { params },
-        )),
-        tap(params => this.setUrl(params.toString())),
-        map(
-          pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
-            pagination,
-            animeDto => AnimeMapper.fromDto(animeDto),
-          ),
-        ),
-      );
+    return this.http.get<PaginationDto<AnimeBaseDto>>(
+      this.animeListUrl.toString(), { params: animeListHttpParams },
+    ).pipe(map(pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
+      pagination,
+      animeDto => AnimeMapper.fromDto(animeDto),
+    )));
   }
 
   /** Gets all anime types. */
@@ -110,11 +98,10 @@ export class AnimeService {
     });
   }
 
-  /**
-   * Gets anime list params from URL query params.
-   * @param params URL query params.
-   */
-  private getAnimeListOptions(params: Params): AnimeListOptions {
+  /** Gets anime list params from URL query params. */
+  public getAnimeListOptions(): AnimeListOptions {
+    const params = this.route.snapshot.queryParams;
+
     const limit = params[ParamName.Limit] !== undefined ? Number(params[ParamName.Limit]) : DefaultParamValue.LIMIT;
     const offset = params[ParamName.Offset] !== undefined ? Number(params[ParamName.Offset]) : DefaultParamValue.OFFSET;
     const ordering = params[ParamName.Ordering] !== undefined ? String(params[ParamName.Ordering]) : DefaultParamValue.ORDERING;

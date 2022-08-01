@@ -76,15 +76,16 @@ export class TableViewComponent {
   public constructor(private readonly animeService: AnimeService) {
     this.setFilterListByType();
     this.setPageSize();
+    this.setInputValues();
 
     const params$ = this.currentPageNumber$.pipe(
       combineLatestWith(
         this.search.valueChanges.pipe(
-          startWith(''),
+          startWith(this.search.value),
           tap(() => this.currentPageNumber$.next(0)),
         ),
         this.typeFilter.valueChanges.pipe(
-          startWith(['TV']),
+          startWith(this.typeFilter.value),
           tap(() => this.currentPageNumber$.next(0)),
         ),
         this.sort$,
@@ -151,6 +152,14 @@ export class TableViewComponent {
   /** Sets page size. */
   private setPageSize(): void {
     this.pageSize = this.animeService.getLimit();
+  }
+
+  private setInputValues(): void {
+    const animeListOption = this.animeService.getAnimeListOptions();
+    this.currentPageNumber$.next(animeListOption.pageNumber);
+    this.sort$.next({ field: animeListOption.sort.field, direction: animeListOption.sort.direction === 'desc' ? 'desc' : 'asc' });
+    this.search.setValue(animeListOption.search);
+    this.typeFilter.setValue(animeListOption.filter.byType);
   }
 
   /** Go to top page. */
