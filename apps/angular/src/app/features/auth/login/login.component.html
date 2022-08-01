@@ -1,17 +1,16 @@
-<form class="auth-form" [formGroup]="loginForm" (submit)="handleFormSubmit()">
+<a class="link" mat-button title="Go to home page" [routerLink]="'/catalog/'">Home</a>
+
+<form class="auth-form mat-elevation-z8" [formGroup]="loginForm" (submit)="handleFormSubmit()">
   <header class="form-header">
     <h1 class="auth-form__heading mat-headline">Log In</h1>
   </header>
 
-  <p class="form-field">
-    <mat-form-field appearance="fill">
+    <mat-form-field class="form-field" appearance="fill">
       <mat-label>Enter your email</mat-label>
       <input matInput placeholder="pat@example.com" formControlName="email" />
     </mat-form-field>
-  </p>
 
-  <p class="form-field">
-    <mat-form-field appearance="fill">
+    <mat-form-field class="form-field" appearance="fill">
       <mat-label>Enter your password</mat-label>
       <input
         matInput
@@ -29,14 +28,13 @@
         <mat-icon>{{ isHiddenPassword ? "visibility_off" : "visibility" }}</mat-icon>
       </button>
     </mat-form-field>
+
+  <p class="form-buttons">
+    <button class="form-buttons__button" mat-stroked-button type="submit">Login</button>
   </p>
 
-  <p class="form-field">
-    <button mat-stroked-button type="submit">Login</button>
-  </p>
-
-  <mat-list role="list">
-    <mat-list-item role="listitem">
+  <mat-list class="form-list" role="list">
+    <mat-list-item  role="listitem">
       <a class="link" mat-button title="Password recovery" href="#">Forgot your password</a>
     </mat-list-item>
     <mat-list-item role="listitem">
