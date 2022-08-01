@@ -19,7 +19,7 @@ interface LoginFormControls {
 @Component({
   selector: 'camp-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['../auth.css'],
   encapsulation: ViewEncapsulation.None,
 })
 export class LoginComponent implements OnDestroy {
