@@ -1,4 +1,4 @@
-import { map, Observable, switchMap } from 'rxjs';
+import { first, map, Observable, switchMap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import {
@@ -24,10 +24,11 @@ export class AuthInterceptor implements HttpInterceptor {
   /** @inheritdoc */
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return this.tokensService.get().pipe(
+      first(),
       map(tokens =>
         tokens !== null ?
           request.clone({
-            headers: request.headers.set(HttpHeader.Authorization, tokens.access),
+            headers: request.headers.set(HttpHeader.Authorization,`Bearer ${tokens.access}`),
           }) :
           request),
       switchMap(newReq => next.handle(newReq)),

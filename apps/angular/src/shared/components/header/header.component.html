@@ -1,0 +1,12 @@
+<header>
+  <h1>Anime Catalog</h1>
+
+  <div class="hello" *ngIf="user$ | async as user; else standard">
+    Hello <span>{{ user.firstName }} {{ user.lastName }}</span>
+  </div>
+
+  <ng-template #standard>
+    <button type="button" [routerLink]="'auth/login/'" >Login</button>
+    <button type="button" [routerLink]="'auth/registration/'" >Registration</button>
+  </ng-template>
+</header>

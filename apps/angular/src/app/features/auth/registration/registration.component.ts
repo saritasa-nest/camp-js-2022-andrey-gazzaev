@@ -6,7 +6,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
-import { AuthService, RegistrationErrors } from '../../../../core/services/user.service';
+import { UserService, RegistrationErrors } from '../../../../core/services/user.service';
 
 interface RegistrationFormControls {
 
@@ -47,7 +47,7 @@ export class RegistrationComponent {
 
   public constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly authService: AuthService,
+    private readonly userService: UserService,
     private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
     this.registrationForm = this.initRegistrationForm();
@@ -81,7 +81,7 @@ export class RegistrationComponent {
     }
 
     const userInfo = { password, email, firstName, lastName };
-    this.authService.register(userInfo)
+    this.userService.register(userInfo)
       .pipe(
         tap(errors => {
           if (errors !== undefined) {

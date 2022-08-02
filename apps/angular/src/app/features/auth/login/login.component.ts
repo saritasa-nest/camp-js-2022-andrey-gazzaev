@@ -6,7 +6,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
-import { AuthService, LoginErrors } from '../../../../core/services/user.service';
+import { UserService, LoginErrors } from '../../../../core/services/user.service';
 
 interface LoginFormControls {
 
@@ -37,7 +37,7 @@ export class LoginComponent implements OnDestroy {
 
   public constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly authService: AuthService,
+    private readonly userService: UserService,
     private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
     this.loginForm = this.initLoginForm();
@@ -66,7 +66,7 @@ export class LoginComponent implements OnDestroy {
 
     const { password, email } = fields;
 
-    this.authService.login({ email, password })
+    this.userService.login({ email, password })
       .pipe(
         tap(errors => {
           if (errors !== undefined) {

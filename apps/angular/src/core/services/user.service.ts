@@ -42,7 +42,7 @@ export interface RegistrationErrors {
 
 /** Authorization service. */
 @Injectable()
-export class AuthService {
+export class UserService {
 
   private readonly loginUrl: URL;
 
@@ -56,7 +56,7 @@ export class AuthService {
     private readonly tokensService: TokensService,
   ) {
     this.loginUrl = new URL(`auth/login/`, config.apiUrl);
-    this.userUrl = new URL(`user/profile/`, config.apiUrl);
+    this.userUrl = new URL(`users/profile/`, config.apiUrl);
     this.registrationUrl = new URL(`auth/register/`, config.apiUrl);
   }
 
