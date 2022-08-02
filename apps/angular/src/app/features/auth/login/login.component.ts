@@ -1,11 +1,12 @@
-import { Subscription } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { isDefined } from '@js-camp/core/utils/guards/general.guard';
+import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService, LoginErrors } from '../../../../core/services/auth.service';
 
 interface LoginFormControls {
 
@@ -17,6 +18,7 @@ interface LoginFormControls {
 }
 
 /** Login component. */
+@UntilDestroy()
 @Component({
   selector: 'camp-login',
   templateUrl: './login.component.html',
@@ -36,6 +38,7 @@ export class LoginComponent implements OnDestroy {
   public constructor(
     private readonly formBuilder: FormBuilder,
     private readonly authService: AuthService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
     this.loginForm = this.initLoginForm();
   }
@@ -56,17 +59,34 @@ export class LoginComponent implements OnDestroy {
     if (this.loginForm.invalid) {
       return;
     }
-
-    const loginData = this.loginForm.value;
-    if (
-      isDefined(loginData.email) &&
-      isDefined(loginData.password)
-    ) {
-      this.submitForm.add(
-        this.authService.login({ email: loginData.email, password: loginData.password })
-          .subscribe(),
-      );
+    const fields = this.loginForm.getRawValue();
+    if (!isFieldsDefined(fields)) {
+      return;
     }
+
+    const { password, email } = fields;
+
+    this.authService.login({ email, password })
+      .pipe(
+        tap(errors => {
+          if (errors !== undefined) {
+            this.setErrors(errors);
+          }
+        }),
+        untilDestroyed(this),
+      )
+      .subscribe();
+  }
+
+  private setErrors(errors: LoginErrors): void {
+    Object.entries(errors).forEach(([key, error]) => {
+      if (isKeyOfObject(key, this.loginForm.controls)) {
+        this.loginForm.controls[key].setErrors({
+          [key]: error,
+        });
+        this.changeDetectorRef.markForCheck();
+      }
+    });
   }
 
   private initLoginForm(): FormGroup<LoginFormControls> {

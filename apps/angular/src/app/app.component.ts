@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 /** App component. */
 @Component({
@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
     '../theme/styles.css',
     '../theme/css-reset.css',
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent { }

@@ -2,7 +2,7 @@
   >Home</a
 >
 
-<form class="auth-form mat-elevation-z8" [formGroup]="registrationForm" (submit)="handleFormSubmit()">
+<form class="auth-form mat-elevation-z8" [formGroup]="registrationForm" (submit)="onFormSubmit()">
   <header class="form-header">
     <h1 class="auth-form__heading mat-headline">Registration</h1>
   </header>
@@ -15,6 +15,11 @@
       placeholder="pat@example.com"
       formControlName="email"
     />
+
+    <mat-error *ngIf="registrationForm.controls.email.hasError('email')">
+      {{registrationForm.controls.email.getError('email')}}
+    </mat-error>
+
   </mat-form-field>
 
   <mat-form-field class="form-field" appearance="fill">
@@ -48,7 +53,7 @@
       mat-icon-button
       type="button"
       matSuffix
-      (click)="handlePasswordToggle()"
+      (click)="onPasswordToggle()"
       [attr.aria-label]="'Hide password'"
       [attr.aria-pressed]="isHiddenPassword"
     >
@@ -56,6 +61,12 @@
         isHiddenPassword ? "visibility_off" : "visibility"
       }}</mat-icon>
     </button>
+
+    <mat-error *ngIf="registrationForm.controls.password.hasError('password')">
+      <ul>
+        <li *ngFor="let error of registrationForm.controls.password.getError('password')">{{error}}</li>
+      </ul>
+    </mat-error>
 
     <mat-hint class="form-hint">
       <span>Password must be: </span>
@@ -79,7 +90,7 @@
       mat-icon-button
       type="button"
       matSuffix
-      (click)="handlePasswordConfirmToggle()"
+      (click)="onPasswordConfirmToggle()"
       [attr.aria-label]="'Hide password'"
       [attr.aria-pressed]="isHiddenPasswordConfirm"
     >
@@ -87,7 +98,7 @@
         isHiddenPasswordConfirm ? "visibility_off" : "visibility"
       }}</mat-icon>
     </button>
-    
+
     <mat-error *ngIf="registrationForm.controls.passwordConfirm.hasError('passwordConfirm')">
       Password did not match
     </mat-error>
