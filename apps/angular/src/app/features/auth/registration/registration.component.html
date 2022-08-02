@@ -87,12 +87,13 @@
         isHiddenPasswordConfirm ? "visibility_off" : "visibility"
       }}</mat-icon>
     </button>
-
+    
+    <mat-error *ngIf="registrationForm.controls.passwordConfirm.hasError('passwordConfirm')">
+      Password did not match
+    </mat-error>
   </mat-form-field>
 
-  <mat-error *ngIf="registrationForm.controls.passwordConfirm.hasError('passwordConfirm')">
-    Passwords must match
-  </mat-error>
+
 
   <p class="form-buttons">
     <button class="form-buttons__button" mat-stroked-button type="submit">

@@ -2,6 +2,7 @@ import { Subscription } from 'rxjs';
 
 import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { AuthService } from '../../../../core/services/auth.service';
@@ -57,7 +58,10 @@ export class LoginComponent implements OnDestroy {
     }
 
     const loginData = this.loginForm.value;
-    if (isDefined(loginData.email) && isDefined(loginData.password)) {
+    if (
+      isDefined(loginData.email) &&
+      isDefined(loginData.password)
+    ) {
       this.submitForm.add(
         this.authService.login({ email: loginData.email, password: loginData.password })
           .subscribe(),

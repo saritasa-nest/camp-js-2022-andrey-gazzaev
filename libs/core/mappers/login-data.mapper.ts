@@ -4,8 +4,11 @@ import { Login } from '../models/login';
 /** Login data mapper. */
 export namespace LoginDataMapper {
 
-  /** @inheritdoc */
-  export function toDto(data: Login): LoginDto {
-    return data;
+  /**
+   * Map model to dto.
+   * @param model Login model.
+   */
+  export function toDto(model: Login): LoginDto {
+    return model;
   }
 }

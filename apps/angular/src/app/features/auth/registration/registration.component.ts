@@ -1,6 +1,11 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { isDefined } from '@js-camp/core/utils/guards/general.guard';
+
+import { AuthService } from '../../../../core/services/auth.service';
 
 interface RegistrationFormControls {
 
@@ -27,7 +32,7 @@ interface RegistrationFormControls {
   styleUrls: ['../auth.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class RegistrationComponent {
+export class RegistrationComponent implements OnDestroy {
 
   /** Is password displayed. */
   public isHiddenPassword = true;
@@ -38,8 +43,18 @@ export class RegistrationComponent {
   /** Registration form. */
   public readonly registrationForm: FormGroup<RegistrationFormControls>;
 
-  public constructor(private readonly formBuilder: FormBuilder) {
+  private readonly submitForm = new Subscription();
+
+  public constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly authService: AuthService,
+  ) {
     this.registrationForm = this.initRegistrationForm();
+  }
+
+  /** @inheritdoc */
+  public ngOnDestroy(): void {
+    this.submitForm.unsubscribe();
   }
 
   /** Handles password toggle. */
@@ -59,25 +74,38 @@ export class RegistrationComponent {
       return;
     }
 
-    const registrationData = this.registrationForm.value;
+    const { password, passwordConfirm, email, firstName, lastName } = this.registrationForm.value;
 
     if (
-      isDefined(registrationData.password) &&
-      isDefined(registrationData.passwordConfirm) &&
-      registrationData.password.localeCompare(registrationData.passwordConfirm) !== 0) {
+      isDefined(password) &&
+      isDefined(passwordConfirm) &&
+      password.localeCompare(passwordConfirm) !== 0) {
 
-      this.registrationForm.controls.password.setErrors({
+      const passwordConfirmError = {
         passwordConfirm: true,
-      });
+      };
 
-      this.registrationForm.controls.passwordConfirm.setErrors({
-        passwordConfirm: true,
-      });
+      this.registrationForm.controls.password.setErrors(passwordConfirmError);
+      this.registrationForm.controls.passwordConfirm.setErrors(passwordConfirmError);
 
       return;
     }
 
-    this.registrationForm.controls.passwordConfirm.setErrors({});
+    if (
+      isDefined(password) &&
+      isDefined(email) &&
+      isDefined(firstName) &&
+      isDefined(lastName)
+    ) {
+      this.submitForm.add(
+        this.authService.register({
+          password,
+          email,
+          firstName,
+          lastName,
+        }).subscribe(),
+      );
+    }
   }
 
   private initRegistrationForm(): FormGroup<RegistrationFormControls> {
@@ -88,7 +116,7 @@ export class RegistrationComponent {
       firstName: ['123', [Validators.required]],
       lastName: ['123', [Validators.required]],
       password: ['12345678Test', [Validators.required, Validators.pattern(passwordPattern)]],
-      passwordConfirm: ['123', [Validators.required]],
+      passwordConfirm: ['12345678Tes', [Validators.required]],
     }, { updateOn: 'blur' });
   }
 }
