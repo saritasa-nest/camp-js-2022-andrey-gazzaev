@@ -6,7 +6,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
-import { AuthService, RegistrationErrors } from '../../../../core/services/auth.service';
+import { AuthService, RegistrationErrors } from '../../../../core/services/user.service';
 
 interface RegistrationFormControls {
 

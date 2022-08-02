@@ -1,9 +1,12 @@
 import { catchError, map, Observable, of, switchMap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { User } from '@js-camp/core/models/user';
+import { UserDto } from '@js-camp/core/dtos/user.dto';
 import { TokensDto } from '@js-camp/core/dtos/tokens.dto';
+import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { LoginDataMapper } from '@js-camp/core/mappers/login-data.mapper';
 import { RegistrationDataMapper } from '@js-camp/core/mappers/registration-data.mapper';
 import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
@@ -45,12 +48,15 @@ export class AuthService {
 
   private readonly registrationUrl: URL;
 
+  private readonly userUrl: URL;
+
   public constructor(
     config: AppConfigService,
     private readonly http: HttpClient,
     private readonly tokensService: TokensService,
   ) {
     this.loginUrl = new URL(`auth/login/`, config.apiUrl);
+    this.userUrl = new URL(`user/profile/`, config.apiUrl);
     this.registrationUrl = new URL(`auth/register/`, config.apiUrl);
   }
 
@@ -88,5 +94,13 @@ export class AuthService {
         return of(void 0);
       }),
     );
+  }
+
+  /** Requests to the server to get user profile.. */
+  public fetchUser(): Observable<User> {
+    return this.http.get<UserDto>(this.userUrl.toString())
+      .pipe(
+        map(userDto => UserMapper.fromDto(userDto)),
+      );
   }
 }

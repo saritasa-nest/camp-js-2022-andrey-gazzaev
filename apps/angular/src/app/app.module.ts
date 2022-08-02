@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppConfigService } from '../core/services/app-config.service';
+import { AuthInterceptor } from '../core/interceptors/auth.interceptor';
 import { ApiInterceptor } from '../core/interceptors/api-interceptor.interceptor';
 
 import { AppComponent } from './app.component';
@@ -14,6 +15,11 @@ const httpInterceptorProviders = [
   {
     provide: HTTP_INTERCEPTORS,
     useClass: ApiInterceptor,
+    multi: true,
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
     multi: true,
   },
 ];
