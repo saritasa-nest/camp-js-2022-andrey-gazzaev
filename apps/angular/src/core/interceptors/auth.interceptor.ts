@@ -1,4 +1,4 @@
-import { first, map, Observable, switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import {
@@ -9,6 +9,7 @@ import {
 } from '@angular/common/http';
 
 import { TokensService } from '../services/tokens.service';
+import { AppConfigService } from '../services/app-config.service';
 
 /** Request header names. */
 enum HttpHeader {
@@ -19,16 +20,21 @@ enum HttpHeader {
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  public constructor(private readonly tokensService: TokensService) { }
+  public constructor(
+    private readonly config: AppConfigService,
+    private readonly tokensService: TokensService,
+  ) { }
 
   /** @inheritdoc */
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    if (request.url.startsWith(new URL('auth', this.config.apiUrl).toString())) {
+      return next.handle(request);
+    }
     return this.tokensService.get().pipe(
-      first(),
       map(tokens =>
         tokens !== null ?
           request.clone({
-            headers: request.headers.set(HttpHeader.Authorization,`Bearer ${tokens.access}`),
+            headers: request.headers.set(HttpHeader.Authorization, `Bearer ${tokens.access}`),
           }) :
           request),
       switchMap(newReq => next.handle(newReq)),

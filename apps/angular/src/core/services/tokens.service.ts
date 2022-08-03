@@ -1,4 +1,4 @@
-import { concatWith, defer, distinctUntilChanged, Observable, raceWith, ReplaySubject, shareReplay, tap } from 'rxjs';
+import { concatWith, defer, Observable, raceWith, shareReplay, Subject, tap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { Tokens } from '@js-camp/core/models/tokens';
@@ -17,8 +17,7 @@ export class TokensService {
   private readonly tokens$: Observable<Tokens | null>;
 
   /** Current user tokens. */
-  private readonly currentTokensValue$ =
-    new ReplaySubject<Tokens | null>(1);
+  private readonly currentTokensValue$ = new Subject<Tokens | null>();
 
   public constructor(private readonly localStorageService: LocalStorageService) {
     const tokensChange$ = this.currentTokensValue$;
@@ -26,7 +25,6 @@ export class TokensService {
 
     this.tokens$ = tokensFromStorage$.pipe(
       concatWith(tokensChange$),
-      distinctUntilChanged((x, y) => JSON.stringify(x) === JSON.stringify(y)),
       raceWith(tokensChange$),
       shareReplay({ refCount: true, bufferSize: 1 }),
     );

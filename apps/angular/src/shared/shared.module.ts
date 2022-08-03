@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+
+import { UserService } from '../core/services/user.service';
 
 import { PlaceholderPipe } from './pipes/placeholder.pipe';
 import { HeaderComponent } from './components/header/header.component';
-import { UserService } from '../core/services/user.service';
-import { RouterModule } from '@angular/router';
 
 /** Shared module. */
 @NgModule({

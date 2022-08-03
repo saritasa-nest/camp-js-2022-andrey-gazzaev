@@ -41,7 +41,9 @@ export interface RegistrationErrors {
 }
 
 /** Authorization service. */
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UserService {
 
   private readonly loginUrl: URL;
@@ -50,6 +52,8 @@ export class UserService {
 
   private readonly userUrl: URL;
 
+  private readonly refreshUrl: URL;
+
   public constructor(
     config: AppConfigService,
     private readonly http: HttpClient,
@@ -57,6 +61,7 @@ export class UserService {
   ) {
     this.loginUrl = new URL(`auth/login/`, config.apiUrl);
     this.userUrl = new URL(`users/profile/`, config.apiUrl);
+    this.refreshUrl = new URL(`auth/token/refresh/`, config.apiUrl);
     this.registrationUrl = new URL(`auth/register/`, config.apiUrl);
   }
 
@@ -102,5 +107,16 @@ export class UserService {
       .pipe(
         map(userDto => UserMapper.fromDto(userDto)),
       );
+  }
+
+  /** Refresh tokens. */
+  public refreshToken(): Observable<void> {
+    return this.tokensService.get().pipe(
+      switchMap(tokens => this.http.post<TokensDto>(this.refreshUrl.toString(), {
+        refresh: tokens?.refresh,
+      })),
+      map(tokensDto => TokensMapper.fromDto(tokensDto)),
+      switchMap(tokens => this.tokensService.save(tokens)),
+    );
   }
 }

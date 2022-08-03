@@ -73,7 +73,9 @@ export class TableViewComponent {
   /** Anime list. */
   public readonly animeList$: Observable<readonly AnimeBase[]> | undefined;
 
-  public constructor(private readonly animeService: AnimeService) {
+  public constructor(
+    private readonly animeService: AnimeService,
+  ) {
     this.setFilterListByType();
     this.setPageSize();
     this.setInputValues();
