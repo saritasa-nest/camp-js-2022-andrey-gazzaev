@@ -7,11 +7,11 @@ import { TableViewComponent } from './table-view/table-view.component';
 
 const routes: Routes = [
   {
-    path: 'catalog',
+    path: '',
     component: AnimeComponent,
     children: [
       {
-        path: '',
+        path: 'catalog',
         component: TableViewComponent,
       },
     ],

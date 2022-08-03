@@ -1,4 +1,4 @@
-import { defer, Observable } from 'rxjs';
+import { concatWith, defer, Observable, raceWith, shareReplay, Subject, tap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { Tokens } from '@js-camp/core/models/tokens';
@@ -16,8 +16,18 @@ export class TokensService {
   /** Token info for current user. */
   private readonly tokens$: Observable<Tokens | null>;
 
+  /** Current user tokens. */
+  private readonly currentTokensValue$ = new Subject<Tokens | null>();
+
   public constructor(private readonly localStorageService: LocalStorageService) {
-    this.tokens$ = defer(() => this.localStorageService.get<Tokens>(TOKENS_STORAGE_KEY));
+    const tokensChange$ = this.currentTokensValue$;
+    const tokensFromStorage$ = defer(() => this.localStorageService.get<Tokens>(TOKENS_STORAGE_KEY));
+
+    this.tokens$ = tokensFromStorage$.pipe(
+      concatWith(tokensChange$),
+      raceWith(tokensChange$),
+      shareReplay({ refCount: true, bufferSize: 1 }),
+    );
   }
 
   /** Gets tokens. */
@@ -30,7 +40,10 @@ export class TokensService {
    * @param tokens The token object to be stored.
    */
   public save(tokens: Tokens): Observable<void> {
-    return defer(() => this.localStorageService.save(TOKENS_STORAGE_KEY, tokens));
+    return defer(() => this.localStorageService.save(TOKENS_STORAGE_KEY, tokens))
+      .pipe(
+        tap(() => this.currentTokensValue$.next(tokens)),
+      );
   }
 
   /** Removes user's tokens to local storage. */
