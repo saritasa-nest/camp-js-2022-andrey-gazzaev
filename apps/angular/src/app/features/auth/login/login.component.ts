@@ -1,12 +1,12 @@
 import { Subscription, tap } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
+import { UrlService } from '../../../../core/services/url.service';
 import { UserService, LoginErrors } from '../../../../core/services/user.service';
 
 interface LoginFormControls {
@@ -37,7 +37,7 @@ export class LoginComponent implements OnDestroy {
   private readonly submitForm = new Subscription();
 
   public constructor(
-    private readonly router: Router,
+    private readonly urlService: UrlService,
     private readonly formBuilder: FormBuilder,
     private readonly userService: UserService,
     private readonly changeDetectorRef: ChangeDetectorRef,
@@ -72,7 +72,7 @@ export class LoginComponent implements OnDestroy {
       .pipe(
         tap(errors => {
           if (errors === undefined) {
-            return this.router.navigate(['/catalog']);
+            return this.urlService.navigateToHome();
           }
           return this.setErrors(errors);
         }),
@@ -94,8 +94,8 @@ export class LoginComponent implements OnDestroy {
 
   private initLoginForm(): FormGroup<LoginFormControls> {
     return this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      email: ['test@test.com', [Validators.required, Validators.email]],
+      password: ['12345678Test', [Validators.required]],
     }, { updateOn: 'blur' });
   }
 }

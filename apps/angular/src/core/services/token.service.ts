@@ -14,7 +14,7 @@ const TOKENS_STORAGE_KEY = 'tokens';
 export class TokenService {
 
   /** Token info for current user. */
-  private readonly tokens$: Observable<Token | null>;
+  private readonly token$: Observable<Token | null>;
 
   /** Current user tokens. */
   private readonly currentTokensValue$ = new ReplaySubject<Token | null>(1);
@@ -23,7 +23,7 @@ export class TokenService {
     const tokensChange$ = this.currentTokensValue$;
     const tokensFromStorage$ = defer(() => this.storageService.get<Token>(TOKENS_STORAGE_KEY));
 
-    this.tokens$ = tokensFromStorage$.pipe(
+    this.token$ = tokensFromStorage$.pipe(
       concatWith(tokensChange$),
       raceWith(tokensChange$),
       shareReplay({ refCount: true, bufferSize: 1 }),
@@ -32,7 +32,7 @@ export class TokenService {
 
   /** Gets tokens. */
   public get(): Observable<Token | null> {
-    return this.tokens$;
+    return this.token$;
   }
 
   /**
@@ -48,8 +48,9 @@ export class TokenService {
 
   /** Removes tokens. */
   public remove(): Observable<void> {
-    return defer(() => this.storageService.remove(TOKENS_STORAGE_KEY)).pipe(
-      tap(() => this.currentTokensValue$.next(null)),
-    );
+    return defer(() => this.storageService.remove(TOKENS_STORAGE_KEY))
+      .pipe(
+        tap(() => this.currentTokensValue$.next(null)),
+      );
   }
 }

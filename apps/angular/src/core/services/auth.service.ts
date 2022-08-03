@@ -1,6 +1,5 @@
-import { catchError, map, Observable, switchMap, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, switchMap, switchMapTo, throwError } from 'rxjs';
 
-import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -11,6 +10,7 @@ import { LoginDataMapper } from '@js-camp/core/mappers/login-data.mapper';
 import { RegistrationDataMapper } from '@js-camp/core/mappers/registration-data.mapper';
 import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
 
+import { UrlService } from './url.service';
 import { TokenService } from './token.service';
 import { AppConfigService } from './app-config.service';
 
@@ -29,8 +29,8 @@ export class AuthService {
 
   public constructor(
     config: AppConfigService,
-    private readonly router: Router,
     private readonly http: HttpClient,
+    private readonly urlService: UrlService,
     private readonly tokenService: TokenService,
   ) {
     this.loginUrl = new URL(`auth/login/`, config.apiUrl);
@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   /** Refresh tokens. */
-  public refreshToken(): Observable<void> {
+  public refreshToken(): Observable<boolean | void> {
     return this.tokenService.get().pipe(
       switchMap(tokens => tokens !== null ? this.http.post<TokenDto>(this.refreshUrl.toString(), {
         refresh: tokens.refresh,
@@ -79,7 +79,7 @@ export class AuthService {
         }
         return this.tokenService.remove()
           .pipe(
-            tap(() => this.router.navigate(['/auth/login'])),
+            switchMapTo(this.urlService.navigateToLogin()),
           );
       }),
     );
