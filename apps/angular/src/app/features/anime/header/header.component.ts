@@ -5,12 +5,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { User } from '@js-camp/core/models/user';
 
-import { UserService } from '../../../core/services/user.service';
+import { UserService } from '../../../../core/services/user.service';
 
 /** Header component. */
 @UntilDestroy()
 @Component({
-  selector: 'camp-header',
+  selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
