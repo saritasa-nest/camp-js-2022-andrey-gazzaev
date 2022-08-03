@@ -3,6 +3,7 @@
 
   <div class="hello" *ngIf="user$ | async as user; else standard">
     Hello <span>{{ user.firstName }} {{ user.lastName }}</span>
+    <button type="button" (click)="onLogout()" [routerLink]="'/catalog/'" >log out</button>
   </div>
 
   <ng-template #standard>

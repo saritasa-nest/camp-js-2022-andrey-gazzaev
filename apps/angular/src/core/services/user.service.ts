@@ -1,6 +1,8 @@
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
+
 import { User } from '@js-camp/core/models/user';
 import { UserDto } from '@js-camp/core/dtos/user.dto';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
@@ -9,6 +11,7 @@ import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth
 
 import { AuthService } from './auth.service';
 import { AppConfigService } from './app-config.service';
+import { TokenService } from './token.service';
 
 /** Login errors.  */
 export interface LoginErrors {
@@ -46,8 +49,10 @@ export class UserService {
 
   public constructor(
     config: AppConfigService,
+    private readonly router: Router,
     private readonly http: HttpClient,
     private readonly authService: AuthService,
+    private readonly tokenService: TokenService,
   ) {
     this.userUrl = new URL(`users/profile/`, config.apiUrl);
   }
@@ -83,10 +88,16 @@ export class UserService {
   }
 
   /** Requests to the server to get user profile.. */
-  public fetchUser(): Observable<User> {
-    return this.http.get<UserDto>(this.userUrl.toString())
-      .pipe(
-        map(userDto => UserMapper.fromDto(userDto)),
-      );
+  public fetchUser(): Observable<User | null> {
+    return this.tokenService.get().pipe(
+      switchMap(() => this.http.get<UserDto>(this.userUrl.toString())),
+      map(userDto => UserMapper.fromDto(userDto)),
+      catchError(() => of(null)),
+    );
+  }
+
+  /** Log out. */
+  public logout(): Observable<void> {
+    return this.tokenService.remove();
   }
 }

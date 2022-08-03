@@ -48,6 +48,8 @@ export class TokenService {
 
   /** Removes tokens. */
   public remove(): Observable<void> {
-    return defer(() => this.storageService.remove(TOKENS_STORAGE_KEY));
+    return defer(() => this.storageService.remove(TOKENS_STORAGE_KEY)).pipe(
+      tap(() => this.currentTokensValue$.next(null)),
+    );
   }
 }
