@@ -1,4 +1,5 @@
 import { Subscription, tap } from 'rxjs';
+import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
@@ -39,6 +40,7 @@ export class LoginComponent implements OnDestroy {
     private readonly formBuilder: FormBuilder,
     private readonly userService: UserService,
     private readonly changeDetectorRef: ChangeDetectorRef,
+    private readonly router: Router,
   ) {
     this.loginForm = this.initLoginForm();
   }
@@ -74,6 +76,7 @@ export class LoginComponent implements OnDestroy {
           }
         }),
         untilDestroyed(this),
+        tap(() => this.router.navigate(['/catalog'])),
       )
       .subscribe();
   }
