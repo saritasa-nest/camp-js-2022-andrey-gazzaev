@@ -1,9 +1,9 @@
 import { Subscription, tap } from 'rxjs';
-import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
@@ -37,10 +37,10 @@ export class LoginComponent implements OnDestroy {
   private readonly submitForm = new Subscription();
 
   public constructor(
+    private readonly router: Router,
     private readonly formBuilder: FormBuilder,
     private readonly userService: UserService,
     private readonly changeDetectorRef: ChangeDetectorRef,
-    private readonly router: Router,
   ) {
     this.loginForm = this.initLoginForm();
   }
@@ -71,12 +71,12 @@ export class LoginComponent implements OnDestroy {
     this.userService.login({ email, password })
       .pipe(
         tap(errors => {
-          if (errors !== undefined) {
-            this.setErrors(errors);
+          if (errors === undefined) {
+            return this.router.navigate(['/catalog']);
           }
+          return this.setErrors(errors);
         }),
         untilDestroyed(this),
-        tap(() => this.router.navigate(['/catalog'])),
       )
       .subscribe();
   }

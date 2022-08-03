@@ -1,13 +1,13 @@
 import { tap } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+import { Router } from '@angular/router';
 import { ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
 import { UserService, RegistrationErrors } from '../../../../core/services/user.service';
-
 interface RegistrationFormControls {
 
   /** User email. */
@@ -46,6 +46,7 @@ export class RegistrationComponent {
   public readonly registrationForm: FormGroup<RegistrationFormControls>;
 
   public constructor(
+    private readonly router: Router,
     private readonly formBuilder: FormBuilder,
     private readonly userService: UserService,
     private readonly changeDetectorRef: ChangeDetectorRef,
@@ -84,9 +85,10 @@ export class RegistrationComponent {
     this.userService.register(userInfo)
       .pipe(
         tap(errors => {
-          if (errors !== undefined) {
-            this.setErrors(errors);
+          if (errors === undefined) {
+            return this.router.navigate(['/catalog']);
           }
+          return this.setErrors(errors);
         }),
         untilDestroyed(this),
       )
