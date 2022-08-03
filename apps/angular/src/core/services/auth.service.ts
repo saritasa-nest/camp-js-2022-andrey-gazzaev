@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { TokenDto } from '@js-camp/core/dtos/token.dto';
+import { AppError } from '@js-camp/core/models/app-error';
 import { TokensMapper } from '@js-camp/core/mappers/token.mapper';
 import { LoginDataMapper } from '@js-camp/core/mappers/login-data.mapper';
 import { RegistrationDataMapper } from '@js-camp/core/mappers/registration-data.mapper';
@@ -12,6 +13,8 @@ import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth
 
 import { TokenService } from './token.service';
 import { AppConfigService } from './app-config.service';
+
+const UNAUTHORIZED_ERROR = 'User unauthorized';
 
 /** Authorization service.*/
 @Injectable({
@@ -64,12 +67,15 @@ export class AuthService {
     return this.tokenService.get().pipe(
       switchMap(tokens => tokens !== null ? this.http.post<TokenDto>(this.refreshUrl.toString(), {
         refresh: tokens.refresh,
-      }) : throwError(() => new Error('Unauthorized'))),
+      }) : throwError(() => new AppError(UNAUTHORIZED_ERROR))),
       map(tokensDto => TokensMapper.fromDto(tokensDto)),
       switchMap(tokens => this.tokenService.save(tokens)),
       catchError((error: unknown) => {
-        if (error instanceof Error && error.message === 'Unauthorized') {
-          return throwError(() => new Error('Unauthorized'));
+        if (
+          error instanceof AppError &&
+          error.message === UNAUTHORIZED_ERROR
+        ) {
+          return throwError(() => error);
         }
         return this.tokenService.remove()
           .pipe(
