@@ -8,8 +8,8 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { UserService } from '../services/user.service';
 import { AppConfigService } from '../services/app-config.service';
+import { AuthService } from '../services/auth.service';
 
 /** Refresh token interceptor. */
 @Injectable()
@@ -17,7 +17,7 @@ export class RefreshInterceptor implements HttpInterceptor {
 
   public constructor(
     private readonly config: AppConfigService,
-    private readonly userService: UserService,
+    private readonly authService: AuthService,
   ) { }
 
   /** @inheritdoc */
@@ -32,7 +32,7 @@ export class RefreshInterceptor implements HttpInterceptor {
             return throwError(() => error);
           }
 
-          return this.userService.refreshToken().pipe(
+          return this.authService.refreshToken().pipe(
             switchMap(() => next.handle(request)),
           );
         }

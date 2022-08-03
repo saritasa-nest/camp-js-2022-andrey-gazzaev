@@ -1,17 +1,13 @@
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { User } from '@js-camp/core/models/user';
 import { UserDto } from '@js-camp/core/dtos/user.dto';
-import { TokensDto } from '@js-camp/core/dtos/tokens.dto';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
-import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { LoginDataMapper } from '@js-camp/core/mappers/login-data.mapper';
-import { RegistrationDataMapper } from '@js-camp/core/mappers/registration-data.mapper';
 import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
 
-import { TokensService } from './tokens.service';
+import { AuthService } from './auth.service';
 import { AppConfigService } from './app-config.service';
 
 /** Login errors.  */
@@ -46,39 +42,27 @@ export interface RegistrationErrors {
 })
 export class UserService {
 
-  private readonly loginUrl: URL;
-
-  private readonly registrationUrl: URL;
-
   private readonly userUrl: URL;
-
-  private readonly refreshUrl: URL;
 
   public constructor(
     config: AppConfigService,
     private readonly http: HttpClient,
-    private readonly tokensService: TokensService,
+    private readonly authService: AuthService,
   ) {
-    this.loginUrl = new URL(`auth/login/`, config.apiUrl);
     this.userUrl = new URL(`users/profile/`, config.apiUrl);
-    this.refreshUrl = new URL(`auth/token/refresh/`, config.apiUrl);
-    this.registrationUrl = new URL(`auth/register/`, config.apiUrl);
   }
 
   /**
    * Log In.
    * @param loginData Data required for login..
    */
-  public login(loginData: LoginData): Observable<void | RegistrationErrors | undefined> {
-    const loginDataDto = LoginDataMapper.toDto(loginData);
-    return this.http.post<TokensDto>(this.loginUrl.toString(), loginDataDto).pipe(
-      map(tokensDto => TokensMapper.fromDto(tokensDto)),
-      switchMap(tokens => this.tokensService.save(tokens)),
+  public login(loginData: LoginData): Observable<void | RegistrationErrors> {
+    return this.authService.login(loginData).pipe(
       catchError((error: unknown) => {
         if (error instanceof HttpErrorResponse) {
           return of(error.error.data as LoginErrors);
         }
-        return of(void 0);
+        return throwError(() => error);
       }),
     );
   }
@@ -87,16 +71,13 @@ export class UserService {
    * Registers an account.
    * @param registrationData Data required for registration.
    */
-  public register(registrationData: RegistrationData): Observable<void | RegistrationErrors | undefined> {
-    const registrationDataDto = RegistrationDataMapper.toDto(registrationData);
-    return this.http.post<TokensDto>(this.registrationUrl.toString(), registrationDataDto).pipe(
-      map(tokensDto => TokensMapper.fromDto(tokensDto)),
-      switchMap(tokens => this.tokensService.save(tokens)),
+  public register(registrationData: RegistrationData): Observable<void | RegistrationErrors> {
+    return this.authService.register(registrationData).pipe(
       catchError((error: unknown) => {
         if (error instanceof HttpErrorResponse) {
           return of(error.error.data as RegistrationErrors);
         }
-        return of(void 0);
+        return throwError(() => error);
       }),
     );
   }
@@ -107,16 +88,5 @@ export class UserService {
       .pipe(
         map(userDto => UserMapper.fromDto(userDto)),
       );
-  }
-
-  /** Refresh tokens. */
-  public refreshToken(): Observable<void> {
-    return this.tokensService.get().pipe(
-      switchMap(tokens => this.http.post<TokensDto>(this.refreshUrl.toString(), {
-        refresh: tokens?.refresh,
-      })),
-      map(tokensDto => TokensMapper.fromDto(tokensDto)),
-      switchMap(tokens => this.tokensService.save(tokens)),
-    );
   }
 }
