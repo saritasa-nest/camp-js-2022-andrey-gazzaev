@@ -1,5 +1,6 @@
-import { map, Observable, switchMap } from 'rxjs';
+import { catchError, map, Observable, switchMap, tap, throwError } from 'rxjs';
 
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -25,6 +26,7 @@ export class AuthService {
 
   public constructor(
     config: AppConfigService,
+    private readonly router: Router,
     private readonly http: HttpClient,
     private readonly tokensService: TokensService,
   ) {
@@ -60,11 +62,12 @@ export class AuthService {
   /** Refresh tokens. */
   public refreshToken(): Observable<void> {
     return this.tokensService.get().pipe(
-      switchMap(tokens => this.http.post<TokensDto>(this.refreshUrl.toString(), {
-        refresh: tokens?.refresh,
-      })),
+      switchMap(tokens => tokens !== null ? this.http.post<TokensDto>(this.refreshUrl.toString(), {
+        refresh: tokens.refresh,
+      }) : throwError(() => new Error('Unauthorized'))),
       map(tokensDto => TokensMapper.fromDto(tokensDto)),
       switchMap(tokens => this.tokensService.save(tokens)),
+      catchError(() => this.tokensService.remove().pipe(tap(() => this.router.navigate(['/auth/login'])))),
     );
   }
 }

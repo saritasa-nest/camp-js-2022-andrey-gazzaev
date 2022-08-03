@@ -32,4 +32,9 @@ export class TokensService {
   public save(tokens: Tokens): Observable<void> {
     return defer(() => this.localStorageService.save(TOKENS_STORAGE_KEY, tokens));
   }
+
+  /** Removes user's tokens to local storage. */
+  public remove(): Observable<void> {
+    return defer(() => this.localStorageService.remove(TOKENS_STORAGE_KEY));
+  }
 }
