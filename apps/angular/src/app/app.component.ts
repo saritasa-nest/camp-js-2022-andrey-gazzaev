@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 /** App component. */
 @Component({
@@ -9,5 +9,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     '../theme/css-reset.css',
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+
+  // It is necessary to apply css-reset.css.
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent { }

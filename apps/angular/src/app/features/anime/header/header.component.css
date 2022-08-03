@@ -1,0 +1,10 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile__text {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-left: 20px;
+  padding-right: 10px;
+}

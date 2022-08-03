@@ -1,13 +1,48 @@
-<header>
-  <h1>Anime Catalog</h1>
+<mat-toolbar color="primary">
+  <mat-toolbar-row class="header">
+    <h1 class="header__logo-text">Anime Catalog</h1>
 
-  <div class="hello" *ngIf="user$ | async as user; else standard">
-    Hello <span>{{ user.firstName }} {{ user.lastName }}</span>
-    <button type="button" (click)="onLogout()" [routerLink]="'/catalog/'" >log out</button>
-  </div>
+    <div class="profile" *ngIf="user$ | async as user; else standard">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        type="button"
+        varia-label="Example icon-button with a menu"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
 
-  <ng-template #standard>
-    <button type="button" [routerLink]="'/auth/login/'" >Login</button>
-    <button type="button" [routerLink]="'/auth/registration/'" >Registration</button>
-  </ng-template>
-</header>
+      <mat-menu #menu="matMenu">
+        <p class="profile__text">
+          Hello {{ user.firstName }} {{ user.lastName }}
+        </p>
+        <button
+          mat-menu-item
+          type="button"
+          (click)="onLogout()"
+          [routerLink]="'/catalog/'"
+        >
+          <mat-icon>logout</mat-icon>
+        </button>
+      </mat-menu>
+    </div>
+
+    <ng-template #standard>
+      <div class="buttons">
+        <a
+          type="button"
+          mat-button
+          [routerLink]="'/auth/login/'"
+          >Login</a
+        >
+        <a
+          type="button"
+          mat-button
+          [routerLink]="'/auth/registration/'"
+        >
+          Registration
+        </a>
+      </div>
+    </ng-template>
+  </mat-toolbar-row>
+</mat-toolbar>
