@@ -1,15 +1,15 @@
-import { OmitImmerable } from './immerable';
-
 /** Error coming from the server. */
-export class HttpError extends Error {
+export class HttpError<T> extends Error {
+
+  /** Fields errors. */
+  public readonly data?: T;
 
   /** Error Description. */
   public readonly detail?: string;
 
-  public constructor(error: InitArgsHttpError) {
-    super(error.message);
-    this.detail = error.detail;
+  public constructor(data?: T, detail?: string) {
+    super();
+    this.data = data;
+    this.detail = detail;
   }
 }
-
-type InitArgsHttpError = OmitImmerable<HttpError>;

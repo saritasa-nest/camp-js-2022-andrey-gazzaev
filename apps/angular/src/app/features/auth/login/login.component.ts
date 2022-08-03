@@ -1,13 +1,14 @@
-import { Subscription, tap } from 'rxjs';
+import { catchError, of, Subscription, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 
+import { HttpError } from '@js-camp/core/models/httpError';
 import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
 import { UrlService } from '../../../../core/services/url.service';
-import { UserService, LoginErrors } from '../../../../core/services/user.service';
+import { UserService, LoginErrors, RegistrationErrors } from '../../../../core/services/user.service';
 
 interface LoginFormControls {
 
@@ -70,13 +71,14 @@ export class LoginComponent implements OnDestroy {
 
     this.userService.login({ email, password })
       .pipe(
-        tap(errors => {
-          if (errors === undefined) {
-            return this.urlService.navigateToHome();
-          }
-          return this.setErrors(errors);
-        }),
+        tap(() => this.urlService.navigateToHome()),
         untilDestroyed(this),
+        catchError((error: unknown) => {
+          if (error instanceof HttpError) {
+            return of(this.setErrors(error.data as RegistrationErrors));
+          }
+          return throwError(() => error);
+        }),
       )
       .subscribe();
   }

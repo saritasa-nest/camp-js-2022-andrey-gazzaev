@@ -5,9 +5,12 @@ import { Injectable } from '@angular/core';
 
 import { User } from '@js-camp/core/models/user';
 import { UserDto } from '@js-camp/core/dtos/user.dto';
+import { HttpError } from '@js-camp/core/models/httpError';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
+
+import { catchHttpErrorResponse } from '../utils/rxjs/catch-http-error';
 
 import { AuthService } from './auth.service';
 import { AppConfigService } from './app-config.service';
@@ -63,12 +66,10 @@ export class UserService {
    */
   public login(loginData: LoginData): Observable<void | RegistrationErrors> {
     return this.authService.login(loginData).pipe(
-      catchError((error: unknown) => {
-        if (error instanceof HttpErrorResponse) {
-          return of(error.error.data as LoginErrors);
-        }
-        return throwError(() => error);
-      }),
+      catchHttpErrorResponse(error => throwError(() => new HttpError<LoginErrors>(
+        error.error.data,
+        error.error.detail,
+      ))),
     );
   }
 
@@ -78,12 +79,10 @@ export class UserService {
    */
   public register(registrationData: RegistrationData): Observable<void | RegistrationErrors> {
     return this.authService.register(registrationData).pipe(
-      catchError((error: unknown) => {
-        if (error instanceof HttpErrorResponse) {
-          return of(error.error.data as RegistrationErrors);
-        }
-        return throwError(() => error);
-      }),
+      catchHttpErrorResponse(error => throwError(() => new HttpError<RegistrationErrors>(
+        error.error.data,
+        error.error.detail,
+      ))),
     );
   }
 

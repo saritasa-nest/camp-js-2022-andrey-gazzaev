@@ -1,9 +1,10 @@
-import { tap } from 'rxjs';
+import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { HttpError } from '@js-camp/core/models/httpError';
 import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
 import { UrlService } from '../../../../core/services/url.service';
@@ -85,13 +86,14 @@ export class RegistrationComponent {
     const userInfo = { password, email, firstName, lastName };
     this.userService.register(userInfo)
       .pipe(
-        tap(errors => {
-          if (errors === undefined) {
-            return this.urlService.navigateToHome();
-          }
-          return this.setErrors(errors);
-        }),
+        tap(() => this.urlService.navigateToHome()),
         untilDestroyed(this),
+        catchError((error: unknown) => {
+          if (error instanceof HttpError) {
+            return of(this.setErrors(error.data as RegistrationErrors));
+          }
+          return throwError(() => error);
+        }),
       )
       .subscribe();
   }
@@ -126,11 +128,11 @@ export class RegistrationComponent {
     const passwordPattern = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,64}$');
 
     return this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.pattern(passwordPattern)]],
-      passwordConfirm: ['', [Validators.required]],
+      email: ['test@test.com', [Validators.required, Validators.email]],
+      firstName: ['123', [Validators.required]],
+      lastName: ['123', [Validators.required]],
+      password: ['12345678Test', [Validators.required, Validators.pattern(passwordPattern)]],
+      passwordConfirm: ['12345678Test', [Validators.required]],
     }, { updateOn: 'blur' });
   }
 }
