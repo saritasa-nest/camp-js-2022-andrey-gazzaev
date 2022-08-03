@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { User } from '@js-camp/core/models/user';
 
 import { UserService } from '../../../core/services/user.service';
-import { TokensService } from '../../../core/services/tokens.service';
+import { TokenService } from '../../../core/services/token.service';
 
 /** Header component. */
 @Component({
@@ -20,7 +20,7 @@ export class HeaderComponent {
 
   public constructor(
     private readonly userService: UserService,
-    private readonly tokensService: TokensService,
+    private readonly tokensService: TokenService,
   ) {
 
     this.user$ = this.tokensService.get().pipe(

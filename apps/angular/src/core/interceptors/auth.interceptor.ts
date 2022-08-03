@@ -8,7 +8,7 @@ import {
   HttpInterceptor,
 } from '@angular/common/http';
 
-import { TokensService } from '../services/tokens.service';
+import { TokenService } from '../services/token.service';
 import { AppConfigService } from '../services/app-config.service';
 
 /** Request header names. */
@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   public constructor(
     private readonly config: AppConfigService,
-    private readonly tokensService: TokensService,
+    private readonly tokensService: TokenService,
   ) { }
 
   /** @inheritdoc */

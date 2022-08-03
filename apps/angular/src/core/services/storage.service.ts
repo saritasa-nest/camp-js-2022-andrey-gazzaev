@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class LocalStorageService {
+export class StorageService {
 
   /**
    * Saves value to storage by key.
