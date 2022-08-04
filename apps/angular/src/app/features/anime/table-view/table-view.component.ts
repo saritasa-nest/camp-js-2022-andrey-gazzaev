@@ -7,6 +7,7 @@ import { ChangeDetectionStrategy, Component, TrackByFunction, ViewEncapsulation 
 
 import { AnimeBase } from '@js-camp/core/models/anime';
 
+import { goToTop } from '../../../../core/utils/animations';
 import { AnimeService } from '../../../../core/services/anime.service';
 
 interface TableSort {
@@ -113,7 +114,7 @@ export class TableViewComponent {
         this.animeListCount = animeList.count;
         return animeList.results;
       }),
-      tap(() => this.goToTop()),
+      tap(() => goToTop()),
     );
   }
 
@@ -168,16 +169,5 @@ export class TableViewComponent {
     this.sort$.next({ field: animeListOption.sort.field, direction: animeListOption.sort.direction === 'desc' ? 'desc' : 'asc' });
     this.search.setValue(animeListOption.search);
     this.typeFilter.setValue(animeListOption.filter.byType);
-  }
-
-  /** Go to top page. */
-  private goToTop(): void {
-    const TOP_OF_PAGE = 0;
-    const SCROLL_EVENT = 'smooth';
-
-    window.scrollTo({
-      top: TOP_OF_PAGE,
-      behavior: SCROLL_EVENT,
-    });
   }
 }
