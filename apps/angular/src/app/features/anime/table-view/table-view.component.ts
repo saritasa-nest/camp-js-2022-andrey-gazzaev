@@ -5,7 +5,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { ChangeDetectionStrategy, Component, TrackByFunction, ViewEncapsulation } from '@angular/core';
 
-import { AnimeBase } from '@js-camp/core/models/anime';
+import { AnimeBase, Type } from '@js-camp/core/models/anime';
 
 import { goToTop } from '../../../../core/utils/animations';
 import { UrlService } from '../../../../core/services/url.service';
@@ -60,7 +60,7 @@ export class TableViewComponent {
   public readonly search = new FormControl('');
 
   /** Filter by type. */
-  public readonly typeFilter = new FormControl<string[]>(['TV']);
+  public readonly typeFilter = new FormControl<Type[]>([Type.Tv]);
 
   /** Current sort settings. */
   public readonly sort$ = new BehaviorSubject<TableSort>({
@@ -106,7 +106,7 @@ export class TableViewComponent {
         const animeListOption = {
           pageNumber,
           sort,
-          filter: { byType: typeFilter !== null ? typeFilter : ['TV'] },
+          filter: { byType: typeFilter !== null ? typeFilter : [Type.Tv] },
           search: search !== null ? search : '',
           limit: this.pageSize,
         };
