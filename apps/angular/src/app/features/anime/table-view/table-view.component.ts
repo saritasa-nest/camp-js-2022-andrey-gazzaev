@@ -106,7 +106,7 @@ export class TableViewComponent {
           limit: this.pageSize,
         };
         const animeListHttpParams = this.animeService.getAnimeListHttpParams(animeListOption);
-        this.animeService.setUrl(animeListHttpParams.toString());
+        this.animeService.setUrl(animeListHttpParams);
         return this.animeService.fetchAnimeList(animeListHttpParams);
       }),
       map(animeList => {
@@ -142,7 +142,7 @@ export class TableViewComponent {
    * @param _index Anime's index into array.
    * @param anime Object of hero.
    */
-  public trackItem: TrackByFunction<AnimeBase> = function (_index: number, anime: AnimeBase): number {
+  public trackItem: TrackByFunction<AnimeBase> = function(_index: number, anime: AnimeBase): number {
     return anime.id;
   };
 

@@ -58,9 +58,10 @@ export class AnimeService {
 
   /**
    * Sets new query params in url.
-   * @param query Query string.
+   * @param httpParams Http params.
    */
-  public setUrl(query: string): void {
+  public setUrl(httpParams: HttpParams): void {
+    const query = httpParams.toString();
     const queryParams: Params = {};
 
     query.split('&').forEach(param => {
