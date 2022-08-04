@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy, Component, TrackByFunction, ViewEncapsulation 
 import { AnimeBase } from '@js-camp/core/models/anime';
 
 import { goToTop } from '../../../../core/utils/animations';
+import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
 
 interface TableSort {
@@ -76,7 +77,10 @@ export class TableViewComponent {
   /** Anime list. */
   public readonly animeList$: Observable<readonly AnimeBase[]>;
 
-  public constructor(private readonly animeService: AnimeService) {
+  public constructor(
+    urlService: UrlService,
+    private readonly animeService: AnimeService,
+  ) {
     this.setFilterListByType();
     this.setPageSize();
     this.setInputValues();
@@ -107,7 +111,7 @@ export class TableViewComponent {
           limit: this.pageSize,
         };
         const animeListHttpParams = this.animeService.getAnimeListHttpParams(animeListOption);
-        this.animeService.setUrl(animeListHttpParams);
+        urlService.setUrl(animeListHttpParams);
         return this.animeService.fetchAnimeList(animeListHttpParams);
       }),
       map(animeList => {

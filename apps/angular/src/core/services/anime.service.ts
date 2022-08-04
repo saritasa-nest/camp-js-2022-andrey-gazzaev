@@ -2,7 +2,6 @@ import { map, Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
@@ -24,9 +23,7 @@ export class AnimeService {
 
   public constructor(
     config: AppConfigService,
-    private readonly router: Router,
     private readonly http: HttpClient,
-    private readonly route: ActivatedRoute,
     private readonly animeListOptionsMapper: AnimeListOptionsMapper,
   ) {
     this.animeListUrl = new URL(`anime/anime/`, config.apiUrl);
@@ -53,26 +50,6 @@ export class AnimeService {
   /** Gets page limit. */
   public getLimit(): number {
     return this.animeListOptionsMapper.getLimit();
-  }
-
-  /**
-   * Sets new query params in url.
-   * @param httpParams Http params.
-   */
-  public setUrl(httpParams: HttpParams): void {
-    const query = httpParams.toString();
-    const queryParams: Params = {};
-
-    query.split('&').forEach(param => {
-      const [key, value] = param.split('=');
-      queryParams[key] = value;
-    });
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams,
-      queryParamsHandling: 'merge',
-    });
   }
 
   /** Gets anime list params from URL query params. */
