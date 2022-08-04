@@ -19,6 +19,7 @@ import { AnimeComponent } from './anime.component';
 import { HeaderComponent } from './header/header.component';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { TableViewComponent } from './table-view/table-view.component';
+import { DetailsComponent } from './details/details.component';
 
 /** Anime module. */
 @NgModule({
@@ -26,6 +27,7 @@ import { TableViewComponent } from './table-view/table-view.component';
     AnimeComponent,
     HeaderComponent,
     TableViewComponent,
+    DetailsComponent,
   ],
   imports: [
     FormsModule,
@@ -46,4 +48,4 @@ import { TableViewComponent } from './table-view/table-view.component';
     MatProgressSpinnerModule,
   ],
 })
-export class AnimeModule { }
+export class AnimeModule {}
