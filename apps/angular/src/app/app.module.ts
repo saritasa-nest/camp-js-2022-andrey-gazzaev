@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppConfigService } from '../core/services/app-config.service';
 import { AuthInterceptor } from '../core/interceptors/auth.interceptor';
 import { RefreshInterceptor } from '../core/interceptors/refresh.interceptor';
-import { ApiInterceptor } from '../core/interceptors/api-interceptor.interceptor';
+import { ApiInterceptor } from '../core/interceptors/api.interceptor';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
