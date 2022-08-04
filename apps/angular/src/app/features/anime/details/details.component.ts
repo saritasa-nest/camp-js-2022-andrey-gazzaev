@@ -22,7 +22,7 @@ export class DetailsComponent {
   public readonly safeURL$ = new BehaviorSubject<SafeResourceUrl>('');
 
   public constructor(private readonly animeService: AnimeService, private readonly sanitizer: DomSanitizer) {
-    this.anime$ = this.animeService.fetchAnime(2).pipe(
+    this.anime$ = this.animeService.fetchAnime(1).pipe(
       tap(anime => this.safeURL$.next(
         this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${anime.trailerYoutubeId}`),
       )),
