@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppConfigService } from '../core/services/app-config.service';
-import { ApiInterceptor } from '../core/interceptors/api-interceptor.interceptor';
+import { ApiInterceptor } from '../core/interceptors/api.interceptor';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';

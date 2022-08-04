@@ -1,4 +1,4 @@
-import { BehaviorSubject, combineLatestWith, debounceTime, map, Observable, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, map, Observable, startWith, switchMap, tap, withLatestFrom } from 'rxjs';
 
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
@@ -12,26 +12,28 @@ import { AnimeService } from '../../../../core/services/anime.service';
 interface TableSort {
 
   /** The field by which to sort. */
-  field: string;
+  readonly field: string;
 
   /** The sort order. */
-  direction: SortDirection;
+  readonly direction: SortDirection;
 }
 
 interface FilterItem {
 
   /** Key of filter. */
-  field: string;
+  readonly field: string;
 
   /** Name of filter. */
-  title: string;
+  readonly title: string;
 
   /** Is a filter selected. */
-  isSelect: boolean;
+  readonly isSelect: boolean;
 }
 
 const DEFAULT_SORT_FIELD = 'title_eng';
 const DEFAULT_SORT_DIRECTION = 'asc';
+const INITIAL_PAGE = 0;
+const INPUT_DEBOUNCE_TIME = 500;
 
 /** Table view component. */
 @Component({
@@ -71,30 +73,31 @@ export class TableViewComponent {
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
 
   /** Anime list. */
-  public readonly animeList$: Observable<readonly AnimeBase[]> | undefined;
+  public readonly animeList$: Observable<readonly AnimeBase[]>;
 
   public constructor(private readonly animeService: AnimeService) {
     this.setFilterListByType();
     this.setPageSize();
     this.setInputValues();
 
-    const params$ = this.currentPageNumber$.pipe(
+    const paramsChange$ = this.search.valueChanges.pipe(
+      startWith(this.search.value),
       combineLatestWith(
-        this.search.valueChanges.pipe(
-          startWith(this.search.value),
-          tap(() => this.currentPageNumber$.next(0)),
-        ),
         this.typeFilter.valueChanges.pipe(
           startWith(this.typeFilter.value),
-          tap(() => this.currentPageNumber$.next(0)),
         ),
         this.sort$,
       ),
-      debounceTime(500),
+      tap(() => this.currentPageNumber$.next(INITIAL_PAGE)),
+      debounceTime(INPUT_DEBOUNCE_TIME),
+    );
+
+    const params$ = paramsChange$.pipe(
+      withLatestFrom(this.currentPageNumber$),
     );
 
     this.animeList$ = params$.pipe(
-      switchMap(([pageNumber, search, typeFilter, sort]) => this.animeService.fetchAnimeList({
+      switchMap(([[search, typeFilter, sort], pageNumber]) => this.animeService.fetchAnimeList({
         pageNumber,
         sort,
         filter: { byType: typeFilter !== null ? typeFilter : ['TV'] },
@@ -113,7 +116,7 @@ export class TableViewComponent {
    * Handlers pagination change.
    * @param event Paginator event.
    */
-  public handlePaginationChange(event: PageEvent): void {
+  public onPaginationChange(event: PageEvent): void {
     this.currentPageNumber$.next(event.pageIndex);
   }
 
@@ -121,7 +124,7 @@ export class TableViewComponent {
    * Handlers sort change.
    * @param sort Sort state.
    */
-  public handleSortChange(sort: Sort): void {
+  public onSortChange(sort: Sort): void {
     // Need to remove the value '' from sort.direction
     this.sort$.next({
       field: sort.active,
