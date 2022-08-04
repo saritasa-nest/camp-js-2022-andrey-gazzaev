@@ -14,12 +14,12 @@
   align-items: center;
 }
 
-.mat-header-cell {
+app-table-view .mat-header-cell {
   text-align: center;
   font-size: var(--table-head-cell-text-size);
 }
 
-.mat-cell {
+app-table-view .mat-cell {
   width: 150px;
   text-align: center;
   justify-content: center;
@@ -38,19 +38,19 @@
   width: 100%;
 }
 
-.table-column-type .mat-select-arrow-wrapper {
+app-table-view .table-column-type .mat-select-arrow-wrapper {
   display: none;
 }
 
-.table-head-cell .mat-header-cell {
+app-table-view .table-head-cell .mat-header-cell {
   text-align: center;
 }
 
-.table-head-cell .mat-sort-header-container {
+app-table-view .table-head-cell .mat-sort-header-container {
   justify-content: center;
 }
 
-.table-column-type .mat-select-value {
+app-table-view .table-column-type .mat-select-value {
   color: inherit;
 }
 
