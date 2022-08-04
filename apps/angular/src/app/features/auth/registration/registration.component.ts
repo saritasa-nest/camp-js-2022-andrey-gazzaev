@@ -1,30 +1,32 @@
 import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { HttpError } from '@js-camp/core/models/httpError';
-import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
+import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
 
+import { showErrors } from '../../../../core/utils/show-errors';
 import { UrlService } from '../../../../core/services/url.service';
 import { UserService, RegistrationErrors } from '../../../../core/services/user.service';
 
 interface RegistrationFormControls {
 
-  /** User email. */
+  /** Email control. */
   readonly email: FormControl<string | null>;
 
-  /** First Name. */
+  /** First name control. */
   readonly firstName: FormControl<string | null>;
 
-  /** Last name. */
+  /** Last name control. */
   readonly lastName: FormControl<string | null>;
 
-  /** User password. */
+  /** Password control. */
   readonly password: FormControl<string | null>;
 
-  /** Password confirm. */
+  /** Password confirm control. */
   readonly passwordConfirm: FormControl<string | null>;
 }
 
@@ -46,6 +48,7 @@ export class RegistrationComponent {
   public readonly registrationForm: FormGroup<RegistrationFormControls>;
 
   public constructor(
+    private readonly snackBar: MatSnackBar,
     private readonly urlService: UrlService,
     private readonly formBuilder: FormBuilder,
     private readonly userService: UserService,
@@ -88,7 +91,7 @@ export class RegistrationComponent {
         untilDestroyed(this),
         catchError((error: unknown) => {
           if (error instanceof HttpError) {
-            return of(this.setErrors(error.data as RegistrationErrors));
+            return of(this.setErrors(error));
           }
           return throwError(() => error);
         }),
@@ -111,26 +114,20 @@ export class RegistrationComponent {
     return false;
   }
 
-  private setErrors(errors: RegistrationErrors): void {
-    Object.entries(errors).forEach(([key, error]) => {
-      if (isKeyOfObject(key, this.registrationForm.controls)) {
-        this.registrationForm.controls[key].setErrors({
-          [key]: error,
-        });
-        this.changeDetectorRef.markForCheck();
-      }
-    });
+  private setErrors(errors: HttpError<RegistrationErrors>): void {
+    showErrors(errors, this.snackBar, this.registrationForm);
+    this.changeDetectorRef.markForCheck();
   }
 
   private initRegistrationForm(): FormGroup<RegistrationFormControls> {
     const passwordPattern = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,64}$');
 
     return this.formBuilder.group({
-      email: ['test@test.com', [Validators.required, Validators.email]],
-      firstName: ['123', [Validators.required]],
-      lastName: ['123', [Validators.required]],
-      password: ['12345678Test', [Validators.required, Validators.pattern(passwordPattern)]],
-      passwordConfirm: ['12345678Test', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.pattern(passwordPattern)]],
+      passwordConfirm: ['', [Validators.required]],
     }, { updateOn: 'blur' });
   }
 }

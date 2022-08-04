@@ -1,14 +1,16 @@
 import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { HttpError } from '@js-camp/core/models/httpError';
-import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
+import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
 
+import { showErrors } from '../../../../core/utils/show-errors';
 import { UrlService } from '../../../../core/services/url.service';
-import { UserService, LoginErrors, RegistrationErrors } from '../../../../core/services/user.service';
+import { UserService, RegistrationErrors } from '../../../../core/services/user.service';
 
 interface LoginFormControls {
 
@@ -35,6 +37,7 @@ export class LoginComponent {
 
   public constructor(
     private readonly urlService: UrlService,
+    private readonly snackBar: MatSnackBar,
     private readonly formBuilder: FormBuilder,
     private readonly userService: UserService,
     private readonly changeDetectorRef: ChangeDetectorRef,
@@ -66,7 +69,7 @@ export class LoginComponent {
         untilDestroyed(this),
         catchError((error: unknown) => {
           if (error instanceof HttpError) {
-            return of(this.setErrors(error.data as RegistrationErrors));
+            return of(this.setErrors(error));
           }
           return throwError(() => error);
         }),
@@ -74,21 +77,15 @@ export class LoginComponent {
       .subscribe();
   }
 
-  private setErrors(errors: LoginErrors): void {
-    Object.entries(errors).forEach(([key, error]) => {
-      if (isKeyOfObject(key, this.loginForm.controls)) {
-        this.loginForm.controls[key].setErrors({
-          [key]: error,
-        });
-        this.changeDetectorRef.markForCheck();
-      }
-    });
+  private setErrors(errors: HttpError<RegistrationErrors>): void {
+    showErrors(errors, this.snackBar, this.loginForm);
+    this.changeDetectorRef.markForCheck();
   }
 
   private initLoginForm(): FormGroup<LoginFormControls> {
     return this.formBuilder.group({
-      email: ['test@test.com', [Validators.required, Validators.email]],
-      password: ['12345678Test', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
     }, { updateOn: 'blur' });
   }
 }
