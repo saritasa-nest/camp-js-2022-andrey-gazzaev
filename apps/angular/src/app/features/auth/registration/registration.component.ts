@@ -1,7 +1,7 @@
 import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { HttpError } from '@js-camp/core/models/httpError';
@@ -31,10 +31,8 @@ interface RegistrationFormControls {
 /** Registration component. */
 @UntilDestroy()
 @Component({
-  selector: 'camp-registration',
+  selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['../auth.css'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class RegistrationComponent {
 

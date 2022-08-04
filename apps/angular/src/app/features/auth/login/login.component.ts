@@ -2,7 +2,7 @@ import { catchError, of, Subscription, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 
 import { HttpError } from '@js-camp/core/models/httpError';
 import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
@@ -22,10 +22,8 @@ interface LoginFormControls {
 /** Login component. */
 @UntilDestroy()
 @Component({
-  selector: 'camp-login',
+  selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['../auth.css'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class LoginComponent implements OnDestroy {
 
