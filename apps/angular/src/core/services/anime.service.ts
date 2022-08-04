@@ -10,10 +10,9 @@ import { AnimeBase, Type } from '@js-camp/core/models/anime';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
-import { AnimeListOptions } from '@js-camp/core/utils/interfaces/anime.interface';
 
 import { AppConfigService } from './app-config.service';
-import { AnimeListOptionsMapper } from './mappers/anime-list-options.mapper';
+import { AnimeListOptions, AnimeListOptionsMapper } from './mappers/anime-list-options.mapper';
 
 /** Anime service. */
 @Injectable({
