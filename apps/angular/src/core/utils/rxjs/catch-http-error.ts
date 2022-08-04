@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * Catch HttpErrorResponse operator.
- * Catches only HttpError<T> errors.
+ * Catches only HttpErrorResponse errors.
  * @param selector Selector.
  */
 export function catchHttpErrorResponse<T, V>(

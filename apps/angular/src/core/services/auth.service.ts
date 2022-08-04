@@ -16,7 +16,7 @@ import { AppConfigService } from './app-config.service';
 
 const UNAUTHORIZED_ERROR = 'User unauthorized';
 
-/** Authorization service.*/
+/** Service providing the possibility of authorization.*/
 @Injectable({
   providedIn: 'root',
 })
@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   /**
-   * Log In.
+   * Log in to account.
    * @param loginData Data required for login..
    */
   public login(loginData: LoginData): Observable<void> {

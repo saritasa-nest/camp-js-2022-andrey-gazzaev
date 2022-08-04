@@ -7,7 +7,7 @@ import { StorageService } from './storage.service';
 
 const TOKENS_STORAGE_KEY = 'tokens';
 
-/** Tokens service. */
+/** Token service. */
 @Injectable({
   providedIn: 'root',
 })
@@ -30,13 +30,13 @@ export class TokenService {
     );
   }
 
-  /** Gets tokens. */
+  /** Gets token. */
   public get(): Observable<Token | null> {
     return this.token$;
   }
 
   /**
-   * Saves tokens.
+   * Saves token.
    * @param tokens The token object to be stored.
    */
   public save(tokens: Token): Observable<void> {
@@ -46,7 +46,7 @@ export class TokenService {
       );
   }
 
-  /** Removes tokens. */
+  /** Removes token. */
   public remove(): Observable<void> {
     return defer(() => this.storageService.remove(TOKENS_STORAGE_KEY))
       .pipe(

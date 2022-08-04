@@ -28,7 +28,7 @@ export class RefreshInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: unknown) => {
         if (error instanceof HttpErrorResponse) {
-          if (error.status !== 401 || request.url.startsWith(new URL('auth', this.config.apiUrl).toString())) {
+          if (error.status !== 401 || this.shouldProhibitedUrl(request.url)) {
             return throwError(() => error);
           }
 
@@ -39,6 +39,12 @@ export class RefreshInterceptor implements HttpInterceptor {
 
         return throwError(() => error);
       }),
+    );
+  }
+
+  private shouldProhibitedUrl(url: string): boolean {
+    return url.startsWith(
+      new URL('auth', this.config.apiUrl).toString(),
     );
   }
 }
