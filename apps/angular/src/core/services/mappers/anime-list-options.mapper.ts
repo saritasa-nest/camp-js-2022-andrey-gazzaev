@@ -18,7 +18,7 @@ namespace DefaultParamValue {
   export const OFFSET = 0;
   export const SEARCH = '';
   export const ORDERING = `${SortDirection.Ascending}${SortField.TitleEnglish}`;
-  export const TYPE = '';
+  export const TYPE = 'TV';
 }
 
 /** Sort setting for anime list request. */
