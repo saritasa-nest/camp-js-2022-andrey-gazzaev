@@ -1,4 +1,8 @@
-<form class="auth-form mat-elevation-z8" [formGroup]="registrationForm" (submit)="onFormSubmit()">
+<form
+  class="auth-form mat-elevation-z8"
+  [formGroup]="registrationForm"
+  (submit)="onFormSubmit()"
+>
   <header class="form-header">
     <h1 class="auth-form__heading mat-headline">Registration</h1>
   </header>
@@ -8,12 +12,11 @@
     <input
       matInput
       type="email"
-      placeholder="pat@example.com"
+      placeholder="thomas.anderson@rabbit.com"
       formControlName="email"
     />
-
     <mat-error *ngIf="registrationForm.controls.email.hasError('email')">
-      {{registrationForm.controls.email.getError('email')}}
+      {{ registrationForm.controls.email.getError("email") }}
     </mat-error>
   </mat-form-field>
 
@@ -22,7 +25,7 @@
     <input
       matInput
       type="text"
-      placeholder="Fred"
+      placeholder="Thomas"
       formControlName="firstName"
     />
   </mat-form-field>
@@ -32,7 +35,7 @@
     <input
       matInput
       type="text"
-      placeholder="Smith"
+      placeholder="Anderson"
       formControlName="lastName"
     />
   </mat-form-field>
@@ -59,7 +62,13 @@
 
     <mat-error *ngIf="registrationForm.controls.password.hasError('password')">
       <ul>
-        <li *ngFor="let error of registrationForm.controls.password.getError('password')">{{error}}</li>
+        <li
+          *ngFor="
+            let error of registrationForm.controls.password.getError('password')
+          "
+        >
+          {{ error }}
+        </li>
       </ul>
     </mat-error>
 
@@ -93,13 +102,14 @@
         isHiddenPasswordConfirm ? "visibility_off" : "visibility"
       }}</mat-icon>
     </button>
-
-    <mat-error *ngIf="registrationForm.controls.passwordConfirm.hasError('passwordConfirm')">
+    <mat-error
+      *ngIf="
+        registrationForm.controls.passwordConfirm.hasError('passwordConfirm')
+      "
+    >
       Password did not match
     </mat-error>
   </mat-form-field>
-
-
 
   <p class="form-buttons">
     <button class="form-buttons__button" mat-stroked-button type="submit">
@@ -112,7 +122,7 @@
       <a
         class="link"
         mat-button
-        title="Register a new account"
+        title="Login to your account"
         [routerLink]="'/auth/login/'"
         >Do you have an account?</a
       >

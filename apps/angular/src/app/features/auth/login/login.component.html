@@ -9,12 +9,15 @@
 
   <mat-form-field class="form-field" appearance="fill">
     <mat-label>Enter your email</mat-label>
-    <input matInput placeholder="pat@example.com" formControlName="email" />
-
+    <input
+      matInput
+      placeholder="pat@example.com"
+      formControlName="email"
+      type="email"
+    />
     <mat-error *ngIf="loginForm.controls.email.hasError('email')">
-      {{loginForm.controls.email.getError('email')}}
+      {{ loginForm.controls.email.getError("email") }}
     </mat-error>
-
   </mat-form-field>
 
   <mat-form-field class="form-field" appearance="fill">
@@ -26,8 +29,8 @@
     />
     <button
       mat-icon-button
-      type="button"
       matSuffix
+      type="button"
       (click)="handlePasswordToggle()"
       [attr.aria-label]="'Hide password'"
       [attr.aria-pressed]="isHiddenPassword"
@@ -36,9 +39,8 @@
         isHiddenPassword ? "visibility_off" : "visibility"
       }}</mat-icon>
     </button>
-
     <mat-error *ngIf="loginForm.controls.password.hasError('password')">
-      {{loginForm.controls.password.getError('password')}}
+      {{ loginForm.controls.password.getError("password") }}
     </mat-error>
   </mat-form-field>
 
@@ -51,7 +53,7 @@
   <mat-list class="form-list" role="list">
     <mat-list-item role="listitem">
       <a class="link" mat-button title="Password recovery" href="#"
-        >Forgot your password</a
+        >Forgot your password?</a
       >
     </mat-list-item>
     <mat-list-item role="listitem">

@@ -7,7 +7,7 @@ import { User } from '@js-camp/core/models/user';
 
 import { UserService } from '../../../../core/services/user.service';
 
-/** Header component. */
+/** The main component of header on an anime page. */
 @UntilDestroy()
 @Component({
   selector: 'app-header',
@@ -17,7 +17,7 @@ import { UserService } from '../../../../core/services/user.service';
 })
 export class HeaderComponent {
 
-  /** User info. */
+  /** User information. */
   public readonly user$: Observable<User | null>;
 
   public constructor(

@@ -1,8 +1,8 @@
-import { catchError, of, Subscription, tap, throwError } from 'rxjs';
+import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 
 import { HttpError } from '@js-camp/core/models/httpError';
 import { isFieldsDefined, isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
@@ -12,10 +12,10 @@ import { UserService, LoginErrors, RegistrationErrors } from '../../../../core/s
 
 interface LoginFormControls {
 
-  /** User email. */
+  /** Email control. */
   readonly email: FormControl<string | null>;
 
-  /** User password. */
+  /** Password control. */
   readonly password: FormControl<string | null>;
 }
 
@@ -25,15 +25,13 @@ interface LoginFormControls {
   selector: 'app-login',
   templateUrl: './login.component.html',
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent {
 
   /** Is password displayed. */
   public isHiddenPassword = true;
 
   /** Login form. */
   public readonly loginForm: FormGroup<LoginFormControls>;
-
-  private readonly submitForm = new Subscription();
 
   public constructor(
     private readonly urlService: UrlService,
@@ -42,11 +40,6 @@ export class LoginComponent implements OnDestroy {
     private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
     this.loginForm = this.initLoginForm();
-  }
-
-  /** @inheritdoc */
-  public ngOnDestroy(): void {
-    this.submitForm.unsubscribe();
   }
 
   /** Handles password toggle. */

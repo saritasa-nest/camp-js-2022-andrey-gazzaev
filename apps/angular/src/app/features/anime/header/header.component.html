@@ -1,13 +1,13 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row class="header">
-    <h1 class="header__logo-text">Anime Catalog</h1>
+    <h1 class="header__logo-text mat-headline">Anime Catalog</h1>
 
-    <div class="profile" *ngIf="user$ | async as user; else standard">
+    <div class="profile" *ngIf="user$ | async as user; else standardProfile">
       <button
         mat-icon-button
         [matMenuTriggerFor]="menu"
         type="button"
-        varia-label="Example icon-button with a menu"
+        varia-label="Open profile control panels"
       >
         <mat-icon>account_circle</mat-icon>
       </button>
@@ -27,7 +27,7 @@
       </mat-menu>
     </div>
 
-    <ng-template #standard>
+    <ng-template #standardProfile>
       <div class="buttons">
         <a
           type="button"

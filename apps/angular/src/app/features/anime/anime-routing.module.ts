@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AnimeComponent } from './anime.component';
-
 import { TableViewComponent } from './table-view/table-view.component';
 
 const routes: Routes = [
