@@ -1,4 +1,4 @@
-import { BehaviorSubject, combineLatestWith, debounceTime, map, Observable, startWith, switchMap, tap, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, map, Observable, startWith, switchMap, tap } from 'rxjs';
 
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
@@ -93,17 +93,22 @@ export class TableViewComponent {
     );
 
     const params$ = paramsChange$.pipe(
-      withLatestFrom(this.currentPageNumber$),
+      combineLatestWith(this.currentPageNumber$),
     );
 
     this.animeList$ = params$.pipe(
-      switchMap(([[search, typeFilter, sort], pageNumber]) => this.animeService.fetchAnimeList({
-        pageNumber,
-        sort,
-        filter: { byType: typeFilter !== null ? typeFilter : ['TV'] },
-        search: search !== null ? search : '',
-        limit: this.pageSize,
-      })),
+      switchMap(([[search, typeFilter, sort], pageNumber]) => {
+        const animeListOption = {
+          pageNumber,
+          sort,
+          filter: { byType: typeFilter !== null ? typeFilter : ['TV'] },
+          search: search !== null ? search : '',
+          limit: this.pageSize,
+        };
+        const animeListHttpParams = this.animeService.getAnimeListHttpParams(animeListOption);
+        this.animeService.setUrl(animeListHttpParams.toString());
+        return this.animeService.fetchAnimeList(animeListHttpParams);
+      }),
       map(animeList => {
         this.animeListCount = animeList.count;
         return animeList.results;
@@ -137,7 +142,7 @@ export class TableViewComponent {
    * @param _index Anime's index into array.
    * @param anime Object of hero.
    */
-  public trackItem: TrackByFunction<AnimeBase> = function(_index: number, anime: AnimeBase): number {
+  public trackItem: TrackByFunction<AnimeBase> = function (_index: number, anime: AnimeBase): number {
     return anime.id;
   };
 
