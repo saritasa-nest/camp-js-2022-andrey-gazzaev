@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,6 +36,7 @@ import { DetailsComponent } from './details/details.component';
     SharedModule,
     MatMenuModule,
     MatSortModule,
+    MatCardModule,
     MatIconModule,
     MatInputModule,
     MatTableModule,
@@ -48,4 +50,4 @@ import { DetailsComponent } from './details/details.component';
     MatProgressSpinnerModule,
   ],
 })
-export class AnimeModule {}
+export class AnimeModule { }

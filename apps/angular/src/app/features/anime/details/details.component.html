@@ -1,3 +1,29 @@
 <ng-container *ngIf="anime$ | async as anime">
-  <pre>{{ anime | json}}</pre>
+  <ng-container *ngIf="safeURL$ | async as url">
+
+    <h2 class="mat-title">Anime details</h2>
+    <mat-card class="details">
+      <div>
+        <img class="details__image" [src]="anime.image" />
+        <iframe
+          [src]="url"
+          class="details__trailer"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <div class="detail__info">
+        <mat-card-title-group>
+          <mat-card-title>{{ anime.titleEnglish | placeholder }}</mat-card-title>
+          <mat-card-subtitle>{{
+            anime.titleJapanese | placeholder
+          }}</mat-card-subtitle>
+        </mat-card-title-group>
+        <mat-card-content>
+          {{ anime.synopsis }}
+        </mat-card-content>
+      </div>
+    </mat-card>
+  </ng-container>
 </ng-container>
