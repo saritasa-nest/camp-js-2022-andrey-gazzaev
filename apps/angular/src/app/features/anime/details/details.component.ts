@@ -1,6 +1,7 @@
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
 
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -26,10 +27,12 @@ export class DetailsComponent {
 
   public constructor(
     private readonly dialog: MatDialog,
+    private readonly route: ActivatedRoute,
     private readonly sanitizer: DomSanitizer,
     private readonly animeService: AnimeService,
   ) {
-    this.anime$ = this.animeService.fetchAnime(2).pipe(
+    this.anime$ = this.route.params.pipe(
+      switchMap(params => this.animeService.fetchAnime(params['id'])),
       tap(anime => this.safeURL$.next(
         this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${anime.trailerYoutubeId}`),
       )),

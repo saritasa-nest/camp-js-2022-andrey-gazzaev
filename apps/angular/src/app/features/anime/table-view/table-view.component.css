@@ -1,6 +1,7 @@
 :root {
   --max-width-table: 1024px;
   --table-head-cell-text-size: 1rem;
+  --table-row-hover-background-color: #f3f3f3;
 }
 
 .table-view {
@@ -59,4 +60,12 @@ app-table-view .table-column-type .mat-select-value {
   justify-content: center;
   align-items: center;
   color: inherit;
+}
+
+app-table-view .mat-row {
+  cursor: pointer;
+}
+
+app-table-view .mat-row:hover {
+  background-color: var(--table-row-hover-background-color);
 }

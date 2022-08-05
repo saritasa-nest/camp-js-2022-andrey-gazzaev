@@ -78,7 +78,7 @@ export class TableViewComponent {
   public readonly animeList$: Observable<readonly AnimeBase[]>;
 
   public constructor(
-    urlService: UrlService,
+    private readonly urlService: UrlService,
     private readonly animeService: AnimeService,
   ) {
     this.setFilterListByType();
@@ -111,7 +111,7 @@ export class TableViewComponent {
           limit: this.pageSize,
         };
         const animeListHttpParams = this.animeService.getAnimeListHttpParams(animeListOption);
-        urlService.setUrl(animeListHttpParams);
+        this.urlService.setUrl(animeListHttpParams);
         return this.animeService.fetchAnimeList(animeListHttpParams);
       }),
       map(animeList => {
@@ -150,6 +150,14 @@ export class TableViewComponent {
   public trackItem: TrackByFunction<AnimeBase> = function(_index: number, anime: AnimeBase): number {
     return anime.id;
   };
+
+  /**
+   * Handlers redirect to details page.
+   * @param anime Anime record.
+   */
+  public onDetailsShow(anime: AnimeBase): void {
+    this.urlService.navigateToDetails(anime.id);
+  }
 
   /** Sets filter by type. */
   private setFilterListByType(): void {

@@ -24,6 +24,14 @@ export class UrlService {
   }
 
   /**
+   * Navigate to details page.
+   * @param id Page id.
+   */
+  public navigateToDetails(id: number): Promise<boolean> {
+    return this.router.navigate(['/catalog', id]);
+  }
+
+  /**
    * Sets new query params in url.
    * @param httpParams Http params.
    */
