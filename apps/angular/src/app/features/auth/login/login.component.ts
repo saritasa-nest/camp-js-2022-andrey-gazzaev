@@ -2,7 +2,7 @@ import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { HttpError } from '@js-camp/core/models/httpError';
@@ -26,6 +26,8 @@ interface LoginFormControls {
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
+  styleUrls: ['../auth.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
 

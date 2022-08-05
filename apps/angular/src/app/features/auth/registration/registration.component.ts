@@ -2,7 +2,7 @@ import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { HttpError } from '@js-camp/core/models/httpError';
@@ -35,6 +35,8 @@ interface RegistrationFormControls {
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
+  styleUrls: ['../auth.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationComponent {
 
@@ -91,6 +93,7 @@ export class RegistrationComponent {
         untilDestroyed(this),
         catchError((error: unknown) => {
           if (error instanceof HttpError) {
+
             return of(this.setErrors(error));
           }
           return throwError(() => error);
