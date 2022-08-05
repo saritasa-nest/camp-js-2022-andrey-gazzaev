@@ -19,10 +19,8 @@ export function isDefined<T>(value: T | null | undefined): value is T {
  */
 export function isFieldsDefined<T>(fields: T): fields is NonNullableFields<T> {
   for (const key in fields) {
-    if (Object.prototype.hasOwnProperty.call(fields, key)) {
-      if (!isDefined(fields[key])) {
-        return false;
-      }
+    if (Object.prototype.hasOwnProperty.call(fields, key) && !isDefined(fields[key])) {
+      return false;
     }
   }
   return true;

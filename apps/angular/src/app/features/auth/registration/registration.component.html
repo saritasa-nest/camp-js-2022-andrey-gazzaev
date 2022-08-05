@@ -14,6 +14,7 @@
       type="email"
       placeholder="thomas.anderson@rabbit.com"
       formControlName="email"
+      autocomplete="email"
     />
     <mat-error *ngIf="registrationForm.controls.email.hasError('email')">
       {{ registrationForm.controls.email.getError("email") }}
@@ -27,6 +28,7 @@
       type="text"
       placeholder="Thomas"
       formControlName="firstName"
+      autocomplete="given-name"
     />
   </mat-form-field>
 
@@ -37,6 +39,7 @@
       type="text"
       placeholder="Anderson"
       formControlName="lastName"
+      autocomplete="family-name"
     />
   </mat-form-field>
 
@@ -46,6 +49,7 @@
       matInput
       [type]="isHiddenPassword ? 'password' : 'text'"
       formControlName="password"
+      autocomplete="new-password"
     />
     <button
       mat-icon-button
@@ -89,6 +93,7 @@
       matInput
       [type]="isHiddenPasswordConfirm ? 'password' : 'text'"
       formControlName="passwordConfirm"
+      autocomplete="new-password"
     />
     <button
       mat-icon-button
@@ -111,18 +116,17 @@
     </mat-error>
   </mat-form-field>
 
-  <p class="form-buttons">
+  <div class="form-buttons">
     <button class="form-buttons__button" mat-stroked-button type="submit">
       Register
     </button>
-  </p>
+  </div>
 
   <mat-list class="form-list" role="list">
     <mat-list-item role="listitem">
       <a
         class="link"
         mat-button
-        title="Login to your account"
         [routerLink]="'/auth/login/'"
         >Do you have an account?</a
       >

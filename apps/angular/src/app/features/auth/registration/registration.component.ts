@@ -124,7 +124,7 @@ export class RegistrationComponent {
   }
 
   private initRegistrationForm(): FormGroup<RegistrationFormControls> {
-    const passwordPattern = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,64}$');
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$/i;
 
     return this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
