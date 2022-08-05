@@ -1,10 +1,11 @@
 <ng-container *ngIf="anime$ | async as anime">
+  <app-image-popup></app-image-popup>
   <ng-container *ngIf="safeURL$ | async as url">
     <section class="details">
       <h2 class="mat-title">Anime details</h2>
       <mat-card class="details__card">
         <div>
-          <img class="details__image" [src]="anime.image" />
+          <img class="details__image" [src]="anime.image" (click)="openImagePopup(anime.image)"/>
           <iframe
             [src]="url"
             class="details__trailer"
@@ -49,3 +50,6 @@
     </section>
   </ng-container>
 </ng-container>
+
+
+
