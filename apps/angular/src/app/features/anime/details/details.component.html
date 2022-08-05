@@ -5,7 +5,11 @@
       <h2 class="mat-title">Anime details</h2>
       <mat-card class="details__card">
         <div>
-          <img class="details__image" [src]="anime.image" (click)="openImagePopup(anime.image)"/>
+          <img
+            class="details__image"
+            [src]="anime.image"
+            (click)="openImagePopup(anime.image)"
+          />
           <iframe
             *ngIf="anime.trailerYoutubeId"
             [src]="url"
@@ -25,41 +29,45 @@
             }}</mat-card-subtitle>
           </mat-card-title-group>
           <mat-card-content>
-            <p>
-              Aired from {{ anime.aired.start | date: "dd.MM.YYYY" | placeholder }} to
+            <p class="details-field">
+              Aired from
+              {{ anime.aired.start | date: "dd.MM.YYYY" | placeholder }} to
               {{ anime.aired.end | date: "dd.MM.YYYY" | placeholder }}
             </p>
-            <p>
+            <p class="details-field">
               Airing:
-               <mat-chip>
-                {{anime.isAiring ?'Yes' : 'No' }}
+              <mat-chip>
+                {{ anime.isAiring ? "Yes" : "No" }}
               </mat-chip>
             </p>
-            <p>
+            <p class="details-field">
               Type:
-               <mat-chip>
-                {{anime.type }}
+              <mat-chip>
+                {{ anime.type }}
               </mat-chip>
             </p>
-            <p>
+            <p class="details-field">
               {{ anime.synopsis }}
             </p>
-            <mat-chip-list aria-label="List of genres">
-              <mat-chip *ngFor="let genre of anime.genresData">
-                {{genre.name}}
-              </mat-chip>
-            </mat-chip-list>
-            <mat-chip-list aria-label="List of studios">
-              <mat-chip *ngFor="let studio of anime.studiosData">
-                {{studio.name}}
-              </mat-chip>
-            </mat-chip-list>
+            <div class="details-field">
+              <mat-label>Genres</mat-label>
+              <mat-chip-list aria-label="List of genres">
+                <mat-chip *ngFor="let genre of anime.genresData">
+                  {{ genre.name }}
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+            <div class="details-field">
+              <mat-label>Studios</mat-label>
+              <mat-chip-list aria-label="List of studios">
+                <mat-chip *ngFor="let studio of anime.studiosData">
+                  {{ studio.name }}
+                </mat-chip>
+              </mat-chip-list>
+            </div>
           </mat-card-content>
         </div>
       </mat-card>
     </section>
   </ng-container>
 </ng-container>
-
-
-
