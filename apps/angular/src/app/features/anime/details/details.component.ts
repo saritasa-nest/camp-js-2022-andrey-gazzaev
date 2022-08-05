@@ -1,9 +1,9 @@
 import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
 
-import { Component } from '@angular/core';
+import { Component, SecurityContext } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 
@@ -26,7 +26,7 @@ export class DetailsComponent {
   public readonly anime$: Observable<AnimeDetails>;
 
   /** Trailer url. */
-  public readonly safeTrailerUrl$ = new BehaviorSubject<SafeResourceUrl>('');
+  public readonly safeTrailerUrl$ = new BehaviorSubject<string | null>('');
 
   public constructor(
     private readonly dialog: MatDialog,
@@ -40,7 +40,7 @@ export class DetailsComponent {
       tap(anime => {
         const trailerUrl = `https://www.youtube.com/embed/${anime.trailerYoutubeId}`;
         return this.safeTrailerUrl$.next(
-          this.sanitizer.bypassSecurityTrustResourceUrl(trailerUrl),
+          this.sanitizer.sanitize(SecurityContext.URL, trailerUrl),
         );
       }),
     );
