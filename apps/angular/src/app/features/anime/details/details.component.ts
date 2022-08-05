@@ -7,9 +7,12 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 
+import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
 
 import { ImagePopupComponent } from './image-popup/image-popup.component';
+
+const PARAM_ID = 'id';
 
 /** Anime details component. */
 @Component({
@@ -22,20 +25,24 @@ export class DetailsComponent {
   /** Anime details. */
   public readonly anime$: Observable<AnimeDetails>;
 
-  /**  */
-  public readonly safeURL$ = new BehaviorSubject<SafeResourceUrl>('');
+  /** Trailer url. */
+  public readonly safeTrailerUrl$ = new BehaviorSubject<SafeResourceUrl>('');
 
   public constructor(
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
+    private readonly urlService: UrlService,
     private readonly sanitizer: DomSanitizer,
     private readonly animeService: AnimeService,
   ) {
     this.anime$ = this.route.params.pipe(
-      switchMap(params => this.animeService.fetchAnime(params['id'])),
-      tap(anime => this.safeURL$.next(
-        this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${anime.trailerYoutubeId}`),
-      )),
+      switchMap(params => this.animeService.fetchAnime(params[PARAM_ID])),
+      tap(anime => {
+        const trailerUrl = `https://www.youtube.com/embed/${anime.trailerYoutubeId}`;
+        return this.safeTrailerUrl$.next(
+          this.sanitizer.bypassSecurityTrustResourceUrl(trailerUrl),
+        );
+      }),
     );
   }
 

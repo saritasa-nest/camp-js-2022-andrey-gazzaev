@@ -21,6 +21,7 @@ const UNAUTHORIZED_ERROR = 'User unauthorized';
   providedIn: 'root',
 })
 export class AuthService {
+
   private readonly loginUrl: URL;
 
   private readonly registrationUrl: URL;
@@ -84,4 +85,5 @@ export class AuthService {
       }),
     );
   }
+
 }

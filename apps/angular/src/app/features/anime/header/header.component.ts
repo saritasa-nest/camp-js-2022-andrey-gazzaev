@@ -23,7 +23,7 @@ export class HeaderComponent {
   public constructor(
     private readonly userService: UserService,
   ) {
-    this.user$ = this.userService.fetchUser();
+    this.user$ = this.userService.currentUser$;
   }
 
   /** Log out from account. */
