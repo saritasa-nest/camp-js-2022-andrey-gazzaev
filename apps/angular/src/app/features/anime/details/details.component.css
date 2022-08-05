@@ -20,6 +20,7 @@
 .details__trailer {
   width: 360px;
   height: 300px;
+  border: none;
 }
 
 .details-field {
