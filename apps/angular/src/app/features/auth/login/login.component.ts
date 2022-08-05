@@ -8,7 +8,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { HttpError } from '@js-camp/core/models/httpError';
 import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
 
-import { showErrors } from '../../../../core/utils/show-errors';
+import { showErrorsFormFields, showSnackBarError } from '../../../../core/utils/show-errors';
 import { UrlService } from '../../../../core/services/url.service';
 import { UserService, RegistrationErrors } from '../../../../core/services/user.service';
 
@@ -78,7 +78,8 @@ export class LoginComponent {
   }
 
   private setErrors(errors: HttpError<RegistrationErrors>): void {
-    showErrors(errors, this.snackBar, this.loginForm);
+    showSnackBarError(errors.detail, this.snackBar);
+    showErrorsFormFields(errors, this.loginForm);
     this.changeDetectorRef.markForCheck();
   }
 
