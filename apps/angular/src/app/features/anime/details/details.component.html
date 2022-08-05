@@ -29,11 +29,21 @@
               {{ anime.aired.end | date: "dd.MM.YYYY" | placeholder }}
             </p>
             <p>
-              Airing: {{anime.isAiring ? 'Yes' : 'No'}}
+              Airing:
+               <mat-chip>
+                {{anime.isAiring ?'Yes' : 'No' }}
+              </mat-chip>
+            </p>
+            <p>
+              Type:
+               <mat-chip>
+                {{anime.type }}
+              </mat-chip>
             </p>
             <p>
               {{ anime.synopsis }}
             </p>
+
             <mat-chip-list aria-label="List of genres">
               <mat-chip *ngFor="let genre of anime.genresData">
                 {{genre.name}}
