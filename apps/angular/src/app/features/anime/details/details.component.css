@@ -2,10 +2,14 @@
   margin-top: 50px;
   margin-inline: auto;
   max-width: 960px;
+}
+
+.details__card {
   display: flex;
 }
 
 .detail__info {
+  margin-top: 20px;
   margin-left: 20px;
 }
 

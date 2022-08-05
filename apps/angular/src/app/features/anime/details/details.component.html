@@ -1,49 +1,51 @@
 <ng-container *ngIf="anime$ | async as anime">
   <ng-container *ngIf="safeURL$ | async as url">
-    <h2 class="mat-title">Anime details</h2>
-    <mat-card class="details">
-      <div>
-        <img class="details__image" [src]="anime.image" />
-        <iframe
-          [src]="url"
-          class="details__trailer"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div>
-      <div class="detail__info">
-        <mat-card-title-group>
-          <mat-card-title>{{
-            anime.titleEnglish | placeholder
-          }}</mat-card-title>
-          <mat-card-subtitle>{{
-            anime.titleJapanese | placeholder
-          }}</mat-card-subtitle>
-        </mat-card-title-group>
-        <mat-card-content>
-          <p>
-            Aired from {{ anime.aired.start | date: "dd.MM.YYYY" | placeholder }} to
-            {{ anime.aired.end | date: "dd.MM.YYYY" | placeholder }}
-          </p>
-          <p>
-            Airing: {{anime.isAiring ? 'Yes' : 'No'}}
-          </p>
-          <p>
-            {{ anime.synopsis }}
-          </p>
-          <mat-chip-list aria-label="List of genres">
-            <mat-chip *ngFor="let genre of anime.genresData">
-              {{genre.name}}
-            </mat-chip>
-          </mat-chip-list>
-          <mat-chip-list aria-label="List of studios">
-            <mat-chip *ngFor="let studio of anime.studiosData">
-              {{studio.name}}
-            </mat-chip>
-          </mat-chip-list>
-        </mat-card-content>
-      </div>
-    </mat-card>
+    <section class="details">
+      <h2 class="mat-title">Anime details</h2>
+      <mat-card class="details__card">
+        <div>
+          <img class="details__image" [src]="anime.image" />
+          <iframe
+            [src]="url"
+            class="details__trailer"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="detail__info">
+          <mat-card-title-group>
+            <mat-card-title>{{
+              anime.titleEnglish | placeholder
+            }}</mat-card-title>
+            <mat-card-subtitle>{{
+              anime.titleJapanese | placeholder
+            }}</mat-card-subtitle>
+          </mat-card-title-group>
+          <mat-card-content>
+            <p>
+              Aired from {{ anime.aired.start | date: "dd.MM.YYYY" | placeholder }} to
+              {{ anime.aired.end | date: "dd.MM.YYYY" | placeholder }}
+            </p>
+            <p>
+              Airing: {{anime.isAiring ? 'Yes' : 'No'}}
+            </p>
+            <p>
+              {{ anime.synopsis }}
+            </p>
+            <mat-chip-list aria-label="List of genres">
+              <mat-chip *ngFor="let genre of anime.genresData">
+                {{genre.name}}
+              </mat-chip>
+            </mat-chip-list>
+            <mat-chip-list aria-label="List of studios">
+              <mat-chip *ngFor="let studio of anime.studiosData">
+                {{studio.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </mat-card-content>
+        </div>
+      </mat-card>
+    </section>
   </ng-container>
 </ng-container>
