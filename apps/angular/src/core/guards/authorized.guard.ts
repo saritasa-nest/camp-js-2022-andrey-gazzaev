@@ -18,10 +18,8 @@ export class AuthorizedGuard implements CanActivate {
 
   /** @inheritdoc */
   public canActivate(): Observable<boolean | UrlTree> {
-
     return this.userService.isAuthorized$.pipe(
-      map(isAuthorized => (isAuthorized ? true : this.router.parseUrl('/'))),
+      map(isAuthorized => (isAuthorized ? true : this.router.parseUrl('/auth/login'))),
     );
-
   }
 }
