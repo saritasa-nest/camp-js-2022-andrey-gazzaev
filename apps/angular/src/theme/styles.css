@@ -25,3 +25,26 @@ app-auth .form-buttons__button.mat-stroked-button {
 app-auth .form-list .mat-list-item-content {
   justify-content: center;
 }
+
+app-table-view .table-column-type .mat-select-arrow-wrapper {
+  display: none;
+}
+
+app-table-view .mat-sort-header-container {
+  justify-content: center;
+}
+
+app-table-view .table-column-type .mat-select-value {
+  color: inherit;
+}
+
+app-table-view .mat-header-cell {
+  text-align: center;
+  font-size: 1rem;
+}
+
+app-table-view .mat-cell {
+  width: 150px;
+  text-align: center;
+  justify-content: center;
+}
