@@ -6,7 +6,7 @@ import { TableViewComponent } from './table-view/table-view.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'catalog',
     component: AnimeComponent,
     children: [
       {
