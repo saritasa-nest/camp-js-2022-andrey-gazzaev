@@ -1,35 +1,39 @@
 <section class="table-view">
   <h2 id="anime-catalog" class="mat-title">Anime table</h2>
+
   <div class="table-container mat-elevation-z8">
     <mat-form-field class="anime-search" appearance="fill">
       <mat-label>Search anime</mat-label>
       <input
         matInput
+        type="search"
         placeholder="Your anime title"
         [formControl]="search"
-        type="search"
       />
     </mat-form-field>
+
     <ng-container *ngIf="animeList$ | async as animeList; else loading">
       <ng-container *ngIf="sort$ | async as sort; else loading">
         <table
-          [trackBy]="trackItem"
-          [dataSource]="animeList"
           mat-table
           matSort
-          (matSortChange)="onSortChange($event)"
-          [matSortActive]="sort.field"
-          [matSortDirection]="sort.direction"
           aria-label="anime"
           aria-describedby="anime-catalog"
+          (matSortChange)="onSortChange($event)"
+          [trackBy]="trackItem"
+          [matSortActive]="sort.field"
+          [dataSource]="animeList"
+          [matSortDirection]="sort.direction"
         >
           <ng-container matColumnDef="image">
-            <th mat-header-cell *matHeaderCellDef class="table-head-cell">Image</th>
+            <th mat-header-cell *matHeaderCellDef class="table-head-cell">
+              Image
+            </th>
             <td mat-cell *matCellDef="let anime">
               <img
                 class="table-image"
-                [src]="anime.image"
                 alt="Poster anime - {{ anime.imageTitle }}"
+                [src]="anime.image"
               />
             </td>
           </ng-container>
@@ -38,8 +42,8 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              mat-sort-header="title_eng"
               class="table-head-cell"
+              mat-sort-header="title_eng"
             >
               Title in English
             </th>
@@ -52,8 +56,8 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              mat-sort-header="title_jpn"
               class="table-head-cell"
+              mat-sort-header="title_jpn"
             >
               Title in Japanese
             </th>
@@ -66,8 +70,8 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              mat-sort-header="aired"
               class="table-head-cell"
+              mat-sort-header="aired"
             >
               Start of airing
             </th>
@@ -85,8 +89,8 @@
                 <mat-option
                   [value]="filter.field"
                   *ngFor="let filter of filterListByType"
-                  >{{ filter.title }}</mat-option
-                >
+                  >{{ filter.title }}
+                </mat-option>
               </mat-select>
             </th>
             <td mat-cell *matCellDef="let anime">{{ anime.type }}</td>
@@ -96,8 +100,8 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              mat-sort-header="status"
               class="table-head-cell"
+              mat-sort-header="status"
             >
               Status
             </th>
@@ -109,13 +113,14 @@
         </table>
       </ng-container>
     </ng-container>
+
     <mat-paginator
-      [length]="animeListCount"
-      [pageIndex]="currentPageNumber$ | async"
-      [pageSize]="pageSize"
-      (page)="onPaginationChange($event)"
       class="table-pagination"
       aria-label="Select page"
+      [pageSize]="pageSize"
+      [length]="animeListCount"
+      [pageIndex]="currentPageNumber$ | async"
+      (page)="onPaginationChange($event)"
     >
     </mat-paginator>
   </div>
