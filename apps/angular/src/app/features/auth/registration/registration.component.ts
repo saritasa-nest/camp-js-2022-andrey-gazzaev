@@ -3,7 +3,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 import { HttpError } from '@js-camp/core/models/httpError';
 import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
@@ -64,14 +64,9 @@ export class RegistrationComponent {
       return;
     }
 
-    const { password, passwordConfirm, email, firstName, lastName } = fields;
+    const { password, email, firstName, lastName } = fields;
 
-    if (!this.comparePasswords(password, passwordConfirm)) {
-      return;
-    }
-
-    const userInfo = { password, email, firstName, lastName };
-    this.userService.register(userInfo)
+    this.userService.register({ password, email, firstName, lastName })
       .pipe(
         tap(() => this.urlService.navigateToHome()),
         untilDestroyed(this),
@@ -84,21 +79,6 @@ export class RegistrationComponent {
         }),
       )
       .subscribe();
-  }
-
-  private comparePasswords(password: string, passwordConfirm: string): boolean {
-    if (password.localeCompare(passwordConfirm) === 0) {
-      return true;
-    }
-
-    const passwordConfirmError = {
-      password: ['Passwords do not match'],
-    };
-
-    this.registrationForm.controls.password.setErrors(passwordConfirmError);
-    this.registrationForm.controls.passwordConfirm.setErrors(passwordConfirmError);
-
-    return false;
   }
 
   private setErrors(errors: HttpError<RegistrationErrors>): void {
@@ -115,7 +95,21 @@ export class RegistrationComponent {
       firstName: ['123', [Validators.required]],
       lastName: ['123', [Validators.required]],
       password: ['12345678Test', [Validators.required, Validators.pattern(passwordPattern)]],
-      passwordConfirm: ['12345678Tes', [Validators.required]],
+      passwordConfirm: ['12345678Tes', [Validators.required, this.matchControl()]],
     }, { updateOn: 'blur' });
+  }
+
+  private matchControl(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (
+        this.registrationForm &&
+        this.registrationForm.get('password')?.value !== control.value
+      ) {
+        return {
+          match: 'Passwords did not match',
+        };
+      }
+      return null;
+    };
   }
 }

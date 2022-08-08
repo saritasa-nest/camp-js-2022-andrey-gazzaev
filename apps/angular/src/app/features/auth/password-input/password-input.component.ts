@@ -20,8 +20,6 @@ export class PasswordInputComponent {
   /** Is password displayed. */
   public isHiddenPassword = true;
 
-  public constructor() { }
-
   /** Handles password toggle. */
   public handlePasswordToggle(): void {
     this.isHiddenPassword = !this.isHiddenPassword;
