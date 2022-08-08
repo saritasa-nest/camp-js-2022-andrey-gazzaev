@@ -1,6 +1,6 @@
 <ng-container *ngIf="anime$ | async as anime">
   <app-image-popup></app-image-popup>
-  <ng-container *ngIf="safeTrailerUrl$ | async as url">
+  <ng-container *ngIf="trailerUrl$ | async as url">
     <section class="details">
       <h2 class="mat-title">Anime details</h2>
       <mat-card class="details__card">

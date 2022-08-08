@@ -25,7 +25,7 @@ export class DetailsComponent {
   public readonly anime$: Observable<AnimeDetails>;
 
   /** Trailer url. */
-  public readonly safeTrailerUrl$ = new BehaviorSubject<SafeResourceUrl>('');
+  public readonly trailerUrl$ = new BehaviorSubject<SafeResourceUrl>('');
 
   public constructor(
     private readonly dialog: MatDialog,
@@ -36,8 +36,11 @@ export class DetailsComponent {
     this.anime$ = this.route.params.pipe(
       switchMap(params => this.animeService.fetchAnime(params[PARAM_ID])),
       tap(anime => {
+        // Trailer plays via iframe.
+        // Unfortunately, the url of this player is not reliable.
+        // But if we want to use the player, we need to trust this url.
         const trailerUrl = `https://www.youtube.com/embed/${anime.trailerYoutubeId}`;
-        return this.safeTrailerUrl$.next(
+        return this.trailerUrl$.next(
           this.sanitizer.bypassSecurityTrustResourceUrl(trailerUrl),
         );
       }),
