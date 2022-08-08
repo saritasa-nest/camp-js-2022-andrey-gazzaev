@@ -1,19 +1,20 @@
-import { catchError, map, Observable, of, switchMap, switchMapTo, throwError } from 'rxjs';
+import { map, Observable, switchMap, switchMapTo, throwError } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
 import { User } from '@js-camp/core/models/user';
+import { Login } from '@js-camp/core/models/login';
 import { UserDto } from '@js-camp/core/dtos/user.dto';
-import { HttpError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/httpError';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
+import { Registration } from '@js-camp/core/models/registration';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
 
 import { catchHttpErrorResponse } from '../utils/rxjs/catch-http-error';
 
 import { AuthService } from './auth.service';
-import { AppConfigService } from './app-config.service';
 import { TokenService } from './token.service';
+import { AppConfigService } from './app-config.service';
 
 /** Login errors.  */
 export interface LoginErrors {
@@ -70,7 +71,7 @@ export class UserService {
    * Log шn.
    * @param loginData Data required for login..
    */
-  public login(loginData: LoginData): Observable<boolean | RegistrationErrors> {
+  public login(loginData: Login): Observable<boolean> {
     return this.authService.login(loginData).pipe(
       switchMapTo(this.isAuthorized$),
       map(() => true),
@@ -82,7 +83,7 @@ export class UserService {
    * Registers user.
    * @param registrationData Data required for registration.
    */
-  public register(registrationData: RegistrationData): Observable<boolean | RegistrationErrors> {
+  public register(registrationData: Registration): Observable<boolean> {
     return this.authService.register(registrationData).pipe(
       switchMap(() => this.isAuthorized$),
       map(() => true),
@@ -95,11 +96,10 @@ export class UserService {
    * If an error occurs, the user will be null.
    * The error may be if the user is not authorized.
    */
-  public fetchUser(): Observable<User | null> {
-    return this.tokenService.get().pipe(
+  public fetchUser(): Observable<User> {
+    return this.tokenService.token$.pipe(
       switchMap(() => this.http.get<UserDto>(this.userUrl.toString())),
       map(userDto => UserMapper.fromDto(userDto)),
-      catchError(() => of(null)),
     );
   }
 
@@ -115,8 +115,8 @@ export class UserService {
    * Instantiates httpError with T errors.
    * @param error HTTP error response.
    */
-  private createError<T>(error: HttpErrorResponse): HttpError<T> {
-    return new HttpError<T>(
+  private createError<T>(error: HttpErrorResponse): AppError<T> {
+    return new AppError<T>(
       error.error.data,
       error.error.detail,
     );

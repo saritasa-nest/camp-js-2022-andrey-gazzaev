@@ -3,12 +3,13 @@ import { catchError, map, Observable, switchMap, switchMapTo, throwError } from 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { Login } from '@js-camp/core/models/login';
 import { TokenDto } from '@js-camp/core/dtos/token.dto';
 import { AppError } from '@js-camp/core/models/app-error';
+import { Registration } from '@js-camp/core/models/registration';
 import { TokensMapper } from '@js-camp/core/mappers/token.mapper';
 import { LoginDataMapper } from '@js-camp/core/mappers/login-data.mapper';
 import { RegistrationDataMapper } from '@js-camp/core/mappers/registration-data.mapper';
-import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
 
 import { UrlService } from './url.service';
 import { TokenService } from './token.service';
@@ -43,7 +44,7 @@ export class AuthService {
    * Log in to account.
    * @param loginData Data required for login..
    */
-  public login(loginData: LoginData): Observable<void> {
+  public login(loginData: Login): Observable<void> {
     const loginDataDto = LoginDataMapper.toDto(loginData);
     return this.http.post<TokenDto>(this.loginUrl.toString(), loginDataDto).pipe(
       map(tokensDto => TokensMapper.fromDto(tokensDto)),
@@ -55,7 +56,7 @@ export class AuthService {
    * Registers an account.
    * @param registrationData Data required for registration.
    */
-  public register(registrationData: RegistrationData): Observable<void> {
+  public register(registrationData: Registration): Observable<void> {
     const registrationDataDto = RegistrationDataMapper.toDto(registrationData);
     return this.http.post<TokenDto>(this.registrationUrl.toString(), registrationDataDto).pipe(
       map(tokensDto => TokensMapper.fromDto(tokensDto)),
@@ -65,7 +66,7 @@ export class AuthService {
 
   /** Refresh tokens. */
   public refreshToken(): Observable<boolean | void> {
-    return this.tokenService.get().pipe(
+    return this.tokenService.token$.pipe(
       switchMap(tokens => tokens !== null ?
         this.http.post<TokenDto>(this.refreshUrl.toString(), {
           refresh: tokens.refresh,

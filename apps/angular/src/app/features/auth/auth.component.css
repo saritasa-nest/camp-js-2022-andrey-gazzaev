@@ -17,3 +17,7 @@
   display: flex;
   justify-content: center;
 }
+
+.password-input__description {
+  position: absolute;
+}

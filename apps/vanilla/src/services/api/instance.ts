@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { HttpError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/httpError';
 import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
 import { isHttpErrorDto } from '@js-camp/core/utils/guards/error.guard';
 import { isDefined } from '@js-camp/core/utils/guards/general.guard';
@@ -17,7 +17,7 @@ const UNKNOWN_ERROR = 'Unexpected error';
  * Generates HttpError from general error.
  * @param error Some error.
  */
-function generateError(error: unknown): HttpError {
+function generateError(error: unknown): AppError {
   if (axios.isAxiosError(error) && isDefined(error.response)) {
     const httpError = error.response;
     if (isDefined(httpError.data) && isHttpErrorDto(httpError.data)) {
@@ -25,7 +25,7 @@ function generateError(error: unknown): HttpError {
     }
   }
 
-  return new HttpError({ detail: UNKNOWN_ERROR, message: UNKNOWN_ERROR, name: UNKNOWN_ERROR });
+  return new AppError({ detail: UNKNOWN_ERROR, message: UNKNOWN_ERROR, name: UNKNOWN_ERROR });
 }
 
 /**

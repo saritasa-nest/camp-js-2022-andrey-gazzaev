@@ -30,7 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (this.shouldProhibitedUrl(request.url)) {
       return next.handle(request);
     }
-    return this.tokensService.get().pipe(
+    return this.tokensService.token$.pipe(
       map(tokens =>
         tokens !== null ?
           request.clone({

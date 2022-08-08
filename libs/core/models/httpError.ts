@@ -1,5 +1,5 @@
 /** Error coming from the server. */
-export class HttpError<T> extends Error {
+export class AppError<T> extends Error {
 
   /** Fields errors. */
   public readonly data?: T;
