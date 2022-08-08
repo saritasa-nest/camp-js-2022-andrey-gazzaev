@@ -5,6 +5,7 @@ import { AuthorizedGuard } from '../../../core/guards/authorized.guard';
 
 import { AnimeComponent } from './anime.component';
 import { DetailsComponent } from './details/details.component';
+import { EditorComponent } from './editor/editor.component';
 import { TableViewComponent } from './table-view/table-view.component';
 
 const routes: Routes = [
@@ -23,6 +24,10 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'editor/:id',
+    component: EditorComponent,
+  },
 ];
 
 /** Anime routing module. */
@@ -30,4 +35,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AnimeRoutingModule {}
+export class AnimeRoutingModule { }

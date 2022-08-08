@@ -14,7 +14,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogModule,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -24,6 +28,7 @@ import { AnimeRoutingModule } from './anime-routing.module';
 import { DetailsComponent } from './details/details.component';
 import { TableViewComponent } from './table-view/table-view.component';
 import { ImagePopupComponent } from './details/image-popup/image-popup.component';
+import { EditorComponent } from './editor/editor.component';
 
 /** Anime module. */
 @NgModule({
@@ -33,6 +38,7 @@ import { ImagePopupComponent } from './details/image-popup/image-popup.component
     DetailsComponent,
     TableViewComponent,
     ImagePopupComponent,
+    EditorComponent,
   ],
   imports: [
     FormsModule,
@@ -60,4 +66,4 @@ import { ImagePopupComponent } from './details/image-popup/image-popup.component
     { provide: MAT_DIALOG_DATA, useValue: {} },
   ],
 })
-export class AnimeModule { }
+export class AnimeModule {}
