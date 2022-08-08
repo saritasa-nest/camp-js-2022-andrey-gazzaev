@@ -3,7 +3,7 @@ import { BehaviorSubject, combineLatestWith, debounceTime, map, Observable, star
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
-import { ChangeDetectionStrategy, Component, TrackByFunction, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 
 import { AnimeBase, Type } from '@js-camp/core/models/anime';
 
@@ -43,7 +43,6 @@ const INPUT_DEBOUNCE_TIME = 500;
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
 })
 export class TableViewComponent {
 

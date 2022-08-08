@@ -1,6 +1,5 @@
-:root {
+:host {
   --max-width-table: 1024px;
-  --table-head-cell-text-size: 1rem;
 }
 
 .table-view {
@@ -14,17 +13,6 @@
   align-items: center;
 }
 
-app-table-view .mat-header-cell {
-  text-align: center;
-  font-size: var(--table-head-cell-text-size);
-}
-
-app-table-view .mat-cell {
-  width: 150px;
-  text-align: center;
-  justify-content: center;
-}
-
 .table-image {
   max-width: 150px;
   height: 150px;
@@ -36,22 +24,6 @@ app-table-view .mat-cell {
 
 .anime-search {
   width: 100%;
-}
-
-app-table-view .table-column-type .mat-select-arrow-wrapper {
-  display: none;
-}
-
-app-table-view .table-head-cell .mat-header-cell {
-  text-align: center;
-}
-
-app-table-view .table-head-cell .mat-sort-header-container {
-  justify-content: center;
-}
-
-app-table-view .table-column-type .mat-select-value {
-  color: inherit;
 }
 
 .table-column-type__trigger {
