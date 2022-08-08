@@ -2,13 +2,13 @@ import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { HttpError } from '@js-camp/core/models/httpError';
 import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
 
-import { showErrors } from '../../../../core/utils/show-errors';
+import { showErrorsFormFields, showSnackBarError } from '../../../../core/utils/show-errors';
 import { UrlService } from '../../../../core/services/url.service';
 import { UserService, RegistrationErrors } from '../../../../core/services/user.service';
 
@@ -35,6 +35,8 @@ interface RegistrationFormControls {
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
+  styleUrls: ['../auth.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationComponent {
 
@@ -91,6 +93,7 @@ export class RegistrationComponent {
         untilDestroyed(this),
         catchError((error: unknown) => {
           if (error instanceof HttpError) {
+
             return of(this.setErrors(error));
           }
           return throwError(() => error);
@@ -115,12 +118,13 @@ export class RegistrationComponent {
   }
 
   private setErrors(errors: HttpError<RegistrationErrors>): void {
-    showErrors(errors, this.snackBar, this.registrationForm);
+    showSnackBarError(errors.detail, this.snackBar);
+    showErrorsFormFields(errors, this.registrationForm);
     this.changeDetectorRef.markForCheck();
   }
 
   private initRegistrationForm(): FormGroup<RegistrationFormControls> {
-    const passwordPattern = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,64}$');
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$/i;
 
     return this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],

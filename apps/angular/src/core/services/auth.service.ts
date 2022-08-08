@@ -66,9 +66,11 @@ export class AuthService {
   /** Refresh tokens. */
   public refreshToken(): Observable<boolean | void> {
     return this.tokenService.get().pipe(
-      switchMap(tokens => tokens !== null ? this.http.post<TokenDto>(this.refreshUrl.toString(), {
-        refresh: tokens.refresh,
-      }) : throwError(() => new AppError(UNAUTHORIZED_ERROR))),
+      switchMap(tokens => tokens !== null ?
+        this.http.post<TokenDto>(this.refreshUrl.toString(), {
+          refresh: tokens.refresh,
+        }) :
+        throwError(() => new AppError(UNAUTHORIZED_ERROR))),
       map(tokensDto => TokensMapper.fromDto(tokensDto)),
       switchMap(tokens => this.tokenService.save(tokens)),
       catchError((error: unknown) => {

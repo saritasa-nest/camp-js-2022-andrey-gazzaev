@@ -1,36 +1,19 @@
-app-auth .auth-form {
+.auth-form {
   max-width: 320px;
   margin-top: 90px;
   margin-inline: auto;
 }
 
-app-auth .auth-form__heading {
+.auth-form__heading {
   padding-top: 10px;
   text-align: center;
 }
 
-app-auth .form-hint {
+.form-hint {
   position: relative;
 }
 
-app-auth .form-field .mat-form-field-subscript-wrapper {
-  position: relative;
-}
-
-app-auth .form-field.mat-form-field {
-  display: block;
-  margin-inline: auto;
-}
-
-app-auth .form-buttons {
+.form-buttons {
   display: flex;
-  justify-content: center;
-}
-
-app-auth .form-buttons__button.mat-stroked-button {
-  min-width: 70%;
-}
-
-app-auth .form-list .mat-list-item-content {
   justify-content: center;
 }

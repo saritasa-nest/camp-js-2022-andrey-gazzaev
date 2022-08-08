@@ -1,8 +1,11 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Type } from '@js-camp/core/models/anime';
 import { isSortField, isType } from '@js-camp/core/utils/guards/sort.guard';
 import { SortDirection, SortField } from '@js-camp/core/utils/types/sort';
+
+import { isTypeArray } from '../../guards/type-array';
 
 /** All possible query parameters. */
 enum ParamName {
@@ -35,7 +38,7 @@ interface SortSetting {
 interface FilterSetting {
 
   /** All possibly types. */
-  byType: string[];
+  byType: Type[];
 }
 
 /** Params for for anime list request. */
@@ -101,6 +104,10 @@ export class AnimeListOptionsMapper {
     const type = params[ParamName.TypeIn] !== undefined ? String(params[ParamName.TypeIn]) : DefaultParamValue.TYPE;
     const search = params[ParamName.Search] !== undefined ? String(params[ParamName.Search]) : DefaultParamValue.SEARCH;
 
+    const typeFilter = type.split(',')
+      .map(value => isType(value) ? value : '')
+      .filter(value => value !== '');
+
     return {
       pageNumber: offset / limit,
       sort: {
@@ -108,7 +115,7 @@ export class AnimeListOptionsMapper {
         field,
       },
       filter: {
-        byType: type.split(','),
+        byType: isTypeArray(typeFilter) ? typeFilter : [],
       },
       limit,
       search,

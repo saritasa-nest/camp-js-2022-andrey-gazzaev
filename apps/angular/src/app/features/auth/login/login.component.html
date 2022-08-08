@@ -2,6 +2,7 @@
   class="auth-form mat-elevation-z8"
   [formGroup]="loginForm"
   (submit)="handleFormSubmit()"
+
 >
   <header class="form-header">
     <h1 class="auth-form__heading mat-headline">Log In</h1>
@@ -14,6 +15,7 @@
       placeholder="pat@example.com"
       formControlName="email"
       type="email"
+      autocomplete="email"
     />
     <mat-error *ngIf="loginForm.controls.email.hasError('email')">
       {{ loginForm.controls.email.getError("email") }}
@@ -26,6 +28,7 @@
       matInput
       [type]="isHiddenPassword ? 'password' : 'text'"
       formControlName="password"
+      autocomplete="current-password"
     />
     <button
       mat-icon-button
@@ -44,15 +47,15 @@
     </mat-error>
   </mat-form-field>
 
-  <p class="form-buttons">
+  <div class="form-buttons">
     <button class="form-buttons__button" mat-stroked-button type="submit">
       Login
     </button>
-  </p>
+  </div>
 
   <mat-list class="form-list" role="list">
     <mat-list-item role="listitem">
-      <a class="link" mat-button title="Password recovery" href="#"
+      <a class="link" mat-button href="#"
         >Forgot your password?</a
       >
     </mat-list-item>
@@ -60,7 +63,6 @@
       <a
         class="link"
         mat-button
-        title="Register a new account"
         [routerLink]="'/auth/registration/'"
         >Don't have an account?</a
       >

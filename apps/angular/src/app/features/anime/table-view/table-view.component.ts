@@ -3,13 +3,14 @@ import { BehaviorSubject, combineLatestWith, debounceTime, map, Observable, star
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
-import { ChangeDetectionStrategy, Component, TrackByFunction, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 
-import { AnimeBase } from '@js-camp/core/models/anime';
+import { AnimeBase, Type } from '@js-camp/core/models/anime';
 
 import { goToTop } from '../../../../core/utils/animations';
 import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
+import { AnimeListOptions } from '../../../../core/services/mappers/anime-list-options.mapper';
 
 interface TableSort {
 
@@ -43,7 +44,6 @@ const INPUT_DEBOUNCE_TIME = 500;
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
 })
 export class TableViewComponent {
 
@@ -51,16 +51,16 @@ export class TableViewComponent {
   public animeListCount = 0;
 
   /** Number of records per page. */
-  public pageSize = 5;
+  public readonly pageSize: number;
 
   /** All possible type filters. */
-  public filterListByType: FilterItem[] = [];
+  public readonly filterListByType: readonly FilterItem[];
 
   /** Value of search input. */
   public readonly search = new FormControl('');
 
   /** Filter by type. */
-  public readonly typeFilter = new FormControl<string[]>(['TV']);
+  public readonly typeFilter = new FormControl<Type[]>([]);
 
   /** Current sort settings. */
   public readonly sort$ = new BehaviorSubject<TableSort>({
@@ -81,19 +81,28 @@ export class TableViewComponent {
     private readonly urlService: UrlService,
     private readonly animeService: AnimeService,
   ) {
-    this.setFilterListByType();
-    this.setPageSize();
-    this.setInputValues();
+    const animeListOptions = this.animeService.getAnimeListOptions();
+    this.setInputValues(animeListOptions);
 
-    const paramsChange$ = this.search.valueChanges.pipe(
-      startWith(this.search.value),
+    this.filterListByType = this.getInitialFilterListByType();
+
+    this.pageSize = this.getInitialPageSize();
+
+    const typeFilterChanges$ = this.typeFilter.valueChanges.pipe(
+      startWith(animeListOptions.filter.byType),
+    );
+
+    const searchChanges$ = this.search.valueChanges.pipe(
+      startWith(animeListOptions.search),
+    );
+
+    let isFirstRender = true;
+    const paramsChange$ = searchChanges$.pipe(
       combineLatestWith(
-        this.typeFilter.valueChanges.pipe(
-          startWith(this.typeFilter.value),
-        ),
+        typeFilterChanges$,
         this.sort$,
       ),
-      tap(() => this.currentPageNumber$.next(INITIAL_PAGE)),
+      tap(() => !isFirstRender ? this.currentPageNumber$.next(INITIAL_PAGE) : null),
       debounceTime(INPUT_DEBOUNCE_TIME),
     );
 
@@ -102,23 +111,27 @@ export class TableViewComponent {
     );
 
     this.animeList$ = params$.pipe(
-      switchMap(([[search, typeFilter, sort], pageNumber]) => {
+      map(([[search, typeFilter, sort], pageNumber]) => {
+
         const animeListOption = {
           pageNumber,
           sort,
-          filter: { byType: typeFilter !== null ? typeFilter : ['TV'] },
+          filter: { byType: typeFilter !== null ? typeFilter : [] },
           search: search !== null ? search : '',
           limit: this.pageSize,
         };
-        const animeListHttpParams = this.animeService.getAnimeListHttpParams(animeListOption);
-        this.urlService.setUrl(animeListHttpParams);
-        return this.animeService.fetchAnimeList(animeListHttpParams);
+        return this.animeService.animeListOptionsToHttpParams(animeListOption);
       }),
+      tap(animeListHttpParams => urlService.setUrl(animeListHttpParams)),
+      switchMap(animeListHttpParams => this.animeService.fetchAnimeList(animeListHttpParams)),
       map(animeList => {
         this.animeListCount = animeList.count;
         return animeList.results;
       }),
       tap(() => goToTop()),
+      tap(() => {
+        isFirstRender = false;
+      }),
     );
   }
 
@@ -159,27 +172,26 @@ export class TableViewComponent {
     this.urlService.navigateToDetails(anime.id);
   }
 
-  /** Sets filter by type. */
-  private setFilterListByType(): void {
+  /** Gets filter by type. */
+  private getInitialFilterListByType(): readonly FilterItem[] {
     const types = this.animeService.getAnimeTypes();
 
-    this.filterListByType = types.map(type => ({
+    return types.map(type => ({
       field: type,
       title: type,
       isSelect: false,
     }));
   }
 
-  /** Sets page size. */
-  private setPageSize(): void {
-    this.pageSize = this.animeService.getLimit();
+  /** Gets page size. */
+  private getInitialPageSize(): number {
+    return this.animeService.getLimit();
   }
 
-  private setInputValues(): void {
-    const animeListOption = this.animeService.getAnimeListOptions();
-    this.currentPageNumber$.next(animeListOption.pageNumber);
-    this.sort$.next({ field: animeListOption.sort.field, direction: animeListOption.sort.direction === 'desc' ? 'desc' : 'asc' });
-    this.search.setValue(animeListOption.search);
-    this.typeFilter.setValue(animeListOption.filter.byType);
+  private setInputValues({ pageNumber, sort, search, filter }: AnimeListOptions): void {
+    this.currentPageNumber$.next(pageNumber);
+    this.sort$.next({ field: sort.field, direction: sort.direction === 'desc' ? 'desc' : 'asc' });
+    this.search.setValue(search);
+    this.typeFilter.setValue(filter.byType);
   }
 }

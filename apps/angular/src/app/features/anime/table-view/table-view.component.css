@@ -1,6 +1,5 @@
-:root {
+:host {
   --max-width-table: 1024px;
-  --table-head-cell-text-size: 1rem;
   --table-row-hover-background-color: #f3f3f3;
 }
 
@@ -13,17 +12,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-app-table-view .mat-header-cell {
-  text-align: center;
-  font-size: var(--table-head-cell-text-size);
-}
-
-app-table-view .mat-cell {
-  width: 150px;
-  text-align: center;
-  justify-content: center;
 }
 
 .table-image {
@@ -39,33 +27,9 @@ app-table-view .mat-cell {
   width: 100%;
 }
 
-app-table-view .table-column-type .mat-select-arrow-wrapper {
-  display: none;
-}
-
-app-table-view .table-head-cell .mat-header-cell {
-  text-align: center;
-}
-
-app-table-view .table-head-cell .mat-sort-header-container {
-  justify-content: center;
-}
-
-app-table-view .table-column-type .mat-select-value {
-  color: inherit;
-}
-
 .table-column-type__trigger {
   display: flex;
   justify-content: center;
   align-items: center;
   color: inherit;
-}
-
-app-table-view .mat-row {
-  cursor: pointer;
-}
-
-app-table-view .mat-row:hover {
-  background-color: var(--table-row-hover-background-color);
 }
