@@ -51,10 +51,10 @@ export class TableViewComponent {
   public animeListCount = 0;
 
   /** Number of records per page. */
-  public pageSize = 5;
+  public readonly pageSize: number;
 
   /** All possible type filters. */
-  public filterListByType: FilterItem[] = [];
+  public readonly filterListByType: readonly FilterItem[];
 
   /** Value of search input. */
   public readonly search = new FormControl('');
@@ -81,16 +81,21 @@ export class TableViewComponent {
     urlService: UrlService,
     private readonly animeService: AnimeService,
   ) {
-    this.setFilterListByType();
-    this.setPageSize();
+    this.filterListByType = this.getInitialFilterListByType();
+    this.pageSize = this.getInitialPageSize();
     this.setInputValues();
 
-    const paramsChange$ = this.search.valueChanges.pipe(
+    const typeFilterChanges$ = this.typeFilter.valueChanges.pipe(
+      startWith(this.typeFilter.value),
+    );
+
+    const searchChanges$ = this.search.valueChanges.pipe(
       startWith(this.search.value),
+    );
+
+    const paramsChange$ = searchChanges$.pipe(
       combineLatestWith(
-        this.typeFilter.valueChanges.pipe(
-          startWith(this.typeFilter.value),
-        ),
+        typeFilterChanges$,
         this.sort$,
       ),
       tap(() => this.currentPageNumber$.next(INITIAL_PAGE)),
@@ -102,7 +107,7 @@ export class TableViewComponent {
     );
 
     this.animeList$ = params$.pipe(
-      switchMap(([[search, typeFilter, sort], pageNumber]) => {
+      map(([[search, typeFilter, sort], pageNumber]) => {
         const animeListOption = {
           pageNumber,
           sort,
@@ -110,10 +115,10 @@ export class TableViewComponent {
           search: search !== null ? search : '',
           limit: this.pageSize,
         };
-        const animeListHttpParams = this.animeService.getAnimeListHttpParams(animeListOption);
-        urlService.setUrl(animeListHttpParams);
-        return this.animeService.fetchAnimeList(animeListHttpParams);
+        return this.animeService.animeListOptionsToHttpParams(animeListOption);
       }),
+      tap(animeListHttpParams => urlService.setUrl(animeListHttpParams)),
+      switchMap(animeListHttpParams => this.animeService.fetchAnimeList(animeListHttpParams)),
       map(animeList => {
         this.animeListCount = animeList.count;
         return animeList.results;
@@ -151,20 +156,20 @@ export class TableViewComponent {
     return anime.id;
   };
 
-  /** Sets filter by type. */
-  private setFilterListByType(): void {
+  /** Gets filter by type. */
+  private getInitialFilterListByType(): readonly FilterItem[] {
     const types = this.animeService.getAnimeTypes();
 
-    this.filterListByType = types.map(type => ({
+    return types.map(type => ({
       field: type,
       title: type,
       isSelect: false,
     }));
   }
 
-  /** Sets page size. */
-  private setPageSize(): void {
-    this.pageSize = this.animeService.getLimit();
+  /** Gets page size. */
+  private getInitialPageSize(): number {
+    return this.animeService.getLimit();
   }
 
   private setInputValues(): void {

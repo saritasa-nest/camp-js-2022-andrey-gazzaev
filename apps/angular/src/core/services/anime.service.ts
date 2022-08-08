@@ -35,7 +35,8 @@ export class AnimeService {
    */
   public fetchAnimeList(animeListHttpParams: HttpParams): Observable<Pagination<AnimeBase>> {
     return this.http.get<PaginationDto<AnimeBaseDto>>(
-      this.animeListUrl.toString(), { params: animeListHttpParams },
+      this.animeListUrl.toString(),
+      { params: animeListHttpParams },
     ).pipe(map(pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
       pagination,
       animeDto => AnimeMapper.fromDto(animeDto),
@@ -61,7 +62,7 @@ export class AnimeService {
    * Gets URL Anime list options params.
    * @param animeListOptions Anime list options.
    */
-  public getAnimeListHttpParams(animeListOptions: AnimeListOptions): HttpParams {
+  public animeListOptionsToHttpParams(animeListOptions: AnimeListOptions): HttpParams {
     return this.animeListOptionsMapper.toDto(animeListOptions);
   }
 }
