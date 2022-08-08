@@ -1,11 +1,11 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Type } from '@js-camp/core/models/anime';
 import { isSortField, isType } from '@js-camp/core/utils/guards/sort.guard';
 import { SortDirection, SortField } from '@js-camp/core/utils/types/sort';
 
 import { isTypeArray } from '../../guards/type-array';
+import { AnimeListOptions } from '../../models/anime-list-options';
 
 /** All possible query parameters. */
 enum ParamName {
@@ -22,42 +22,6 @@ namespace DefaultParamValue {
   export const SEARCH = '';
   export const ORDERING = `${SortDirection.Ascending}${SortField.TitleEnglish}`;
   export const TYPE = 'TV';
-}
-
-/** Sort setting for anime list request. */
-interface SortSetting {
-
-  /** The field by which to sort. */
-  field: string;
-
-  /** The sort direction. */
-  direction: string;
-}
-
-/** Filter setting for anime list request. */
-interface FilterSetting {
-
-  /** All possibly types. */
-  byType: Type[];
-}
-
-/** Params for for anime list request. */
-export interface AnimeListOptions {
-
-  /** The page number to be returned. */
-  readonly pageNumber: number;
-
-  /** Sort setting. */
-  readonly sort: SortSetting;
-
-  /** Filter setting. */
-  readonly filter: FilterSetting;
-
-  /** Search query. */
-  readonly search: string;
-
-  /** Maximum number of entries per page.*/
-  readonly limit?: number;
 }
 
 /** Params mapper. */
@@ -108,7 +72,7 @@ export class AnimeListOptionsMapper {
       .map(value => isType(value) ? value : '')
       .filter(value => value !== '');
 
-    return {
+    return new AnimeListOptions({
       pageNumber: offset / limit,
       sort: {
         direction,
@@ -119,7 +83,7 @@ export class AnimeListOptionsMapper {
       },
       limit,
       search,
-    };
+    });
   }
 
   /** */
