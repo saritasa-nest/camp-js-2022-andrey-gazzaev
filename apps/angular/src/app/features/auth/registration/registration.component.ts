@@ -4,7 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
-import { HttpError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/httpError';
 import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { UrlService } from '../../../../core/services/url.service';
@@ -74,7 +74,7 @@ export class RegistrationComponent {
         tap(() => this.urlService.navigateToHome()),
         untilDestroyed(this),
         catchError((error: unknown) => {
-          if (error instanceof HttpError) {
+          if (error instanceof AppError) {
 
             return of(this.setErrors(error));
           }
@@ -84,7 +84,7 @@ export class RegistrationComponent {
       .subscribe();
   }
 
-  private setErrors(errors: HttpError<RegistrationErrors>): void {
+  private setErrors(errors: AppError<RegistrationErrors>): void {
     this.snackBarService.showError(errors.detail);
     showErrorsFormFields(errors, this.registrationForm);
     this.changeDetectorRef.markForCheck();

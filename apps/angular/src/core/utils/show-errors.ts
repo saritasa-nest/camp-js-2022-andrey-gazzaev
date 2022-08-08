@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import { HttpError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/httpError';
 import { isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
 /**
@@ -8,7 +8,7 @@ import { isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
  * @param formGroup Fields for displaying errors.
  */
 export function showErrorsFormFields<T>(
-  error: HttpError<T>,
+  error: AppError<T>,
   formGroup: FormGroup,
 ): void {
   if (error.data) {

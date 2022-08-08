@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { User } from '@js-camp/core/models/user';
 import { Login } from '@js-camp/core/models/login';
 import { UserDto } from '@js-camp/core/dtos/user.dto';
-import { HttpError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/httpError';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { Registration } from '@js-camp/core/models/registration';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -100,8 +100,8 @@ export class UserService {
    * Instantiates httpError with T errors.
    * @param error HTTP error response.
    */
-  private createError<T>(error: HttpErrorResponse): HttpError<T> {
-    return new HttpError<T>(
+  private createError<T>(error: HttpErrorResponse): AppError<T> {
+    return new AppError<T>(
       error.error.data,
       error.error.detail,
     );
