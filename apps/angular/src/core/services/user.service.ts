@@ -85,7 +85,7 @@ export class UserService {
    * The error may be if the user is not authorized.
    */
   public fetchUser(): Observable<User> {
-    return this.tokenService.get().pipe(
+    return this.tokenService.token$.pipe(
       switchMap(() => this.http.get<UserDto>(this.userUrl.toString())),
       map(userDto => UserMapper.fromDto(userDto)),
     );

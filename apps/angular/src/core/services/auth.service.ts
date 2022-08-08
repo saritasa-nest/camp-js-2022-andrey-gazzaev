@@ -65,7 +65,7 @@ export class AuthService {
 
   /** Refresh tokens. */
   public refreshToken(): Observable<boolean | void> {
-    return this.tokenService.get().pipe(
+    return this.tokenService.token$.pipe(
       switchMap(tokens => tokens !== null ?
         this.http.post<TokenDto>(this.refreshUrl.toString(), {
           refresh: tokens.refresh,

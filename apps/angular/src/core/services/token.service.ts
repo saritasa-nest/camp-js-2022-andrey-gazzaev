@@ -14,7 +14,7 @@ const TOKENS_STORAGE_KEY = 'tokens';
 export class TokenService {
 
   /** Token info for current user. */
-  private readonly token$: Observable<Token | null>;
+  public readonly token$: Observable<Token | null>;
 
   /** Current user tokens. */
   private readonly currentTokensValue$ = new ReplaySubject<Token | null>(1);
@@ -28,11 +28,6 @@ export class TokenService {
       raceWith(tokensChange$),
       shareReplay({ refCount: true, bufferSize: 1 }),
     );
-  }
-
-  /** Gets token. */
-  public get(): Observable<Token | null> {
-    return this.token$;
   }
 
   /**
