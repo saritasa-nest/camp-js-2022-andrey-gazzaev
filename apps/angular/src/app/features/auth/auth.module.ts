@@ -12,10 +12,16 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { AuthComponent } from './auth.component';
+import { PasswordInputComponent } from './password-input/password-input.component';
 
 /** Authorization module. */
 @NgModule({
-  declarations: [LoginComponent, RegistrationComponent, AuthComponent],
+  declarations: [
+    LoginComponent,
+    RegistrationComponent,
+    AuthComponent,
+    PasswordInputComponent,
+  ],
   imports: [
     CommonModule,
     MatIconModule,
@@ -28,4 +34,4 @@ import { AuthComponent } from './auth.component';
     ReactiveFormsModule,
   ],
 })
-export class AuthModule { }
+export class AuthModule {}

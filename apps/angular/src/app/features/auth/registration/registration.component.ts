@@ -39,13 +39,6 @@ interface RegistrationFormControls {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationComponent {
-
-  /** Is password displayed. */
-  public isHiddenPassword = true;
-
-  /** Is password confirm displayed. */
-  public isHiddenPasswordConfirm = true;
-
   /** Registration form. */
   public readonly registrationForm: FormGroup<RegistrationFormControls>;
 
@@ -57,16 +50,6 @@ export class RegistrationComponent {
     private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
     this.registrationForm = this.initRegistrationForm();
-  }
-
-  /** Handles password toggle. */
-  public onPasswordToggle(): void {
-    this.isHiddenPassword = !this.isHiddenPassword;
-  }
-
-  /** Handles password confirm toggle. */
-  public onPasswordConfirmToggle(): void {
-    this.isHiddenPasswordConfirm = !this.isHiddenPasswordConfirm;
   }
 
   /** Handles form submit. */
@@ -82,6 +65,7 @@ export class RegistrationComponent {
     }
 
     const { password, passwordConfirm, email, firstName, lastName } = fields;
+
     if (!this.comparePasswords(password, passwordConfirm)) {
       return;
     }
@@ -108,7 +92,7 @@ export class RegistrationComponent {
     }
 
     const passwordConfirmError = {
-      passwordConfirm: true,
+      password: ['Passwords do not match'],
     };
 
     this.registrationForm.controls.password.setErrors(passwordConfirmError);
@@ -127,11 +111,11 @@ export class RegistrationComponent {
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$/i;
 
     return this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.pattern(passwordPattern)]],
-      passwordConfirm: ['', [Validators.required]],
+      email: ['test@test.com', [Validators.required, Validators.email]],
+      firstName: ['123', [Validators.required]],
+      lastName: ['123', [Validators.required]],
+      password: ['12345678Test', [Validators.required, Validators.pattern(passwordPattern)]],
+      passwordConfirm: ['12345678Tes', [Validators.required]],
     }, { updateOn: 'blur' });
   }
 }

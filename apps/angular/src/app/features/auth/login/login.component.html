@@ -2,7 +2,6 @@
   class="auth-form mat-elevation-z8"
   [formGroup]="loginForm"
   (submit)="handleFormSubmit()"
-
 >
   <header class="form-header">
     <h1 class="auth-form__heading mat-headline">Log In</h1>
@@ -21,31 +20,15 @@
       {{ loginForm.controls.email.getError("email") }}
     </mat-error>
   </mat-form-field>
-
-  <mat-form-field class="form-field" appearance="fill">
-    <mat-label>Enter your password</mat-label>
-    <input
-      matInput
-      [type]="isHiddenPassword ? 'password' : 'text'"
-      formControlName="password"
-      autocomplete="current-password"
-    />
-    <button
-      mat-icon-button
-      matSuffix
-      type="button"
-      (click)="handlePasswordToggle()"
-      [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="isHiddenPassword"
-    >
-      <mat-icon>{{
-        isHiddenPassword ? "visibility_off" : "visibility"
-      }}</mat-icon>
-    </button>
+  
+  <app-password-input
+    label="Enter your password"
+    [control]="loginForm.controls.password"
+  >
     <mat-error *ngIf="loginForm.controls.password.hasError('password')">
       {{ loginForm.controls.password.getError("password") }}
     </mat-error>
-  </mat-form-field>
+  </app-password-input>
 
   <div class="form-buttons">
     <button class="form-buttons__button" mat-stroked-button type="submit">
@@ -55,15 +38,10 @@
 
   <mat-list class="form-list" role="list">
     <mat-list-item role="listitem">
-      <a class="link" mat-button href="#"
-        >Forgot your password?</a
-      >
+      <a class="link" mat-button href="#">Forgot your password?</a>
     </mat-list-item>
     <mat-list-item role="listitem">
-      <a
-        class="link"
-        mat-button
-        [routerLink]="'/auth/registration/'"
+      <a class="link" mat-button [routerLink]="'/auth/registration/'"
         >Don't have an account?</a
       >
     </mat-list-item>

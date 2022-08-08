@@ -43,78 +43,24 @@
     />
   </mat-form-field>
 
-  <mat-form-field class="form-field" appearance="fill">
-    <mat-label>Enter your password</mat-label>
-    <input
-      matInput
-      [type]="isHiddenPassword ? 'password' : 'text'"
-      formControlName="password"
-      autocomplete="new-password"
-    />
-    <button
-      mat-icon-button
-      type="button"
-      matSuffix
-      (click)="onPasswordToggle()"
-      [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="isHiddenPassword"
-    >
-      <mat-icon>{{
-        isHiddenPassword ? "visibility_off" : "visibility"
-      }}</mat-icon>
-    </button>
+  <app-password-input
+    label="Enter your password"
+    [control]="registrationForm.controls.password"
+  >
+    <span>Password must be: </span>
+    <ul>
+      <li>Min 8 character</li>
+      <li>Min 1 lowercase character</li>
+      <li>Min 1 uppercase character</li>
+      <li>Min 1 number</li>
+    </ul>
+  </app-password-input>
 
-    <mat-error *ngIf="registrationForm.controls.password.hasError('password')">
-      <ul>
-        <li
-          *ngFor="
-            let error of registrationForm.controls.password.getError('password')
-          "
-        >
-          {{ error }}
-        </li>
-      </ul>
-    </mat-error>
-
-    <mat-hint class="form-hint">
-      <span>Password must be: </span>
-      <ul>
-        <li>Min 8 character</li>
-        <li>Min 1 lowercase character</li>
-        <li>Min 1 uppercase character</li>
-        <li>Min 1 number</li>
-      </ul>
-    </mat-hint>
-  </mat-form-field>
-
-  <mat-form-field class="form-field" appearance="fill">
-    <mat-label>Confirm your password</mat-label>
-    <input
-      matInput
-      [type]="isHiddenPasswordConfirm ? 'password' : 'text'"
-      formControlName="passwordConfirm"
-      autocomplete="new-password"
-    />
-    <button
-      mat-icon-button
-      type="button"
-      matSuffix
-      (click)="onPasswordConfirmToggle()"
-      [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="isHiddenPasswordConfirm"
-    >
-      <mat-icon>{{
-        isHiddenPasswordConfirm ? "visibility_off" : "visibility"
-      }}</mat-icon>
-    </button>
-    <mat-error
-      *ngIf="
-        registrationForm.controls.passwordConfirm.hasError('passwordConfirm')
-      "
-    >
-      Password did not match
-    </mat-error>
-  </mat-form-field>
+  <app-password-input
+    label="Confirm your password"
+    [control]="registrationForm.controls.passwordConfirm"
+  >
+  </app-password-input>
 
   <div class="form-buttons">
     <button class="form-buttons__button" mat-stroked-button type="submit">
@@ -124,10 +70,7 @@
 
   <mat-list class="form-list" role="list">
     <mat-list-item role="listitem">
-      <a
-        class="link"
-        mat-button
-        [routerLink]="'/auth/login/'"
+      <a class="link" mat-button [routerLink]="'/auth/login/'"
         >Do you have an account?</a
       >
     </mat-list-item>
