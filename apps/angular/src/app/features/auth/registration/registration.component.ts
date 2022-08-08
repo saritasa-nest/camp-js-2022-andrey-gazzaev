@@ -1,15 +1,15 @@
 import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 import { HttpError } from '@js-camp/core/models/httpError';
 import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
 
-import { showErrorsFormFields, showSnackBarError } from '../../../../core/utils/show-errors';
 import { UrlService } from '../../../../core/services/url.service';
+import { showErrorsFormFields } from '../../../../core/utils/show-errors';
+import { SnackBarService } from '../../../../core/services/snack-bar.service';
 import { UserService, RegistrationErrors } from '../../../../core/services/user.service';
 
 interface RegistrationFormControls {
@@ -43,10 +43,10 @@ export class RegistrationComponent {
   public readonly registrationForm: FormGroup<RegistrationFormControls>;
 
   public constructor(
-    private readonly snackBar: MatSnackBar,
     private readonly urlService: UrlService,
     private readonly formBuilder: FormBuilder,
     private readonly userService: UserService,
+    private readonly snackBarService: SnackBarService,
     private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
     this.registrationForm = this.initRegistrationForm();
@@ -82,7 +82,7 @@ export class RegistrationComponent {
   }
 
   private setErrors(errors: HttpError<RegistrationErrors>): void {
-    showSnackBarError(errors.detail, this.snackBar);
+    this.snackBarService.showError(errors.detail);
     showErrorsFormFields(errors, this.registrationForm);
     this.changeDetectorRef.markForCheck();
   }

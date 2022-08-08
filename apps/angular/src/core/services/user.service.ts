@@ -1,4 +1,4 @@
-import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
+import { map, Observable, switchMap, throwError } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
@@ -62,7 +62,7 @@ export class UserService {
    * Log шn.
    * @param loginData Data required for login..
    */
-  public login(loginData: LoginData): Observable<void | RegistrationErrors> {
+  public login(loginData: LoginData): Observable<void> {
     return this.authService.login(loginData).pipe(
       catchHttpErrorResponse(error => throwError(() => this.createError(error))),
     );
@@ -72,7 +72,7 @@ export class UserService {
    * Registers user.
    * @param registrationData Data required for registration.
    */
-  public register(registrationData: RegistrationData): Observable<void | RegistrationErrors> {
+  public register(registrationData: RegistrationData): Observable<void> {
     return this.authService.register(registrationData).pipe(
       catchHttpErrorResponse(error => throwError(() => this.createError(error))),
     );
@@ -83,11 +83,10 @@ export class UserService {
    * If an error occurs, the user will be null.
    * The error may be if the user is not authorized.
    */
-  public fetchUser(): Observable<User | null> {
+  public fetchUser(): Observable<User> {
     return this.tokenService.get().pipe(
       switchMap(() => this.http.get<UserDto>(this.userUrl.toString())),
       map(userDto => UserMapper.fromDto(userDto)),
-      catchError(() => of(null)),
     );
   }
 
