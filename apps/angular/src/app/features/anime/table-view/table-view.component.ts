@@ -10,6 +10,7 @@ import { AnimeBase, Type } from '@js-camp/core/models/anime';
 import { goToTop } from '../../../../core/utils/animations';
 import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
+import { AnimeListOptions } from '../../../../core/services/mappers/anime-list-options.mapper';
 
 interface TableSort {
 
@@ -59,7 +60,7 @@ export class TableViewComponent {
   public readonly search = new FormControl('');
 
   /** Filter by type. */
-  public readonly typeFilter = new FormControl<Type[]>([Type.Tv]);
+  public readonly typeFilter = new FormControl<Type[]>([]);
 
   /** Current sort settings. */
   public readonly sort$ = new BehaviorSubject<TableSort>({
@@ -80,24 +81,28 @@ export class TableViewComponent {
     urlService: UrlService,
     private readonly animeService: AnimeService,
   ) {
+    const animeListOptions = this.animeService.getAnimeListOptions();
+    this.setInputValues(animeListOptions);
+
     this.filterListByType = this.getInitialFilterListByType();
+
     this.pageSize = this.getInitialPageSize();
-    this.setInputValues();
 
     const typeFilterChanges$ = this.typeFilter.valueChanges.pipe(
-      startWith(this.typeFilter.value),
+      startWith(animeListOptions.filter.byType),
     );
 
     const searchChanges$ = this.search.valueChanges.pipe(
-      startWith(this.search.value),
+      startWith(animeListOptions.search),
     );
 
+    let isFirstRender = true;
     const paramsChange$ = searchChanges$.pipe(
       combineLatestWith(
         typeFilterChanges$,
         this.sort$,
       ),
-      tap(() => this.currentPageNumber$.next(INITIAL_PAGE)),
+      tap(() => !isFirstRender ? this.currentPageNumber$.next(INITIAL_PAGE) : null),
       debounceTime(INPUT_DEBOUNCE_TIME),
     );
 
@@ -107,10 +112,11 @@ export class TableViewComponent {
 
     this.animeList$ = params$.pipe(
       map(([[search, typeFilter, sort], pageNumber]) => {
+
         const animeListOption = {
           pageNumber,
           sort,
-          filter: { byType: typeFilter !== null ? typeFilter : [Type.Tv] },
+          filter: { byType: typeFilter !== null ? typeFilter : [] },
           search: search !== null ? search : '',
           limit: this.pageSize,
         };
@@ -123,6 +129,9 @@ export class TableViewComponent {
         return animeList.results;
       }),
       tap(() => goToTop()),
+      tap(() => {
+        isFirstRender = false;
+      }),
     );
   }
 
@@ -171,11 +180,10 @@ export class TableViewComponent {
     return this.animeService.getLimit();
   }
 
-  private setInputValues(): void {
-    const animeListOption = this.animeService.getAnimeListOptions();
-    this.currentPageNumber$.next(animeListOption.pageNumber);
-    this.sort$.next({ field: animeListOption.sort.field, direction: animeListOption.sort.direction === 'desc' ? 'desc' : 'asc' });
-    this.search.setValue(animeListOption.search);
-    this.typeFilter.setValue(animeListOption.filter.byType);
+  private setInputValues({ pageNumber, sort, search, filter }: AnimeListOptions): void {
+    this.currentPageNumber$.next(pageNumber);
+    this.sort$.next({ field: sort.field, direction: sort.direction === 'desc' ? 'desc' : 'asc' });
+    this.search.setValue(search);
+    this.typeFilter.setValue(filter.byType);
   }
 }
