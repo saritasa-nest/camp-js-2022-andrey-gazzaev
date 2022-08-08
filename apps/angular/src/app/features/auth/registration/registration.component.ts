@@ -65,8 +65,11 @@ export class RegistrationComponent {
     }
 
     const { password, email, firstName, lastName } = fields;
+    const avatarUrl =
+      'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
+      'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
 
-    this.userService.register({ password, email, firstName, lastName })
+    this.userService.register({ password, email, firstName, lastName, avatarUrl })
       .pipe(
         tap(() => this.urlService.navigateToHome()),
         untilDestroyed(this),

@@ -3,17 +3,18 @@ import { map, Observable, switchMap, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { User } from '@js-camp/core/models/user';
+import { Login } from '@js-camp/core/models/login';
 import { UserDto } from '@js-camp/core/dtos/user.dto';
 import { HttpError } from '@js-camp/core/models/httpError';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
+import { Registration } from '@js-camp/core/models/registration';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
 
 import { catchHttpErrorResponse } from '../utils/rxjs/catch-http-error';
 
 import { AuthService } from './auth.service';
-import { AppConfigService } from './app-config.service';
 import { TokenService } from './token.service';
+import { AppConfigService } from './app-config.service';
 
 /** Login errors.  */
 export interface LoginErrors {
@@ -62,7 +63,7 @@ export class UserService {
    * Log шn.
    * @param loginData Data required for login..
    */
-  public login(loginData: LoginData): Observable<void> {
+  public login(loginData: Login): Observable<void> {
     return this.authService.login(loginData).pipe(
       catchHttpErrorResponse(error => throwError(() => this.createError(error))),
     );
@@ -72,7 +73,7 @@ export class UserService {
    * Registers user.
    * @param registrationData Data required for registration.
    */
-  public register(registrationData: RegistrationData): Observable<void> {
+  public register(registrationData: Registration): Observable<void> {
     return this.authService.register(registrationData).pipe(
       catchHttpErrorResponse(error => throwError(() => this.createError(error))),
     );
