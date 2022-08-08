@@ -10,7 +10,7 @@ import { AnimeBase, Type } from '@js-camp/core/models/anime';
 import { goToTop } from '../../../../core/utils/animations';
 import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
-import { AnimeListOptions } from '../../../../core/services/mappers/anime-list-options.mapper';
+import { AnimeListOptions } from '../../../../core/models/anime-list-options';
 
 interface TableSort {
 
@@ -112,18 +112,17 @@ export class TableViewComponent {
 
     this.animeList$ = params$.pipe(
       map(([[search, typeFilter, sort], pageNumber]) => {
-
-        const animeListOption = {
+        const animeListOption = new AnimeListOptions({
           pageNumber,
           sort,
           filter: { byType: typeFilter !== null ? typeFilter : [] },
           search: search !== null ? search : '',
           limit: this.pageSize,
-        };
+        });
         return this.animeService.animeListOptionsToHttpParams(animeListOption);
       }),
-      tap(animeListHttpParams => urlService.setUrl(animeListHttpParams)),
-      switchMap(animeListHttpParams => this.animeService.fetchAnimeList(animeListHttpParams)),
+      tap(animeListParams => urlService.setUrl(animeListParams)),
+      switchMap(animeListParams => this.animeService.fetchAnimeList(animeListParams)),
       map(animeList => {
         this.animeListCount = animeList.count;
         return animeList.results;
