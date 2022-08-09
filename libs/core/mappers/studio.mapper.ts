@@ -13,4 +13,15 @@ export namespace StudioMapper {
       name: dto.name,
     });
   }
+
+  /**
+   * Maps model to dto.
+   * @param model Studio.
+   */
+  export function toDto(model: Studio): StudioDto {
+    return {
+      id: model.id,
+      name: model.name,
+    };
+  }
 }

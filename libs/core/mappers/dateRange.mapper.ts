@@ -14,4 +14,15 @@ export namespace DateRangeMapper {
       start: isDefined(dto.start) ? new Date(dto.start) : null,
     });
   }
+
+  /**
+   * Maps model to dto.
+   * @param model Date range.
+   */
+  export function toDto(model: DateRange): DateRangeDto {
+    return {
+      end: isDefined(model.end) ? model.end.toString() : null,
+      start: isDefined(model.start) ? model.start.toString() : null,
+    };
+  }
 }

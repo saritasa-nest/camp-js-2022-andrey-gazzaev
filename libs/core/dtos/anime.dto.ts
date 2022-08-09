@@ -23,12 +23,6 @@ export interface AnimeBaseDto {
   /** ID. */
   readonly id: number;
 
-  /** Created date. */
-  readonly created: string;
-
-  /** Modified date. */
-  readonly modified: string;
-
   /** Url address image. */
   readonly image: string;
 

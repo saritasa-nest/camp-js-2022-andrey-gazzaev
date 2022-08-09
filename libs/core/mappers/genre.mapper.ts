@@ -13,4 +13,16 @@ export namespace GenreMapper {
       name: dto.name,
     });
   }
+
+  /**
+   * Maps model to dto.
+   * @param model Genre.
+   */
+  export function toDto(model: Genre): GenreDto {
+    return {
+      id: model.id,
+      name: model.name,
+      type: 'GENRES',
+    };
+  }
 }
