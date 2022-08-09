@@ -1,4 +1,4 @@
-import { map, Observable, switchMap, switchMapTo, throwError } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, switchMapTo, throwError } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
@@ -47,13 +47,12 @@ export interface RegistrationErrors {
   providedIn: 'root',
 })
 export class UserService {
-
   private readonly userUrl: URL;
 
   /** Current user. Null when user is not logged in. */
   public readonly currentUser$: Observable<User | null>;
 
-  /**  */
+  /** Is the user authorized. */
   public readonly isAuthorized$: Observable<boolean>;
 
   public constructor(
@@ -69,7 +68,7 @@ export class UserService {
 
   /**
    * Log in.
-   * @param loginData Data required for login..
+   * @param loginData Data required for login.
    */
   public login(loginData: Login): Observable<boolean> {
     return this.authService.login(loginData).pipe(
@@ -96,10 +95,14 @@ export class UserService {
    * If an error occurs, the user will be null.
    * The error may be if the user is not authorized.
    */
-  public fetchUser(): Observable<User> {
+  public fetchUser(): Observable<User | null> {
     return this.tokenService.token$.pipe(
       switchMap(() => this.http.get<UserDto>(this.userUrl.toString())),
       map(userDto => UserMapper.fromDto(userDto)),
+      catchError((error: unknown) => {
+        console.error(error);
+        return of(null);
+      }),
     );
   }
 

@@ -5,7 +5,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AppError } from '@js-camp/core/models/httpError';
-import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { UrlService } from '../../../../core/services/url.service';
 import { showErrorsFormFields } from '../../../../core/utils/show-errors';
@@ -15,10 +14,10 @@ import { UserService, RegistrationErrors } from '../../../../core/services/user.
 interface LoginFormControls {
 
   /** Email control. */
-  readonly email: FormControl<string | null>;
+  readonly email: FormControl<string>;
 
   /** Password control. */
-  readonly password: FormControl<string | null>;
+  readonly password: FormControl<string>;
 }
 
 /** Login component. */
@@ -30,9 +29,6 @@ interface LoginFormControls {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-
-  /** Is password displayed. */
-  public isHiddenPassword = true;
 
   /** Login form. */
   public readonly loginForm: FormGroup<LoginFormControls>;
@@ -47,23 +43,14 @@ export class LoginComponent {
     this.loginForm = this.initLoginForm();
   }
 
-  /** Handles password toggle. */
-  public handlePasswordToggle(): void {
-    this.isHiddenPassword = !this.isHiddenPassword;
-  }
-
   /** Handles form submit. */
   public handleFormSubmit(): void {
     this.loginForm.markAllAsTouched();
     if (this.loginForm.invalid) {
       return;
     }
-    const fields = this.loginForm.getRawValue();
-    if (!isFieldsDefined(fields)) {
-      return;
-    }
 
-    const { password, email } = fields;
+    const { password, email } = this.loginForm.getRawValue();
 
     this.userService.login({ email, password })
       .pipe(
@@ -86,7 +73,7 @@ export class LoginComponent {
   }
 
   private initLoginForm(): FormGroup<LoginFormControls> {
-    return this.formBuilder.group({
+    return this.formBuilder.nonNullable.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     }, { updateOn: 'blur' });

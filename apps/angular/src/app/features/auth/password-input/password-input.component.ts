@@ -17,7 +17,7 @@ export class PasswordInputComponent {
   @Input()
   public control: FormControl = new FormControl<string | null>('');
 
-  /** Is password displayed. */
+  /** Is the password hidden. */
   public isHiddenPassword = true;
 
   /** Handles password toggle. */

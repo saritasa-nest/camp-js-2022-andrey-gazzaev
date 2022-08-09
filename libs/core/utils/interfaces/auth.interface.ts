@@ -22,4 +22,7 @@ export interface RegistrationData {
 
   /** Password of user. */
   readonly password: string;
+
+  /** URL to user avatar. */
+  readonly avatarUrl: string;
 }

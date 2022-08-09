@@ -27,3 +27,14 @@
 .details-field {
   margin-block: 20px;
 }
+
+.empty-button {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+}
