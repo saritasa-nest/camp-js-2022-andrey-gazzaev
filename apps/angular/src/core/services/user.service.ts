@@ -1,4 +1,4 @@
-import { map, Observable, switchMap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, switchMapTo, throwError } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
@@ -47,8 +47,13 @@ export interface RegistrationErrors {
   providedIn: 'root',
 })
 export class UserService {
-
   private readonly userUrl: URL;
+
+  /** Current user. Null when user is not logged in. */
+  public readonly currentUser$: Observable<User | null>;
+
+  /**  */
+  public readonly isAuthorized$: Observable<boolean>;
 
   public constructor(
     config: AppConfigService,
@@ -56,6 +61,8 @@ export class UserService {
     private readonly authService: AuthService,
     private readonly tokenService: TokenService,
   ) {
+    this.currentUser$ = this.fetchUser();
+    this.isAuthorized$ = this.currentUser$.pipe(map(user => user !== null));
     this.userUrl = new URL(`users/profile/`, config.apiUrl);
   }
 
@@ -63,8 +70,10 @@ export class UserService {
    * Log in.
    * @param loginData Data required for login..
    */
-  public login(loginData: Login): Observable<void> {
+  public login(loginData: Login): Observable<boolean> {
     return this.authService.login(loginData).pipe(
+      switchMapTo(this.isAuthorized$),
+      map(() => true),
       catchHttpErrorResponse(error => throwError(() => this.createError(error))),
     );
   }
@@ -73,8 +82,10 @@ export class UserService {
    * Registers user.
    * @param registrationData Data required for registration.
    */
-  public register(registrationData: Registration): Observable<void> {
+  public register(registrationData: Registration): Observable<boolean> {
     return this.authService.register(registrationData).pipe(
+      switchMap(() => this.isAuthorized$),
+      map(() => true),
       catchHttpErrorResponse(error => throwError(() => this.createError(error))),
     );
   }
@@ -84,16 +95,23 @@ export class UserService {
    * If an error occurs, the user will be null.
    * The error may be if the user is not authorized.
    */
-  public fetchUser(): Observable<User> {
+  public fetchUser(): Observable<User | null> {
     return this.tokenService.token$.pipe(
       switchMap(() => this.http.get<UserDto>(this.userUrl.toString())),
       map(userDto => UserMapper.fromDto(userDto)),
+      catchError((error: unknown) => {
+        console.error(error);
+        return of(null);
+      }),
     );
   }
 
   /** Log out. */
-  public logout(): Observable<void> {
-    return this.tokenService.remove();
+  public logout(): Observable<boolean> {
+    return this.tokenService.remove().pipe(
+      switchMap(() => this.isAuthorized$),
+      map(() => false),
+    );
   }
 
   /**

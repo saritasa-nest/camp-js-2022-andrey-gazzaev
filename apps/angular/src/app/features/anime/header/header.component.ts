@@ -1,11 +1,10 @@
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { User } from '@js-camp/core/models/user';
 
-import { UrlService } from '../../../../core/services/url.service';
 import { UserService } from '../../../../core/services/user.service';
 
 /** The main component of header on an anime page. */
@@ -23,16 +22,14 @@ export class HeaderComponent {
 
   public constructor(
     private readonly userService: UserService,
-    private readonly urlService: UrlService,
   ) {
-    this.user$ = this.userService.fetchUser();
+    this.user$ = this.userService.currentUser$;
   }
 
   /** Log out from account. */
   public onLogout(): void {
     this.userService.logout()
       .pipe(
-        tap(() => this.urlService.navigateToHome()),
         untilDestroyed(this),
       )
       .subscribe();
