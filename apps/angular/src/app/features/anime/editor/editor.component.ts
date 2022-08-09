@@ -9,22 +9,6 @@ import { Status, Type } from '@js-camp/core/models/anime';
 
 import { AnimeService } from '../../../../core/services/anime.service';
 
-// interface SelectItem {
-
-//   /** Key of item. */
-//   readonly field: string;
-
-//   /** Name of item. */
-//   readonly title: string;
-
-//   /** Is a item selected. */
-//   readonly isSelect: boolean;
-// }
-
-interface DateFormControl {
-
-}
-
 interface AnimeFormControls {
 
   /** Trailer youtube id. */
@@ -44,16 +28,17 @@ interface AnimeFormControls {
 
   /** Is airing. */
   readonly isAiring: FormControl<boolean>;
-
-  /** Is airing. */
-  readonly airedStart: FormControl<Date>;
-
-  /** Is airing. */
-  readonly airedEnd: FormGroup({
-    start: new FormControl(new Date(year, month, 13)),
-    end: new FormControl(new Date(year, month, 16)),
-  };
 }
+
+interface AiredFormControls {
+
+  /** Start date. */
+  readonly start: FormControl<Date>;
+
+  /** End date. */
+  readonly end: FormControl<Date>;
+}
+
 /** Editor component. */
 @Component({
   selector: 'app-editor',
@@ -66,6 +51,9 @@ export class EditorComponent {
   /** Anime form. */
   public readonly animeForm: FormGroup<AnimeFormControls>;
 
+  /** Aired form group. */
+  public readonly airedForm: FormGroup<AiredFormControls>;
+
   /** All kinds of anime genres. */
   public readonly genres$: Observable<readonly Genre[]>;
 
@@ -75,6 +63,7 @@ export class EditorComponent {
   /** All kinds of anime types. */
   public readonly types: string[];
 
+  /**  All kinds of anime status. */
   public readonly statusList: string[];
 
   public constructor(
@@ -85,7 +74,7 @@ export class EditorComponent {
     this.statusList = Object.values(Status);
 
     this.animeForm = this.initAnimeForm();
-
+    this.airedForm = this.initAiredForm();
     this.genres$ = this.animeService.fetchGenres();
     this.studios$ = this.animeService.fetchStudios();
 
@@ -99,8 +88,13 @@ export class EditorComponent {
       type: ['TV', Validators.required],
       status: ['AIRING', Validators.required],
       isAiring: [true, Validators.required],
-      airedStart: [new Date()],
-      airedEnd: [new Date()],
     }, { updateOn: 'blur' });
+  }
+
+  private initAiredForm(): FormGroup<AiredFormControls> {
+    return this.formBuilder.nonNullable.group({
+      start: [new Date(), Validators.required],
+      end: [new Date(), Validators.required],
+    });
   }
 }

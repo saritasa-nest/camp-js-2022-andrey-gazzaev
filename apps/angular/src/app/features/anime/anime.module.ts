@@ -1,10 +1,8 @@
 import {
   MatDialogRef,
-  MatDialogModule,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { NgModule } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -29,8 +27,6 @@ import { ImagePopupComponent } from './details/image-popup/image-popup.component
   imports: [
     SharedModule,
     AnimeRoutingModule,
-    ReactiveFormsModule,
-    MatProgressSpinnerModule,
   ],
   providers: [
     { provide: MatDialogRef, useValue: {} },

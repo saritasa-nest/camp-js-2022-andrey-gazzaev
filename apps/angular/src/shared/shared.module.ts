@@ -11,13 +11,16 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { PlaceholderPipe } from './pipes/placeholder.pipe';
 
@@ -44,7 +47,10 @@ import { PlaceholderPipe } from './pipes/placeholder.pipe';
     MatSnackBarModule,
     MatFormFieldModule,
     MatPaginatorModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
     MatProgressSpinnerModule,
   ],
   providers: [
