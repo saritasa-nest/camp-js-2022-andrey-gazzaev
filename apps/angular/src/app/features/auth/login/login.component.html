@@ -20,7 +20,7 @@
       {{ loginForm.controls.email.getError("email") }}
     </mat-error>
   </mat-form-field>
-  
+
   <app-password-input
     label="Enter your password"
     [control]="loginForm.controls.password"
@@ -41,7 +41,7 @@
       <a class="link" mat-button href="#">Forgot your password?</a>
     </mat-list-item>
     <mat-list-item role="listitem">
-      <a class="link" mat-button [routerLink]="'/auth/registration/'"
+      <a class="link" mat-button routerLink="/auth/registration/"
         >Don't have an account?</a
       >
     </mat-list-item>

@@ -60,7 +60,7 @@ export class UserService {
   }
 
   /**
-   * Log шn.
+   * Log in.
    * @param loginData Data required for login..
    */
   public login(loginData: Login): Observable<void> {
