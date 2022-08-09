@@ -19,24 +19,24 @@
           mat-menu-item
           title="Log out from account"
           (click)="onLogout()"
-          [routerLink]="'/catalog/'"
+          routerLink="/catalog"
         >
           <mat-icon>logout</mat-icon>
       </a>
       </mat-menu>
     </div>
     <ng-template #standardProfile>
-      <div class="buttons">
+      <div class="links">
         <a
           mat-button
           title="Log in to account"
-          [routerLink]="'/auth/login'"
+          routerLink="/auth/login"
           >Login</a
         >
         <a
           mat-button
           title="Create new account"
-          [routerLink]="'/auth/registration'"
+          routerLink="/auth/registration"
         >
           Registration
         </a>

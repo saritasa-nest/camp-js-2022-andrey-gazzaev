@@ -27,7 +27,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   /** @inheritdoc */
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (this.shouldProhibitedUrl(request.url)) {
+    if (this.shouldInterceptToken(request.url)) {
       return next.handle(request);
     }
     return this.tokensService.token$.pipe(
@@ -41,9 +41,11 @@ export class AuthInterceptor implements HttpInterceptor {
     );
   }
 
-  private shouldProhibitedUrl(url: string): boolean {
-    return url.startsWith(
+  private shouldInterceptToken(url: string): boolean {
+    const isHomeRequest = url.startsWith(this.config.apiUrl);
+    const isAuthRequest = url.startsWith(
       new URL('auth', this.config.apiUrl).toString(),
     );
+    return isAuthRequest && isHomeRequest;
   }
 }

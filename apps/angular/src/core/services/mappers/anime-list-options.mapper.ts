@@ -86,7 +86,7 @@ export class AnimeListOptionsMapper {
     });
   }
 
-  /** */
+  /** Gets limit page. */
   public getLimit(): number {
     return DefaultParamValue.LIMIT;
   }

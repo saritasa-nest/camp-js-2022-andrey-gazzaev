@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { RegistrationDto } from '../dtos/registration.dto';
-import { Registration } from '../models/registration';
+import { RegistrationData } from '../utils/interfaces/auth.interface';
 
 /** Registration data mapper. */
 export namespace RegistrationDataMapper {
@@ -9,7 +9,7 @@ export namespace RegistrationDataMapper {
    * Map model to dto.
    * @param model Registration model.
    */
-  export function toDto({ email, firstName, lastName, password, avatarUrl }: Registration): RegistrationDto {
+  export function toDto({ email, firstName, lastName, password, avatarUrl }: RegistrationData): RegistrationDto {
     return {
       email,
       first_name: firstName,

@@ -15,7 +15,7 @@ import { UrlService } from './url.service';
 import { TokenService } from './token.service';
 import { AppConfigService } from './app-config.service';
 
-const UNAUTHORIZED_ERROR = 'User unauthorized';
+const UNAUTHORIZED_ERROR_MESSAGE = 'User unauthorized';
 
 /** Service providing the possibility of authorization.*/
 @Injectable({
@@ -57,7 +57,10 @@ export class AuthService {
    * @param registrationData Data required for registration.
    */
   public register(registrationData: Registration): Observable<void> {
-    const registrationDataDto = RegistrationDataMapper.toDto(registrationData);
+    const avatarUrl =
+      'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
+      'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
+    const registrationDataDto = RegistrationDataMapper.toDto({ ...registrationData, avatarUrl });
     return this.http.post<TokenDto>(this.registrationUrl.toString(), registrationDataDto).pipe(
       map(tokensDto => TokensMapper.fromDto(tokensDto)),
       switchMap(tokens => this.tokenService.save(tokens)),
@@ -71,13 +74,13 @@ export class AuthService {
         this.http.post<TokenDto>(this.refreshUrl.toString(), {
           refresh: tokens.refresh,
         }) :
-        throwError(() => new AppError(UNAUTHORIZED_ERROR))),
+        throwError(() => new AppError(UNAUTHORIZED_ERROR_MESSAGE))),
       map(tokensDto => TokensMapper.fromDto(tokensDto)),
       switchMap(tokens => this.tokenService.save(tokens)),
       catchError((error: unknown) => {
         if (
           error instanceof AppError &&
-          error.message === UNAUTHORIZED_ERROR
+          error.message === UNAUTHORIZED_ERROR_MESSAGE
         ) {
           return throwError(() => error);
         }
