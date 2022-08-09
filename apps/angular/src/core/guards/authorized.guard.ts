@@ -5,7 +5,7 @@ import { CanActivate, Router, UrlTree } from '@angular/router';
 
 import { UserService } from '../services/user.service';
 
-/**  */
+/**  Authorized guard. */
 @Injectable({
   providedIn: 'root',
 })

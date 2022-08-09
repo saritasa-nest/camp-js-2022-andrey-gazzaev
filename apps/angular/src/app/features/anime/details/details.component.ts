@@ -50,11 +50,13 @@ export class DetailsComponent {
   /**
    * Opens image in modal.
    * @param url Image URL.
+   * @param name Image name.
    */
-  public openImagePopup(url: string): void {
+  public openImagePopup(url: string, name: string): void {
     this.dialog.open(ImagePopupComponent, {
       data: {
         url,
+        name,
       },
     });
   }

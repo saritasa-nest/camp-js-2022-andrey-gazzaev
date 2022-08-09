@@ -3,6 +3,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 interface ImageData {
 
+  /** Image name. */
+  readonly name: string;
+
   /** Image URL. */
   readonly url: string;
 }
@@ -16,6 +19,6 @@ interface ImageData {
 export class ImagePopupComponent {
 
   /** @inheritdoc */
-  public constructor(@Inject(MAT_DIALOG_DATA) public data: ImageData) {}
+  public constructor(@Inject(MAT_DIALOG_DATA) public data: ImageData) { }
 
 }

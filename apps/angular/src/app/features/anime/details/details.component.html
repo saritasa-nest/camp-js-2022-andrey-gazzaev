@@ -4,13 +4,18 @@
     <section class="details">
       <h2 class="mat-title">Anime details</h2>
       <mat-card class="details__card">
-        <div>
-          <img
-            class="details__image"
-            [src]="anime.image"
-            (click)="openImagePopup(anime.image)"
-            alt="Poster anime - {{ anime.imageTitle }}"
-          />
+        <div class="detail__actions">
+          <button
+            type="button"
+            class="empty-button"
+            (click)="openImagePopup(anime.image, anime.imageTitle)"
+          >
+            <img
+              class="details__image"
+              [src]="anime.image"
+              alt="Poster anime - {{ anime.imageTitle }}"
+            />
+          </button>
           <iframe
             *ngIf="anime.trailerYoutubeId"
             [src]="url"

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -21,6 +22,10 @@ import { ImagePopupComponent } from './details/image-popup/image-popup.component
   imports: [
     SharedModule,
     AnimeRoutingModule,
+  ],
+  providers: [
+    { provide: MatDialogRef, useValue: {} },
+    { provide: MAT_DIALOG_DATA, useValue: {} },
   ],
 })
 export class AnimeModule { }
