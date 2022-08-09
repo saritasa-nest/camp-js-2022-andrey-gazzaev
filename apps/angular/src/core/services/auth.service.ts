@@ -15,7 +15,7 @@ import { UrlService } from './url.service';
 import { TokenService } from './token.service';
 import { AppConfigService } from './app-config.service';
 
-const UNAUTHORIZED_ERROR = 'User unauthorized';
+const UNAUTHORIZED_ERROR_MESSAGE = 'User unauthorized';
 
 /** Service providing the possibility of authorization.*/
 @Injectable({
@@ -70,13 +70,13 @@ export class AuthService {
         this.http.post<TokenDto>(this.refreshUrl.toString(), {
           refresh: tokens.refresh,
         }) :
-        throwError(() => new AppError(UNAUTHORIZED_ERROR))),
+        throwError(() => new AppError(UNAUTHORIZED_ERROR_MESSAGE))),
       map(tokensDto => TokensMapper.fromDto(tokensDto)),
       switchMap(tokens => this.tokenService.save(tokens)),
       catchError((error: unknown) => {
         if (
           error instanceof AppError &&
-          error.message === UNAUTHORIZED_ERROR
+          error.message === UNAUTHORIZED_ERROR_MESSAGE
         ) {
           return throwError(() => error);
         }
