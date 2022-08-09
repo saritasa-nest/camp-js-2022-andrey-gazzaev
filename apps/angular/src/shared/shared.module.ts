@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -33,6 +34,7 @@ import { PlaceholderPipe } from './pipes/placeholder.pipe';
     MatSelectModule,
     PlaceholderPipe,
     MatButtonModule,
+    MatToolbarModule,
     MatCheckboxModule,
     MatSnackBarModule,
     MatFormFieldModule,
