@@ -1,3 +1,8 @@
+import {
+  MatDialogRef,
+  MatDialogModule,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSortModule } from '@angular/material/sort';
@@ -13,32 +18,29 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {
-  MatDialogModule,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
 
 import { SharedModule } from '../../../shared/shared.module';
 
 import { AnimeComponent } from './anime.component';
 import { HeaderComponent } from './header/header.component';
 import { AnimeRoutingModule } from './anime-routing.module';
+import { EditorComponent } from './editor/editor.component';
 import { DetailsComponent } from './details/details.component';
 import { TableViewComponent } from './table-view/table-view.component';
 import { ImagePopupComponent } from './details/image-popup/image-popup.component';
-import { EditorComponent } from './editor/editor.component';
 
 /** Anime module. */
 @NgModule({
   declarations: [
     AnimeComponent,
     HeaderComponent,
+    EditorComponent,
     DetailsComponent,
     TableViewComponent,
     ImagePopupComponent,
-    EditorComponent,
   ],
   imports: [
     FormsModule,
@@ -58,7 +60,9 @@ import { EditorComponent } from './editor/editor.component';
     MatCheckboxModule,
     MatPaginatorModule,
     AnimeRoutingModule,
+    MatDatepickerModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
     MatProgressSpinnerModule,
   ],
   providers: [
@@ -66,4 +70,4 @@ import { EditorComponent } from './editor/editor.component';
     { provide: MAT_DIALOG_DATA, useValue: {} },
   ],
 })
-export class AnimeModule {}
+export class AnimeModule { }

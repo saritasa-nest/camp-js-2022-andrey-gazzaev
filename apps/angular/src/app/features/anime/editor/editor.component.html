@@ -1,24 +1,79 @@
 <p>editor works!</p>
+<form class="editor" [formGroup]="animeForm">
+  <mat-form-field class="editor-field" appearance="fill">
+    <mat-label>Enter trailer youtube id</mat-label>
+    <input
+      matInput
+      placeholder="1dy2zPPrKD0"
+      formControlName="trailerYoutubeId"
+    />
+  </mat-form-field>
 
-<ng-container *ngIf="genres$ | async as genres">
-  <div class="editor-field">
-    <mat-label>Genres</mat-label>
-    <mat-chip-list aria-label="List of genres">
-      <mat-chip *ngFor="let genre of genres">
-        {{ genre.name }}
-      </mat-chip>
-    </mat-chip-list>
-  </div>
-</ng-container>
+  <mat-form-field class="editor-field" appearance="fill">
+    <mat-label>Title in English</mat-label>
+    <input
+      matInput
+      placeholder="Naruto Shippuden"
+      formControlName="titleEnglish"
+    />
+  </mat-form-field>
 
-<ng-container *ngIf="studios$ | async as studios">
-  <div class="editor-field">
-    <mat-label>Studios</mat-label>
-    <mat-chip-list aria-label="List of studios">
-      <mat-chip *ngFor="let studio of studios">
-        {{ studio.name }}
-      </mat-chip>
-    </mat-chip-list>
-  </div>
-</ng-container>
+  <mat-form-field class="editor-field" appearance="fill">
+    <mat-label>Title in Japanese</mat-label>
+    <input
+      matInput
+      placeholder="ナルト- 疾風伝"
+      formControlName="titleJapanese"
+    />
+  </mat-form-field>
 
+  <mat-form-field appearance="fill">
+    <mat-label>Anime type</mat-label>
+    <mat-select formControlName="type">
+      <mat-option *ngFor="let type of types" [value]="type">
+        {{ type }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Anime status</mat-label>
+    <mat-select formControlName="status">
+      <mat-option *ngFor="let status of statusList" [value]="status">
+        {{ status }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-slide-toggle formControlName="isAiring" >Airing</mat-slide-toggle>
+
+  <ng-container *ngIf="genres$ | async as genres">
+    <div class="editor-field">
+      <mat-label>Genres</mat-label>
+      <mat-chip-list aria-label="List of genres">
+        <mat-chip *ngFor="let genre of genres">
+          {{ genre.name }}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </ng-container>
+
+  <mat-form-field color="accent" appearance="fill">
+    <mat-label>Inherited calendar color</mat-label>
+    <input matInput [matDatepicker]=" airedStart">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]=" airedStart"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+  <ng-container *ngIf="studios$ | async as studios">
+    <div class="editor-field">
+      <mat-label>Studios</mat-label>
+      <mat-chip-list aria-label="List of studios">
+        <mat-chip *ngFor="let studio of studios">
+          {{ studio.name }}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </ng-container>
+</form>
