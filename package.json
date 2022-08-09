@@ -54,6 +54,7 @@
     "@angular/compiler-cli": "~14.0.0",
     "@angular/language-service": "~14.0.0",
     "@angular/material": "^14.1.0",
+    "@ngneat/until-destroy": "^9.2.1",
     "@ngx-env/builder": "^2.2.0",
     "@nrwl/angular": "^14.3.5",
     "@nrwl/cli": "14.3.5",

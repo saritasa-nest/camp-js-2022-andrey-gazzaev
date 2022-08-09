@@ -1,9 +1,10 @@
-import { BehaviorSubject, combineLatestWith, debounceTime, map, Observable, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, ignoreElements, map, merge, mergeWith, Observable, skip, startWith, switchMap, tap } from 'rxjs';
 
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
-import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ChangeDetectionStrategy, Component, OnInit, TrackByFunction } from '@angular/core';
 
 import { AnimeBase, Type } from '@js-camp/core/models/anime';
 
@@ -33,43 +34,63 @@ interface FilterItem {
   readonly isSelect: boolean;
 }
 
-const DEFAULT_SORT_FIELD = 'title_eng';
-const DEFAULT_SORT_DIRECTION = 'asc';
 const INITIAL_PAGE = 0;
 const INPUT_DEBOUNCE_TIME = 500;
 
 /** Table view component. */
+@UntilDestroy()
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableViewComponent {
+export class TableViewComponent implements OnInit {
+
+  /** Anime list options. */
+  private readonly animeListOptions = this.animeService.getAnimeListOptions();
 
   /** Total number of records for the current query. */
   public animeListCount = 0;
 
+  private readonly pageSizeInitialValue = this.animeListOptions.limit ?? this.animeService.getLimit();
+
   /** Number of records per page. */
-  public readonly pageSize: number;
+  public readonly pageSize = this.pageSizeInitialValue;
 
   /** All possible type filters. */
-  public readonly filterListByType: readonly FilterItem[];
+  public readonly filterListByType = this.getInitialFilterListByType();
+
+  private readonly searchInitialValue = this.animeListOptions.search;
 
   /** Value of search input. */
-  public readonly search = new FormControl('');
+  public readonly search = new FormControl(this.searchInitialValue);
+
+  private readonly search$ = this.search.valueChanges.pipe(
+    startWith(this.searchInitialValue),
+  );
+
+  private readonly typeFilterInitialValue = this.animeListOptions.filter.byType;
 
   /** Filter by type. */
-  public readonly typeFilter = new FormControl<Type[]>([]);
+  public readonly typeFilter = new FormControl<Type[]>(this.typeFilterInitialValue);
+
+  private readonly typeFilter$ = this.typeFilter.valueChanges.pipe(
+    startWith(this.typeFilterInitialValue),
+  );
+
+  private readonly sortInitialValue: TableSort = {
+    field: this.animeListOptions.sort.field,
+    direction: this.animeListOptions.sort.direction === 'desc' ? 'desc' : 'asc',
+  };
 
   /** Current sort settings. */
-  public readonly sort$ = new BehaviorSubject<TableSort>({
-    field: DEFAULT_SORT_FIELD,
-    direction: DEFAULT_SORT_DIRECTION,
-  });
+  public readonly sort$ = new BehaviorSubject<TableSort>(this.sortInitialValue);
+
+  private readonly currentPageNumberInitialValue = this.animeListOptions.pageNumber;
 
   /** Current page number. */
-  public readonly currentPageNumber$ = new BehaviorSubject<number>(0);
+  public readonly currentPageNumber$ = new BehaviorSubject<number>(this.currentPageNumberInitialValue);
 
   /** Table columns names. */
   public readonly displayedColumns: readonly string[] = ['image', 'title-english', 'title-japanese', 'aired-start', 'type', 'status'];
@@ -78,60 +99,33 @@ export class TableViewComponent {
   public readonly animeList$: Observable<readonly AnimeBase[]>;
 
   public constructor(
-    urlService: UrlService,
+    private readonly urlService: UrlService,
     private readonly animeService: AnimeService,
   ) {
-    const animeListOptions = this.animeService.getAnimeListOptions();
-    this.setInputValues(animeListOptions);
+    this.animeList$ = this.initializationAnimeList();
+  }
 
-    this.filterListByType = this.getInitialFilterListByType();
-
-    this.pageSize = this.getInitialPageSize();
-
-    const typeFilterChanges$ = this.typeFilter.valueChanges.pipe(
-      startWith(animeListOptions.filter.byType),
-    );
-
-    const searchChanges$ = this.search.valueChanges.pipe(
-      startWith(animeListOptions.search),
-    );
-
-    let isFirstRender = true;
-    const paramsChange$ = searchChanges$.pipe(
-      combineLatestWith(
-        typeFilterChanges$,
-        this.sort$,
+  /** @inheritdoc */
+  public ngOnInit(): void {
+    // When the component is first rendered,
+    // it is necessary to save the page number that was passed in the url.
+    // In the future, when one of the pagination parameters changes, you need to reset the page.
+    const resetCurrentPageNumberSideEffect$ = this.typeFilter$.pipe(
+      skip(1),
+      mergeWith(
+        this.search$.pipe(skip(1)),
+        this.sort$.pipe(skip(1)),
       ),
-      tap(() => !isFirstRender ? this.currentPageNumber$.next(INITIAL_PAGE) : null),
-      debounceTime(INPUT_DEBOUNCE_TIME),
+      tap(() => this.currentPageNumber$.next(INITIAL_PAGE)),
     );
 
-    const params$ = paramsChange$.pipe(
-      combineLatestWith(this.currentPageNumber$),
-    );
-
-    this.animeList$ = params$.pipe(
-      map(([[search, typeFilter, sort], pageNumber]) => {
-        const animeListOption = new AnimeListOptions({
-          pageNumber,
-          sort,
-          filter: { byType: typeFilter !== null ? typeFilter : [] },
-          search: search !== null ? search : '',
-          limit: this.pageSize,
-        });
-        return this.animeService.animeListOptionsToHttpParams(animeListOption);
-      }),
-      tap(animeListParams => urlService.setUrl(animeListParams)),
-      switchMap(animeListParams => this.animeService.fetchAnimeList(animeListParams)),
-      map(animeList => {
-        this.animeListCount = animeList.count;
-        return animeList.results;
-      }),
-      tap(() => goToTop()),
-      tap(() => {
-        isFirstRender = false;
-      }),
-    );
+    merge(
+      resetCurrentPageNumberSideEffect$,
+    ).pipe(
+      ignoreElements(),
+      untilDestroyed(this),
+    )
+      .subscribe();
   }
 
   /**
@@ -174,15 +168,37 @@ export class TableViewComponent {
     }));
   }
 
-  /** Gets page size. */
-  private getInitialPageSize(): number {
-    return this.animeService.getLimit();
-  }
+  private initializationAnimeList(): Observable<readonly AnimeBase[]> {
+    const paramsChange$ = this.search$.pipe(
+      combineLatestWith(
+        this.typeFilter$,
+        this.sort$,
+      ),
+      debounceTime(INPUT_DEBOUNCE_TIME),
+    );
 
-  private setInputValues({ pageNumber, sort, search, filter }: AnimeListOptions): void {
-    this.currentPageNumber$.next(pageNumber);
-    this.sort$.next({ field: sort.field, direction: sort.direction === 'desc' ? 'desc' : 'asc' });
-    this.search.setValue(search);
-    this.typeFilter.setValue(filter.byType);
+    const params$ = paramsChange$.pipe(
+      combineLatestWith(this.currentPageNumber$),
+    );
+
+    return params$.pipe(
+      map(([[search, typeFilter, sort], pageNumber]) => {
+        const animeListOption = new AnimeListOptions({
+          pageNumber,
+          sort,
+          filter: { byType: typeFilter !== null ? typeFilter : [] },
+          search: search !== null ? search : '',
+          limit: this.pageSize,
+        });
+        return this.animeService.animeListOptionsToHttpParams(animeListOption);
+      }),
+      tap(animeListParams => this.urlService.setUrl(animeListParams)),
+      switchMap(animeListParams => this.animeService.fetchAnimeList(animeListParams)),
+      map(animeList => {
+        this.animeListCount = animeList.count;
+        return animeList.results;
+      }),
+      tap(() => goToTop()),
+    );
   }
 }
