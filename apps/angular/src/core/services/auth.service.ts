@@ -56,7 +56,10 @@ export class AuthService {
    * @param registrationData Data required for registration.
    */
   public register(registrationData: Registration): Observable<void> {
-    const registrationDataDto = RegistrationDataMapper.toDto(registrationData);
+    const avatarUrl =
+      'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
+      'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
+    const registrationDataDto = RegistrationDataMapper.toDto({ ...registrationData, avatarUrl });
     return this.http.post<TokenDto>(this.registrationUrl.toString(), registrationDataDto).pipe(
       map(tokensDto => TokensMapper.fromDto(tokensDto)),
       switchMap(tokens => this.tokenService.save(tokens)),

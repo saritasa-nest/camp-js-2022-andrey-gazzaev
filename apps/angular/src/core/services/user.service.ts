@@ -52,7 +52,7 @@ export class UserService {
   /** Current user. Null when user is not logged in. */
   public readonly currentUser$: Observable<User | null>;
 
-  /**  */
+  /** Is the user authorized. */
   public readonly isAuthorized$: Observable<boolean>;
 
   public constructor(
@@ -68,7 +68,7 @@ export class UserService {
 
   /**
    * Log in.
-   * @param loginData Data required for login..
+   * @param loginData Data required for login.
    */
   public login(loginData: Login): Observable<boolean> {
     return this.authService.login(loginData).pipe(
