@@ -7,15 +7,18 @@ import { Genre } from '@js-camp/core/models/genre';
 import { GenreDto } from '@js-camp/core/dtos/genre.dto';
 import { Studio } from '@js-camp/core/models/studio.dto';
 import { StudioDto } from '@js-camp/core/dtos/studio.dto';
+import { DateRange } from '@js-camp/core/models/dateRange';
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { AnimeBase, Type } from '@js-camp/core/models/anime';
+import { AnimeInformation } from '@js-camp/core/models/anime-editor';
 import { GenreMapper } from '@js-camp/core/mappers/genre.mapper';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 import { AnimeDetailsDto } from '@js-camp/core/dtos/animeDetails';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { StudioMapper } from '@js-camp/core/mappers/studio.mapper';
+import { AnimeEditorDto } from '@js-camp/core/dtos/anime-editor.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
 import { AnimeListOptions } from '../models/anime-list-options';
@@ -23,13 +26,28 @@ import { AnimeListOptions } from '../models/anime-list-options';
 import { AppConfigService } from './app-config.service';
 import { AnimeListOptionsMapper } from './mappers/anime-list-options.mapper';
 
+interface AnimeData {
+
+  /** Information about anime. */
+  readonly information: AnimeInformation;
+
+  /** Anime poster. */
+  readonly image: string;
+
+  /** Aired start date. */
+  readonly airedStartDate: Date | null;
+
+  /** Aired end date. */
+  readonly airedEndDate: Date | null;
+}
+
 /** Anime service. */
 @Injectable({
   providedIn: 'root',
 })
 export class AnimeService {
 
-  private readonly animeListUrl: URL;
+  private readonly animeUrl: URL;
 
   private readonly genresUrl: URL;
 
@@ -42,7 +60,7 @@ export class AnimeService {
   ) {
     this.genresUrl = new URL(`anime/genres/`, config.apiUrl);
     this.studiosUrl = new URL(`anime/studios/`, config.apiUrl);
-    this.animeListUrl = new URL(`anime/anime/`, config.apiUrl);
+    this.animeUrl = new URL(`anime/anime/`, config.apiUrl);
   }
 
   /**
@@ -51,7 +69,7 @@ export class AnimeService {
    */
   public fetchAnimeList(animeListHttpParams: HttpParams): Observable<Pagination<AnimeBase>> {
     return this.http.get<PaginationDto<AnimeBaseDto>>(
-      this.animeListUrl.toString(),
+      this.animeUrl.toString(),
       { params: animeListHttpParams },
     ).pipe(map(pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
       pagination,
@@ -64,9 +82,24 @@ export class AnimeService {
    * @param id Anime id.
    */
   public fetchAnime(id: number): Observable<AnimeDetails> {
-    const animeUrl = new URL(`${id}/`, this.animeListUrl);
+    const animeUrl = new URL(`${id}/`, this.animeUrl);
     return this.http.get<AnimeDetailsDto>(animeUrl.toString()).pipe(
       map(animeDetailsDto => AnimeMapper.fromDetailsDto(animeDetailsDto)),
+    );
+  }
+
+  /**
+   * Creates anime.
+   * @param animeData The anime object to be created.
+   */
+  public createAnime({ airedStartDate, airedEndDate, image, information }: AnimeData): Observable<number> {
+    const aired = new DateRange({
+      end: airedEndDate,
+      start: airedStartDate,
+    });
+    const postAnimeDto = AnimeMapper.toEditorDto({ ...information, aired, image });
+    return this.http.post<AnimeEditorDto>(this.animeUrl.toString(), postAnimeDto).pipe(
+      map(animeEditorDto => animeEditorDto.id),
     );
   }
 

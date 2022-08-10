@@ -1,20 +1,15 @@
-import { catchError, of, tap } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 
-import { HttpClient } from '@angular/common/http';
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Status, Type } from '@js-camp/core/models/anime';
-import { DateRange } from '@js-camp/core/models/dateRange';
-import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
-import { AnimeEditorDto } from '@js-camp/core/dtos/anime-editor.dto';
 import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
-import { CreateAnimeEditor, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
+import { Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 
 import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
-import { AppConfigService } from '../../../../core/services/app-config.service';
 
 interface SelectItem {
 
@@ -106,8 +101,6 @@ export class EditorComponent {
 
   public constructor(
     private readonly animeService: AnimeService,
-    private readonly config: AppConfigService,
-    private readonly http: HttpClient,
     private readonly urlService: UrlService,
   ) {
     this.animeForm = this.initAnimeForm();
@@ -145,18 +138,11 @@ export class EditorComponent {
       return;
     }
 
-    const aired = new DateRange({
-      start: airedStartDate,
-      end: airedEndDate,
-    });
-
     const avatarUrl =
-    'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
-    'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
+      'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
+      'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
 
-    const postAmineEditor: CreateAnimeEditor = {
-      aired,
-      image: avatarUrl,
+    const amineInformation = {
       isAiring: requiredField.isAiring,
       rating: requiredField.rating as Rating,
       season: requiredField.season as Season,
@@ -171,19 +157,20 @@ export class EditorComponent {
       studios: requiredField.studios,
     };
 
-    const createAnimeEditorDto = AnimeMapper.toEditorDto(postAmineEditor);
-
-    const animeUrl = new URL(`anime/anime/`, this.config.apiUrl);
-    const postAnimeEditor$ = this.http.post<AnimeEditorDto>(animeUrl.toString(), createAnimeEditorDto).pipe(
-      tap(animeEditorDto => this.urlService.navigateToDetails(animeEditorDto.id)),
+    this.animeService.createAnime({
+      information: amineInformation,
+      image: avatarUrl,
+      airedStartDate,
+      airedEndDate,
+    }).pipe(
+      untilDestroyed(this),
+      map(id => this.urlService.navigateToDetails(id)),
       catchError((error: unknown) => {
         console.error(error);
         return of(null);
       }),
-    );
-
-    postAnimeEditor$.subscribe();
-
+    )
+      .subscribe();
   }
 
   private createSelectCollection<T>(obj: T): readonly SelectItem[] {

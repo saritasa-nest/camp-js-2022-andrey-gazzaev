@@ -42,7 +42,8 @@ export enum Source {
   Unknown = 'Unknown',
 }
 
-export type CreateAnimeEditor = Omit<AnimeEditor, 'id' | 'genresData' | 'studiosData' | 'imageTitle'>;
+export type PostAnime = Omit<AnimeEditor, 'id' | 'genresData' | 'studiosData' | 'imageTitle'>;
+export type AnimeInformation = Omit<AnimeEditor, 'id' | 'genresData' | 'studiosData' | 'imageTitle' | 'image' | 'aired'>;
 
 /** Anime editor. */
 export class AnimeEditor extends AnimeDetails {

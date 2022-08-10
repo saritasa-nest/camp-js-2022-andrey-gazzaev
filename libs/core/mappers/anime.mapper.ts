@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { CreateAnimeEditor, Rating, Season, Source } from '../models/anime-editor';
+import { PostAnime, Rating, Season, Source } from '../models/anime-editor';
 import { AnimeDetails } from '../models/animeDetails';
 import { AnimeDetailsDto } from '../dtos/animeDetails';
 import { AnimeBase, Status, Type } from '../models/anime';
-import { CreateAnimeEditorDto, RatingDto, SeasonDto, SourceDto } from '../dtos/anime-editor.dto';
+import { PostAnimeDto, RatingDto, SeasonDto, SourceDto } from '../dtos/anime-editor.dto';
 import { isDefined } from '../utils/guards/general.guard';
 import { AnimeBaseDto, StatusDto, TypeDto } from '../dtos/anime.dto';
 
@@ -138,7 +138,7 @@ export namespace AnimeMapper {
    * Maps model to dto.
    * @param model AnimeEditor.
    */
-  export function toEditorDto(model: CreateAnimeEditor): CreateAnimeEditorDto {
+  export function toEditorDto(model: PostAnime): PostAnimeDto {
     if (!isDefined(STATUS_TO_DTO_MAP[model.status])) {
       throw new Error(`Unknown value: ${model.status}`);
     }
