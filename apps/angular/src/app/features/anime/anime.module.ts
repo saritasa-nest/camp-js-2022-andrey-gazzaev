@@ -1,7 +1,4 @@
-import {
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../../../shared/shared.module';
@@ -13,6 +10,7 @@ import { EditorComponent } from './editor/editor.component';
 import { DetailsComponent } from './details/details.component';
 import { TableViewComponent } from './table-view/table-view.component';
 import { ImagePopupComponent } from './details/image-popup/image-popup.component';
+import { SelectComponent } from './select/select.component';
 
 /** Anime module. */
 @NgModule({
@@ -23,14 +21,12 @@ import { ImagePopupComponent } from './details/image-popup/image-popup.component
     DetailsComponent,
     TableViewComponent,
     ImagePopupComponent,
+    SelectComponent,
   ],
-  imports: [
-    SharedModule,
-    AnimeRoutingModule,
-  ],
+  imports: [SharedModule, AnimeRoutingModule],
   providers: [
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },
   ],
 })
-export class AnimeModule { }
+export class AnimeModule {}

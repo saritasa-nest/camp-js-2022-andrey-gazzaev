@@ -25,8 +25,14 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'editor/:id',
+    path: 'editor',
     component: EditorComponent,
+    children: [
+      {
+        path: ':id',
+        component: EditorComponent,
+      },
+    ],
   },
 ];
 

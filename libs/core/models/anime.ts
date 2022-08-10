@@ -28,10 +28,10 @@ export class AnimeBase extends Immerable {
   public readonly image: string;
 
   /** Title in English. */
-  public readonly titleEnglish: string;
+  public readonly titleEnglish: string | null;
 
   /** Title in Japanese. */
-  public readonly titleJapanese: string;
+  public readonly titleJapanese: string | null;
 
   /** Title for alt image. */
   public readonly imageTitle: string;

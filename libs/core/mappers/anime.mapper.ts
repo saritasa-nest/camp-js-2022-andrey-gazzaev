@@ -1,8 +1,9 @@
-import { AnimeEditor, Rating, Season, Source } from '../models/anime-editor';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { CreateAnimeEditor, Rating, Season, Source } from '../models/anime-editor';
 import { AnimeDetails } from '../models/animeDetails';
 import { AnimeDetailsDto } from '../dtos/animeDetails';
 import { AnimeBase, Status, Type } from '../models/anime';
-import { AnimeEditorDto, RatingDto, SeasonDto, SourceDto } from '../dtos/anime-editor.dto';
+import { CreateAnimeEditorDto, RatingDto, SeasonDto, SourceDto } from '../dtos/anime-editor.dto';
 import { isDefined } from '../utils/guards/general.guard';
 import { AnimeBaseDto, StatusDto, TypeDto } from '../dtos/anime.dto';
 
@@ -100,7 +101,7 @@ export namespace AnimeMapper {
       image: dto.image,
       titleEnglish: dto.title_eng,
       titleJapanese: dto.title_jpn,
-      imageTitle: dto.title_eng || dto.title_jpn || 'no title',
+      imageTitle: dto.title_eng ?? dto.title_jpn ?? 'no title',
       aired: DateRangeMapper.fromDto(dto.aired),
       status: STATUS_FROM_DTO_MAP[dto.status],
       type: TYPE_FROM_DTO_MAP[dto.type],
@@ -137,7 +138,7 @@ export namespace AnimeMapper {
    * Maps model to dto.
    * @param model AnimeEditor.
    */
-  export function toEditorDto(model: AnimeEditor): AnimeEditorDto {
+  export function toEditorDto(model: CreateAnimeEditor): CreateAnimeEditorDto {
     if (!isDefined(STATUS_TO_DTO_MAP[model.status])) {
       throw new Error(`Unknown value: ${model.status}`);
     }
@@ -158,11 +159,7 @@ export namespace AnimeMapper {
       throw new Error(`Unknown value: ${model.season}`);
     }
 
-    const genresData = model.genresData.map(genreDto => GenreMapper.toDto(genreDto));
-    const studiosData = model.studiosData.map(studioDto => StudioMapper.toDto(studioDto));
-
     return {
-      id: NaN,
       image: model.image,
       trailer_youtube_id: model.trailerYoutubeId,
       title_eng: model.titleEnglish,
@@ -175,16 +172,8 @@ export namespace AnimeMapper {
       rating: RATING_TO_DTO_MAP[model.rating],
       season: SEASON_TO_DTO_MAP[model.season],
       synopsis: model.synopsis,
-      studios_data: studiosData,
-      genres_data: genresData,
+      studios: model.studios,
+      genres: model.genres,
     };
   }
 }
-
-// TO-DO (@Gazzaev) add to dto
-// "studios": [
-//   0
-// ],
-// "genres": [
-//   0
-// ]

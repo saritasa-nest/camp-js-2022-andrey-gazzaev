@@ -27,10 +27,10 @@ export interface AnimeBaseDto {
   readonly image: string;
 
   /** Title in english. */
-  readonly title_eng: string;
+  readonly title_eng: string | null;
 
   /** Title in Japanese. */
-  readonly title_jpn: string;
+  readonly title_jpn: string | null;
 
   /** Release and end dates. */
   readonly aired: DateRangeDto;

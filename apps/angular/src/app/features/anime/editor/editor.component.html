@@ -1,4 +1,4 @@
-<form class="editor" [formGroup]="animeForm">
+<form class="editor" [formGroup]="animeForm" (ngSubmit)="onFormSubmit()">
   <mat-form-field class="editor-field" appearance="fill">
     <mat-label>Enter trailer youtube id</mat-label>
     <input
@@ -26,36 +26,44 @@
     />
   </mat-form-field>
 
-  <mat-form-field class="editor-field" appearance="fill">
-    <mat-label>Anime type</mat-label>
-    <mat-select formControlName="type">
-      <mat-option *ngFor="let type of types" [value]="type">
-        {{ type }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <app-select
+    class="editor-field"
+    label="Anime type"
+    [collection]="types"
+    [selectControl]="animeForm.controls.type"
+  ></app-select>
 
-  <mat-form-field class="editor-field" appearance="fill">
-    <mat-label>Anime status</mat-label>
-    <mat-select formControlName="status">
-      <mat-option *ngFor="let status of statusList" [value]="status">
-        {{ status }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <app-select
+    class="editor-field"
+    label="Anime status"
+    [collection]="statuses"
+    [selectControl]="animeForm.controls.status"
+  ></app-select>
 
-  <mat-slide-toggle class="editor-field"  formControlName="isAiring">Airing</mat-slide-toggle>
+  <app-select
+  class="editor-field"
+  label="Anime sources"
+  [collection]="sources"
+  [selectControl]="animeForm.controls.source"
+></app-select>
+
+  <mat-slide-toggle class="editor-field" formControlName="isAiring">
+    Airing
+  </mat-slide-toggle>
 
   <mat-form-field class="editor-field" appearance="fill">
     <mat-label>Anime airing</mat-label>
     <mat-date-range-input
-      [formGroup]="airedForm"
       [rangePicker]="airedPicker"
-      [comparisonStart]="airedForm.value.start"
-      [comparisonEnd]="airedForm.value.end"
+      [comparisonStart]="animeForm.value.airedStartDate"
+      [comparisonEnd]="animeForm.value.airedEndDate"
     >
-      <input matStartDate placeholder="Start date" formControlName="start" />
-      <input matEndDate placeholder="End date" formControlName="end" />
+      <input
+        matStartDate
+        placeholder="Start date"
+        formControlName="airedStartDate"
+      />
+      <input matEndDate placeholder="End date" formControlName="airedEndDate" />
     </mat-date-range-input>
     <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle
@@ -67,28 +75,48 @@
 
   <mat-form-field class="editor-field" appearance="fill">
     <mat-label>Synopsis</mat-label>
-    <textarea matInput placeholder="Anime about ..."></textarea>
+    <textarea
+      matInput
+      placeholder="Anime about ..."
+      formControlName="synopsis"
+    ></textarea>
   </mat-form-field>
 
   <ng-container *ngIf="genres$ | async as genres">
-    <div class="editor-field">
-      <mat-label>Genres</mat-label>
-      <mat-chip-list aria-label="List of genres">
-        <mat-chip *ngFor="let genre of genres">
-          {{ genre.name }}
-        </mat-chip>
-      </mat-chip-list>
-    </div>
+    <app-select
+      class="editor-field"
+      label="Genres"
+      placeholder="Select genres"
+      [collection]="genres"
+      [isMultiple]="true"
+      [selectControl]="animeForm.controls.genres"
+    ></app-select>
   </ng-container>
 
   <ng-container *ngIf="studios$ | async as studios">
-    <div class="editor-field">
-      <mat-label>Studios</mat-label>
-      <mat-chip-list aria-label="List of studios">
-        <mat-chip *ngFor="let studio of studios">
-          {{ studio.name }}
-        </mat-chip>
-      </mat-chip-list>
-    </div>
+    <app-select
+      class="editor-field"
+      label="Studios"
+      placeholder="Select studios"
+      [collection]="studios"
+      [isMultiple]="true"
+      [selectControl]="animeForm.controls.studios"
+    ></app-select>
   </ng-container>
+
+  <app-select
+    class="editor-field"
+    label="Anime season"
+    [collection]="seasons"
+    [selectControl]="animeForm.controls.season"
+  ></app-select>
+
+  <app-select
+    class="editor-field"
+    label="Anime rating"
+    [collection]="ratings"
+    [selectControl]="animeForm.controls.rating"
+  ></app-select>
+
+  <button mat-stroked-button type="submit">Create a new anime entry</button>
 </form>

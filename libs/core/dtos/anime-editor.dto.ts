@@ -41,6 +41,8 @@ export enum SourceDto {
   Unknown = 'UNKNOWN',
 }
 
+export type CreateAnimeEditorDto = Omit<AnimeEditorDto, 'id' | 'genres_data' | 'studios_data'> ;
+
 export interface AnimeEditorDto extends AnimeDetailsDto {
 
   /** Source. */
@@ -51,4 +53,11 @@ export interface AnimeEditorDto extends AnimeDetailsDto {
 
   /** Season. */
   readonly season: SeasonDto;
+
+  /** Studios (collection of id). */
+  readonly studios: readonly number[];
+
+  /** Genres (collection of id). */
+  readonly genres: readonly number[];
+
 }

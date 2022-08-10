@@ -21,8 +21,8 @@ export namespace DateRangeMapper {
    */
   export function toDto(model: DateRange): DateRangeDto {
     return {
-      end: isDefined(model.end) ? model.end.toString() : null,
-      start: isDefined(model.start) ? model.start.toString() : null,
+      end: isDefined(model.end) ? model.end.toISOString().split('T')[0] : null,
+      start: isDefined(model.start) ? model.start.toISOString().split('T')[0] : null,
     };
   }
 }
