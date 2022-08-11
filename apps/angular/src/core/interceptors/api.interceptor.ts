@@ -27,7 +27,7 @@ export class ApiInterceptor implements HttpInterceptor {
    */
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const requestClone = request.clone({
-      headers: request.headers.set(HttpHeader.ApiKey, this.config.apiKey),
+      headers: request.headers.set(HttpHeader.ApiKey, this.config.apiCampKey),
     });
     return next.handle(requestClone);
   }

@@ -28,7 +28,7 @@ export class AnimeService {
     private readonly http: HttpClient,
     private readonly animeListOptionsMapper: AnimeListOptionsMapper,
   ) {
-    this.animeListUrl = new URL(`anime/anime/`, config.apiUrl);
+    this.animeListUrl = new URL(`anime/anime/`, config.apiCampBaseUrl);
   }
 
   /**

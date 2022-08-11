@@ -16,13 +16,13 @@ enum ParamName {
   Search = 'search',
 }
 
-namespace DefaultParamValue {
-  export const LIMIT = 25;
-  export const OFFSET = 0;
-  export const SEARCH = '';
-  export const ORDERING = `${SortDirection.Ascending}${SortField.TitleEnglish}`;
-  export const TYPE = 'TV';
-}
+const defaultParams = {
+  limit: 25,
+  offset: 0,
+  search: '',
+  ordering: `${SortDirection.Ascending}${SortField.TitleEnglish}`,
+  type: 'TV',
+};
 
 /** Params mapper. */
 @Injectable({ providedIn: 'root' })
@@ -39,7 +39,7 @@ export class AnimeListOptionsMapper {
     sort,
     filter,
     search,
-    limit = DefaultParamValue.LIMIT,
+    limit = defaultParams.limit,
   }: AnimeListOptions): HttpParams {
     const direction = sort.direction === 'asc' ? SortDirection.Ascending : SortDirection.Descending;
     const sortField = isSortField(sort.field) ? sort.field : SortField.TitleEnglish;
@@ -58,15 +58,15 @@ export class AnimeListOptionsMapper {
   public fromDto(): AnimeListOptions {
     const params = this.route.snapshot.queryParams;
 
-    const limit = params[ParamName.Limit] !== undefined ? Number(params[ParamName.Limit]) : DefaultParamValue.LIMIT;
-    const offset = params[ParamName.Offset] !== undefined ? Number(params[ParamName.Offset]) : DefaultParamValue.OFFSET;
-    const ordering = params[ParamName.Ordering] !== undefined ? String(params[ParamName.Ordering]) : DefaultParamValue.ORDERING;
+    const limit = params[ParamName.Limit] !== undefined ? Number(params[ParamName.Limit]) : defaultParams.limit;
+    const offset = params[ParamName.Offset] !== undefined ? Number(params[ParamName.Offset]) : defaultParams.offset;
+    const ordering = params[ParamName.Ordering] !== undefined ? String(params[ParamName.Ordering]) : defaultParams.ordering;
 
     const field = ordering.replace('-', '');
     const direction = ordering.includes('-') ? 'desc' : 'asc';
 
-    const type = params[ParamName.TypeIn] !== undefined ? String(params[ParamName.TypeIn]) : DefaultParamValue.TYPE;
-    const search = params[ParamName.Search] !== undefined ? String(params[ParamName.Search]) : DefaultParamValue.SEARCH;
+    const type = params[ParamName.TypeIn] !== undefined ? String(params[ParamName.TypeIn]) : defaultParams.type;
+    const search = params[ParamName.Search] !== undefined ? String(params[ParamName.Search]) : defaultParams.search;
 
     const typeFilter = type.split(',')
       .map(value => isType(value) ? value : '')
@@ -88,6 +88,6 @@ export class AnimeListOptionsMapper {
 
   /** Gets limit page. */
   public getLimit(): number {
-    return DefaultParamValue.LIMIT;
+    return defaultParams.limit;
   }
 }

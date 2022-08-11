@@ -5,17 +5,17 @@ import { Immerable, OmitImmerable } from '@js-camp/core/models/immerable';
 interface SortSetting {
 
   /** The field by which to sort. */
-  field: string;
+  readonly field: string;
 
   /** The sort direction. */
-  direction: string;
+  readonly direction: string;
 }
 
 /** Filter setting for anime list request. */
 interface FilterSetting {
 
   /** All possibly types. */
-  byType: Type[];
+  readonly byType: Type[];
 }
 
 /** Params for for anime list request. */
