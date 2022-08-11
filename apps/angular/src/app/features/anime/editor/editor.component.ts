@@ -1,7 +1,7 @@
-import { catchError, filter, map, Observable, of, startWith, Subscriber, switchMap, tap } from 'rxjs';
+import { catchError, filter, map, Observable, of, Subscriber, switchMap } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Status, Type } from '@js-camp/core/models/anime';
@@ -103,14 +103,14 @@ export class EditorComponent {
   /**   */
   public readonly sources = this.createSelectCollection(Source);
 
+  /**  */
   public readonly imagePreview$: Observable<string |
     ArrayBuffer |
     null>;
 
   public constructor(
-    private readonly animeService: AnimeService,
     private readonly urlService: UrlService,
-    private readonly s3directService: S3directService,
+    private readonly animeService: AnimeService,
   ) {
     this.animeForm = this.initAnimeForm();
     this.imagePreview$ = this.animeForm.controls.image.valueChanges.pipe(

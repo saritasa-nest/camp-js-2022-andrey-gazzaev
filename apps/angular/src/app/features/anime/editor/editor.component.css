@@ -1,3 +1,18 @@
 p {
   margin: 0;
 }
+
+.editor {
+  max-width: 1024px;
+  margin-inline: auto;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-base-information__image {
+  max-width: 300px;
+  max-height: 300px;
+}

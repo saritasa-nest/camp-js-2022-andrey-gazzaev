@@ -1,4 +1,6 @@
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
+
+import { xml2js } from 'xml-js';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -29,8 +31,6 @@ export class S3directService {
    * @param posterName File name (poster.jpg).
    */
   public uploadAnimePoster(poster: File, posterName: string): Observable<string> {
-    const imageUrlMock = 'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
-    'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
     return this.http.post<S3UploadDto>(this.s3directUrl.toString(), {
       dest: 'anime_images',
       filename: posterName,
@@ -50,9 +50,9 @@ export class S3directService {
 
         return { formAction: s3UploadDto.form_action, formData: s3Upload };
       }),
-      switchMap(({ formAction, formData }) => this.http.post(formAction, formData)),
-      tap(obj => console.log(obj)),
-      map(() => imageUrlMock),
+      switchMap(({ formAction, formData }) => this.http.post(formAction, formData, { responseType: 'text' })),
+      map(obj => xml2js(obj)),
+      map(obj => obj.elements[0].elements[0].elements[0].elements[0].text),
     );
   }
 }

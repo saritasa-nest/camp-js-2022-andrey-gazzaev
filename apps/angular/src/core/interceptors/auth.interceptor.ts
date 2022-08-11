@@ -42,10 +42,10 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private shouldInterceptToken(url: string): boolean {
-    const isHomeRequest = url.startsWith(this.config.apiUrl);
+    const isS3Upload = url.startsWith(new URL('https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev').toString());
     const isAuthRequest = url.startsWith(
       new URL('auth', this.config.apiUrl).toString(),
     );
-    return isAuthRequest && isHomeRequest;
+    return isAuthRequest || isS3Upload;
   }
 }
