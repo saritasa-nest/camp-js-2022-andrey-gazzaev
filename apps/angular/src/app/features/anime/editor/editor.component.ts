@@ -1,7 +1,7 @@
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, filter, map, Observable, of, startWith, Subscriber, switchMap, tap } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Status, Type } from '@js-camp/core/models/anime';
@@ -103,7 +103,9 @@ export class EditorComponent {
   /**   */
   public readonly sources = this.createSelectCollection(Source);
 
-  private readonly image$: Observable<File | null>;
+  public readonly imagePreview$: Observable<string |
+    ArrayBuffer |
+    null>;
 
   public constructor(
     private readonly animeService: AnimeService,
@@ -111,16 +113,32 @@ export class EditorComponent {
     private readonly s3directService: S3directService,
   ) {
     this.animeForm = this.initAnimeForm();
-    this.image$ = this.animeForm.controls.image.valueChanges;
+    this.imagePreview$ = this.animeForm.controls.image.valueChanges.pipe(
+      filter((file): file is NonNullable<File> => file !== null),
+      switchMap(file => this.previews(file)),
+    );
+  }
+
+  private previews(imageFile: File): Observable<
+    string |
+    ArrayBuffer |
+    null
+  > {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(imageFile);
+
+    return new Observable((observer: Subscriber<string | ArrayBuffer | null>): void => {
+      reader.onload = () => {
+        observer.next(reader.result);
+        observer.complete();
+      };
+    });
   }
 
   /** Handles form submit. */
   public onFormSubmit(): void {
     this.animeForm.markAllAsTouched();
-    const file = this.animeForm.getRawValue().image;
-    if (file) {
-      this.s3directService.uploadAnimePoster(file, file.name).subscribe();
-    }
     if (this.animeForm.invalid) {
       return;
     }
@@ -211,6 +229,6 @@ export class EditorComponent {
       airedEndDate: new FormControl(null),
       genres: new FormControl(null, Validators.required),
       studios: new FormControl(null, Validators.required),
-    }, { updateOn: 'submit' });
+    }, { updateOn: 'change' });
   }
 }

@@ -1,4 +1,9 @@
 <form class="editor" [formGroup]="animeForm" (ngSubmit)="onFormSubmit()">
+
+  <ng-container *ngIf="imagePreview$ | async as imageUrl">
+    <img [src]="imageUrl" alt="Poster preview">
+  </ng-container>
+
   <mat-form-field appearance="fill">
     <ngx-mat-file-input
       formControlName="image"
