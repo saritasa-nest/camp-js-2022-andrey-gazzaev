@@ -1,4 +1,4 @@
-<section class="table-view">
+<section class="table-view" [formGroup]="query">
   <h2 id="anime-catalog" class="mat-title">Anime table</h2>
 
   <div class="table-container mat-elevation-z8">
@@ -8,7 +8,7 @@
         matInput
         type="search"
         placeholder="Your anime title"
-        [formControl]="search"
+        formControlName="search"
       />
     </mat-form-field>
 
@@ -82,7 +82,7 @@
 
           <ng-container matColumnDef="type">
             <th mat-header-cell *matHeaderCellDef class="table-column-type">
-              <mat-select [formControl]="typeFilter" multiple>
+              <mat-select formControlName="typeFilter" multiple>
                 <mat-select-trigger class="table-column-type__trigger">
                   Type <mat-icon>filter_alt</mat-icon>
                 </mat-select-trigger>
