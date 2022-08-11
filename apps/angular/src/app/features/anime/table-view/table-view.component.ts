@@ -1,4 +1,4 @@
-import { BehaviorSubject, combineLatestWith, debounceTime, ignoreElements, map, merge, mergeWith, Observable, skip, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatestWith, debounceTime, map, mergeWith, Observable, skip, startWith, switchMap, tap } from 'rxjs';
 
 import { FormControl, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
@@ -126,19 +126,15 @@ export class TableViewComponent implements OnInit {
     // When the component is first rendered,
     // it is necessary to save the page number that was passed in the url.
     // In the future, when one of the pagination parameters changes, you need to reset the page.
-    const resetCurrentPageNumberSideEffect$ = this.typeFilterChanges$.pipe(
-      skip(1),
+    const resetCurrentPageNumberSideEffect$ = this.query.valueChanges.pipe(
       mergeWith(
-        this.searchChanges$.pipe(skip(1)),
-        this.sort$.pipe(skip(1)),
+        this.sort$,
       ),
-      tap(() => this.currentPageNumber$.next(INITIAL_PAGE)),
     );
 
-    merge(
-      resetCurrentPageNumberSideEffect$,
-    ).pipe(
-      ignoreElements(),
+    resetCurrentPageNumberSideEffect$.pipe(
+      skip(1),
+      tap(() => this.currentPageNumber$.next(INITIAL_PAGE)),
       untilDestroyed(this),
     )
       .subscribe();
