@@ -33,12 +33,16 @@ export class AnimeService {
 
   /**
    * Requests to the server to get anime.
-   * @param animeListHttpParams Parameters for generating a request.
+   * @param animeListSearchParams Parameters for generating a request.
    */
-  public fetchAnimeList(animeListHttpParams: HttpParams): Observable<Pagination<AnimeBase>> {
+  public fetchAnimeList(animeListSearchParams: URLSearchParams): Observable<Pagination<AnimeBase>> {
+    const params = new HttpParams({
+      fromString: animeListSearchParams.toString(),
+    });
+
     return this.http.get<PaginationDto<AnimeBaseDto>>(
       this.animeListUrl.toString(),
-      { params: animeListHttpParams },
+      { params },
     ).pipe(map(pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
       pagination,
       animeDto => AnimeMapper.fromDto(animeDto),
@@ -64,7 +68,7 @@ export class AnimeService {
    * Gets URL Anime list options params.
    * @param animeListOptions Anime list options.
    */
-  public animeListOptionsToHttpParams(animeListOptions: AnimeListOptions): HttpParams {
+  public animeListOptionsToUrlSearchParams(animeListOptions: AnimeListOptions): URLSearchParams {
     return this.animeListOptionsMapper.toDto(animeListOptions);
   }
 }

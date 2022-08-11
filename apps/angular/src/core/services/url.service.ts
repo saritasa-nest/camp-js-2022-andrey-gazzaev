@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -15,16 +14,14 @@ export class UrlService {
 
   /**
    * Sets new query params in url.
-   * @param httpParams Http params.
+   * @param urlSearchParams Url query params.
    */
-  public setUrl(httpParams: HttpParams): void {
-    const query = httpParams.toString();
+  public setUrl(urlSearchParams: URLSearchParams): void {
     const queryParams: Params = {};
 
-    query.split('&').forEach(param => {
-      const [key, value] = param.split('=');
+    for (const [key, value] of urlSearchParams.entries()) {
       queryParams[key] = value;
-    });
+    }
 
     this.router.navigate([], {
       relativeTo: this.route,

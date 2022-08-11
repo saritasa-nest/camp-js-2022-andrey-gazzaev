@@ -8,7 +8,6 @@ import { ChangeDetectionStrategy, Component, OnInit, TrackByFunction } from '@an
 
 import { AnimeBase, Type } from '@js-camp/core/models/anime';
 
-import { goToTop } from '../../../../core/utils/animations';
 import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
 import { AnimeListOptions } from '../../../../core/models/anime-list-options';
@@ -126,13 +125,13 @@ export class TableViewComponent implements OnInit {
     // When the component is first rendered,
     // it is necessary to save the page number that was passed in the url.
     // In the future, when one of the pagination parameters changes, you need to reset the page.
-    const resetCurrentPageNumberSideEffect$ = this.query.valueChanges.pipe(
+    const resetCurrentPageNumber$ = this.query.valueChanges.pipe(
       mergeWith(
         this.sort$,
       ),
     );
 
-    resetCurrentPageNumberSideEffect$.pipe(
+    resetCurrentPageNumber$.pipe(
       skip(1),
       tap(() => this.currentPageNumber$.next(INITIAL_PAGE)),
       untilDestroyed(this),
@@ -203,7 +202,7 @@ export class TableViewComponent implements OnInit {
           search: search !== null ? search : '',
           limit: this.pageSize,
         });
-        return this.animeService.animeListOptionsToHttpParams(animeListOption);
+        return this.animeService.animeListOptionsToUrlSearchParams(animeListOption);
       }),
       tap(animeListParams => this.urlService.setUrl(animeListParams)),
       switchMap(animeListParams => this.animeService.fetchAnimeList(animeListParams)),
@@ -211,7 +210,6 @@ export class TableViewComponent implements OnInit {
         this.animeListCount = animeList.count;
         return animeList.results;
       }),
-      tap(() => goToTop()),
     );
   }
 }

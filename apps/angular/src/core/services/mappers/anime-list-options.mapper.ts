@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { isSortField, isType } from '@js-camp/core/utils/guards/sort.guard';
@@ -40,18 +39,20 @@ export class AnimeListOptionsMapper {
     filter,
     search,
     limit = defaultParams.limit,
-  }: AnimeListOptions): HttpParams {
+  }: AnimeListOptions): URLSearchParams {
     const direction = sort.direction === 'asc' ? SortDirection.Ascending : SortDirection.Descending;
     const sortField = isSortField(sort.field) ? sort.field : SortField.TitleEnglish;
     const ordering = `${direction}${sortField}`;
 
     const filterType = filter.byType.every(type => isType(type)) ? filter.byType.toString() : '';
-    return new HttpParams()
-      .set(ParamName.Limit, limit)
-      .set(ParamName.Offset, pageNumber * limit)
-      .set(ParamName.Ordering, ordering)
-      .set(ParamName.TypeIn, filterType)
-      .set(ParamName.Search, search);
+
+    return new URLSearchParams([
+      [ParamName.Limit, String(limit)],
+      [ParamName.Offset, String(pageNumber * limit)],
+      [ParamName.Ordering, ordering],
+      [ParamName.TypeIn, filterType],
+      [ParamName.Search, search],
+    ]);
   }
 
   /** Maps dto to model. */
