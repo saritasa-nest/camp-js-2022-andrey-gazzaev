@@ -1,4 +1,4 @@
-import { BehaviorSubject, combineLatestWith, debounceTime, map, mergeWith, Observable, skip, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, map, mergeWith, Observable, skip, startWith, switchMap, tap } from 'rxjs';
 
 import { FormControl, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
@@ -170,7 +170,7 @@ export class TableViewComponent implements OnInit {
   };
 
   /** Gets filter by type. */
-  private getInitialFilterListByType(): readonly FilterItem[] {
+  private getInitialFilterListByType(): FilterItem[] {
     const types = this.animeService.getAnimeTypes();
 
     return types.map(type => ({
@@ -181,16 +181,17 @@ export class TableViewComponent implements OnInit {
   }
 
   private initializationAnimeList(): Observable<readonly AnimeBase[]> {
-    const paramsChange$ = this.searchChanges$.pipe(
-      combineLatestWith(
-        this.typeFilterChanges$,
-        this.sort$,
-      ),
+    const paramsChange$ = combineLatest(
+      this.searchChanges$,
+      this.typeFilterChanges$,
+      this.sort$,
+    ).pipe(
       debounceTime(INPUT_DEBOUNCE_TIME),
     );
 
-    const params$ = paramsChange$.pipe(
-      combineLatestWith(this.currentPageNumber$),
+    const params$ = combineLatest(
+      paramsChange$,
+      this.currentPageNumber$,
     );
 
     return params$.pipe(
