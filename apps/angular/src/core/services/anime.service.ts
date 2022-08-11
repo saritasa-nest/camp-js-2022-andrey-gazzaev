@@ -1,4 +1,4 @@
-import { map, Observable } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -25,14 +25,22 @@ import { AnimeListOptions } from '../models/anime-list-options';
 
 import { AppConfigService } from './app-config.service';
 import { AnimeListOptionsMapper } from './mappers/anime-list-options.mapper';
+import { S3directService } from './s3direct.service';
 
-interface AnimeData {
+interface PostAnimeData {
 
   /** Information about anime. */
   readonly information: AnimeInformation;
 
   /** Anime poster. */
-  readonly image: string;
+  readonly posterData: {
+
+    /** Object file. */
+    readonly file: File;
+
+    /** File name. */
+    readonly fileName: string;
+  };
 
   /** Aired start date. */
   readonly airedStartDate: Date | null;
@@ -56,6 +64,7 @@ export class AnimeService {
   public constructor(
     config: AppConfigService,
     private readonly http: HttpClient,
+    private readonly s3directService: S3directService,
     private readonly animeListOptionsMapper: AnimeListOptionsMapper,
   ) {
     this.genresUrl = new URL(`anime/genres/`, config.apiUrl);
@@ -92,15 +101,18 @@ export class AnimeService {
    * Creates anime.
    * @param animeData The anime object to be created.
    */
-  public createAnime({ airedStartDate, airedEndDate, image, information }: AnimeData): Observable<number> {
+  public createAnime({ airedStartDate, airedEndDate, posterData, information }: PostAnimeData): Observable<number> {
     const aired = new DateRange({
       end: airedEndDate,
       start: airedStartDate,
     });
-    const postAnimeDto = AnimeMapper.toEditorDto({ ...information, aired, image });
-    return this.http.post<AnimeEditorDto>(this.animeUrl.toString(), postAnimeDto).pipe(
+
+    return this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName).pipe(
+      map(posterUrl => AnimeMapper.toEditorDto({ ...information, aired, image: posterUrl })),
+      switchMap(postAnimeDto => this.http.post<AnimeEditorDto>(this.animeUrl.toString(), postAnimeDto)),
       map(animeEditorDto => animeEditorDto.id),
     );
+
   }
 
   /** Fetches genres. */

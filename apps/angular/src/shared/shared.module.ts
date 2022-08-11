@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { PlaceholderPipe } from './pipes/placeholder.pipe';
@@ -51,6 +52,7 @@ import { PlaceholderPipe } from './pipes/placeholder.pipe';
     MatDatepickerModule,
     ReactiveFormsModule,
     MatSlideToggleModule,
+    NgxMatFileInputModule,
     MatProgressSpinnerModule,
   ],
   providers: [

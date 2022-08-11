@@ -1,4 +1,14 @@
 <form class="editor" [formGroup]="animeForm" (ngSubmit)="onFormSubmit()">
+  <mat-form-field appearance="fill">
+    <ngx-mat-file-input
+      formControlName="image"
+      [accept]="'image/png, image/jpeg'"
+      color="primary"
+    >
+      <mat-icon ngxMatFileInputIcon>folder</mat-icon>
+    </ngx-mat-file-input>
+  </mat-form-field>
+
   <mat-form-field class="editor-field" appearance="fill">
     <mat-label>Enter trailer youtube id</mat-label>
     <input
@@ -41,11 +51,11 @@
   ></app-select>
 
   <app-select
-  class="editor-field"
-  label="Anime sources"
-  [collection]="sources"
-  [selectControl]="animeForm.controls.source"
-></app-select>
+    class="editor-field"
+    label="Anime sources"
+    [collection]="sources"
+    [selectControl]="animeForm.controls.source"
+  ></app-select>
 
   <mat-slide-toggle class="editor-field" formControlName="isAiring">
     Airing

@@ -1,4 +1,4 @@
-import { catchError, map, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
@@ -10,6 +10,7 @@ import { Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 
 import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
+import { S3directService } from '../../../../core/services/s3direct.service';
 
 interface SelectItem {
 
@@ -21,6 +22,9 @@ interface SelectItem {
 }
 
 interface AnimeFormControls {
+
+  /** Trailer youtube id. */
+  readonly image: FormControl<File | null>;
 
   /** Trailer youtube id. */
   readonly trailerYoutubeId: FormControl<string | null>;
@@ -99,21 +103,30 @@ export class EditorComponent {
   /**   */
   public readonly sources = this.createSelectCollection(Source);
 
+  private readonly image$: Observable<File | null>;
+
   public constructor(
     private readonly animeService: AnimeService,
     private readonly urlService: UrlService,
+    private readonly s3directService: S3directService,
   ) {
     this.animeForm = this.initAnimeForm();
+    this.image$ = this.animeForm.controls.image.valueChanges;
   }
 
   /** Handles form submit. */
   public onFormSubmit(): void {
     this.animeForm.markAllAsTouched();
+    const file = this.animeForm.getRawValue().image;
+    if (file) {
+      this.s3directService.uploadAnimePoster(file, file.name).subscribe();
+    }
     if (this.animeForm.invalid) {
       return;
     }
 
     const {
+      image,
       airedEndDate,
       airedStartDate,
       genres,
@@ -131,16 +144,17 @@ export class EditorComponent {
     } = this.animeForm.getRawValue();
 
     const requiredField = {
-      rating, season, source, status, synopsis, type, studios, genres, isAiring,
+      rating, season, source, status, synopsis, type, studios, genres, isAiring, image,
     };
 
     if (!isFieldsDefined(requiredField)) {
       return;
     }
 
-    const avatarUrl =
-      'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
-      'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
+    const posterData = {
+      file: requiredField.image,
+      fileName: requiredField.image.name,
+    };
 
     const amineInformation = {
       isAiring: requiredField.isAiring,
@@ -159,7 +173,7 @@ export class EditorComponent {
 
     this.animeService.createAnime({
       information: amineInformation,
-      image: avatarUrl,
+      posterData,
       airedStartDate,
       airedEndDate,
     }).pipe(
@@ -182,6 +196,7 @@ export class EditorComponent {
 
   private initAnimeForm(): FormGroup<AnimeFormControls> {
     return new FormGroup<AnimeFormControls>({
+      image: new FormControl(null, Validators.required),
       trailerYoutubeId: new FormControl(null),
       titleEnglish: new FormControl(null),
       titleJapanese: new FormControl(null),
@@ -196,6 +211,6 @@ export class EditorComponent {
       airedEndDate: new FormControl(null),
       genres: new FormControl(null, Validators.required),
       studios: new FormControl(null, Validators.required),
-    }, { updateOn: 'blur' });
+    }, { updateOn: 'submit' });
   }
 }
