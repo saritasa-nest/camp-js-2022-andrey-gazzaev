@@ -29,7 +29,6 @@ interface LoginFormControls {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-
   /** Login form. */
   public readonly loginForm: FormGroup<LoginFormControls>;
 
@@ -44,7 +43,7 @@ export class LoginComponent {
   }
 
   /** Handles form submit. */
-  public handleFormSubmit(): void {
+  public onFormSubmit(): void {
     this.loginForm.markAllAsTouched();
     if (this.loginForm.invalid) {
       return;

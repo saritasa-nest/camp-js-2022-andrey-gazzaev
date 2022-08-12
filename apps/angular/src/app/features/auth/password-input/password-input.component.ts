@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordInputComponent {
-
   /** Password label. */
   @Input()
   public label = '';
@@ -22,7 +21,7 @@ export class PasswordInputComponent {
   public isPasswordHidden = true;
 
   /** Handles password toggle. */
-  public handlePasswordToggle(): void {
+  public onPasswordToggle(): void {
     this.isPasswordHidden = !this.isPasswordHidden;
   }
 }
