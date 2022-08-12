@@ -1,4 +1,6 @@
+// It is necessary to use snake case for mapping in DTO
 /* eslint-disable @typescript-eslint/naming-convention */
+
 import { RegistrationDto } from '../dtos/registration.dto';
 import { RegistrationData } from '../utils/interfaces/auth.interface';
 
