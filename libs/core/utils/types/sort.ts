@@ -1,11 +1,11 @@
 /** Sort settings. */
-export interface Sort<Order, Field> {
+export interface Sort<TOrder, TField> {
 
   /** Ordering direction. */
-  readonly direction: Order;
+  readonly direction: TOrder;
 
   /** Field by sort. */
-  readonly field: Field;
+  readonly field: TField;
 }
 
 /** Fields by which you can sort. */
