@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component, OnInit, TrackByFunction } from '@angular/core';
 
-import { AnimeBase, Type } from '@js-camp/core/models/anime';
+import { AnimeBase, AnimeType } from '@js-camp/core/models/anime';
 
 import { AnimeService } from '../../../../core/services/anime.service';
 import { AnimeListQueryParams } from '../../../../core/models/anime-list-query-params';
@@ -18,13 +18,13 @@ const defaultParams: AnimeListQueryParams = {
   search: '',
   ordering: '',
   direction: 'asc',
-  types: [Type.Tv],
+  types: [AnimeType.Tv],
 };
 
 interface QueryFormControls {
 
   /** Filter by type. */
-  readonly typeFilter: FormControl<Type[] | null>;
+  readonly typeFilter: FormControl<AnimeType[] | null>;
 
   /** Value of search input. */
   readonly search: FormControl<string | null>;
@@ -79,7 +79,7 @@ export class TableViewComponent implements OnInit {
   /** Query group. */
   public readonly query: FormGroup<QueryFormControls>;
 
-  private readonly typeFilterChanges$: Observable<Type[] | null>;
+  private readonly typeFilterChanges$: Observable<AnimeType[] | null>;
 
   /** Current sort settings. */
   public readonly sort$: BehaviorSubject<TableSort>;
@@ -107,7 +107,7 @@ export class TableViewComponent implements OnInit {
 
     this.query = new FormGroup({
       search: new FormControl(searchInitialValue),
-      typeFilter: new FormControl<Type[]>(typeFilterInitialValue),
+      typeFilter: new FormControl<AnimeType[]>(typeFilterInitialValue),
     });
 
     this.searchChanges$ = this.query.controls.search.valueChanges.pipe(
@@ -184,7 +184,7 @@ export class TableViewComponent implements OnInit {
    * @param _index Anime's index into array.
    * @param type Object of type.
    */
-  public trackItemType: TrackByFunction<Type> = function(_index: number, type: Type): Type {
+  public trackItemType: TrackByFunction<AnimeType> = function(_index: number, type: AnimeType): AnimeType {
     return type;
   };
 

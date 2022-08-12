@@ -1,26 +1,26 @@
 import { AnimeDetailsDto } from '../dtos/animeDetails';
 import { AnimeDetails } from '../models/animeDetails';
 import { AnimeBaseDto, StatusDto, TypeDto } from '../dtos/anime.dto';
-import { AnimeBase, Status, Type } from '../models/anime';
+import { AnimeBase, AnimeStatus, AnimeType } from '../models/anime';
 import { isDefined } from '../utils/guards/general.guard';
 
 import { GenreMapper } from './genre.mapper';
 import { StudioMapper } from './studio.mapper';
 import { DateRangeMapper } from './dateRange.mapper';
 
-const ANIME_STATUS_FROM_DTO_MAP: Readonly<Record<StatusDto, Status>> = {
-  [StatusDto.Airing]: Status.Airing,
-  [StatusDto.Finished]: Status.Finished,
-  [StatusDto.NotYetAired]: Status.NotYetAired,
+const ANIME_STATUS_FROM_DTO_MAP: Readonly<Record<StatusDto, AnimeStatus>> = {
+  [StatusDto.Airing]: AnimeStatus.Airing,
+  [StatusDto.Finished]: AnimeStatus.Finished,
+  [StatusDto.NotYetAired]: AnimeStatus.NotYetAired,
 };
 
-const ANIME_TYPE_FROM_DTO_MAP: Readonly<Record<TypeDto, Type>> = {
-  [TypeDto.Movie]: Type.Movie,
-  [TypeDto.Music]: Type.Music,
-  [TypeDto.Ona]: Type.Ona,
-  [TypeDto.Ova]: Type.Ova,
-  [TypeDto.Special]: Type.Special,
-  [TypeDto.Tv]: Type.Tv,
+const ANIME_TYPE_FROM_DTO_MAP: Readonly<Record<TypeDto, AnimeType>> = {
+  [TypeDto.Movie]: AnimeType.Movie,
+  [TypeDto.Music]: AnimeType.Music,
+  [TypeDto.Ona]: AnimeType.Ona,
+  [TypeDto.Ova]: AnimeType.Ova,
+  [TypeDto.Special]: AnimeType.Special,
+  [TypeDto.Tv]: AnimeType.Tv,
 };
 
 export namespace AnimeMapper {

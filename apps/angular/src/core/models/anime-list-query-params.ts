@@ -1,4 +1,4 @@
-import { Type } from '@js-camp/core/models/anime';
+import { AnimeType } from '@js-camp/core/models/anime';
 import { SortDirection } from '@angular/material/sort';
 
 /** Anime list parameters contained in URL.  */
@@ -11,7 +11,7 @@ export interface AnimeListQueryParams {
   readonly pageSize: number;
 
   /** Filter by type. */
-  readonly types: Type[];
+  readonly types: AnimeType[];
 
   /** Search query. */
   readonly search: string;

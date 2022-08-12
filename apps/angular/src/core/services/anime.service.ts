@@ -5,7 +5,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
-import { AnimeBase, Type } from '@js-camp/core/models/anime';
+import { AnimeBase, AnimeType } from '@js-camp/core/models/anime';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
@@ -53,6 +53,6 @@ export class AnimeService {
   /** Gets all anime types. */
   // eslint-disable-next-line require-await
   public async getAnimeTypes(): Promise<string[]> {
-    return Object.values(Type);
+    return Object.values(AnimeType);
   }
 }
