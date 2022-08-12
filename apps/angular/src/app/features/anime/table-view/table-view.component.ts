@@ -2,14 +2,15 @@ import { BehaviorSubject, combineLatest, debounceTime, defer, map, mergeWith, Ob
 
 import { FormControl, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { Sort, SortDirection } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Sort, SortDirection } from '@angular/material/sort';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component, OnInit, TrackByFunction } from '@angular/core';
 
 import { AnimeBase, AnimeType } from '@js-camp/core/models/anime';
 
 import { AnimeService } from '../../../../core/services/anime.service';
+import { UrlService } from '../../../../core/services/url.service';
 import { AnimeListQueryParams } from '../../../../core/models/anime-list-query-params';
 
 const defaultParams: AnimeListQueryParams = {
@@ -96,6 +97,7 @@ export class TableViewComponent implements OnInit {
   public constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
+    private readonly urlService: UrlService,
     private readonly animeService: AnimeService,
   ) {
     const animeListOptions = this.getAnimeListOptions();
@@ -197,14 +199,16 @@ export class TableViewComponent implements OnInit {
   }
 
   /** Gets filter by type. */
-  private getInitialFilterListByType(): readonly FilterItem[] {
-    const types = this.animeService.getAnimeTypes();
-
-    return types.map(type => ({
-      field: type,
-      title: type,
-      isSelect: false,
-    }));
+  private getInitialFilterListByType(): Observable<FilterItem[]> {
+    return defer(() => this.animeService.getAnimeTypes()).pipe(
+      map(types => types.map(
+        type => ({
+          field: type,
+          title: type,
+          isSelect: false,
+        }),
+      )),
+    );
   }
 
   private initializationAnimeList(): Observable<readonly AnimeBase[]> {
