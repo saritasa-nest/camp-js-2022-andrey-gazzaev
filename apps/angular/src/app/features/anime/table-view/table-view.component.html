@@ -20,7 +20,7 @@
           aria-label="anime"
           aria-describedby="anime-catalog"
           (matSortChange)="onSortChange($event)"
-          [trackBy]="trackItem"
+          [trackBy]="trackItemAnime"
           [matSortActive]="sort.field"
           [dataSource]="animeList"
           [matSortDirection]="sort.direction"
@@ -87,7 +87,10 @@
                   <mat-select-trigger class="table-column-type__trigger">
                     Type <mat-icon>filter_alt</mat-icon>
                   </mat-select-trigger>
-                  <mat-option [value]="type.field" *ngFor="let type of types">
+                  <mat-option
+                    [value]="type.field"
+                    *ngFor="let type of types; trackBy: trackItemType"
+                  >
                     {{ type.title }}
                   </mat-option>
                 </mat-select>

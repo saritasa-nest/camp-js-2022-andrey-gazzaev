@@ -173,10 +173,19 @@ export class TableViewComponent implements OnInit {
   /**
    * Tracks anime by ID.
    * @param _index Anime's index into array.
-   * @param anime Object of hero.
+   * @param anime Object of anime.
    */
-  public trackItem: TrackByFunction<AnimeBase> = function(_index: number, anime: AnimeBase): number {
+  public trackItemAnime: TrackByFunction<AnimeBase> = function(_index: number, anime: AnimeBase): number {
     return anime.id;
+  };
+
+  /**
+   * Tracks type by name.
+   * @param _index Anime's index into array.
+   * @param type Object of type.
+   */
+  public trackItemType: TrackByFunction<Type> = function(_index: number, type: Type): Type {
+    return type;
   };
 
   /** Gets filter by type. */
