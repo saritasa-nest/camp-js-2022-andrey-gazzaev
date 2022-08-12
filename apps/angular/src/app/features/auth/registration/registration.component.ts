@@ -5,11 +5,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 import { AppError } from '@js-camp/core/models/httpError';
+import { Registration } from '@js-camp/core/models/registration';
 
 import { UrlService } from '../../../../core/services/url.service';
 import { showErrorsFormFields } from '../../../../core/utils/show-errors';
 import { SnackBarService } from '../../../../core/services/snack-bar.service';
-import { UserService, RegistrationErrors } from '../../../../core/services/user.service';
+import { UserService } from '../../../../core/services/user.service';
+import { FormError } from '../../../../../../../libs/core/models/form-error';
 
 interface RegistrationFormControls {
 
@@ -75,7 +77,7 @@ export class RegistrationComponent {
       .subscribe();
   }
 
-  private setErrors(errors: AppError<RegistrationErrors>): void {
+  private setErrors(errors: AppError<FormError<Registration>>): void {
     this.snackBarService.showError(errors.detail);
     showErrorsFormFields(errors, this.registrationForm);
     this.changeDetectorRef.markForCheck();

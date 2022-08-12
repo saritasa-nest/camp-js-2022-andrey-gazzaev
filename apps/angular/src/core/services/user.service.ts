@@ -16,32 +16,6 @@ import { AuthService } from './auth.service';
 import { TokenService } from './token.service';
 import { AppConfigService } from './app-config.service';
 
-/** Login errors.  */
-export interface LoginErrors {
-
-  /** Errors related to email. */
-  readonly email?: string[];
-
-  /** Errors related to password. */
-  readonly password?: string[];
-}
-
-/** Registration errors. */
-export interface RegistrationErrors {
-
-  /** Errors related to email. */
-  readonly email?: string[];
-
-  /** Errors related to first name. */
-  readonly firstName?: string[];
-
-  /** Errors related to last name. */
-  readonly lastName?: string[];
-
-  /** Errors related to password. */
-  readonly password?: string[];
-}
-
 /** Authorization service. */
 @Injectable({
   providedIn: 'root',
