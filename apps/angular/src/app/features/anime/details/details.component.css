@@ -1,4 +1,4 @@
-.details {
+.details__section {
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
@@ -9,7 +9,7 @@
   display: flex;
 }
 
-.detail__info {
+.details__info {
   margin-top: 20px;
   margin-left: 20px;
 }
@@ -24,7 +24,7 @@
   border: none;
 }
 
-.details-field {
+.details__field {
   margin-block: 20px;
 }
 

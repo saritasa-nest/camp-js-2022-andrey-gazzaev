@@ -23,6 +23,8 @@ import { ImagePopupComponent } from './details/image-popup/image-popup.component
     SharedModule,
     AnimeRoutingModule,
   ],
+
+  // MatDialogRef and MAT_DIALOG_DATA must be provided for the popup to work.
   providers: [
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },

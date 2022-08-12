@@ -1,10 +1,10 @@
 <ng-container *ngIf="anime$ | async as anime">
   <app-image-popup></app-image-popup>
-  <ng-container *ngIf="trailerUrl$ | async as url">
     <section class="details">
-      <h2 class="mat-title">Anime details</h2>
+      <div class="details__section">
+        <h2 class="mat-title">Anime details</h2>
       <mat-card class="details__card">
-        <div class="detail__actions">
+        <div class="details__actions">
           <button
             type="button"
             class="empty-button"
@@ -16,46 +16,48 @@
               alt="Poster anime - {{ anime.imageTitle }}"
             />
           </button>
-          <iframe
-            *ngIf="anime.trailerYoutubeId"
-            [src]="url"
-            title="Anime trailer"
-            class="details__trailer"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
+          <ng-container *ngIf="trailerUrl$ | async as url">
+            <iframe
+              *ngIf="anime.trailerYoutubeId"
+              [src]="url"
+              title="Anime trailer"
+              class="details__trailer"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </ng-container>
         </div>
-        <div class="detail__info">
+        <div class="details__info">
           <mat-card-title-group>
-            <mat-card-title>{{
-              anime.titleEnglish | placeholder
-            }}</mat-card-title>
-            <mat-card-subtitle>{{
-              anime.titleJapanese | placeholder
-            }}</mat-card-subtitle>
+            <mat-card-title>
+              {{ anime.titleEnglish | placeholder }}
+            </mat-card-title>
+            <mat-card-subtitle>
+              {{ anime.titleJapanese | placeholder }}
+            </mat-card-subtitle>
           </mat-card-title-group>
           <mat-card-content>
-            <p class="details-field">
+            <p class="details__field">
               Aired from
               {{ anime.aired.start | date: "dd.MM.YYYY" | placeholder }} to
               {{ anime.aired.end | date: "dd.MM.YYYY" | placeholder }}
             </p>
-            <p class="details-field">
+            <p class="details__field">
               Airing:
               <mat-chip>
                 {{ anime.isAiring ? "Yes" : "No" }}
               </mat-chip>
             </p>
-            <p class="details-field">
+            <p class="details__field">
               Type:
               <mat-chip>
                 {{ anime.type }}
               </mat-chip>
             </p>
-            <p class="details-field">
+            <p class="details__field">
               {{ anime.synopsis }}
             </p>
-            <div class="details-field">
+            <div class="details__field">
               <mat-label>Genres</mat-label>
               <mat-chip-list aria-label="List of genres">
                 <mat-chip *ngFor="let genre of anime.genresData">
@@ -63,7 +65,7 @@
                 </mat-chip>
               </mat-chip-list>
             </div>
-            <div class="details-field">
+            <div class="details__field">
               <mat-label>Studios</mat-label>
               <mat-chip-list aria-label="List of studios">
                 <mat-chip *ngFor="let studio of anime.studiosData">
@@ -74,6 +76,7 @@
           </mat-card-content>
         </div>
       </mat-card>
+      </div>
+
     </section>
-  </ng-container>
 </ng-container>

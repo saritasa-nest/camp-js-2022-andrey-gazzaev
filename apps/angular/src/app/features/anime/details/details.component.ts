@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -25,7 +25,7 @@ export class DetailsComponent {
   public readonly anime$: Observable<AnimeDetails>;
 
   /** Trailer url. */
-  public readonly trailerUrl$ = new BehaviorSubject<SafeResourceUrl>('');
+  public readonly trailerUrl$: Observable<SafeResourceUrl>;
 
   public constructor(
     private readonly dialog: MatDialog,
@@ -35,14 +35,15 @@ export class DetailsComponent {
   ) {
     this.anime$ = this.route.params.pipe(
       switchMap(params => this.animeService.fetchAnime(params[PARAM_ID])),
-      tap(anime => {
-        // Trailer plays via iframe.
-        // Unfortunately, the url of this player is not reliable.
-        // But if we want to use the player, we need to trust this url.
-        const trailerUrl = `https://www.youtube.com/embed/${anime.trailerYoutubeId}`;
-        return this.trailerUrl$.next(
-          this.sanitizer.bypassSecurityTrustResourceUrl(trailerUrl),
-        );
+    );
+
+    this.trailerUrl$ = this.anime$.pipe(
+      map(anime => {
+         // Trailer plays via iframe.
+         // Unfortunately, the url of this player is not reliable.
+         // But if we want to use the player, we need to trust this url.
+         const trailerUrl = `https://www.youtube.com/embed/${anime.trailerYoutubeId}`;
+         return this.sanitizer.bypassSecurityTrustResourceUrl(trailerUrl);
       }),
     );
   }
