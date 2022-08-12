@@ -1,16 +1,25 @@
-import { BehaviorSubject, combineLatest, debounceTime, map, mergeWith, Observable, skip, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, defer, map, mergeWith, Observable, skip, startWith, switchMap, tap } from 'rxjs';
 
 import { FormControl, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component, OnInit, TrackByFunction } from '@angular/core';
 
 import { AnimeBase, Type } from '@js-camp/core/models/anime';
 
-import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
-import { AnimeListOptions } from '../../../../core/models/anime-list-options';
+import { AnimeListQueryParams } from '../../../../core/models/anime-list-query-params';
+
+const defaultParams: AnimeListQueryParams = {
+  page: 0,
+  pageSize: 25,
+  search: '',
+  ordering: '',
+  direction: 'asc',
+  types: [Type.Tv],
+};
 
 interface QueryFormControls {
 
@@ -21,6 +30,7 @@ interface QueryFormControls {
   readonly search: FormControl<string | null>;
 
 }
+
 interface TableSort {
 
   /** The field by which to sort. */
@@ -62,7 +72,7 @@ export class TableViewComponent implements OnInit {
   public readonly pageSize: number;
 
   /** All possible type filters. */
-  public readonly filterListByType: readonly FilterItem[];
+  public readonly filterListByType$: Observable<readonly FilterItem[]>;
 
   private readonly searchChanges$: Observable<string | null>;
 
@@ -84,15 +94,16 @@ export class TableViewComponent implements OnInit {
   public readonly animeList$: Observable<readonly AnimeBase[]>;
 
   public constructor(
-    private readonly urlService: UrlService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly animeService: AnimeService,
   ) {
-    const animeListOptions = this.animeService.getAnimeListOptions();
+    const animeListOptions = this.getAnimeListOptions();
 
-    this.pageSize = animeListOptions.limit ?? this.animeService.getLimit();
+    this.pageSize = animeListOptions.pageSize ?? defaultParams.pageSize;
 
     const searchInitialValue = animeListOptions.search;
-    const typeFilterInitialValue = animeListOptions.filter.byType;
+    const typeFilterInitialValue = animeListOptions.types;
 
     this.query = new FormGroup({
       search: new FormControl(searchInitialValue),
@@ -108,14 +119,14 @@ export class TableViewComponent implements OnInit {
     );
 
     const sortInitialValue: TableSort = {
-      field: animeListOptions.sort.field,
-      direction: animeListOptions.sort.direction === 'desc' ? 'desc' : 'asc',
+      field: animeListOptions.ordering,
+      direction: animeListOptions.direction,
     };
     this.sort$ = new BehaviorSubject<TableSort>(sortInitialValue);
 
-    this.currentPageNumber$ = new BehaviorSubject<number>(animeListOptions.pageNumber);
+    this.currentPageNumber$ = new BehaviorSubject<number>(animeListOptions.page);
 
-    this.filterListByType = this.getInitialFilterListByType();
+    this.filterListByType$ = this.getInitialFilterListByType();
 
     this.animeList$ = this.initializationAnimeList();
   }
@@ -169,14 +180,16 @@ export class TableViewComponent implements OnInit {
   };
 
   /** Gets filter by type. */
-  private getInitialFilterListByType(): FilterItem[] {
-    const types = this.animeService.getAnimeTypes();
-
-    return types.map(type => ({
-      field: type,
-      title: type,
-      isSelect: false,
-    }));
+  private getInitialFilterListByType(): Observable<FilterItem[]> {
+    return defer(() => this.animeService.getAnimeTypes()).pipe(
+      map(types => types.map(
+        type => ({
+          field: type,
+          title: type,
+          isSelect: false,
+        }),
+      )),
+    );
   }
 
   private initializationAnimeList(): Observable<readonly AnimeBase[]> {
@@ -195,21 +208,45 @@ export class TableViewComponent implements OnInit {
 
     return params$.pipe(
       map(([[search, typeFilter, sort], pageNumber]) => {
-        const animeListOption = new AnimeListOptions({
-          pageNumber,
-          sort,
-          filter: { byType: typeFilter !== null ? typeFilter : [] },
+        const animeListQueryParams: AnimeListQueryParams = {
+          direction: sort.direction,
+          ordering: sort.field,
+          page: pageNumber,
+          pageSize: this.pageSize,
           search: search !== null ? search : '',
-          limit: this.pageSize,
-        });
-        return this.animeService.animeListOptionsToUrlSearchParams(animeListOption);
+          types: typeFilter !== null ? typeFilter : [],
+        };
+
+        return animeListQueryParams;
       }),
-      tap(animeListParams => this.urlService.setUrl(animeListParams)),
+      tap(animeListParams => this.setQueryParamsToUrl(animeListParams)),
       switchMap(animeListParams => this.animeService.fetchAnimeList(animeListParams)),
       map(animeList => {
         this.animeListCount = animeList.count;
         return animeList.results;
       }),
     );
+  }
+
+  private setQueryParamsToUrl(queryParams: AnimeListQueryParams): void {
+    const queryParamsForUrl = { ...queryParams, types: queryParams.types.toString() };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: queryParamsForUrl,
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  private getAnimeListOptions(): AnimeListQueryParams {
+    const params = this.route.snapshot.queryParams;
+
+    return {
+      page: params['page'] ?? defaultParams.page,
+      pageSize: params['pageSize'] ?? defaultParams.pageSize,
+      search: params['search'] ?? defaultParams.search,
+      types: params['types'] !== undefined ? params['types'].split(',') : defaultParams.types,
+      ordering: params['ordering'] ?? defaultParams.ordering,
+      direction: params['direction'] ?? defaultParams.direction,
+    };
   }
 }
