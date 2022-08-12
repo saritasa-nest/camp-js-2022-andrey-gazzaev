@@ -1,3 +1,5 @@
+<ng-template let-error let-text="text" #tpl> <span class="control-error">{{ text }}</span> </ng-template>
+
 <form
   class="auth-form mat-elevation-z8"
   [formGroup]="registrationForm"
@@ -15,9 +17,10 @@
       placeholder="thomas.anderson@rabbit.com"
       formControlName="email"
       autocomplete="email"
+      [controlErrorsTpl]="tpl"
     />
-    <mat-error *ngIf="registrationForm.controls.email.hasError('email')">
-      {{ registrationForm.controls.email.getError("email") }}
+    <mat-error *ngIf="registrationForm.controls.email.hasError('emailServe')">
+      {{ registrationForm.controls.email.getError("emailServe") }}
     </mat-error>
   </mat-form-field>
 
@@ -29,6 +32,7 @@
       placeholder="Thomas"
       formControlName="firstName"
       autocomplete="given-name"
+      [controlErrorsTpl]="tpl"
     />
   </mat-form-field>
 
@@ -40,6 +44,7 @@
       placeholder="Anderson"
       formControlName="lastName"
       autocomplete="family-name"
+      [controlErrorsTpl]="tpl"
     />
   </mat-form-field>
 

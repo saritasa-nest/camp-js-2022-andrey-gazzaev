@@ -1,3 +1,5 @@
+<ng-template let-error let-text="text" #tpl> <span class="control-error">{{ text }}</span> </ng-template>
+
 <form
   class="auth-form mat-elevation-z8"
   [formGroup]="loginForm"
@@ -15,18 +17,20 @@
       formControlName="email"
       type="email"
       autocomplete="email"
+      [controlErrorsTpl]="tpl"
     />
-    <mat-error *ngIf="loginForm.controls.email.hasError('email')">
-      {{ loginForm.controls.email.getError("email") }}
+    <mat-error *ngIf="loginForm.controls.email.hasError('emailServe')">
+      {{ loginForm.controls.email.getError("emailServe") }}
     </mat-error>
+
   </mat-form-field>
 
   <app-password-input
     label="Enter your password"
     [control]="loginForm.controls.password"
   >
-    <mat-error *ngIf="loginForm.controls.password.hasError('password')">
-      {{ loginForm.controls.password.getError("password") }}
+    <mat-error *ngIf="loginForm.controls.password.hasError('passwordServe')">
+      {{ loginForm.controls.password.getError("passwordServe") }}
     </mat-error>
   </app-password-input>
 

@@ -92,7 +92,7 @@ export class RegistrationComponent {
       lastName: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.pattern(passwordPattern)]],
       passwordConfirm: ['', [Validators.required, this.matchControl()]],
-    }, { updateOn: 'blur' });
+    });
   }
 
   private matchControl(): ValidatorFn {

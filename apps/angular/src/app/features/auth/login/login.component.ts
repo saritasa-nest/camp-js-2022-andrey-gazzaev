@@ -46,7 +46,7 @@ export class LoginComponent {
 
   /** Handles form submit. */
   public onFormSubmit(): void {
-    this.loginForm.markAllAsTouched();
+    // this.loginForm.markAllAsTouched();
     if (this.loginForm.invalid) {
       return;
     }
@@ -77,6 +77,6 @@ export class LoginComponent {
     return this.formBuilder.nonNullable.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
-    }, { updateOn: 'blur' });
+    });
   }
 }
