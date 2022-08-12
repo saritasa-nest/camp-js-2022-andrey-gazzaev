@@ -20,10 +20,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { PlaceholderPipe } from './pipes/placeholder.pipe';
+import { AiredDatePipe } from './pipes/aired-date.pipe';
 
 /** Shared module. */
 @NgModule({
-  declarations: [PlaceholderPipe],
+  declarations: [PlaceholderPipe, AiredDatePipe],
   exports: [
     FormsModule,
     CommonModule,
@@ -32,6 +33,7 @@ import { PlaceholderPipe } from './pipes/placeholder.pipe';
     MatSortModule,
     MatIconModule,
     MatCardModule,
+    AiredDatePipe,
     MatInputModule,
     MatTableModule,
     MatChipsModule,

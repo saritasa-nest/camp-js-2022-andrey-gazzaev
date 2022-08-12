@@ -39,8 +39,8 @@
           <mat-card-content>
             <p class="details__field">
               Aired from
-              {{ anime.aired.start | date: "dd.MM.YYYY" | placeholder }} to
-              {{ anime.aired.end | date: "dd.MM.YYYY" | placeholder }}
+              {{ anime.aired.start | airedDate | placeholder }} to
+              {{ anime.aired.end | airedDate | placeholder }}
             </p>
             <p class="details__field">
               Airing:
