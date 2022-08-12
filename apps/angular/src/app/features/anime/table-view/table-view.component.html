@@ -1,4 +1,4 @@
-<section class="table-view">
+<section class="table-view" [formGroup]="query">
   <h2 id="anime-catalog" class="mat-title">Anime table</h2>
 
   <div class="table-container mat-elevation-z8">
@@ -8,7 +8,7 @@
         matInput
         type="search"
         placeholder="Your anime title"
-        [formControl]="search"
+        formControlName="search"
       />
     </mat-form-field>
 
@@ -20,7 +20,7 @@
           aria-label="anime"
           aria-describedby="anime-catalog"
           (matSortChange)="onSortChange($event)"
-          [trackBy]="trackItem"
+          [trackBy]="trackItemAnime"
           [matSortActive]="sort.field"
           [dataSource]="animeList"
           [matSortDirection]="sort.direction"
@@ -82,17 +82,19 @@
 
           <ng-container matColumnDef="type">
             <th mat-header-cell *matHeaderCellDef class="table-column-type">
-              <mat-select [formControl]="typeFilter" multiple>
-                <mat-select-trigger class="table-column-type__trigger">
-                  Type <mat-icon>filter_alt</mat-icon>
-                </mat-select-trigger>
-                <mat-option
-                  [value]="filter.field"
-                  *ngFor="let filter of filterListByType"
-                >
-                  {{ filter.title }}
-                </mat-option>
-              </mat-select>
+              <ng-container *ngIf="filterListByType$ | async as types">
+                <mat-select formControlName="typeFilter" multiple>
+                  <mat-select-trigger class="table-column-type__trigger">
+                    Type <mat-icon>filter_alt</mat-icon>
+                  </mat-select-trigger>
+                  <mat-option
+                    [value]="type.field"
+                    *ngFor="let type of types; trackBy: trackItemType"
+                  >
+                    {{ type.title }}
+                  </mat-option>
+                </mat-select>
+              </ng-container>
             </th>
             <td mat-cell *matCellDef="let anime">{{ anime.type }}</td>
           </ng-container>

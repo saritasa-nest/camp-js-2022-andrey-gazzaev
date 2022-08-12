@@ -1,4 +1,4 @@
-import { catchError, map, Observable, of, switchMap, switchMapTo, throwError } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
@@ -15,32 +15,6 @@ import { catchHttpErrorResponse } from '../utils/rxjs/catch-http-error';
 import { AuthService } from './auth.service';
 import { TokenService } from './token.service';
 import { AppConfigService } from './app-config.service';
-
-/** Login errors.  */
-export interface LoginErrors {
-
-  /** Errors related to email. */
-  readonly email?: string[];
-
-  /** Errors related to password. */
-  readonly password?: string[];
-}
-
-/** Registration errors. */
-export interface RegistrationErrors {
-
-  /** Errors related to email. */
-  readonly email?: string[];
-
-  /** Errors related to first name. */
-  readonly firstName?: string[];
-
-  /** Errors related to last name. */
-  readonly lastName?: string[];
-
-  /** Errors related to password. */
-  readonly password?: string[];
-}
 
 /** Authorization service. */
 @Injectable({
@@ -63,17 +37,15 @@ export class UserService {
   ) {
     this.currentUser$ = this.fetchUser();
     this.isAuthorized$ = this.currentUser$.pipe(map(user => user !== null));
-    this.userUrl = new URL(`users/profile/`, config.apiUrl);
+    this.userUrl = new URL(`users/profile/`, config.apiCampBaseUrl);
   }
 
   /**
    * Log in.
    * @param loginData Data required for login.
    */
-  public login(loginData: Login): Observable<boolean> {
+  public login(loginData: Login): Observable<void> {
     return this.authService.login(loginData).pipe(
-      switchMapTo(this.isAuthorized$),
-      map(() => true),
       catchHttpErrorResponse(error => throwError(() => this.createError(error))),
     );
   }
@@ -82,10 +54,8 @@ export class UserService {
    * Registers user.
    * @param registrationData Data required for registration.
    */
-  public register(registrationData: Registration): Observable<boolean> {
+  public register(registrationData: Registration): Observable<void> {
     return this.authService.register(registrationData).pipe(
-      switchMap(() => this.isAuthorized$),
-      map(() => true),
       catchHttpErrorResponse(error => throwError(() => this.createError(error))),
     );
   }
@@ -95,7 +65,7 @@ export class UserService {
    * If an error occurs, the user will be null.
    * The error may be if the user is not authorized.
    */
-  public fetchUser(): Observable<User | null> {
+  private fetchUser(): Observable<User | null> {
     return this.tokenService.token$.pipe(
       switchMap(() => this.http.get<UserDto>(this.userUrl.toString())),
       map(userDto => UserMapper.fromDto(userDto)),
@@ -107,11 +77,8 @@ export class UserService {
   }
 
   /** Log out. */
-  public logout(): Observable<boolean> {
-    return this.tokenService.remove().pipe(
-      switchMap(() => this.isAuthorized$),
-      map(() => false),
-    );
+  public logout(): Observable<void> {
+    return this.tokenService.remove();
   }
 
   /**

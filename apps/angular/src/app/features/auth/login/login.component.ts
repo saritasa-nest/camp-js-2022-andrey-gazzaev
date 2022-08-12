@@ -1,15 +1,17 @@
 import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 
+import { Login } from '@js-camp/core/models/login';
 import { AppError } from '@js-camp/core/models/httpError';
+import { FormError } from '@js-camp/core/models/form-error';
 
 import { UrlService } from '../../../../core/services/url.service';
+import { UserService } from '../../../../core/services/user.service';
 import { showErrorsFormFields } from '../../../../core/utils/show-errors';
 import { SnackBarService } from '../../../../core/services/snack-bar.service';
-import { UserService, RegistrationErrors } from '../../../../core/services/user.service';
 
 interface LoginFormControls {
 
@@ -29,7 +31,6 @@ interface LoginFormControls {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-
   /** Login form. */
   public readonly loginForm: FormGroup<LoginFormControls>;
 
@@ -44,8 +45,8 @@ export class LoginComponent {
   }
 
   /** Handles form submit. */
-  public handleFormSubmit(): void {
-    this.loginForm.markAllAsTouched();
+  public onFormSubmit(): void {
+    // this.loginForm.markAllAsTouched();
     if (this.loginForm.invalid) {
       return;
     }
@@ -66,7 +67,7 @@ export class LoginComponent {
       .subscribe();
   }
 
-  private setErrors(errors: AppError<RegistrationErrors>): void {
+  private setErrors(errors: AppError<FormError<Login>>): void {
     this.snackBarService.showError(errors.detail);
     showErrorsFormFields(errors, this.loginForm);
     this.changeDetectorRef.markForCheck();
@@ -76,6 +77,6 @@ export class LoginComponent {
     return this.formBuilder.nonNullable.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
-    }, { updateOn: 'blur' });
+    });
   }
 }

@@ -35,9 +35,9 @@ export class AuthService {
     private readonly urlService: UrlService,
     private readonly tokenService: TokenService,
   ) {
-    this.loginUrl = new URL(`auth/login/`, config.apiUrl);
-    this.refreshUrl = new URL(`auth/token/refresh/`, config.apiUrl);
-    this.registrationUrl = new URL(`auth/register/`, config.apiUrl);
+    this.loginUrl = new URL(`auth/login/`, config.apiCampBaseUrl);
+    this.refreshUrl = new URL(`auth/token/refresh/`, config.apiCampBaseUrl);
+    this.registrationUrl = new URL(`auth/register/`, config.apiCampBaseUrl);
   }
 
   /**
@@ -57,9 +57,10 @@ export class AuthService {
    * @param registrationData Data required for registration.
    */
   public register(registrationData: Registration): Observable<void> {
-    const avatarUrl =
-      'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/' +
-      'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
+    const s3Url = 'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev/';
+    const filePathToAvatar = 'user_avatars%2Ff33c09a7-a15e-4b7c-b47f-650bfe19faff%2Fprofile.jpg';
+
+    const avatarUrl = `${s3Url}${filePathToAvatar}`;
     const registrationDataDto = RegistrationDataMapper.toDto({ ...registrationData, avatarUrl });
     return this.http.post<TokenDto>(this.registrationUrl.toString(), registrationDataDto).pipe(
       map(tokensDto => TokensMapper.fromDto(tokensDto)),

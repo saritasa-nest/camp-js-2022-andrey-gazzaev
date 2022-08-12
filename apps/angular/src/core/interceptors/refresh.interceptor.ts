@@ -44,7 +44,7 @@ export class RefreshInterceptor implements HttpInterceptor {
 
   private shouldRefreshTokenForUrl(url: string): boolean {
     return url.startsWith(
-      new URL('auth', this.config.apiUrl).toString(),
+      new URL('auth', this.config.apiCampBaseUrl).toString(),
     );
   }
 }

@@ -15,7 +15,7 @@ export function showErrorsFormFields<T>(
     Object.entries(error.data).forEach(([key, message]) => {
       if (isKeyOfObject(key, formGroup.controls)) {
         formGroup.controls[key].setErrors({
-          [key]: message,
+          [`${key}Serve`]: message,
         });
       }
     });
