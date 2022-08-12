@@ -1,13 +1,13 @@
 import { catchError, of, tap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 
 import { Login } from '@js-camp/core/models/login';
 import { AppError } from '@js-camp/core/models/httpError';
+import { FormError } from '@js-camp/core/models/form-error';
 
-import { FormError } from '../../../../../../../libs/core/models/form-error';
 import { UrlService } from '../../../../core/services/url.service';
 import { UserService } from '../../../../core/services/user.service';
 import { showErrorsFormFields } from '../../../../core/utils/show-errors';

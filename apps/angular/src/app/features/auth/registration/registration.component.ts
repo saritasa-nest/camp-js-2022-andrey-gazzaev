@@ -1,17 +1,17 @@
 import { catchError, of, tap, throwError } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 import { AppError } from '@js-camp/core/models/httpError';
+import { FormError } from '@js-camp/core/models/form-error';
 import { Registration } from '@js-camp/core/models/registration';
 
 import { UrlService } from '../../../../core/services/url.service';
+import { UserService } from '../../../../core/services/user.service';
 import { showErrorsFormFields } from '../../../../core/utils/show-errors';
 import { SnackBarService } from '../../../../core/services/snack-bar.service';
-import { UserService } from '../../../../core/services/user.service';
-import { FormError } from '../../../../../../../libs/core/models/form-error';
 
 interface RegistrationFormControls {
 
