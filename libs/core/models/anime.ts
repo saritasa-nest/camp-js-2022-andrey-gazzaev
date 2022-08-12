@@ -2,7 +2,7 @@ import { DateRange } from './dateRange';
 import { Immerable, OmitImmerable } from './immerable';
 
 /** Possible options anime type. */
-export enum Type {
+export enum AnimeType {
   Tv = 'TV',
   Ova = 'OVA',
   Movie = 'MOVIE',
@@ -12,10 +12,10 @@ export enum Type {
 }
 
 /** Possible options anime status. */
-export enum Status {
-  Airing = 'AIRING',
-  Finished = 'FINISHED',
-  NotYetAired = 'NOT_YET_AIRED',
+export enum AnimeStatus {
+  Airing = 'Airing',
+  Finished = 'Finished',
+  NotYetAired = 'Not yet aired',
 }
 
 /** Anime. */
@@ -40,10 +40,10 @@ export class AnimeBase extends Immerable {
   public readonly aired: DateRange;
 
   /** Anime type. */
-  public readonly type: Type;
+  public readonly type: AnimeType;
 
   /** Anime status. */
-  public readonly status: Status;
+  public readonly status: AnimeStatus;
 
   public constructor(data: InitArgsAnimeBase) {
     super();

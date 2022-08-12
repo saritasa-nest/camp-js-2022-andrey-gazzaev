@@ -5,12 +5,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
-import { AnimeBase, Type } from '@js-camp/core/models/anime';
+import { AnimeBase, AnimeType } from '@js-camp/core/models/anime';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
-import { AnimeListOptions } from '../models/anime-list-options';
+import { AnimeListQueryParams } from '../models/anime-list-query-params';
 
 import { AppConfigService } from './app-config.service';
 import { AnimeListOptionsMapper } from './mappers/anime-list-options.mapper';
@@ -28,17 +28,22 @@ export class AnimeService {
     private readonly http: HttpClient,
     private readonly animeListOptionsMapper: AnimeListOptionsMapper,
   ) {
-    this.animeListUrl = new URL(`anime/anime/`, config.apiUrl);
+    this.animeListUrl = new URL(`anime/anime/`, config.apiCampBaseUrl);
   }
 
   /**
    * Requests to the server to get anime.
-   * @param animeListHttpParams Parameters for generating a request.
+   * @param animeListQueryParams Parameters for generating a request.
    */
-  public fetchAnimeList(animeListHttpParams: HttpParams): Observable<Pagination<AnimeBase>> {
+  public fetchAnimeList(animeListQueryParams: AnimeListQueryParams): Observable<Pagination<AnimeBase>> {
+    const animeListSearchParams = this.animeListOptionsMapper.toDto(animeListQueryParams);
+    const params = new HttpParams({
+      fromString: animeListSearchParams.toString(),
+    });
+
     return this.http.get<PaginationDto<AnimeBaseDto>>(
       this.animeListUrl.toString(),
-      { params: animeListHttpParams },
+      { params },
     ).pipe(map(pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
       pagination,
       animeDto => AnimeMapper.fromDto(animeDto),
@@ -46,25 +51,8 @@ export class AnimeService {
   }
 
   /** Gets all anime types. */
-  public getAnimeTypes(): string[] {
-    return Object.values(Type);
-  }
-
-  /** Gets page limit. */
-  public getLimit(): number {
-    return this.animeListOptionsMapper.getLimit();
-  }
-
-  /** Gets anime list params from URL query params. */
-  public getAnimeListOptions(): AnimeListOptions {
-    return this.animeListOptionsMapper.fromDto();
-  }
-
-  /**
-   * Gets URL Anime list options params.
-   * @param animeListOptions Anime list options.
-   */
-  public animeListOptionsToHttpParams(animeListOptions: AnimeListOptions): HttpParams {
-    return this.animeListOptionsMapper.toDto(animeListOptions);
+  // eslint-disable-next-line require-await
+  public async getAnimeTypes(): Promise<string[]> {
+    return Object.values(AnimeType);
   }
 }

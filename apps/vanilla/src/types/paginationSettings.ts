@@ -1,14 +1,14 @@
-import { Status, Type } from '@js-camp/core/models/anime';
+import { AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
 import { Sort, SortField, SortOrdering } from '@js-camp/core/utils/types/sort';
 
 /** Filter settings. */
 export interface Filter {
 
   /** Filter by type field. */
-  readonly byTypeField: Type | '';
+  readonly byTypeField: AnimeType | '';
 
   /** Filter by status field. */
-  readonly byStatusField: Status | '';
+  readonly byStatusField: AnimeStatus | '';
 }
 
 /** Pagination settings. */
