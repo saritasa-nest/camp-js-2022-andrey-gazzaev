@@ -34,9 +34,9 @@ export class AuthService {
     private readonly urlService: UrlService,
     private readonly tokenService: TokenService,
   ) {
-    this.loginUrl = new URL(`auth/login/`, config.apiUrl);
-    this.refreshUrl = new URL(`auth/token/refresh/`, config.apiUrl);
-    this.registrationUrl = new URL(`auth/register/`, config.apiUrl);
+    this.loginUrl = new URL(`auth/login/`, config.apiCampBaseUrl);
+    this.refreshUrl = new URL(`auth/token/refresh/`, config.apiCampBaseUrl);
+    this.registrationUrl = new URL(`auth/register/`, config.apiCampBaseUrl);
   }
 
   /**

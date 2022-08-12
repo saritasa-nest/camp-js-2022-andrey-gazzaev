@@ -42,9 +42,9 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private shouldInterceptToken(url: string): boolean {
-    const isHomeRequest = url.startsWith(this.config.apiUrl);
+    const isHomeRequest = url.startsWith(this.config.apiCampBaseUrl);
     const isAuthRequest = url.startsWith(
-      new URL('auth', this.config.apiUrl).toString(),
+      new URL('auth', this.config.apiCampBaseUrl).toString(),
     );
     return isAuthRequest && isHomeRequest;
   }

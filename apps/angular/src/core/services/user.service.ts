@@ -63,7 +63,7 @@ export class UserService {
   ) {
     this.currentUser$ = this.fetchUser();
     this.isAuthorized$ = this.currentUser$.pipe(map(user => user !== null));
-    this.userUrl = new URL(`users/profile/`, config.apiUrl);
+    this.userUrl = new URL(`users/profile/`, config.apiCampBaseUrl);
   }
 
   /**
