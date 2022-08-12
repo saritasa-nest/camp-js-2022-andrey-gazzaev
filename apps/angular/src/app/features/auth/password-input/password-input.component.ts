@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 /** Password input component. */
 @Component({
   selector: 'app-password-input',
   templateUrl: './password-input.component.html',
   styleUrls: ['../auth.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordInputComponent {
 
@@ -18,10 +19,10 @@ export class PasswordInputComponent {
   public control: FormControl = new FormControl<string | null>('');
 
   /** Is the password hidden. */
-  public isHiddenPassword = true;
+  public isPasswordHidden = true;
 
   /** Handles password toggle. */
   public handlePasswordToggle(): void {
-    this.isHiddenPassword = !this.isHiddenPassword;
+    this.isPasswordHidden = !this.isPasswordHidden;
   }
 }
