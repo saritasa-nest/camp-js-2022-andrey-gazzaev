@@ -18,8 +18,6 @@ enum ParamName {
 @Injectable({ providedIn: 'root' })
 export class AnimeListOptionsMapper {
 
-  public constructor() { }
-
   /**
    * Maps model to dto.
    * @param model AnimeListOptions model.
