@@ -3,21 +3,15 @@ import { map, Observable, switchMap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Genre } from '@js-camp/core/models/genre';
-import { GenreDto } from '@js-camp/core/dtos/genre.dto';
-import { Studio } from '@js-camp/core/models/studio.dto';
-import { StudioDto } from '@js-camp/core/dtos/studio.dto';
 import { DateRange } from '@js-camp/core/models/dateRange';
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { AnimeBase, AnimeType } from '@js-camp/core/models/anime';
 import { AnimeInformation } from '@js-camp/core/models/anime-editor';
-import { GenreMapper } from '@js-camp/core/mappers/genre.mapper';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 import { AnimeDetailsDto } from '@js-camp/core/dtos/animeDetails';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
-import { StudioMapper } from '@js-camp/core/mappers/studio.mapper';
 import { AnimeEditorDto } from '@js-camp/core/dtos/anime-editor.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
@@ -57,18 +51,12 @@ export class AnimeService {
 
   private readonly animeListUrl: URL;
 
-  private readonly genresUrl: URL;
-
-  private readonly studiosUrl: URL;
-
   public constructor(
     config: AppConfigService,
     private readonly http: HttpClient,
     private readonly s3directService: S3directService,
     private readonly animeListOptionsMapper: AnimeListOptionsMapper,
   ) {
-    this.genresUrl = new URL(`anime/genres/`, config.apiCampBaseUrl);
-    this.studiosUrl = new URL(`anime/studios/`, config.apiCampBaseUrl);
     this.animeListUrl = new URL(`anime/anime/`, config.apiCampBaseUrl);
   }
 
@@ -118,32 +106,6 @@ export class AnimeService {
       map(animeEditorDto => animeEditorDto.id),
     );
 
-  }
-
-  /** Fetches genres. */
-  public fetchGenres(): Observable<readonly Genre[]> {
-    return this.http.get<PaginationDto<GenreDto>>(
-      this.genresUrl.toString(),
-    ).pipe(
-      map(pagination => PaginationMapper.fromDto<GenreDto, Genre>(
-        pagination,
-        genresDto => GenreMapper.fromDto(genresDto),
-      )),
-      map(genres => genres.results),
-    );
-  }
-
-  /** Fetches studios.  */
-  public fetchStudios(): Observable<readonly Studio[]> {
-    return this.http.get<PaginationDto<StudioDto>>(
-      this.studiosUrl.toString(),
-    ).pipe(
-      map(pagination => PaginationMapper.fromDto<StudioDto, Studio>(
-        pagination,
-        studioDto => StudioMapper.fromDto(studioDto),
-      )),
-      map(studios => studios.results),
-    );
   }
 
   /** Gets all anime types. */

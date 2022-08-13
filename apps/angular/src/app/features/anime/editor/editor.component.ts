@@ -10,6 +10,8 @@ import { Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 
 import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
+import { GenreService } from '../../../../core/services/genre.service';
+import { StudioService } from '../../../../core/services/studio.service';
 
 interface SelectItem {
 
@@ -22,7 +24,7 @@ interface SelectItem {
 
 interface AnimeFormControls {
 
-  /** Trailer youtube id. */
+  /** Anime poster. */
   readonly image: FormControl<File | null>;
 
   /** Trailer youtube id. */
@@ -40,31 +42,26 @@ interface AnimeFormControls {
   /** Type. */
   readonly type: FormControl<string | null>;
 
-  /** */
   readonly status: FormControl<string | null>;
 
-  /** */
   readonly source: FormControl<string | null>;
 
-  /** */
   readonly season: FormControl<string | null>;
 
-  /** */
   readonly rating: FormControl<string | null>;
 
   /** Is airing. */
   readonly isAiring: FormControl<boolean | null>;
 
+  // TODO (Gazzaev) create form group for aired.
   /** Start date. */
   readonly airedStartDate: FormControl<Date | null>;
 
   /** End date. */
   readonly airedEndDate: FormControl<Date | null>;
 
-  /** */
   readonly genres: FormControl<number[] | null>;
 
-  /** */
   readonly studios: FormControl<number[] | null>;
 }
 
@@ -82,34 +79,32 @@ export class EditorComponent {
   public readonly animeForm: FormGroup<AnimeFormControls>;
 
   /** All kinds of anime genres. */
-  public readonly genres$ = this.animeService.fetchGenres();
+  public readonly genres$ = this.genreService.fetchGenres();
 
   /** All kinds of anime studios. */
-  public readonly studios$ = this.animeService.fetchStudios();
+  public readonly studios$ = this.studioService.fetchStudios();
 
-  /**  */
   public readonly types = this.createSelectCollection(AnimeType);
 
-  /**  */
   public readonly statuses = this.createSelectCollection(AnimeStatus);
 
-  /**  */
   public readonly seasons = this.createSelectCollection(Season);
 
-  /**  */
   public readonly ratings = this.createSelectCollection(Rating);
 
-  /**   */
   public readonly sources = this.createSelectCollection(Source);
 
-  /**  */
-  public readonly imagePreview$: Observable<string |
+  public readonly imagePreview$: Observable<
+    string |
     ArrayBuffer |
-    null>;
+    null
+  >;
 
   public constructor(
     private readonly urlService: UrlService,
     private readonly animeService: AnimeService,
+    private readonly genreService: GenreService,
+    private readonly studioService: StudioService,
   ) {
     this.animeForm = this.initAnimeForm();
     this.imagePreview$ = this.animeForm.controls.image.valueChanges.pipe(
@@ -135,7 +130,7 @@ export class EditorComponent {
     });
   }
 
-  /** Handles form submit. */
+  /** Handlers form submit. */
   public onFormSubmit(): void {
     this.animeForm.markAllAsTouched();
     if (this.animeForm.invalid) {
