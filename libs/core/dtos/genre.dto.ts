@@ -1,3 +1,5 @@
+export type PostGenreDto = Omit< GenreDto, 'id'>;
+
 /** Genre DTO. */
 export interface GenreDto {
 

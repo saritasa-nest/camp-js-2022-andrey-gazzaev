@@ -1,5 +1,5 @@
-import { GenreDto } from '../dtos/genre.dto';
 import { Genre } from '../models/genre';
+import { GenreDto, PostGenreDto } from '../dtos/genre.dto';
 
 export namespace GenreMapper {
 
@@ -16,12 +16,11 @@ export namespace GenreMapper {
 
   /**
    * Maps model to dto.
-   * @param model Genre.
+   * @param name Genre name.
    */
-  export function toDto(model: Genre): GenreDto {
+  export function toDto(name: string): PostGenreDto {
     return {
-      id: model.id,
-      name: model.name,
+      name,
       type: 'GENRES',
     };
   }

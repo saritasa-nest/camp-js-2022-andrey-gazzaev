@@ -104,4 +104,35 @@ export class GenreService {
     )
       .subscribe();
   }
+
+  /**
+   * Creates genre.
+   * @param name Genre name.
+   */
+  public createGenre(name: string | null): void {
+    if (name === null) {
+      return;
+    }
+
+    const postGenre = GenreMapper.toDto(name);
+    this.http.post<GenreDto>(this.genresUrl.toString(), postGenre).pipe(
+      map(genreDto => GenreMapper.fromDto(genreDto)),
+      map(genres => this.nextGenres$.next([genres])),
+      untilDestroyed(this),
+    )
+      .subscribe();
+  }
+
+  /**
+   * Deletes genre.
+   * @param id Genre id.
+   */
+  public deleteGenre(id: number): void {
+    this.http.delete(`${this.genresUrl.toString()}${id}/`)
+      .pipe(
+        untilDestroyed(this),
+      )
+      .subscribe();
+  }
+
 }

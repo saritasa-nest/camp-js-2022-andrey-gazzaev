@@ -23,6 +23,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'editor',
+    loadChildren: () =>
+      import('./features/editor/editor.module').then(
+        m => m.EditorModule,
+      ),
+  },
+  {
     path: '**',
     redirectTo: 'catalog',
   },

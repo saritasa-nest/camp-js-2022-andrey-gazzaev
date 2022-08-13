@@ -70,12 +70,12 @@ interface AnimeFormControls {
 /** Editor component. */
 @UntilDestroy()
 @Component({
-  selector: 'app-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.css'],
+  selector: 'app-editor-form',
+  templateUrl: './editor-form.component.html',
+  styleUrls: ['./editor-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditorComponent {
+export class EditorFormComponent {
 
   /** Anime form. */
   public readonly animeForm: FormGroup<AnimeFormControls>;
@@ -212,6 +212,32 @@ export class EditorComponent {
   /** Handlers get more genres. */
   public onMoreGenres(): void {
     this.genreService.getMoreGenres();
+  }
+
+  /** Handlers create genre. */
+  public onCreateGenre(): void {
+    const search = this.animeForm.controls.genresSearch.value;
+    this.genreService.createGenre(search);
+  }
+
+  /**
+   * Handlers remove genre.
+   * @param id Genre id.
+   */
+  public onRemoveGenre(id: number): void {
+    this.genreService.deleteGenre(id);
+    const genresIds = this.animeForm.controls.genres.value;
+    if (genresIds !== null) {
+      this.animeForm.controls.genres.setValue(genresIds.filter(genreId => genreId !== id));
+    }
+
+    this.animeForm.controls.genresSearch.setValue('');
+  }
+
+  /** Checks if the search string is empty. */
+  public isNotSearchGenre(): boolean {
+    const search = this.animeForm.controls.genresSearch.value;
+    return search === null || search.length === 0;
   }
 
   private createSelectCollection<T>(obj: T): readonly SelectItem[] {

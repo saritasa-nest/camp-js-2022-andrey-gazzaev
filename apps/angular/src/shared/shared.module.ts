@@ -27,10 +27,11 @@ import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 
 import { PlaceholderPipe } from './pipes/placeholder.pipe';
 import { AiredDatePipe } from './pipes/aired-date.pipe';
+import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
 
 /** Shared module. */
 @NgModule({
-  declarations: [PlaceholderPipe, AiredDatePipe],
+  declarations: [PlaceholderPipe, AiredDatePipe, ClickStopPropagationDirective],
   exports: [
     FormsModule,
     CommonModule,
@@ -59,6 +60,7 @@ import { AiredDatePipe } from './pipes/aired-date.pipe';
     NgxMatFileInputModule,
     NgxMatSelectSearchModule,
     MatProgressSpinnerModule,
+    ClickStopPropagationDirective,
   ],
 })
 export class SharedModule { }
