@@ -2,17 +2,64 @@ p {
   margin: 0;
 }
 
-.editor {
+.editor__container {
+  margin: 20px auto;
   max-width: 1024px;
-  margin-inline: auto;
 }
 
-.form-section {
+.base-information {
   display: flex;
   flex-direction: column;
 }
 
-.editor-base-information__image {
+.base-information__image {
   max-width: 300px;
   max-height: 300px;
+}
+
+.base-information__input-fields > .base-information__field,
+.status-information__aired-fields > .status-information__field,
+.more-information__field {
+  margin-right: 20px;
+}
+
+.synopsis {
+  min-height: 150px;
+  resize: none;
+}
+
+.status-information {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-information__select-fields {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
+}
+
+.status-information__select-fields > .status-information__field {
+  margin-right: 50px;
+}
+
+.status-information__aired-fields {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.editor__divider {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.loading__spinner {
+  margin-left: auto;
+  margin-right: auto;
 }

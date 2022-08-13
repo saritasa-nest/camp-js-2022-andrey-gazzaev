@@ -10,7 +10,6 @@ import { Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 
 import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
-import { S3directService } from '../../../../core/services/s3direct.service';
 
 interface SelectItem {
 
@@ -229,6 +228,6 @@ export class EditorComponent {
       airedEndDate: new FormControl(null),
       genres: new FormControl(null, Validators.required),
       studios: new FormControl(null, Validators.required),
-    }, { updateOn: 'change' });
+    });
   }
 }
