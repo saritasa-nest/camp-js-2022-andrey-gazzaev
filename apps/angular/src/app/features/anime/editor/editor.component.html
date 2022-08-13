@@ -1,4 +1,6 @@
 <mat-card class="editor__container">
+  <ng-template let-error let-text="text" #tpl> <span class="control-error">{{ text }}</span> </ng-template>
+  
   <ng-container *ngIf="genres$ | async as genres; else loading">
     <ng-container *ngIf="studios$ | async as studios; else loading">
       <form class="editor" [formGroup]="animeForm" (ngSubmit)="onFormSubmit()">

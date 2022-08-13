@@ -22,7 +22,7 @@ export class S3directService {
     private readonly http: HttpClient,
   ) {
 
-    this.s3directUrl = new URL(`s3direct/get_params/`, config.apiUrl);
+    this.s3directUrl = new URL(`s3direct/get_params/`, config.apiCampBaseUrl);
   }
 
   /**

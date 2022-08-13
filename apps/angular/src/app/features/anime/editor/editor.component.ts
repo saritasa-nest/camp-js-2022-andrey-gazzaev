@@ -4,7 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Status, Type } from '@js-camp/core/models/anime';
+import { AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
 import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
 import { Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 
@@ -88,10 +88,10 @@ export class EditorComponent {
   public readonly studios$ = this.animeService.fetchStudios();
 
   /**  */
-  public readonly types = this.createSelectCollection(Type);
+  public readonly types = this.createSelectCollection(AnimeType);
 
   /**  */
-  public readonly statuses = this.createSelectCollection(Status);
+  public readonly statuses = this.createSelectCollection(AnimeStatus);
 
   /**  */
   public readonly seasons = this.createSelectCollection(Season);
@@ -178,12 +178,12 @@ export class EditorComponent {
       rating: requiredField.rating as Rating,
       season: requiredField.season as Season,
       source: requiredField.source as Source,
-      status: requiredField.status as Status,
+      status: requiredField.status as AnimeStatus,
       synopsis: requiredField.synopsis,
       titleEnglish,
       titleJapanese,
       trailerYoutubeId,
-      type: requiredField.type as Type,
+      type: requiredField.type as AnimeType,
       genres: requiredField.genres,
       studios: requiredField.studios,
     };
