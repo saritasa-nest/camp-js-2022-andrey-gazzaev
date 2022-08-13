@@ -19,7 +19,8 @@
               }
             ]
           }
-        ]
+        ],
+        "linebreak-style":"off"
       }
     }
   ]
