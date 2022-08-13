@@ -10,7 +10,7 @@ import { StudioDto } from '@js-camp/core/dtos/studio.dto';
 import { DateRange } from '@js-camp/core/models/dateRange';
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
-import { AnimeBase, Type } from '@js-camp/core/models/anime';
+import { AnimeBase, AnimeType } from '@js-camp/core/models/anime';
 import { AnimeInformation } from '@js-camp/core/models/anime-editor';
 import { GenreMapper } from '@js-camp/core/mappers/genre.mapper';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
@@ -21,7 +21,7 @@ import { StudioMapper } from '@js-camp/core/mappers/studio.mapper';
 import { AnimeEditorDto } from '@js-camp/core/dtos/anime-editor.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
-import { AnimeListOptions } from '../models/anime-list-options';
+import { AnimeListQueryParams } from '../models/anime-list-query-params';
 
 import { AppConfigService } from './app-config.service';
 import { AnimeListOptionsMapper } from './mappers/anime-list-options.mapper';
@@ -55,7 +55,7 @@ interface PostAnimeData {
 })
 export class AnimeService {
 
-  private readonly animeUrl: URL;
+  private readonly animeListUrl: URL;
 
   private readonly genresUrl: URL;
 
@@ -67,19 +67,24 @@ export class AnimeService {
     private readonly s3directService: S3directService,
     private readonly animeListOptionsMapper: AnimeListOptionsMapper,
   ) {
-    this.genresUrl = new URL(`anime/genres/`, config.apiUrl);
-    this.studiosUrl = new URL(`anime/studios/`, config.apiUrl);
-    this.animeUrl = new URL(`anime/anime/`, config.apiUrl);
+    this.genresUrl = new URL(`anime/genres/`, config.apiCampBaseUrl);
+    this.studiosUrl = new URL(`anime/studios/`, config.apiCampBaseUrl);
+    this.animeListUrl = new URL(`anime/anime/`, config.apiCampBaseUrl);
   }
 
   /**
    * Requests to the server to get anime.
-   * @param animeListHttpParams Parameters for generating a request.
+   * @param animeListQueryParams Parameters for generating a request.
    */
-  public fetchAnimeList(animeListHttpParams: HttpParams): Observable<Pagination<AnimeBase>> {
+  public fetchAnimeList(animeListQueryParams: AnimeListQueryParams): Observable<Pagination<AnimeBase>> {
+    const animeListSearchParams = this.animeListOptionsMapper.toDto(animeListQueryParams);
+    const params = new HttpParams({
+      fromString: animeListSearchParams.toString(),
+    });
+
     return this.http.get<PaginationDto<AnimeBaseDto>>(
-      this.animeUrl.toString(),
-      { params: animeListHttpParams },
+      this.animeListUrl.toString(),
+      { params },
     ).pipe(map(pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
       pagination,
       animeDto => AnimeMapper.fromDto(animeDto),
@@ -91,7 +96,7 @@ export class AnimeService {
    * @param id Anime id.
    */
   public fetchAnime(id: number): Observable<AnimeDetails> {
-    const animeUrl = new URL(`${id}/`, this.animeUrl);
+    const animeUrl = new URL(`${id}/`, this.animeListUrl);
     return this.http.get<AnimeDetailsDto>(animeUrl.toString()).pipe(
       map(animeDetailsDto => AnimeMapper.fromDetailsDto(animeDetailsDto)),
     );
@@ -109,7 +114,7 @@ export class AnimeService {
 
     return this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName).pipe(
       map(posterUrl => AnimeMapper.toEditorDto({ ...information, aired, image: posterUrl })),
-      switchMap(postAnimeDto => this.http.post<AnimeEditorDto>(this.animeUrl.toString(), postAnimeDto)),
+      switchMap(postAnimeDto => this.http.post<AnimeEditorDto>(this.animeListUrl.toString(), postAnimeDto)),
       map(animeEditorDto => animeEditorDto.id),
     );
 
@@ -142,25 +147,8 @@ export class AnimeService {
   }
 
   /** Gets all anime types. */
-  public getAnimeTypes(): string[] {
-    return Object.values(Type);
-  }
-
-  /** Gets page limit. */
-  public getLimit(): number {
-    return this.animeListOptionsMapper.getLimit();
-  }
-
-  /** Gets anime list params from URL query params. */
-  public getAnimeListOptions(): AnimeListOptions {
-    return this.animeListOptionsMapper.fromDto();
-  }
-
-  /**
-   * Gets URL Anime list options params.
-   * @param animeListOptions Anime list options.
-   */
-  public animeListOptionsToHttpParams(animeListOptions: AnimeListOptions): HttpParams {
-    return this.animeListOptionsMapper.toDto(animeListOptions);
+  // eslint-disable-next-line require-await
+  public async getAnimeTypes(): Promise<string[]> {
+    return Object.values(AnimeType);
   }
 }

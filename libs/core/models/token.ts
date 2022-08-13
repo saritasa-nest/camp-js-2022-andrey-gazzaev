@@ -1,6 +1,6 @@
 import { Immerable, OmitImmerable } from './immerable';
 
-/** Authorization tokens. */
+/** Authorization token. */
 export class Token extends Immerable {
 
   /** Refresh token. */

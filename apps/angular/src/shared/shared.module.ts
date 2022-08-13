@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -21,13 +22,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxMatFileInputModule } from '@angular-material-components/file-input';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { PlaceholderPipe } from './pipes/placeholder.pipe';
+import { AiredDatePipe } from './pipes/aired-date.pipe';
 
 /** Shared module. */
 @NgModule({
-  declarations: [PlaceholderPipe],
+  declarations: [PlaceholderPipe, AiredDatePipe],
   exports: [
     FormsModule,
     CommonModule,
@@ -36,6 +37,7 @@ import { PlaceholderPipe } from './pipes/placeholder.pipe';
     MatSortModule,
     MatIconModule,
     MatCardModule,
+    AiredDatePipe,
     MatInputModule,
     MatTableModule,
     MatChipsModule,
@@ -54,10 +56,6 @@ import { PlaceholderPipe } from './pipes/placeholder.pipe';
     MatSlideToggleModule,
     NgxMatFileInputModule,
     MatProgressSpinnerModule,
-  ],
-  providers: [
-    { provide: MatDialogRef, useValue: {} },
-    { provide: MAT_DIALOG_DATA, useValue: {} },
   ],
 })
 export class SharedModule { }

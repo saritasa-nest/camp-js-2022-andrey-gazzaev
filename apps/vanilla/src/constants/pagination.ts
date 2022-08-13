@@ -1,4 +1,4 @@
-import { Status, Type } from '@js-camp/core/models/anime';
+import { AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
 import { SortField, SortOrdering } from '@js-camp/core/utils/types/sort';
 
 import { PaginationOptions } from '../types/paginationSettings';
@@ -19,8 +19,8 @@ export const DEFAULT_PAGINATION_SETTINGS: PaginationOptions = {
     ordering: SortOrdering.Ascending,
   },
   filter: {
-    byTypeField: Type.Tv,
-    byStatusField: Status.Airing,
+    byTypeField: AnimeType.Tv,
+    byStatusField: AnimeStatus.Airing,
   },
   limit: DEFAULT_LIMIT,
   offset: DEFAULT_OFFSET,

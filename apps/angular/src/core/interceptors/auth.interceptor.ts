@@ -44,7 +44,7 @@ export class AuthInterceptor implements HttpInterceptor {
   private shouldInterceptToken(url: string): boolean {
     const isS3Upload = url.startsWith(new URL('https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev').toString());
     const isAuthRequest = url.startsWith(
-      new URL('auth', this.config.apiUrl).toString(),
+      new URL('auth', this.config.apiCampBaseUrl).toString(),
     );
     return isAuthRequest || isS3Upload;
   }

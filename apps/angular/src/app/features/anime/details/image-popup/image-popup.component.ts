@@ -10,7 +10,7 @@ interface ImageData {
   readonly url: string;
 }
 
-/**  */
+/** Image popup component. */
 @Component({
   selector: 'app-image-popup',
   templateUrl: './image-popup.component.html',

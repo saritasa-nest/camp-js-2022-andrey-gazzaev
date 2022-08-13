@@ -7,8 +7,8 @@ import { environment } from '../../environments/environment';
 export class AppConfigService {
 
   /** API base URL. */
-  public readonly apiUrl: string = environment.apiUrl;
+  public readonly apiCampBaseUrl: string = environment.apiCampBaseUrl;
 
   /** API key. */
-  public readonly apiKey: string = environment.apiKey;
+  public readonly apiCampKey: string = environment.apiCampKey;
 }

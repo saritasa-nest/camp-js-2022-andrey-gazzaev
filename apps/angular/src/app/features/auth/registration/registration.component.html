@@ -1,10 +1,12 @@
+<ng-template let-error let-text="text" #tpl> <span class="control-error">{{ text }}</span> </ng-template>
+
 <form
   class="auth-form mat-elevation-z8"
   [formGroup]="registrationForm"
-  (submit)="onFormSubmit()"
+  (ngSubmit)="onFormSubmit()"
 >
   <header class="form-header">
-    <h1 class="auth-form__heading mat-headline">Registration</h1>
+    <h1 class="form-header__heading mat-headline">Registration</h1>
   </header>
 
   <mat-form-field class="form-field" appearance="fill">
@@ -15,9 +17,10 @@
       placeholder="thomas.anderson@rabbit.com"
       formControlName="email"
       autocomplete="email"
+      [controlErrorsTpl]="tpl"
     />
-    <mat-error *ngIf="registrationForm.controls.email.hasError('email')">
-      {{ registrationForm.controls.email.getError("email") }}
+    <mat-error *ngIf="registrationForm.controls.email.hasError('emailServe')">
+      {{ registrationForm.controls.email.getError("emailServe") }}
     </mat-error>
   </mat-form-field>
 
@@ -29,6 +32,7 @@
       placeholder="Thomas"
       formControlName="firstName"
       autocomplete="given-name"
+      [controlErrorsTpl]="tpl"
     />
   </mat-form-field>
 
@@ -40,6 +44,7 @@
       placeholder="Anderson"
       formControlName="lastName"
       autocomplete="family-name"
+      [controlErrorsTpl]="tpl"
     />
   </mat-form-field>
 
@@ -68,11 +73,11 @@
     </button>
   </div>
 
-  <mat-list class="form-list" role="list">
-    <mat-list-item role="listitem">
-      <a class="link" mat-button routerLink="/auth/login/"
-        >Do you have an account?</a
-      >
+  <mat-list class="form-list">
+    <mat-list-item>
+      <a class="link" mat-button routerLink="/auth/login/">
+        Do you have an account?
+      </a>
     </mat-list-item>
   </mat-list>
 </form>
