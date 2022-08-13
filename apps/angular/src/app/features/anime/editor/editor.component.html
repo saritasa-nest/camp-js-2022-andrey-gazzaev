@@ -161,15 +161,24 @@
 
       <mat-card-content class="more-information">
         <ng-container *ngIf="genres$ | async as genres; else loading">
-          <app-select
-            class="editor-field"
-            label="Genres"
-            placeholder="Select genres"
-            [collection]="genres"
-            [isMultiple]="true"
-            [selectControl]="animeForm.controls.genres"
-            class="more-information__field"
-          ></app-select>
+          <mat-form-field appearance="fill">
+            <mat-label>Genres</mat-label>
+            <mat-select formControlName="genres" multiple>
+              <mat-option>
+                <ngx-mat-select-search
+                  placeholderLabel="Find genres..."
+                  formControlName="genresSearch"
+                ></ngx-mat-select-search>
+              </mat-option>
+
+              <mat-option *ngFor="let genre of genres" [value]="genre.id">
+                {{ genre.name }}
+              </mat-option>
+              <button mat-stroked-button type="button" (click)="onMoreGenres()">
+                Add more genres
+              </button>
+            </mat-select>
+          </mat-form-field>
         </ng-container>
 
         <app-select
@@ -182,8 +191,6 @@
           class="more-information__field"
         ></app-select>
       </mat-card-content>
-
-      <button type="button" (click)="onMoreGenres()">Add more genres</button>
 
       <mat-divider></mat-divider>
 

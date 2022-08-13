@@ -1,4 +1,5 @@
-import { filter, first, map, merge, Observable, ReplaySubject, scan, Subject, switchMap } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BehaviorSubject, filter, first, map, merge, Observable, ReplaySubject, scan, Subject, switchMap, tap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -11,14 +12,19 @@ import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { AppConfigService } from './app-config.service';
 
 /** Genre service. */
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
 export class GenreService {
 
+  private readonly genresUrl: URL;
+
   private readonly nextGenresUrl$ = new ReplaySubject<string | null>(1);
 
   private readonly nextGenres$: Subject<readonly Genre[]> = new Subject();
+
+  private readonly isSearch$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   /** Current genres. */
   public readonly currentGenres$: Observable<readonly Genre[]>;
@@ -27,22 +33,36 @@ export class GenreService {
     config: AppConfigService,
     private readonly http: HttpClient,
   ) {
-    const genresUrl = new URL(`anime/genres/`, config.apiCampBaseUrl);
+    this.genresUrl = new URL(`anime/genres/`, config.apiCampBaseUrl);
 
-    const firstGenres$ = this.fetchGenres(genresUrl.toString());
+    const firstGenres$ = this.fetchGenres(this.genresUrl.toString(), '');
     const nextGenresActions$ = this.nextGenres$.asObservable();
 
-    this.currentGenres$ = merge(
+    const currentGenresChange$ = merge(
       firstGenres$,
       nextGenresActions$,
     ).pipe(
       scan((acc, value) => [...acc, ...value]),
     );
+
+    this.currentGenres$ = this.isSearch$.pipe(
+      switchMap(isClearGenres => {
+        if (!isClearGenres) {
+          return currentGenresChange$;
+        }
+        return nextGenresActions$;
+      }),
+    );
   }
 
-  private fetchGenres(url: string): Observable<readonly Genre[]> {
+  private fetchGenres(url: string, search: string): Observable<readonly Genre[]> {
     return this.http.get<PaginationDto<GenreDto>>(
       url,
+      {
+        params: {
+          search,
+        },
+      },
     ).pipe(
       map(pagination => PaginationMapper.fromDto<GenreDto, Genre>(
         pagination,
@@ -60,10 +80,28 @@ export class GenreService {
     this.nextGenresUrl$.pipe(
       first(),
       filter((nextGenresUrl): nextGenresUrl is NonNullable<string | null> => nextGenresUrl !== null),
-      switchMap(nextGenresUrl => this.fetchGenres(nextGenresUrl)),
+      switchMap(nextGenresUrl => this.fetchGenres(nextGenresUrl, '')),
       map(genres => this.nextGenres$.next(genres)),
+      untilDestroyed(this),
     )
       .subscribe();
   }
 
+  /**
+   * Finds genres by name.
+   * @param name Genre name.
+   */
+  public findGenresByName(name: string | null): void {
+    if (name === null || name.length === 0) {
+      this.isSearch$.next(false);
+      return;
+    }
+
+    this.fetchGenres(this.genresUrl.toString(), name).pipe(
+      tap(() => this.isSearch$.next(true)),
+      map(genres => this.nextGenres$.next(genres)),
+      untilDestroyed(this),
+    )
+      .subscribe();
+  }
 }

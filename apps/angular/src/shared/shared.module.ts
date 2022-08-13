@@ -1,3 +1,5 @@
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
@@ -55,6 +57,7 @@ import { AiredDatePipe } from './pipes/aired-date.pipe';
     ReactiveFormsModule,
     MatSlideToggleModule,
     NgxMatFileInputModule,
+    NgxMatSelectSearchModule,
     MatProgressSpinnerModule,
   ],
 })

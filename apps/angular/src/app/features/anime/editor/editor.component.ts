@@ -1,4 +1,4 @@
-import { BehaviorSubject, catchError, combineLatest, concatWith, filter, first, forkJoin, map, merge, Observable, of, scan, shareReplay, Subscriber, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, filter, map, Observable, of, Subscriber, switchMap } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
@@ -12,7 +12,6 @@ import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
 import { GenreService } from '../../../../core/services/genre.service';
 import { StudioService } from '../../../../core/services/studio.service';
-import { Genre } from '@js-camp/core/models/genre';
 
 interface SelectItem {
 
@@ -63,6 +62,8 @@ interface AnimeFormControls {
 
   readonly genres: FormControl<number[] | null>;
 
+  readonly genresSearch: FormControl<string | null>;
+
   readonly studios: FormControl<number[] | null>;
 }
 
@@ -108,10 +109,18 @@ export class EditorComponent {
     private readonly studioService: StudioService,
   ) {
     this.animeForm = this.initAnimeForm();
+
     this.imagePreview$ = this.animeForm.controls.image.valueChanges.pipe(
       filter((file): file is NonNullable<File> => file !== null),
       switchMap(file => this.previews(file)),
     );
+
+    this.animeForm.controls.genresSearch.valueChanges.pipe(
+      debounceTime(500),
+      map(search => this.genreService.findGenresByName(search)),
+      untilDestroyed(this),
+    )
+      .subscribe();
   }
 
   private previews(imageFile: File): Observable<
@@ -229,6 +238,7 @@ export class EditorComponent {
       airedEndDate: new FormControl(null),
       genres: new FormControl(null, Validators.required),
       studios: new FormControl(null, Validators.required),
+      genresSearch: new FormControl(null),
     });
   }
 }
