@@ -1,4 +1,4 @@
-import { catchError, filter, map, Observable, of, Subscriber, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, concatWith, filter, first, forkJoin, map, merge, Observable, of, scan, shareReplay, Subscriber, switchMap, tap } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
@@ -12,6 +12,7 @@ import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
 import { GenreService } from '../../../../core/services/genre.service';
 import { StudioService } from '../../../../core/services/studio.service';
+import { Genre } from '@js-camp/core/models/genre';
 
 interface SelectItem {
 
@@ -79,7 +80,7 @@ export class EditorComponent {
   public readonly animeForm: FormGroup<AnimeFormControls>;
 
   /** All kinds of anime genres. */
-  public readonly genres$ = this.genreService.fetchGenres();
+  public genres$ = this.genreService.currentGenres$;
 
   /** All kinds of anime studios. */
   public readonly studios$ = this.studioService.fetchStudios();
@@ -197,6 +198,11 @@ export class EditorComponent {
       }),
     )
       .subscribe();
+  }
+
+  /** Handlers get more genres. */
+  public onMoreGenres(): void {
+    this.genreService.getMoreGenres();
   }
 
   private createSelectCollection<T>(obj: T): readonly SelectItem[] {

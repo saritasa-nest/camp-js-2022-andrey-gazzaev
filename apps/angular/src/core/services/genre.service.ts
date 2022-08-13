@@ -1,4 +1,4 @@
-import { map, Observable } from 'rxjs';
+import { filter, first, map, merge, Observable, ReplaySubject, scan, Subject, switchMap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -16,25 +16,54 @@ import { AppConfigService } from './app-config.service';
 })
 export class GenreService {
 
-  private readonly genresUrl: URL;
+  private readonly nextGenresUrl$ = new ReplaySubject<string | null>(1);
+
+  private readonly nextGenres$: Subject<readonly Genre[]> = new Subject();
+
+  /** Current genres. */
+  public readonly currentGenres$: Observable<readonly Genre[]>;
 
   public constructor(
     config: AppConfigService,
     private readonly http: HttpClient,
   ) {
-    this.genresUrl = new URL(`anime/genres/`, config.apiCampBaseUrl);
+    const genresUrl = new URL(`anime/genres/`, config.apiCampBaseUrl);
+
+    const firstGenres$ = this.fetchGenres(genresUrl.toString());
+    const nextGenresActions$ = this.nextGenres$.asObservable();
+
+    this.currentGenres$ = merge(
+      firstGenres$,
+      nextGenresActions$,
+    ).pipe(
+      scan((acc, value) => [...acc, ...value]),
+    );
   }
 
-  /** Gets genres. */
-  public fetchGenres(): Observable<readonly Genre[]> {
+  private fetchGenres(url: string): Observable<readonly Genre[]> {
     return this.http.get<PaginationDto<GenreDto>>(
-      this.genresUrl.toString(),
+      url,
     ).pipe(
       map(pagination => PaginationMapper.fromDto<GenreDto, Genre>(
         pagination,
         genresDto => GenreMapper.fromDto(genresDto),
       )),
-      map(genres => genres.results),
+      map(genres => {
+        this.nextGenresUrl$.next(genres.next);
+        return genres.results;
+      }),
     );
   }
+
+  /** Gets next list of genres. */
+  public getMoreGenres(): void {
+    this.nextGenresUrl$.pipe(
+      first(),
+      filter((nextGenresUrl): nextGenresUrl is NonNullable<string | null> => nextGenresUrl !== null),
+      switchMap(nextGenresUrl => this.fetchGenres(nextGenresUrl)),
+      map(genres => this.nextGenres$.next(genres)),
+    )
+      .subscribe();
+  }
+
 }

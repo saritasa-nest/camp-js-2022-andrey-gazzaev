@@ -1,164 +1,166 @@
 <mat-card class="editor__container">
-  <ng-template let-error let-text="text" #tpl> <span class="control-error">{{ text }}</span> </ng-template>
-  
-  <ng-container *ngIf="genres$ | async as genres; else loading">
-    <ng-container *ngIf="studios$ | async as studios; else loading">
-      <form class="editor" [formGroup]="animeForm" (ngSubmit)="onFormSubmit()">
-        <mat-card-title>
-          <h1 class="mat-headline editor__container">Anime editor</h1>
-        </mat-card-title>
+  <ng-template let-error let-text="text" #tpl>
+    <span class="control-error">{{ text }}</span>
+  </ng-template>
 
-        <mat-divider class="editor__divider"></mat-divider>
+  <ng-container *ngIf="studios$ | async as studios; else loading">
+    <form class="editor" [formGroup]="animeForm" (ngSubmit)="onFormSubmit()">
+      <mat-card-title>
+        <h1 class="mat-headline editor__container">Anime editor</h1>
+      </mat-card-title>
 
-        <mat-card-subtitle>
-          <h2 class="mat-title">Base information</h2>
-        </mat-card-subtitle>
+      <mat-divider class="editor__divider"></mat-divider>
 
-        <mat-card-content class="base-information">
-          <ng-container *ngIf="imagePreview$ | async as imageUrl">
-            <img
-              class="base-information__image"
-              [src]="imageUrl"
-              alt="Poster preview"
+      <mat-card-subtitle>
+        <h2 class="mat-title">Base information</h2>
+      </mat-card-subtitle>
+
+      <mat-card-content class="base-information">
+        <ng-container *ngIf="imagePreview$ | async as imageUrl">
+          <img
+            class="base-information__image"
+            [src]="imageUrl"
+            alt="Poster preview"
+          />
+        </ng-container>
+
+        <mat-form-field appearance="fill">
+          <ngx-mat-file-input
+            formControlName="image"
+            [accept]="'image/png, image/jpeg'"
+            color="primary"
+          >
+            <mat-icon ngxMatFileInputIcon>folder</mat-icon>
+          </ngx-mat-file-input>
+        </mat-form-field>
+
+        <div class="base-information__input-fields">
+          <mat-form-field class="base-information__field" appearance="fill">
+            <mat-label>Enter trailer youtube id</mat-label>
+            <input
+              matInput
+              placeholder="1dy2zPPrKD0"
+              formControlName="trailerYoutubeId"
             />
-          </ng-container>
-
-          <mat-form-field appearance="fill">
-            <ngx-mat-file-input
-              formControlName="image"
-              [accept]="'image/png, image/jpeg'"
-              color="primary"
-            >
-              <mat-icon ngxMatFileInputIcon>folder</mat-icon>
-            </ngx-mat-file-input>
           </mat-form-field>
-
-          <div class="base-information__input-fields">
-            <mat-form-field class="base-information__field" appearance="fill">
-              <mat-label>Enter trailer youtube id</mat-label>
-              <input
-                matInput
-                placeholder="1dy2zPPrKD0"
-                formControlName="trailerYoutubeId"
-              />
-            </mat-form-field>
-
-            <mat-form-field class="base-information__field" appearance="fill">
-              <mat-label>Title in English</mat-label>
-              <input
-                matInput
-                placeholder="Naruto Shippuden"
-                formControlName="titleEnglish"
-              />
-            </mat-form-field>
-
-            <mat-form-field class="base-information__field" appearance="fill">
-              <mat-label>Title in Japanese</mat-label>
-              <input
-                matInput
-                placeholder="ナルト- 疾風伝"
-                formControlName="titleJapanese"
-              />
-            </mat-form-field>
-          </div>
 
           <mat-form-field class="base-information__field" appearance="fill">
-            <mat-label>Synopsis</mat-label>
-            <textarea
+            <mat-label>Title in English</mat-label>
+            <input
               matInput
-              placeholder="Anime about ..."
-              formControlName="synopsis"
-              class="synopsis"
-            ></textarea>
+              placeholder="Naruto Shippuden"
+              formControlName="titleEnglish"
+            />
           </mat-form-field>
-        </mat-card-content>
 
-        <mat-divider class="editor__divider"></mat-divider>
+          <mat-form-field class="base-information__field" appearance="fill">
+            <mat-label>Title in Japanese</mat-label>
+            <input
+              matInput
+              placeholder="ナルト- 疾風伝"
+              formControlName="titleJapanese"
+            />
+          </mat-form-field>
+        </div>
 
-        <mat-card-subtitle>
-          <h2 class="mat-title">Status information</h2>
-        </mat-card-subtitle>
+        <mat-form-field class="base-information__field" appearance="fill">
+          <mat-label>Synopsis</mat-label>
+          <textarea
+            matInput
+            placeholder="Anime about ..."
+            formControlName="synopsis"
+            class="synopsis"
+          ></textarea>
+        </mat-form-field>
+      </mat-card-content>
 
-        <mat-card-content class="status-information">
-          <div class="status-information__select-fields">
-            <app-select
-              class="status-information__field"
-              label="Anime type"
-              [collection]="types"
-              [selectControl]="animeForm.controls.type"
-            ></app-select>
+      <mat-divider class="editor__divider"></mat-divider>
 
-            <app-select
-              class="status-information__field"
-              label="Anime status"
-              [collection]="statuses"
-              [selectControl]="animeForm.controls.status"
-            ></app-select>
+      <mat-card-subtitle>
+        <h2 class="mat-title">Status information</h2>
+      </mat-card-subtitle>
 
-            <app-select
-              class="status-information__field"
-              label="Anime sources"
-              [collection]="sources"
-              [selectControl]="animeForm.controls.source"
-            ></app-select>
+      <mat-card-content class="status-information">
+        <div class="status-information__select-fields">
+          <app-select
+            class="status-information__field"
+            label="Anime type"
+            [collection]="types"
+            [selectControl]="animeForm.controls.type"
+          ></app-select>
 
-            <app-select
-              class="status-information__field"
-              label="Anime season"
-              [collection]="seasons"
-              [selectControl]="animeForm.controls.season"
-            ></app-select>
+          <app-select
+            class="status-information__field"
+            label="Anime status"
+            [collection]="statuses"
+            [selectControl]="animeForm.controls.status"
+          ></app-select>
 
-            <app-select
-              class="status-information__field"
-              label="Anime rating"
-              [collection]="ratings"
-              [selectControl]="animeForm.controls.rating"
-            ></app-select>
-          </div>
+          <app-select
+            class="status-information__field"
+            label="Anime sources"
+            [collection]="sources"
+            [selectControl]="animeForm.controls.source"
+          ></app-select>
 
-          <div class="status-information__aired-fields">
-            <mat-form-field class="status-information__field" appearance="fill">
-              <mat-label>Anime airing</mat-label>
-              <mat-date-range-input
-                [rangePicker]="airedPicker"
-                [comparisonStart]="animeForm.value.airedStartDate"
-                [comparisonEnd]="animeForm.value.airedEndDate"
-              >
-                <input
-                  matStartDate
-                  placeholder="Start date"
-                  formControlName="airedStartDate"
-                />
-                <input
-                  matEndDate
-                  placeholder="End date"
-                  formControlName="airedEndDate"
-                />
-              </mat-date-range-input>
-              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="airedPicker"
-              ></mat-datepicker-toggle>
-              <mat-date-range-picker #airedPicker></mat-date-range-picker>
-            </mat-form-field>
-            <mat-slide-toggle
-              class="status-information__field"
-              formControlName="isAiring"
+          <app-select
+            class="status-information__field"
+            label="Anime season"
+            [collection]="seasons"
+            [selectControl]="animeForm.controls.season"
+          ></app-select>
+
+          <app-select
+            class="status-information__field"
+            label="Anime rating"
+            [collection]="ratings"
+            [selectControl]="animeForm.controls.rating"
+          ></app-select>
+        </div>
+
+        <div class="status-information__aired-fields">
+          <mat-form-field class="status-information__field" appearance="fill">
+            <mat-label>Anime airing</mat-label>
+            <mat-date-range-input
+              [rangePicker]="airedPicker"
+              [comparisonStart]="animeForm.value.airedStartDate"
+              [comparisonEnd]="animeForm.value.airedEndDate"
             >
-              Airing
-            </mat-slide-toggle>
-          </div>
-        </mat-card-content>
+              <input
+                matStartDate
+                placeholder="Start date"
+                formControlName="airedStartDate"
+              />
+              <input
+                matEndDate
+                placeholder="End date"
+                formControlName="airedEndDate"
+              />
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="airedPicker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #airedPicker></mat-date-range-picker>
+          </mat-form-field>
+          <mat-slide-toggle
+            class="status-information__field"
+            formControlName="isAiring"
+          >
+            Airing
+          </mat-slide-toggle>
+        </div>
+      </mat-card-content>
 
-        <mat-divider class="editor__divider" ></mat-divider>
+      <mat-divider class="editor__divider"></mat-divider>
 
-        <mat-card-subtitle>
-          <h2 class="mat-title">More information</h2>
-        </mat-card-subtitle>
+      <mat-card-subtitle>
+        <h2 class="mat-title">More information</h2>
+      </mat-card-subtitle>
 
-        <mat-card-content class="more-information">
+      <mat-card-content class="more-information">
+        <ng-container *ngIf="genres$ | async as genres; else loading">
           <app-select
             class="editor-field"
             label="Genres"
@@ -168,27 +170,29 @@
             [selectControl]="animeForm.controls.genres"
             class="more-information__field"
           ></app-select>
+        </ng-container>
 
-          <app-select
-            class="editor-field"
-            label="Studios"
-            placeholder="Select studios"
-            [collection]="studios"
-            [isMultiple]="true"
-            [selectControl]="animeForm.controls.studios"
-            class="more-information__field"
-          ></app-select>
-        </mat-card-content>
+        <app-select
+          class="editor-field"
+          label="Studios"
+          placeholder="Select studios"
+          [collection]="studios"
+          [isMultiple]="true"
+          [selectControl]="animeForm.controls.studios"
+          class="more-information__field"
+        ></app-select>
+      </mat-card-content>
 
-        <mat-divider ></mat-divider>
+      <button type="button" (click)="onMoreGenres()">Add more genres</button>
 
-        <mat-card-actions class="editor__container buttons">
-          <button mat-stroked-button type="submit">
-            Create a new anime entry
-          </button>
-        </mat-card-actions>
-      </form>
-    </ng-container>
+      <mat-divider></mat-divider>
+
+      <mat-card-actions class="editor__container buttons">
+        <button mat-stroked-button type="submit">
+          Create a new anime entry
+        </button>
+      </mat-card-actions>
+    </form>
   </ng-container>
 </mat-card>
 
