@@ -104,77 +104,40 @@
 
                   <mat-card-content class="status-information">
                     <div class="status-information__select-fields">
-                      <mat-form-field
-                        appearance="fill"
+                      <app-simple-select
+                        label="Type"
                         class="status-information__field"
-                      >
-                        <mat-label>Type</mat-label>
-                        <mat-select formControlName="type">
-                          <mat-option *ngFor="let type of types" [value]="type">
-                            {{ type }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                        [formControlSelect]="animeForm.controls.type"
+                        [collection]="types"
+                      ></app-simple-select>
 
-                      <mat-form-field
-                        appearance="fill"
+                      <app-simple-select
+                        label="Status"
                         class="status-information__field"
-                      >
-                        <mat-label>Status</mat-label>
-                        <mat-select formControlName="status">
-                          <mat-option
-                            *ngFor="let status of statuses"
-                            [value]="status"
-                          >
-                            {{ status }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                        [formControlSelect]="animeForm.controls.status"
+                        [collection]="statuses"
+                      ></app-simple-select>
 
-                      <mat-form-field
-                        appearance="fill"
+                      <app-simple-select
+                        label="Source"
                         class="status-information__field"
-                      >
-                        <mat-label>Sources</mat-label>
-                        <mat-select formControlName="source">
-                          <mat-option
-                            *ngFor="let source of sources"
-                            [value]="source"
-                          >
-                            {{ source }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                        [formControlSelect]="animeForm.controls.source"
+                        [collection]="sources"
+                      ></app-simple-select>
 
-                      <mat-form-field
-                        appearance="fill"
+                      <app-simple-select
+                        label="Season"
                         class="status-information__field"
-                      >
-                        <mat-label>Season</mat-label>
-                        <mat-select formControlName="season">
-                          <mat-option
-                            *ngFor="let season of seasons"
-                            [value]="season"
-                          >
-                            {{ season }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                        [formControlSelect]="animeForm.controls.season"
+                        [collection]="seasons"
+                      ></app-simple-select>
 
-                      <mat-form-field
-                        appearance="fill"
+                      <app-simple-select
+                        label="Rating"
                         class="status-information__field"
-                      >
-                        <mat-label>Rating</mat-label>
-                        <mat-select formControlName="rating">
-                          <mat-option
-                            *ngFor="let rating of ratings"
-                            [value]="rating"
-                          >
-                            {{ rating }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                        [formControlSelect]="animeForm.controls.rating"
+                        [collection]="ratings"
+                      ></app-simple-select>
                     </div>
 
                     <div class="status-information__aired-fields">
@@ -223,113 +186,33 @@
                   </mat-card-subtitle>
 
                   <mat-card-content class="more-information">
-                    <mat-form-field appearance="fill">
-                      <mat-label>Genres</mat-label>
-                      <mat-select formControlName="genres" multiple>
-                        <mat-option>
-                          <ngx-mat-select-search
-                            placeholderLabel="Find genres..."
-                            formControlName="genresSearch"
-                          ></ngx-mat-select-search>
-                        </mat-option>
+                    <app-entity-select
+                      selectorLabel="Genres"
+                      entitiesName="genres"
+                      [entities]="genres"
+                      [formControlEntities]="animeForm.controls.genres"
+                      [formControlSearchEntity]="
+                        animeForm.controls.genresSearch
+                      "
+                      (createEntity)="onCreateGenre()"
+                      (moreEntities)="onMoreGenres()"
+                      (removeEntity)="onRemoveGenre($event)"
+                    >
+                    </app-entity-select>
 
-                        <ng-container *ngIf="genres.length === 0">
-                          <button
-                            mat-stroked-button
-                            type="button"
-                            (click)="onCreateGenre()"
-                          >
-                            Create genre
-                          </button>
-                        </ng-container>
-
-                        <mat-option
-                          *ngFor="let genre of genres"
-                          [value]="genre.id"
-                          class="ttt"
-                        >
-                          <span>{{ genre.name }}</span>
-                          <button
-                            mat-button
-                            type="button"
-                            click-stop-propagation
-                            (click)="onRemoveGenre(genre.id)"
-                          >
-                            <mat-icon> delete </mat-icon>
-                          </button>
-                        </mat-option>
-
-                        <ng-container
-                          *ngIf="
-                            isNotSearch(
-                              this.animeForm.controls.genresSearch.value
-                            )
-                          "
-                        >
-                          <button
-                            mat-stroked-button
-                            type="button"
-                            (click)="onMoreGenres()"
-                          >
-                            Add more genres
-                          </button>
-                        </ng-container>
-                      </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill">
-                      <mat-label>Studios</mat-label>
-                      <mat-select formControlName="studios" multiple>
-                        <mat-option>
-                          <ngx-mat-select-search
-                            placeholderLabel="Find studios..."
-                            formControlName="studiosSearch"
-                          ></ngx-mat-select-search>
-                        </mat-option>
-
-                        <ng-container *ngIf="studios.length === 0">
-                          <button
-                            mat-stroked-button
-                            type="button"
-                            (click)="onCreateStudio()"
-                          >
-                            Create studio
-                          </button>
-                        </ng-container>
-
-                        <mat-option
-                          *ngFor="let studio of studios"
-                          [value]="studio.id"
-                          class="ttt"
-                        >
-                          <span>{{ studio.name }}</span>
-                          <button
-                            mat-button
-                            type="button"
-                            click-stop-propagation
-                            (click)="onRemoveStudio(studio.id)"
-                          >
-                            <mat-icon> delete </mat-icon>
-                          </button>
-                        </mat-option>
-
-                        <ng-container
-                          *ngIf="
-                            isNotSearch(
-                              this.animeForm.controls.studiosSearch.value
-                            )
-                          "
-                        >
-                          <button
-                            mat-stroked-button
-                            type="button"
-                            (click)="onMoreStudios()"
-                          >
-                            Add more studio
-                          </button>
-                        </ng-container>
-                      </mat-select>
-                    </mat-form-field>
+                    <app-entity-select
+                      selectorLabel="Studios"
+                      entitiesName="studios"
+                      [entities]="studios"
+                      [formControlEntities]="animeForm.controls.studios"
+                      [formControlSearchEntity]="
+                        animeForm.controls.studiosSearch
+                      "
+                      (createEntity)="onCreateStudio()"
+                      (moreEntities)="onMoreStudios()"
+                      (removeEntity)="onRemoveStudio($event)"
+                    >
+                    </app-entity-select>
                   </mat-card-content>
 
                   <mat-divider></mat-divider>

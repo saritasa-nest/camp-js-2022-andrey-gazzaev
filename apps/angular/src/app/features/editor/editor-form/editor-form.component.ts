@@ -22,6 +22,7 @@ interface DateRangeControls {
   /** Date end. */
   readonly end: FormControl<Date | null>;
 }
+
 interface AnimeFormControls {
 
   /** Anime poster control. */
@@ -261,10 +262,10 @@ export class EditorFormComponent {
 
   /**
    * Checks if the search string is empty.
-   * @param search Some search query.
+   * @param string Some string.
    */
-  public isNotSearch(search: string | null): boolean {
-    return search === null || search.length === 0;
+  public isStringEmpty(string: string | null): boolean {
+    return string === null || string.length === 0;
   }
 
   private initAnimeForm(): FormGroup<AnimeFormControls> {
