@@ -1,4 +1,4 @@
-import { catchError, debounceTime, defer, filter, map, Observable, of, Subscriber, switchMap } from 'rxjs';
+import { catchError, combineLatest, debounceTime, defer, filter, map, Observable, of, Subscriber, switchMap } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
@@ -74,6 +74,24 @@ interface AnimeFormControls {
   readonly studiosSearch: FormControl<string | null>;
 }
 
+interface StatusInformation {
+
+  /** Anime types. */
+  readonly types: readonly AnimeType[];
+
+  /** Anime statuses. */
+  readonly statuses: readonly AnimeStatus[];
+
+  /** Anime seasons. */
+  readonly seasons: readonly Season[];
+
+  /** Anime ratings. */
+  readonly ratings: readonly Rating[];
+
+  /** Anime sources. */
+  readonly sources: readonly Source[];
+}
+
 /** Editor component. */
 @UntilDestroy()
 @Component({
@@ -93,20 +111,8 @@ export class EditorFormComponent {
   /** All kinds of anime studios. */
   public readonly studios$ = this.studioService.currentStudios$;
 
-  /** Anime types. */
-  public readonly types$ = this.getTypes();
-
-  /** Anime statuses. */
-  public readonly statuses$ = this.getStatuses();
-
-  /** Anime seasons. */
-  public readonly seasons$ = this.getSeasons();
-
-  /** Anime ratings. */
-  public readonly ratings$ = this.getRatings();
-
-  /** Anime sources. */
-  public readonly sources$ = this.getSource();
+  /** Information about anime.  */
+  public readonly statusInformation$: Observable<StatusInformation>;
 
   /** URL to anime poster preview. */
   public readonly posterPreview$: Observable<
@@ -141,6 +147,22 @@ export class EditorFormComponent {
       untilDestroyed(this),
     )
       .subscribe();
+
+    this.statusInformation$ = combineLatest([
+      this.getTypes(),
+      this.getStatuses(),
+      this.getSeasons(),
+      this.getRatings(),
+      this.getSource(),
+    ]).pipe(
+      map(([types, statuses, seasons, ratings, sources]) => ({
+        types,
+        statuses,
+        seasons,
+        ratings,
+        sources,
+      })),
+    );
   }
 
   /** Handlers form submit. */
@@ -258,14 +280,6 @@ export class EditorFormComponent {
     }
 
     this.animeForm.controls.studiosSearch.setValue('');
-  }
-
-  /**
-   * Checks if the search string is empty.
-   * @param string Some string.
-   */
-  public isStringEmpty(string: string | null): boolean {
-    return string === null || string.length === 0;
   }
 
   private initAnimeForm(): FormGroup<AnimeFormControls> {
