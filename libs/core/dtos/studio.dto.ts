@@ -1,3 +1,5 @@
+export type PostStudioDto = Omit<StudioDto, 'id'>;
+
 /** Studio. */
 export interface StudioDto {
 

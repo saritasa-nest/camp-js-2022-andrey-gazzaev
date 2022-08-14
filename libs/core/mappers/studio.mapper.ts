@@ -1,5 +1,5 @@
-import { StudioDto } from '../dtos/studio.dto';
 import { Studio } from '../models/studio.dto';
+import { PostStudioDto, StudioDto } from '../dtos/studio.dto';
 
 export namespace StudioMapper {
 
@@ -16,12 +16,11 @@ export namespace StudioMapper {
 
   /**
    * Maps model to dto.
-   * @param model Studio.
+   * @param name Studio name.
    */
-  export function toDto(model: Studio): StudioDto {
+  export function toDto(name: string): PostStudioDto {
     return {
-      id: model.id,
-      name: model.name,
+      name,
     };
   }
 }

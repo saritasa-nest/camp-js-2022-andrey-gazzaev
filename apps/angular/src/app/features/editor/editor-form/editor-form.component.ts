@@ -65,6 +65,8 @@ interface AnimeFormControls {
   readonly genresSearch: FormControl<string | null>;
 
   readonly studios: FormControl<number[] | null>;
+
+  readonly studiosSearch: FormControl<string | null>;
 }
 
 /** Editor component. */
@@ -84,7 +86,7 @@ export class EditorFormComponent {
   public genres$ = this.genreService.currentGenres$;
 
   /** All kinds of anime studios. */
-  public readonly studios$ = this.studioService.fetchStudios();
+  public readonly studios$ = this.studioService.currentStudios$;
 
   public readonly types = this.createSelectCollection(AnimeType);
 
@@ -118,6 +120,13 @@ export class EditorFormComponent {
     this.animeForm.controls.genresSearch.valueChanges.pipe(
       debounceTime(500),
       map(search => this.genreService.findGenresByName(search)),
+      untilDestroyed(this),
+    )
+      .subscribe();
+
+    this.animeForm.controls.studiosSearch.valueChanges.pipe(
+      debounceTime(500),
+      map(search => this.studioService.findStudiosByName(search)),
       untilDestroyed(this),
     )
       .subscribe();
@@ -234,9 +243,36 @@ export class EditorFormComponent {
     this.animeForm.controls.genresSearch.setValue('');
   }
 
-  /** Checks if the search string is empty. */
-  public isNotSearchGenre(): boolean {
-    const search = this.animeForm.controls.genresSearch.value;
+  /** Handlers get more studios. */
+  public onMoreStudios(): void {
+    this.studioService.getMoreStudios();
+  }
+
+  /** Handlers create studio. */
+  public onCreateStudio(): void {
+    const search = this.animeForm.controls.studiosSearch.value;
+    this.studioService.createStudio(search);
+  }
+
+  /**
+   * Handlers remove studio.
+   * @param id Studio id.
+   */
+  public onRemoveStudio(id: number): void {
+    this.studioService.deleteStudio(id);
+    const studioIds = this.animeForm.controls.studios.value;
+    if (studioIds !== null) {
+      this.animeForm.controls.studios.setValue(studioIds.filter(studioId => studioId !== id));
+    }
+
+    this.animeForm.controls.studiosSearch.setValue('');
+  }
+
+  /**
+   * Checks if the search string is empty.
+   * @param search Some search query.
+   */
+  public isNotSearch(search: string | null): boolean {
     return search === null || search.length === 0;
   }
 
@@ -265,6 +301,7 @@ export class EditorFormComponent {
       genres: new FormControl(null, Validators.required),
       studios: new FormControl(null, Validators.required),
       genresSearch: new FormControl(null),
+      studiosSearch: new FormControl(null),
     });
   }
 }
