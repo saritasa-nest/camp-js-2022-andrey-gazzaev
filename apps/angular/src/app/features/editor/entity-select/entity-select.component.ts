@@ -32,7 +32,7 @@ export class EntitySelectComponent {
 
   /** Form control entities. */
   @Input()
-  public formControlEntities = new FormControl<number[]>([]);
+  public formControlEntities = new FormControl<readonly number[]>([]);
 
   /** Form control search entity. */
   @Input()

@@ -42,6 +42,7 @@ export enum Source {
   Unknown = 'Unknown',
 }
 
+export type PutAnime = Omit<AnimeEditor, 'genresData' | 'studiosData' | 'imageTitle'>;
 export type PostAnime = Omit<AnimeEditor, 'id' | 'genresData' | 'studiosData' | 'imageTitle'>;
 export type AnimeInformation = Omit<AnimeEditor, 'id' | 'genresData' | 'studiosData' | 'imageTitle' | 'image' | 'aired'>;
 
@@ -58,10 +59,10 @@ export class AnimeEditor extends AnimeDetails {
   public readonly season: Season;
 
   /** Season. */
-  public readonly studios: number[];
+  public readonly studios: readonly number[];
 
   /** Season. */
-  public readonly genres: number[];
+  public readonly genres: readonly number[];
 
   public constructor(data: InitArgsAnimeEditor) {
     super(data);
