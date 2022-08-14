@@ -6,8 +6,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { DateRange } from '@js-camp/core/models/dateRange';
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
-import { AnimeBase, AnimeType } from '@js-camp/core/models/anime';
-import { AnimeInformation } from '@js-camp/core/models/anime-editor';
+import { AnimeBase, AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
+import { AnimeInformation, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 import { AnimeDetailsDto } from '@js-camp/core/dtos/animeDetails';
@@ -36,11 +36,8 @@ interface PostAnimeData {
     readonly fileName: string;
   };
 
-  /** Aired start date. */
-  readonly airedStartDate: Date | null;
-
-  /** Aired end date. */
-  readonly airedEndDate: Date | null;
+  /** Aired date range. */
+  readonly aired: DateRange;
 }
 
 /** Anime service. */
@@ -94,12 +91,7 @@ export class AnimeService {
    * Creates anime.
    * @param animeData The anime object to be created.
    */
-  public createAnime({ airedStartDate, airedEndDate, posterData, information }: PostAnimeData): Observable<number> {
-    const aired = new DateRange({
-      end: airedEndDate,
-      start: airedStartDate,
-    });
-
+  public createAnime({ aired, posterData, information }: PostAnimeData): Observable<number> {
     return this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName).pipe(
       map(posterUrl => AnimeMapper.toEditorDto({ ...information, aired, image: posterUrl })),
       switchMap(postAnimeDto => this.http.post<AnimeEditorDto>(this.animeListUrl.toString(), postAnimeDto)),
@@ -110,7 +102,32 @@ export class AnimeService {
 
   /** Gets all anime types. */
   // eslint-disable-next-line require-await
-  public async getAnimeTypes(): Promise<string[]> {
+  public async getAnimeTypes(): Promise<AnimeType[]> {
     return Object.values(AnimeType);
   }
+
+  /** Gets all anime statuses. */
+  // eslint-disable-next-line require-await
+  public async getAnimeStatus(): Promise<AnimeStatus[]> {
+    return Object.values(AnimeStatus);
+  }
+
+  /** Gets all anime season. */
+  // eslint-disable-next-line require-await
+  public async getSeason(): Promise<Season[]> {
+    return Object.values(Season);
+  }
+
+  /** Gets all anime rating. */
+  // eslint-disable-next-line require-await
+  public async getRating(): Promise<Rating[]> {
+    return Object.values(Rating);
+  }
+
+  /** Gets all anime source. */
+  // eslint-disable-next-line require-await
+  public async getSource(): Promise<Source[]> {
+    return Object.values(Source);
+  }
+
 }
