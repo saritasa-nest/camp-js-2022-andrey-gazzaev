@@ -339,6 +339,7 @@ export class EditorFormComponent implements OnInit {
   /** Handlers remove current poster. */
   public onRemoveCurrentPoster(): void {
     this.posterPreview$.next(null);
+    this.animeForm.controls.poster.setValue(null);
   }
 
   private setInitValuesToAnimeForm({
