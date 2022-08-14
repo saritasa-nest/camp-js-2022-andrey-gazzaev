@@ -87,9 +87,15 @@
         </div>
 
         <mat-card-actions>
-          <a mat-button type="button" [routerLink]="'/editor/' + anime.id">
-            Edit
-          </a>
+          <a mat-button [routerLink]="'/editor/' + anime.id"> Edit </a>
+          <button
+            type="button"
+            mat-button
+            type="button"
+            (click)="onDeleteAnime(anime.id)"
+          >
+            Delete
+          </button>
         </mat-card-actions>
       </mat-card>
     </div>

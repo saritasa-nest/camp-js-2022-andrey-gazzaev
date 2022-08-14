@@ -9,6 +9,7 @@ import { AnimeRoutingModule } from './anime-routing.module';
 import { DetailsComponent } from './details/details.component';
 import { TableViewComponent } from './table-view/table-view.component';
 import { ImagePopupComponent } from './details/image-popup/image-popup.component';
+import { ActionConfirmationDialogComponent } from './details/action-confirmation-dialog/action-confirmation-dialog.component';
 
 /** Anime module. */
 @NgModule({
@@ -18,11 +19,9 @@ import { ImagePopupComponent } from './details/image-popup/image-popup.component
     DetailsComponent,
     TableViewComponent,
     ImagePopupComponent,
+    ActionConfirmationDialogComponent,
   ],
-  imports: [
-    SharedModule,
-    AnimeRoutingModule,
-  ],
+  imports: [SharedModule, AnimeRoutingModule],
 
   // MatDialogRef and MAT_DIALOG_DATA must be provided for the popup to work.
   providers: [
@@ -30,4 +29,4 @@ import { ImagePopupComponent } from './details/image-popup/image-popup.component
     { provide: MAT_DIALOG_DATA, useValue: {} },
   ],
 })
-export class AnimeModule { }
+export class AnimeModule {}

@@ -1,4 +1,5 @@
-import { map, Observable, switchMap } from 'rxjs';
+import { filter, map, Observable, switchMap } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { Component, TrackByFunction } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -9,13 +10,16 @@ import { Genre } from '@js-camp/core/models/genre';
 import { Studio } from '@js-camp/core/models/studio.dto';
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 
+import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
 
 import { ImagePopupComponent } from './image-popup/image-popup.component';
+import { ActionConfirmationDialogComponent } from './action-confirmation-dialog/action-confirmation-dialog.component';
 
 const PARAM_ID = 'id';
 
 /** Anime details component. */
+@UntilDestroy()
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -32,6 +36,7 @@ export class DetailsComponent {
   public constructor(
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
+    private readonly urlService: UrlService,
     private readonly sanitizer: DomSanitizer,
     private readonly animeService: AnimeService,
   ) {
@@ -81,4 +86,24 @@ export class DetailsComponent {
   public trackItemStudio: TrackByFunction<Studio> = function(_index: number, studio: Studio): number {
     return studio.id;
   };
+
+  /**
+   * Handlers anime delete.
+   * @param id ID anime.
+   */
+  public onDeleteAnime(id: number): void {
+    this.openDialog().pipe(
+      untilDestroyed(this),
+      filter(value => value),
+      switchMap(() => this.animeService.deleteAnime(id)),
+      map(() => this.urlService.navigateToHome()),
+    )
+      .subscribe();
+  }
+
+  private openDialog(): Observable<boolean> {
+    const dialogRef = this.dialog.open(ActionConfirmationDialogComponent);
+
+    return dialogRef.afterClosed();
+  }
 }

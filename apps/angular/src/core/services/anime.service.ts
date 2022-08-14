@@ -1,4 +1,6 @@
-import { map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
+
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -41,6 +43,7 @@ interface PutAnimeData extends PostAnimeData {
 }
 
 /** Anime service. */
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -104,19 +107,19 @@ export class AnimeService {
    */
   public createAnime({ aired, posterData, information }: PostAnimeData): Observable<number> {
     if (posterData.file !== null && posterData.fileName !== null) {
-      return this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName).pipe(
+      const uploadFileAction$ = this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName);
+
+      return uploadFileAction$.pipe(
         map(posterUrl => AnimeMapper.toPostEditorDto({ ...information, aired, image: posterUrl })),
         switchMap(postAnimeDto => this.http.post<AnimeEditorDto>(this.animeListUrl.toString(), postAnimeDto)),
         map(animeEditorDto => animeEditorDto.id),
       );
-    } else if (posterData.url !== null) {
-      const animeDto = AnimeMapper.toPostEditorDto({ ...information, aired, image: posterData.url });
-      return this.http.post<AnimeEditorDto>(this.animeListUrl.toString(), animeDto).pipe(
-        map(animeEditorDto => animeEditorDto.id),
-      );
     }
 
-    return of(-1);
+    const animeDto = AnimeMapper.toPostEditorDto({ ...information, aired, image: '' });
+    return this.http.post<AnimeEditorDto>(this.animeListUrl.toString(), animeDto).pipe(
+      map(animeEditorDto => animeEditorDto.id),
+    );
   }
 
   /**
@@ -127,19 +130,36 @@ export class AnimeService {
     const animePutUrl = new URL(`${id}/`, this.animeListUrl);
 
     if (posterData.file !== null && posterData.fileName !== null) {
-      return this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName).pipe(
-        map(posterUrl => AnimeMapper.toPutEditorDto({ ...information, aired, image: posterUrl, id: 1 })),
+      const uploadFileAction$ = this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName);
+
+      return uploadFileAction$.pipe(
+        map(posterUrl => AnimeMapper.toPutEditorDto({ ...information, aired, image: posterUrl, id })),
         switchMap(putAnimeDto => this.http.put<AnimeEditorDto>(animePutUrl.toString(), putAnimeDto)),
         map(animeEditorDto => animeEditorDto.id),
       );
     } else if (posterData.url !== null) {
-      const animeDto = AnimeMapper.toPostEditorDto({ ...information, aired, image: posterData.url });
+      const animeDto = AnimeMapper.toPutEditorDto({ ...information, aired, image: posterData.url, id });
       return this.http.put<AnimeEditorDto>(animePutUrl.toString(), animeDto).pipe(
         map(animeEditorDto => animeEditorDto.id),
       );
     }
 
-    return of(-1);
+    const animeDto = AnimeMapper.toPutEditorDto({ ...information, aired, image: '', id });
+    return this.http.put<AnimeEditorDto>(animePutUrl.toString(), animeDto).pipe(
+      map(animeEditorDto => animeEditorDto.id),
+    );
+  }
+
+  /**
+   * Deletes anime.
+   * @param id ID anime.
+   */
+  public deleteAnime(id: number): Observable<void> {
+    const animeDeleteUrl = new URL(`${id}/`, this.animeListUrl);
+    return this.http.delete(animeDeleteUrl.toString()).pipe(
+      untilDestroyed(this),
+      map(() => void 0),
+    );
   }
 
   /** Gets all anime types. */
