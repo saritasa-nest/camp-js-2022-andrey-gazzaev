@@ -1,8 +1,8 @@
 <ng-container *ngIf="anime$ | async as anime">
   <app-image-popup></app-image-popup>
-    <section class="details">
-      <div class="details__section">
-        <h2 class="mat-title">Anime details</h2>
+  <section class="details">
+    <div class="details__section">
+      <h2 class="mat-title">Anime details</h2>
       <mat-card class="details__card">
         <div class="details__actions">
           <button
@@ -60,7 +60,12 @@
             <div class="details__field">
               <mat-label>Genres</mat-label>
               <mat-chip-list aria-label="List of genres">
-                <mat-chip *ngFor="let genre of anime.genresData; trackBy: trackItemGenre">
+                <mat-chip
+                  *ngFor="
+                    let genre of anime.genresData;
+                    trackBy: trackItemGenre
+                  "
+                >
                   {{ genre.name }}
                 </mat-chip>
               </mat-chip-list>
@@ -68,14 +73,25 @@
             <div class="details__field">
               <mat-label>Studios</mat-label>
               <mat-chip-list aria-label="List of studios">
-                <mat-chip *ngFor="let studio of anime.studiosData; trackBy: trackItemStudio">
+                <mat-chip
+                  *ngFor="
+                    let studio of anime.studiosData;
+                    trackBy: trackItemStudio
+                  "
+                >
                   {{ studio.name }}
                 </mat-chip>
               </mat-chip-list>
             </div>
           </mat-card-content>
         </div>
+
+        <mat-card-actions>
+          <a mat-button type="button" [routerLink]="'/editor/' + anime.id">
+            Edit
+          </a>
+        </mat-card-actions>
       </mat-card>
-      </div>
-    </section>
+    </div>
+  </section>
 </ng-container>
