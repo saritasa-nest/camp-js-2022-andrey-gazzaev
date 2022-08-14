@@ -336,6 +336,11 @@ export class EditorFormComponent implements OnInit {
     this.animeForm.controls.studiosSearch.setValue('');
   }
 
+  /** Handlers remove current poster. */
+  public onRemoveCurrentPoster(): void {
+    this.posterPreview$.next(null);
+  }
+
   private setInitValuesToAnimeForm({
     trailerYoutubeId,
     titleEnglish,

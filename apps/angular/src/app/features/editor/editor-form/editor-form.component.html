@@ -24,12 +24,17 @@
           </mat-card-subtitle>
 
           <mat-card-content class="base-information">
-            <ng-container *ngIf="this.currentPosterPreview$ | async as posterUrl">
+            <ng-container
+              *ngIf="this.currentPosterPreview$ | async as posterUrl"
+            >
               <img
                 class="base-information__image"
                 [src]="posterUrl"
                 alt="Poster preview"
               />
+              <button type="button" (click)="onRemoveCurrentPoster()">
+                <mat-icon>delete</mat-icon>
+              </button>
             </ng-container>
 
             <mat-form-field appearance="fill">
