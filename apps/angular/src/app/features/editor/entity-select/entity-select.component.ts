@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, TrackByFunction } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 interface Entity {
@@ -75,4 +75,13 @@ export class EntitySelectComponent {
   public isStringEmpty(string: string | null): boolean {
     return string === null || string.length === 0;
   }
+
+  /**
+   * Tracks entity by ID.
+   * @param _index Anime's index into array.
+   * @param entity Object of entity.
+   */
+  public trackItemEntity: TrackByFunction<Entity> = function(_index: number, entity: Entity): number {
+    return entity.id;
+  };
 }

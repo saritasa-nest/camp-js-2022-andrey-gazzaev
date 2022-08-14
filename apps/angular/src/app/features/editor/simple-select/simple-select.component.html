@@ -1,7 +1,10 @@
 <mat-form-field appearance="fill">
   <mat-label>{{ label }}</mat-label>
   <mat-select [formControl]="formControlSelect">
-    <mat-option *ngFor="let item of collection" [value]="item">
+    <mat-option
+      *ngFor="let item of collection; trackBy: trackItemItem"
+      [value]="item"
+    >
       {{ item }}
     </mat-option>
   </mat-select>

@@ -14,7 +14,10 @@
       </button>
     </ng-container>
 
-    <mat-option *ngFor="let entity of entities" [value]="entity.id">
+    <mat-option
+      *ngFor="let entity of entities; trackBy: trackItemEntity"
+      [value]="entity.id"
+    >
       <span>{{ entity.name }}</span>
       <button
         mat-button
