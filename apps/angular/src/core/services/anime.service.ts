@@ -103,13 +103,13 @@ export class AnimeService {
    * @param animeData The anime object to be created.
    */
   public createAnime({ aired, posterData, information }: PostAnimeData): Observable<number> {
-    if (posterData.file !== undefined && posterData.fileName !== undefined) {
+    if (posterData.file !== null && posterData.fileName !== null) {
       return this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName).pipe(
         map(posterUrl => AnimeMapper.toPostEditorDto({ ...information, aired, image: posterUrl })),
         switchMap(postAnimeDto => this.http.post<AnimeEditorDto>(this.animeListUrl.toString(), postAnimeDto)),
         map(animeEditorDto => animeEditorDto.id),
       );
-    } else if (posterData.url !== undefined) {
+    } else if (posterData.url !== null) {
       const animeDto = AnimeMapper.toPostEditorDto({ ...information, aired, image: posterData.url });
       return this.http.post<AnimeEditorDto>(this.animeListUrl.toString(), animeDto).pipe(
         map(animeEditorDto => animeEditorDto.id),
@@ -126,15 +126,15 @@ export class AnimeService {
   public updateAnime({ id, aired, posterData, information }: PutAnimeData): Observable<number> {
     const animePutUrl = new URL(`${id}/`, this.animeListUrl);
 
-    if (posterData.file !== undefined && posterData.fileName !== undefined) {
+    if (posterData.file !== null && posterData.fileName !== null) {
       return this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName).pipe(
         map(posterUrl => AnimeMapper.toPutEditorDto({ ...information, aired, image: posterUrl, id: 1 })),
         switchMap(putAnimeDto => this.http.put<AnimeEditorDto>(animePutUrl.toString(), putAnimeDto)),
         map(animeEditorDto => animeEditorDto.id),
       );
-    } else if (posterData.url !== undefined) {
+    } else if (posterData.url !== null) {
       const animeDto = AnimeMapper.toPostEditorDto({ ...information, aired, image: posterData.url });
-      return this.http.post<AnimeEditorDto>(animePutUrl.toString(), animeDto).pipe(
+      return this.http.put<AnimeEditorDto>(animePutUrl.toString(), animeDto).pipe(
         map(animeEditorDto => animeEditorDto.id),
       );
     }

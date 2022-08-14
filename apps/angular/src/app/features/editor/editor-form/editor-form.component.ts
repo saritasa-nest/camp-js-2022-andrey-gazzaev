@@ -206,7 +206,7 @@ export class EditorFormComponent implements OnInit {
     }
 
     const {
-      poster: image,
+      poster,
       aired,
       genres,
       isAiring,
@@ -223,7 +223,7 @@ export class EditorFormComponent implements OnInit {
     } = this.animeForm.getRawValue();
 
     const requiredField = {
-      rating, season, source, status, synopsis, type, studios, genres, isAiring, image,
+      rating, season, source, status, synopsis, type, studios, genres, isAiring,
     };
 
     if (!isFieldsDefined(requiredField)) {
@@ -231,8 +231,9 @@ export class EditorFormComponent implements OnInit {
     }
 
     const posterData: PosterData = {
-      file: requiredField.image,
-      fileName: requiredField.image.name,
+      file: poster,
+      fileName: poster?.name ?? '',
+      url: null,
     };
 
     const amineInformation = {
@@ -259,7 +260,7 @@ export class EditorFormComponent implements OnInit {
           information: amineInformation,
           posterData: {
             ...posterData,
-            url: posterUrl ?? '',
+            url: posterUrl,
           },
           aired: aired as DateRange,
         })),
