@@ -188,6 +188,8 @@ export class EditorFormComponent implements OnInit {
         tap(animeEditor => {
           this.isEditAnime = true;
           this.setInitValuesToAnimeForm(animeEditor);
+          this.genreService.addGenres(animeEditor.genresData);
+          this.studioService.addStudios(animeEditor.studiosData);
         }),
         map(animeEditor => animeEditor.image),
         map(posterUrl => this.posterPreview$.next(posterUrl)),

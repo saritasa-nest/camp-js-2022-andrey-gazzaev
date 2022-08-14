@@ -1,5 +1,5 @@
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BehaviorSubject, filter, first, map, merge, Observable, ReplaySubject, scan, Subject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, filter, first, map, merge, Observable, ReplaySubject, scan, switchMap, tap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -22,7 +22,7 @@ export class StudioService {
 
   private readonly nextStudiosUrl$ = new ReplaySubject<string | null>(1);
 
-  private readonly nextStudios$: Subject<readonly Studio[]> = new Subject();
+  private readonly nextStudios$ = new ReplaySubject<readonly Studio[]>(1);
 
   private readonly isSearch$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
@@ -133,5 +133,13 @@ export class StudioService {
         untilDestroyed(this),
       )
       .subscribe();
+  }
+
+  /**
+   * Adds studios to current studios.
+   * @param studios Studios.
+   */
+  public addStudios(studios: readonly Studio[]): void {
+    this.nextStudios$.next(studios);
   }
 }

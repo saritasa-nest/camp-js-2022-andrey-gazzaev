@@ -1,5 +1,5 @@
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BehaviorSubject, filter, first, map, merge, Observable, ReplaySubject, scan, Subject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, filter, first, map, merge, Observable, ReplaySubject, scan, switchMap, tap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -22,7 +22,7 @@ export class GenreService {
 
   private readonly nextGenresUrl$ = new ReplaySubject<string | null>(1);
 
-  private readonly nextGenres$: Subject<readonly Genre[]> = new Subject();
+  private readonly nextGenres$ = new ReplaySubject<readonly Genre[]>(1);
 
   private readonly isSearch$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
@@ -135,4 +135,11 @@ export class GenreService {
       .subscribe();
   }
 
+  /**
+   * Adds genres to current genres.
+   * @param genres Genres.
+   */
+  public addGenres(genres: readonly Genre[]): void {
+    this.nextGenres$.next(genres);
+  }
 }
