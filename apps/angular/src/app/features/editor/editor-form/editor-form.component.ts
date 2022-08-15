@@ -120,16 +120,13 @@ export class EditorFormComponent implements OnInit {
   /** Information about anime.  */
   public readonly statusInformation$: Observable<StatusInformation>;
 
-  private readonly posterPreview$ = new ReplaySubject<string | null>(1);
-
   /** URL to anime poster preview. */
-  public readonly currentPosterPreview$: Observable<
-    string |
-    null
-  >;
+  public readonly currentPosterPreview$: Observable<string | null>;
 
   /** Checks if the editor is open in anime editing mode. */
   public isEditAnime = false;
+
+  private readonly posterPreview$ = new ReplaySubject<string | null>(1);
 
   public constructor(
     private readonly route: ActivatedRoute,
@@ -149,25 +146,9 @@ export class EditorFormComponent implements OnInit {
     this.currentPosterPreview$ = merge(
       this.posterPreview$,
       posterChange$,
-    ).pipe(
-      map(poster => poster),
     );
 
-    this.statusInformation$ = combineLatest([
-      this.getTypes(),
-      this.getStatuses(),
-      this.getSeasons(),
-      this.getRatings(),
-      this.getSource(),
-    ]).pipe(
-      map(([types, statuses, seasons, ratings, sources]) => ({
-        types,
-        statuses,
-        seasons,
-        ratings,
-        sources,
-      })),
-    );
+    this.statusInformation$ = this.getStatusInformation();
   }
 
   /** @inheritdoc */
@@ -370,24 +351,22 @@ export class EditorFormComponent implements OnInit {
     });
   }
 
-  private getTypes(): Observable<AnimeType[]> {
-    return defer(() => this.animeService.getAnimeTypes());
-  }
-
-  private getStatuses(): Observable<AnimeStatus[]> {
-    return defer(() => this.animeService.getAnimeStatus());
-  }
-
-  private getRatings(): Observable<Rating[]> {
-    return defer(() => this.animeService.getRating());
-  }
-
-  private getSource(): Observable<Source[]> {
-    return defer(() => this.animeService.getSource());
-  }
-
-  private getSeasons(): Observable<Season[]> {
-    return defer(() => this.animeService.getSeason());
+  private getStatusInformation(): Observable<StatusInformation> {
+    return combineLatest([
+      defer(() => this.animeService.getAnimeTypes()),
+      defer(() => this.animeService.getAnimeStatus()),
+      defer(() => this.animeService.getSeason()),
+      defer(() => this.animeService.getRating()),
+      defer(() => this.animeService.getSource()),
+    ]).pipe(
+      map(([types, statuses, seasons, ratings, sources]) => ({
+        types,
+        statuses,
+        seasons,
+        ratings,
+        sources,
+      })),
+    );
   }
 
   private previewPoster(posterFile: File): Observable<

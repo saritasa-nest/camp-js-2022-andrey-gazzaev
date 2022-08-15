@@ -66,17 +66,9 @@
                   formControlName="trailerYoutubeId"
                 />
                 <mat-error
-                  *ngIf="
-                    animeForm.controls.trailerYoutubeId.hasError(
-                      'trailerYoutubeIdServe'
-                    )
-                  "
+                  *ngIf="animeForm.controls.trailerYoutubeId.hasError('trailerYoutubeIdServe')"
                 >
-                  {{
-                    animeForm.controls.trailerYoutubeId.getError(
-                      "trailerYoutubeIdServe"
-                    )
-                  }}
+                  {{ animeForm.controls.trailerYoutubeId.getError("trailerYoutubeIdServe") }}
                 </mat-error>
               </mat-form-field>
 
@@ -88,17 +80,9 @@
                   formControlName="titleEnglish"
                 />
                 <mat-error
-                  *ngIf="
-                    animeForm.controls.titleEnglish.hasError(
-                      'titleEnglishServe'
-                    )
-                  "
+                  *ngIf="animeForm.controls.titleEnglish.hasError('titleEnglishServe')"
                 >
-                  {{
-                    animeForm.controls.titleEnglish.getError(
-                      "titleEnglishServe"
-                    )
-                  }}
+                  {{ animeForm.controls.titleEnglish.getError("titleEnglishServe") }}
                 </mat-error>
               </mat-form-field>
 
@@ -110,17 +94,9 @@
                   formControlName="titleJapanese"
                 />
                 <mat-error
-                  *ngIf="
-                    animeForm.controls.titleJapanese.hasError(
-                      'titleJapaneseServe'
-                    )
-                  "
+                  *ngIf="animeForm.controls.titleJapanese.hasError('titleJapaneseServe')"
                 >
-                  {{
-                    animeForm.controls.titleJapanese.getError(
-                      "titleJapaneseServe"
-                    )
-                  }}
+                  {{ animeForm.controls.titleJapanese.getError("titleJapaneseServe") }}
                 </mat-error>
               </mat-form-field>
             </div>
@@ -208,6 +184,7 @@
                 ></mat-datepicker-toggle>
                 <mat-date-range-picker #airedPicker></mat-date-range-picker>
               </mat-form-field>
+              
               <mat-slide-toggle
                 class="status-information__field"
                 formControlName="isAiring"
