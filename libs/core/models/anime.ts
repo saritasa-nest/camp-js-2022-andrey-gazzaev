@@ -5,10 +5,10 @@ import { Immerable, OmitImmerable } from './immerable';
 export enum AnimeType {
   Tv = 'TV',
   Ova = 'OVA',
-  Movie = 'MOVIE',
-  Special = 'SPECIAL',
+  Movie = 'Movie',
+  Special = 'Special',
   Ona = 'ONA',
-  Music = 'MUSIC',
+  Music = 'Music',
 }
 
 /** Possible options anime status. */
@@ -16,6 +16,24 @@ export enum AnimeStatus {
   Airing = 'Airing',
   Finished = 'Finished',
   NotYetAired = 'Not yet aired',
+}
+
+/** Sort settings. */
+export interface Sort<TOrder, TField> {
+
+  /** Ordering direction. */
+  readonly direction: TOrder;
+
+  /** Field by sort. */
+  readonly field: TField;
+}
+
+/** Fields by which you can sort. */
+export enum SortField {
+  TitleEnglish = 'english',
+  TitleJapanese = 'japanese',
+  Aired = 'aired',
+  Status = 'status',
 }
 
 /** Anime. */

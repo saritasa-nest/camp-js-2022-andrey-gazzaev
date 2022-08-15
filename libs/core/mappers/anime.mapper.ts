@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AnimeDetailsDto } from '../dtos/animeDetails';
 import { AnimeDetails } from '../models/animeDetails';
+import { AnimeBaseDto, AnimeStatusDto, AnimeTypeDto } from '../dtos/anime.dto';
 import { AnimeBase, AnimeStatus, AnimeType } from '../models/anime';
 import { isDefined } from '../utils/guards/general.guard';
 import { AnimeBaseDto, StatusDto, TypeDto } from '../dtos/anime.dto';
@@ -11,34 +12,35 @@ import { GenreMapper } from './genre.mapper';
 import { StudioMapper } from './studio.mapper';
 import { DateRangeMapper } from './dateRange.mapper';
 
-const ANIME_STATUS_FROM_DTO_MAP: Readonly<Record<StatusDto, AnimeStatus>> = {
-  [StatusDto.Airing]: AnimeStatus.Airing,
-  [StatusDto.Finished]: AnimeStatus.Finished,
-  [StatusDto.NotYetAired]: AnimeStatus.NotYetAired,
+export const ANIME_STATUS_FROM_DTO_MAP: Readonly<Record<AnimeStatusDto, AnimeStatus>> = {
+  [AnimeStatusDto.Airing]: AnimeStatus.Airing,
+  [AnimeStatusDto.Finished]: AnimeStatus.Finished,
+  [AnimeStatusDto.NotYetAired]: AnimeStatus.NotYetAired,
 };
 
-const ANIME_STATUS_TO_DTO_MAP: Readonly<Record<AnimeStatus, StatusDto>> = {
+export const ANIME_TYPE_FROM_DTO_MAP: Readonly<Record<AnimeTypeDto, AnimeType>> = {
+  [AnimeTypeDto.Movie]: AnimeType.Movie,
+  [AnimeTypeDto.Music]: AnimeType.Music,
+  [AnimeTypeDto.Ona]: AnimeType.Ona,
+  [AnimeTypeDto.Ova]: AnimeType.Ova,
+  [AnimeTypeDto.Special]: AnimeType.Special,
+  [AnimeTypeDto.Tv]: AnimeType.Tv,
+};
+
+export const ANIME_STATUS_TO_DTO_MAP: Readonly<Record<AnimeStatus, StatusDto>> = {
   [AnimeStatus.Airing]: StatusDto.Airing,
   [AnimeStatus.Finished]: StatusDto.Finished,
   [AnimeStatus.NotYetAired]: StatusDto.NotYetAired,
 };
 
-const ANIME_TYPE_TO_DTO_MAP: Readonly<Record<AnimeType, TypeDto>> = {
-  [AnimeType.Movie]: TypeDto.Movie,
-  [AnimeType.Music]: TypeDto.Music,
-  [AnimeType.Ona]: TypeDto.Ona,
-  [AnimeType.Ova]: TypeDto.Ova,
-  [AnimeType.Special]: TypeDto.Special,
-  [AnimeType.Tv]: TypeDto.Tv,
-};
 
-const ANIME_TYPE_FROM_DTO_MAP: Readonly<Record<TypeDto, AnimeType>> = {
-  [TypeDto.Movie]: AnimeType.Movie,
-  [TypeDto.Music]: AnimeType.Music,
-  [TypeDto.Ona]: AnimeType.Ona,
-  [TypeDto.Ova]: AnimeType.Ova,
-  [TypeDto.Special]: AnimeType.Special,
-  [TypeDto.Tv]: AnimeType.Tv,
+const ANIME_TYPE_TO_DTO_MAP: Readonly<Record<AnimeType, AnimeTypeDto>> = {
+  [AnimeType.Movie]: AnimeTypeDto.Movie,
+  [AnimeType.Music]: AnimeTypeDto.Music,
+  [AnimeType.Ona]: AnimeTypeDto.Ona,
+  [AnimeType.Ova]: AnimeTypeDto.Ova,
+  [AnimeType.Special]: AnimeTypeDto.Special,
+  [AnimeType.Tv]: AnimeTypeDto.Tv,
 };
 
 const ANIME_SOURCE_TO_DTO_MAP: Readonly<Record<Source, SourceDto>> = {
