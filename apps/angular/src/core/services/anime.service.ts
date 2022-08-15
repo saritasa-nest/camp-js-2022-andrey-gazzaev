@@ -1,10 +1,10 @@
-import { map, Observable, of } from 'rxjs';
-
+import { map, Observable, of, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
+import { AppError } from '@js-camp/core/models/app-error';
 import { DateRange } from '@js-camp/core/models/dateRange';
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
@@ -17,11 +17,12 @@ import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { AnimeBase, AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
 import { AnimeEditor, AnimeInformation, PostAnime, PutAnime, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 
+import { catchHttpErrorResponse } from '../utils/rxjs/catch-http-error';
 import { AnimeListQueryParams } from '../models/anime-list-query-params';
 
+import { S3directService } from './s3direct.service';
 import { AppConfigService } from './app-config.service';
 import { AnimeListOptionsMapper } from './mappers/anime-list-options.mapper';
-import { S3directService } from './s3direct.service';
 
 interface AnimeData {
 
@@ -111,14 +112,15 @@ export class AnimeService {
       const putAnimeDto = AnimeMapper.toPutEditorDto(anime);
       return this.http.put<AnimeEditorDto>(animePutUrl.toString(), putAnimeDto).pipe(
         map(animeEditorDto => animeEditorDto.id),
+        catchHttpErrorResponse(error => throwError(() => this.createError(error))),
       );
     }
 
     const animeDto = AnimeMapper.toPostEditorDto(anime);
     return this.http.post<AnimeEditorDto>(this.animeListUrl.toString(), animeDto).pipe(
       map(animeEditorDto => animeEditorDto.id),
+      catchHttpErrorResponse(error => throwError(() => this.createError(error))),
     );
-
   }
 
   /**
@@ -176,6 +178,17 @@ export class AnimeService {
 
   private isPutAnime(anime: PostAnime | PutAnime): anime is PutAnime {
     return (anime as PutAnime).id !== undefined;
+  }
+
+  /**
+   * Instantiates httpError with T errors.
+   * @param error HTTP error response.
+   */
+  private createError<T>(error: HttpErrorResponse): AppError<T> {
+    return new AppError<T>(
+      error.error.data,
+      error.error.detail,
+    );
   }
 
 }

@@ -45,6 +45,9 @@
               >
                 <mat-icon ngxMatFileInputIcon>folder</mat-icon>
               </ngx-mat-file-input>
+              <mat-error *ngIf="animeForm.controls.image.hasError('imageServe')">
+                {{ animeForm.controls.image.getError("imageServe") }}
+              </mat-error>
             </mat-form-field>
 
             <div class="base-information__input-fields">
@@ -55,6 +58,9 @@
                   placeholder="1dy2zPPrKD0"
                   formControlName="trailerYoutubeId"
                 />
+                <mat-error *ngIf="animeForm.controls.trailerYoutubeId.hasError('trailerYoutubeIdServe')">
+                  {{ animeForm.controls.trailerYoutubeId.getError("trailerYoutubeIdServe") }}
+                </mat-error>
               </mat-form-field>
 
               <mat-form-field class="base-information__field" appearance="fill">
@@ -64,6 +70,9 @@
                   placeholder="Naruto Shippuden"
                   formControlName="titleEnglish"
                 />
+                <mat-error *ngIf="animeForm.controls.titleEnglish.hasError('titleEnglishServe')">
+                  {{ animeForm.controls.titleEnglish.getError("titleEnglishServe") }}
+                </mat-error>
               </mat-form-field>
 
               <mat-form-field class="base-information__field" appearance="fill">
@@ -73,6 +82,9 @@
                   placeholder="ナルト- 疾風伝"
                   formControlName="titleJapanese"
                 />
+                <mat-error *ngIf="animeForm.controls.titleJapanese.hasError('titleJapaneseServe')">
+                  {{ animeForm.controls.titleJapanese.getError("titleJapaneseServe") }}
+                </mat-error>
               </mat-form-field>
             </div>
 
