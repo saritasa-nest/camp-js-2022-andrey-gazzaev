@@ -24,13 +24,13 @@ export interface AnimeBaseDto {
   readonly id: number;
 
   /** Url address image. */
-  readonly image: string;
+  readonly image: string | null;
 
   /** Title in english. */
-  readonly title_eng: string | null;
+  readonly title_eng: string;
 
   /** Title in Japanese. */
-  readonly title_jpn: string | null;
+  readonly title_jpn: string;
 
   /** Release and end dates. */
   readonly aired: DateRangeDto;

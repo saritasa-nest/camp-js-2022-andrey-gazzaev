@@ -1,4 +1,4 @@
-import { map, Observable, switchMap } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -8,7 +8,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { DateRange } from '@js-camp/core/models/dateRange';
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
-import { PosterData } from '@js-camp/core/models/poster-data';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 import { AnimeDetailsDto } from '@js-camp/core/dtos/animeDetails';
@@ -16,7 +15,7 @@ import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeEditorDto } from '@js-camp/core/dtos/anime-editor.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { AnimeBase, AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
-import { AnimeEditor, AnimeInformation, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
+import { AnimeEditor, AnimeInformation, PostAnime, PutAnime, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 
 import { AnimeListQueryParams } from '../models/anime-list-query-params';
 
@@ -24,22 +23,19 @@ import { AppConfigService } from './app-config.service';
 import { AnimeListOptionsMapper } from './mappers/anime-list-options.mapper';
 import { S3directService } from './s3direct.service';
 
-interface PostAnimeData {
+interface AnimeData {
+
+  /** ID. */
+  readonly id?: number;
 
   /** Information about anime. */
   readonly information: AnimeInformation;
 
   /** Anime poster. */
-  readonly posterData: PosterData;
+  readonly posterUrl: string | null;
 
   /** Aired date range. */
   readonly aired: DateRange;
-}
-
-interface PutAnimeData extends PostAnimeData {
-
-  /** ID. */
-  readonly id: number;
 }
 
 /** Anime service. */
@@ -105,49 +101,35 @@ export class AnimeService {
    * Creates anime.
    * @param animeData The anime object to be created.
    */
-  public createAnime({ aired, posterData, information }: PostAnimeData): Observable<number> {
-    if (posterData.file !== null && posterData.fileName !== null) {
-      const uploadFileAction$ = this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName);
+  public saveAnime({ id, aired, posterUrl, information }: AnimeData): Observable<number> {
+    const anime: PostAnime | PutAnime = posterUrl !== null && posterUrl !== '' ?
+      { ...information, aired, image: posterUrl, id } :
+      { ...information, aired, image: null, id };
 
-      return uploadFileAction$.pipe(
-        map(posterUrl => AnimeMapper.toPostEditorDto({ ...information, aired, image: posterUrl })),
-        switchMap(postAnimeDto => this.http.post<AnimeEditorDto>(this.animeListUrl.toString(), postAnimeDto)),
+    if (this.isPutAnime(anime)) {
+      const animePutUrl = new URL(`${id}/`, this.animeListUrl);
+      const putAnimeDto = AnimeMapper.toPutEditorDto(anime);
+      return this.http.put<AnimeEditorDto>(animePutUrl.toString(), putAnimeDto).pipe(
         map(animeEditorDto => animeEditorDto.id),
       );
     }
 
-    const animeDto = AnimeMapper.toPostEditorDto({ ...information, aired, image: '' });
+    const animeDto = AnimeMapper.toPostEditorDto(anime);
     return this.http.post<AnimeEditorDto>(this.animeListUrl.toString(), animeDto).pipe(
       map(animeEditorDto => animeEditorDto.id),
     );
+
   }
 
   /**
-   * Updates anime.
-   * @param animeData The anime object to be updated.
+   * Saves file to s3.
+   * @param file Poster file.
    */
-  public updateAnime({ id, aired, posterData, information }: PutAnimeData): Observable<number> {
-    const animePutUrl = new URL(`${id}/`, this.animeListUrl);
-
-    if (posterData.file !== null && posterData.fileName !== null) {
-      const uploadFileAction$ = this.s3directService.uploadAnimePoster(posterData.file, posterData.fileName);
-
-      return uploadFileAction$.pipe(
-        map(posterUrl => AnimeMapper.toPutEditorDto({ ...information, aired, image: posterUrl, id })),
-        switchMap(putAnimeDto => this.http.put<AnimeEditorDto>(animePutUrl.toString(), putAnimeDto)),
-        map(animeEditorDto => animeEditorDto.id),
-      );
-    } else if (posterData.url !== null) {
-      const animeDto = AnimeMapper.toPutEditorDto({ ...information, aired, image: posterData.url, id });
-      return this.http.put<AnimeEditorDto>(animePutUrl.toString(), animeDto).pipe(
-        map(animeEditorDto => animeEditorDto.id),
-      );
+  public savePoster(file: File | null): Observable<string | null> {
+    if (file === null) {
+      return of(null);
     }
-
-    const animeDto = AnimeMapper.toPutEditorDto({ ...information, aired, image: '', id });
-    return this.http.put<AnimeEditorDto>(animePutUrl.toString(), animeDto).pipe(
-      map(animeEditorDto => animeEditorDto.id),
-    );
+    return this.s3directService.uploadAnimePoster(file, file.name);
   }
 
   /**
@@ -190,6 +172,10 @@ export class AnimeService {
   // eslint-disable-next-line require-await
   public async getSource(): Promise<Source[]> {
     return Object.values(Source);
+  }
+
+  private isPutAnime(anime: PostAnime | PutAnime): anime is PutAnime {
+    return (anime as PutAnime).id !== undefined;
   }
 
 }

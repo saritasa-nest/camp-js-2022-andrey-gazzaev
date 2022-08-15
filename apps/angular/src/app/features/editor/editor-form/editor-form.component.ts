@@ -1,4 +1,4 @@
-import { catchError, combineLatest, debounceTime, defer, filter, map, merge, Observable, of, ReplaySubject, Subscriber, switchMap, tap } from 'rxjs';
+import { catchError, combineLatest, debounceTime, defer, filter, iif, map, merge, Observable, of, ReplaySubject, Subscriber, switchMap, tap } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute } from '@angular/router';
@@ -6,7 +6,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { DateRange } from '@js-camp/core/models/dateRange';
-import { PosterData } from '@js-camp/core/models/poster-data';
 import { AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
 import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
 import { AnimeEditor, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
@@ -28,7 +27,7 @@ interface DateRangeControls {
 interface AnimeFormControls {
 
   /** Anime poster control. */
-  readonly poster: FormControl<File | null>;
+  readonly image: FormControl<File | null>;
 
   /** Trailer youtube id control. */
   readonly trailerYoutubeId: FormControl<string | null>;
@@ -121,7 +120,6 @@ export class EditorFormComponent implements OnInit {
   /** URL to anime poster preview. */
   public readonly currentPosterPreview$: Observable<
     string |
-    ArrayBuffer |
     null
   >;
 
@@ -137,7 +135,7 @@ export class EditorFormComponent implements OnInit {
   ) {
     this.animeForm = this.initAnimeForm();
 
-    const posterChange$ = this.animeForm.controls.poster.valueChanges.pipe(
+    const posterChange$ = this.animeForm.controls.image.valueChanges.pipe(
       filter((file): file is NonNullable<File> => file !== null),
       switchMap(file => this.previewPoster(file)),
     );
@@ -196,6 +194,8 @@ export class EditorFormComponent implements OnInit {
         untilDestroyed(this),
       )
         .subscribe();
+    } else {
+      this.posterPreview$.next(null);
     }
 
   }
@@ -208,7 +208,7 @@ export class EditorFormComponent implements OnInit {
     }
 
     const {
-      poster,
+      image,
       aired,
       genres,
       isAiring,
@@ -224,56 +224,40 @@ export class EditorFormComponent implements OnInit {
       type,
     } = this.animeForm.getRawValue();
 
-    const requiredField = {
-      rating, season, source, status, synopsis, type, studios, genres, isAiring,
+    const requiredFields = {
+      rating, season, source, status, synopsis, type, studios, genres, isAiring, titleEnglish, titleJapanese,
     };
 
-    if (!isFieldsDefined(requiredField)) {
+    if (!isFieldsDefined(requiredFields)) {
       return;
     }
 
-    const posterData: PosterData = {
-      file: poster,
-      fileName: poster?.name ?? '',
-      url: null,
-    };
-
     const amineInformation = {
-      isAiring: requiredField.isAiring,
-      rating: requiredField.rating,
-      season: requiredField.season,
-      source: requiredField.source,
-      status: requiredField.status,
-      synopsis: requiredField.synopsis,
-      titleEnglish,
-      titleJapanese,
+      ...requiredFields,
       trailerYoutubeId,
-      type: requiredField.type,
-      genres: requiredField.genres,
-      studios: requiredField.studios,
     };
 
-    let animeActions$: Observable<number>;
-    if (this.isEditAnime) {
-      const animeId = this.route.snapshot.params['id'];
-      animeActions$ = this.posterPreview$.pipe(
-        switchMap(posterUrl => this.animeService.updateAnime({
-          id: animeId,
-          information: amineInformation,
-          posterData: {
-            ...posterData,
-            url: posterUrl,
-          },
-          aired: aired as DateRange,
-        })),
-      );
-    } else {
-      animeActions$ = this.animeService.createAnime({
+    const animeId = this.route.snapshot.params['id'];
+
+    const posterFileAction$ = this.animeService.savePoster(image).pipe(
+      switchMap(posterUrl => this.animeService.saveAnime({
+        id: animeId,
         information: amineInformation,
-        posterData,
+        posterUrl,
         aired: aired as DateRange,
-      });
-    }
+      })),
+    );
+
+    const posterUrlAction$ = this.currentPosterPreview$.pipe(
+      switchMap(posterUrl => this.animeService.saveAnime({
+        id: animeId,
+        information: amineInformation,
+        posterUrl,
+        aired: aired as DateRange,
+      })),
+    );
+
+    const animeActions$ = iif(() => image !== null, posterFileAction$, posterUrlAction$);
 
     animeActions$.pipe(
       map(id => this.urlService.navigateToDetails(id)),
@@ -284,6 +268,7 @@ export class EditorFormComponent implements OnInit {
       }),
     )
       .subscribe();
+
   }
 
   /** Handlers get more genres. */
@@ -339,7 +324,7 @@ export class EditorFormComponent implements OnInit {
   /** Handlers remove current poster. */
   public onRemoveCurrentPoster(): void {
     this.posterPreview$.next(null);
-    this.animeForm.controls.poster.setValue(null);
+    this.animeForm.controls.image.setValue(null);
   }
 
   private setInitValuesToAnimeForm({
@@ -358,7 +343,7 @@ export class EditorFormComponent implements OnInit {
     aired,
   }: AnimeEditor): void {
     this.animeForm.setValue({
-      poster: null,
+      image: null,
       trailerYoutubeId,
       titleEnglish,
       titleJapanese,
@@ -379,10 +364,10 @@ export class EditorFormComponent implements OnInit {
 
   private initAnimeForm(): FormGroup<AnimeFormControls> {
     return new FormGroup<AnimeFormControls>({
-      poster: new FormControl(null),
+      image: new FormControl(null),
       trailerYoutubeId: new FormControl(null),
-      titleEnglish: new FormControl(null),
-      titleJapanese: new FormControl(null),
+      titleEnglish: new FormControl(null, Validators.required),
+      titleJapanese: new FormControl(null, Validators.required),
       synopsis: new FormControl(null, Validators.required),
       type: new FormControl(null, Validators.required),
       status: new FormControl(null, Validators.required),
@@ -423,16 +408,16 @@ export class EditorFormComponent implements OnInit {
 
   private previewPoster(posterFile: File): Observable<
     string |
-    ArrayBuffer |
     null
   > {
     const reader = new FileReader();
 
     reader.readAsDataURL(posterFile);
 
-    return new Observable((observer: Subscriber<string | ArrayBuffer | null>): void => {
+    return new Observable((observer: Subscriber<string | null>): void => {
       reader.onload = () => {
-        observer.next(reader.result);
+        const result = reader.result instanceof ArrayBuffer ? null : reader.result;
+        observer.next(result);
         observer.complete();
       };
     });

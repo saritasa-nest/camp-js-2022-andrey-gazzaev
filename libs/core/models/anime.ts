@@ -25,13 +25,13 @@ export class AnimeBase extends Immerable {
   public readonly id: number;
 
   /** Url address image. */
-  public readonly image: string;
+  public readonly image: string | null;
 
   /** Title in English. */
-  public readonly titleEnglish: string | null;
+  public readonly titleEnglish: string;
 
   /** Title in Japanese. */
-  public readonly titleJapanese: string | null;
+  public readonly titleJapanese: string;
 
   /** Title for alt image. */
   public readonly imageTitle: string;
