@@ -25,6 +25,8 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
   exports: [RouterModule],
+
+  // This strategy is used since the application is deployed to github.
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 export class AppRoutingModule { }

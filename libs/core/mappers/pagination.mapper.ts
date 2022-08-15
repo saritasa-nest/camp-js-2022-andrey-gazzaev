@@ -22,7 +22,7 @@ export namespace PaginationMapper {
     }).filter((result): result is Model => result !== null);
 
     return new Pagination<Model>({
-      count: dto.count,
+      totalEntriesCount: dto.count,
       next: dto.next,
       previous: dto.previous,
       results,
