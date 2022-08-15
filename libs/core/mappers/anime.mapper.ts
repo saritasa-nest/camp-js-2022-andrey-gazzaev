@@ -4,7 +4,6 @@ import { AnimeDetails } from '../models/animeDetails';
 import { AnimeBaseDto, AnimeStatusDto, AnimeTypeDto } from '../dtos/anime.dto';
 import { AnimeBase, AnimeStatus, AnimeType } from '../models/anime';
 import { isDefined } from '../utils/guards/general.guard';
-import { AnimeBaseDto, StatusDto, TypeDto } from '../dtos/anime.dto';
 import { AnimeEditor, PostAnime, PutAnime, Rating, Season, Source } from '../models/anime-editor';
 import { AnimeEditorDto, PostAnimeDto, PutAnimeDto, RatingDto, SeasonDto, SourceDto } from '../dtos/anime-editor.dto';
 
@@ -27,12 +26,11 @@ export const ANIME_TYPE_FROM_DTO_MAP: Readonly<Record<AnimeTypeDto, AnimeType>> 
   [AnimeTypeDto.Tv]: AnimeType.Tv,
 };
 
-export const ANIME_STATUS_TO_DTO_MAP: Readonly<Record<AnimeStatus, StatusDto>> = {
-  [AnimeStatus.Airing]: StatusDto.Airing,
-  [AnimeStatus.Finished]: StatusDto.Finished,
-  [AnimeStatus.NotYetAired]: StatusDto.NotYetAired,
+export const ANIME_STATUS_TO_DTO_MAP: Readonly<Record<AnimeStatus, AnimeStatusDto>> = {
+  [AnimeStatus.Airing]: AnimeStatusDto.Airing,
+  [AnimeStatus.Finished]: AnimeStatusDto.Finished,
+  [AnimeStatus.NotYetAired]: AnimeStatusDto.NotYetAired,
 };
-
 
 const ANIME_TYPE_TO_DTO_MAP: Readonly<Record<AnimeType, AnimeTypeDto>> = {
   [AnimeType.Movie]: AnimeTypeDto.Movie,
