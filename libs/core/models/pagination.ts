@@ -4,7 +4,7 @@ import { Immerable, OmitImmerable } from './immerable';
 export class Pagination<T> extends Immerable {
 
   /** Total count of items. */
-  public readonly count: number;
+  public readonly totalEntriesCount: number;
 
   /** Next page of items. */
   public readonly next: string | null;
@@ -17,7 +17,7 @@ export class Pagination<T> extends Immerable {
 
   public constructor(data: InitArgsPagination<T>) {
     super();
-    this.count = data.count;
+    this.totalEntriesCount = data.totalEntriesCount;
     this.previous = data.previous;
     this.next = data.next;
     this.results = data.results;
