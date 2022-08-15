@@ -1,11 +1,13 @@
-import { catchError, combineLatest, debounceTime, defer, filter, iif, map, merge, Observable, of, ReplaySubject, Subscriber, switchMap, tap } from 'rxjs';
+import { catchError, combineLatest, debounceTime, defer, filter, iif, map, merge, Observable, of, ReplaySubject, Subscriber, switchMap, tap, throwError } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute } from '@angular/router';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { AppError } from '@js-camp/core/models/app-error';
 import { DateRange } from '@js-camp/core/models/dateRange';
+import { FormError } from '@js-camp/core/models/form-error';
 import { AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
 import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
 import { AnimeEditor, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
@@ -14,6 +16,7 @@ import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
 import { GenreService } from '../../../../core/services/genre.service';
 import { StudioService } from '../../../../core/services/studio.service';
+import { showErrorsFormFields } from '../../../../core/utils/show-errors';
 
 interface DateRangeControls {
 
@@ -93,6 +96,8 @@ interface StatusInformation {
   readonly sources: readonly Source[];
 }
 
+const SEARCH_DEBOUNCE_TIME = 500;
+
 /** Editor component. */
 @UntilDestroy()
 @Component({
@@ -132,6 +137,7 @@ export class EditorFormComponent implements OnInit {
     private readonly animeService: AnimeService,
     private readonly genreService: GenreService,
     private readonly studioService: StudioService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
     this.animeForm = this.initAnimeForm();
 
@@ -146,20 +152,6 @@ export class EditorFormComponent implements OnInit {
     ).pipe(
       map(poster => poster),
     );
-
-    this.animeForm.controls.genresSearch.valueChanges.pipe(
-      debounceTime(500),
-      map(search => this.genreService.findGenresByName(search)),
-      untilDestroyed(this),
-    )
-      .subscribe();
-
-    this.animeForm.controls.studiosSearch.valueChanges.pipe(
-      debounceTime(500),
-      map(search => this.studioService.findStudiosByName(search)),
-      untilDestroyed(this),
-    )
-      .subscribe();
 
     this.statusInformation$ = combineLatest([
       this.getTypes(),
@@ -198,6 +190,23 @@ export class EditorFormComponent implements OnInit {
       this.posterPreview$.next(null);
     }
 
+    const genresSearchChanges$ = this.animeForm.controls.genresSearch.valueChanges.pipe(
+      debounceTime(SEARCH_DEBOUNCE_TIME),
+      map(search => this.genreService.findGenresByName(search)),
+      untilDestroyed(this),
+    );
+
+    const genresStudiosChanges$ = this.animeForm.controls.studiosSearch.valueChanges.pipe(
+      debounceTime(SEARCH_DEBOUNCE_TIME),
+      map(search => this.studioService.findStudiosByName(search)),
+      untilDestroyed(this),
+    );
+
+    merge(
+      genresSearchChanges$,
+      genresStudiosChanges$,
+    )
+      .subscribe();
   }
 
   /** Handlers form submit. */
@@ -237,24 +246,18 @@ export class EditorFormComponent implements OnInit {
       trailerYoutubeId,
     };
 
-    const animeId = this.route.snapshot.params['id'];
+    const animeData = {
+      id: this.route.snapshot.params['id'],
+      information: amineInformation,
+      aired: new DateRange({ ...aired }),
+    };
 
     const posterFileAction$ = this.animeService.savePoster(image).pipe(
-      switchMap(posterUrl => this.animeService.saveAnime({
-        id: animeId,
-        information: amineInformation,
-        posterUrl,
-        aired: aired as DateRange,
-      })),
+      switchMap(posterUrl => this.animeService.saveAnime({ ...animeData, posterUrl })),
     );
 
     const posterUrlAction$ = this.currentPosterPreview$.pipe(
-      switchMap(posterUrl => this.animeService.saveAnime({
-        id: animeId,
-        information: amineInformation,
-        posterUrl,
-        aired: aired as DateRange,
-      })),
+      switchMap(posterUrl => this.animeService.saveAnime({ ...animeData, posterUrl })),
     );
 
     const animeActions$ = iif(() => image !== null, posterFileAction$, posterUrlAction$);
@@ -263,8 +266,10 @@ export class EditorFormComponent implements OnInit {
       map(id => this.urlService.navigateToDetails(id)),
       untilDestroyed(this),
       catchError((error: unknown) => {
-        console.error(error);
-        return of(null);
+        if (error instanceof AppError) {
+          return of(this.setErrors(error));
+        }
+        return throwError(() => error);
       }),
     )
       .subscribe();
@@ -327,38 +332,17 @@ export class EditorFormComponent implements OnInit {
     this.animeForm.controls.image.setValue(null);
   }
 
-  private setInitValuesToAnimeForm({
-    trailerYoutubeId,
-    titleEnglish,
-    titleJapanese,
-    synopsis,
-    type,
-    status,
-    source,
-    rating,
-    season,
-    isAiring,
-    genres,
-    studios,
-    aired,
-  }: AnimeEditor): void {
-    this.animeForm.setValue({
+  private setErrors(errors: AppError<FormError<AnimeEditor>>): void {
+    showErrorsFormFields(errors, this.animeForm);
+    this.changeDetectorRef.markForCheck();
+  }
+
+  private setInitValuesToAnimeForm(animeEditor: AnimeEditor): void {
+    this.animeForm.patchValue({
+      ...animeEditor,
       image: null,
-      trailerYoutubeId,
-      titleEnglish,
-      titleJapanese,
-      synopsis,
-      type,
-      status,
-      source,
-      rating,
-      season,
-      isAiring,
-      genres,
-      studios,
       genresSearch: '',
       studiosSearch: '',
-      aired,
     });
   }
 
