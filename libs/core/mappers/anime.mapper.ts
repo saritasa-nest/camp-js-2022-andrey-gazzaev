@@ -32,7 +32,7 @@ export const ANIME_STATUS_TO_DTO_MAP: Readonly<Record<AnimeStatus, AnimeStatusDt
   [AnimeStatus.NotYetAired]: AnimeStatusDto.NotYetAired,
 };
 
-const ANIME_TYPE_TO_DTO_MAP: Readonly<Record<AnimeType, AnimeTypeDto>> = {
+export const ANIME_TYPE_TO_DTO_MAP: Readonly<Record<AnimeType, AnimeTypeDto>> = {
   [AnimeType.Movie]: AnimeTypeDto.Movie,
   [AnimeType.Music]: AnimeTypeDto.Music,
   [AnimeType.Ona]: AnimeTypeDto.Ona,
