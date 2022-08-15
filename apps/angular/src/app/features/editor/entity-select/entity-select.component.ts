@@ -14,7 +14,7 @@ interface Entity {
 @Component({
   selector: 'app-entity-select',
   templateUrl: './entity-select.component.html',
-  styleUrls: [],
+  styleUrls: ['./entity-select.component.css'],
 })
 export class EntitySelectComponent {
 

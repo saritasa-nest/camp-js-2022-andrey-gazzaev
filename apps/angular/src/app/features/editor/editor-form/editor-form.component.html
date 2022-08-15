@@ -24,7 +24,8 @@
           </mat-card-subtitle>
 
           <mat-card-content class="base-information">
-            <ng-container
+            <div
+              class="image-action"
               *ngIf="this.currentPosterPreview$ | async as posterUrl"
             >
               <img
@@ -32,10 +33,14 @@
                 [src]="posterUrl"
                 alt="Poster preview"
               />
-              <button mat-button type="button" (click)="onRemoveCurrentPoster()">
+              <button
+                mat-button
+                type="button"
+                (click)="onRemoveCurrentPoster()"
+              >
                 <mat-icon>delete</mat-icon>
               </button>
-            </ng-container>
+            </div>
 
             <mat-form-field appearance="fill">
               <ngx-mat-file-input
@@ -45,7 +50,9 @@
               >
                 <mat-icon ngxMatFileInputIcon>folder</mat-icon>
               </ngx-mat-file-input>
-              <mat-error *ngIf="animeForm.controls.image.hasError('imageServe')">
+              <mat-error
+                *ngIf="animeForm.controls.image.hasError('imageServe')"
+              >
                 {{ animeForm.controls.image.getError("imageServe") }}
               </mat-error>
             </mat-form-field>
@@ -58,8 +65,18 @@
                   placeholder="1dy2zPPrKD0"
                   formControlName="trailerYoutubeId"
                 />
-                <mat-error *ngIf="animeForm.controls.trailerYoutubeId.hasError('trailerYoutubeIdServe')">
-                  {{ animeForm.controls.trailerYoutubeId.getError("trailerYoutubeIdServe") }}
+                <mat-error
+                  *ngIf="
+                    animeForm.controls.trailerYoutubeId.hasError(
+                      'trailerYoutubeIdServe'
+                    )
+                  "
+                >
+                  {{
+                    animeForm.controls.trailerYoutubeId.getError(
+                      "trailerYoutubeIdServe"
+                    )
+                  }}
                 </mat-error>
               </mat-form-field>
 
@@ -70,8 +87,18 @@
                   placeholder="Naruto Shippuden"
                   formControlName="titleEnglish"
                 />
-                <mat-error *ngIf="animeForm.controls.titleEnglish.hasError('titleEnglishServe')">
-                  {{ animeForm.controls.titleEnglish.getError("titleEnglishServe") }}
+                <mat-error
+                  *ngIf="
+                    animeForm.controls.titleEnglish.hasError(
+                      'titleEnglishServe'
+                    )
+                  "
+                >
+                  {{
+                    animeForm.controls.titleEnglish.getError(
+                      "titleEnglishServe"
+                    )
+                  }}
                 </mat-error>
               </mat-form-field>
 
@@ -82,8 +109,18 @@
                   placeholder="ナルト- 疾風伝"
                   formControlName="titleJapanese"
                 />
-                <mat-error *ngIf="animeForm.controls.titleJapanese.hasError('titleJapaneseServe')">
-                  {{ animeForm.controls.titleJapanese.getError("titleJapaneseServe") }}
+                <mat-error
+                  *ngIf="
+                    animeForm.controls.titleJapanese.hasError(
+                      'titleJapaneseServe'
+                    )
+                  "
+                >
+                  {{
+                    animeForm.controls.titleJapanese.getError(
+                      "titleJapaneseServe"
+                    )
+                  }}
                 </mat-error>
               </mat-form-field>
             </div>
@@ -188,6 +225,7 @@
 
           <mat-card-content class="more-information">
             <app-entity-select
+              class="more-information__field"
               selectorLabel="Genres"
               entitiesName="genres"
               [entities]="genres"
@@ -200,6 +238,7 @@
             </app-entity-select>
 
             <app-entity-select
+              class="more-information__field"
               selectorLabel="Studios"
               entitiesName="studios"
               [entities]="studios"

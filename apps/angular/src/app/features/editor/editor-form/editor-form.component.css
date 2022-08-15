@@ -1,10 +1,6 @@
-p {
-  margin: 0;
-}
-
 .editor__container {
   margin: 20px auto;
-  max-width: 1024px;
+  max-width: var(--default-max-width-container);
 }
 
 .base-information {
@@ -14,7 +10,6 @@ p {
 
 .base-information__image {
   max-width: 300px;
-  max-height: 300px;
 }
 
 .base-information__input-fields > .base-information__field,
@@ -62,4 +57,8 @@ p {
 .loading__spinner {
   margin-left: auto;
   margin-right: auto;
+}
+
+.image-action {
+  display: flex;
 }

@@ -2,6 +2,7 @@
 
 :root {
   --default-font-family: "Roboto", "Helvetica Neue", sans-serif;
+  --default-max-width-container: 1024px;
 }
 
 body {

@@ -14,20 +14,22 @@
       </button>
     </ng-container>
 
-    <mat-option
+    <div
+      class="option"
       *ngFor="let entity of entities; trackBy: trackItemEntity"
-      [value]="entity.id"
     >
-      <span>{{ entity.name }}</span>
+      <mat-option [value]="entity.id">
+        <span>{{ entity.name }}</span>
+      </mat-option>
       <button
         mat-button
         type="button"
         click-stop-propagation
         (click)="onRemoveEntity(entity.id)"
       >
-        <mat-icon> delete </mat-icon>
+        <mat-icon>delete</mat-icon>
       </button>
-    </mat-option>
+    </div>
 
     <ng-container *ngIf="isStringEmpty(this.formControlSearchEntity.value)">
       <button mat-stroked-button type="button" (click)="onMoreEntities()">
