@@ -1,22 +1,16 @@
 :host {
-  --table-head-cell-text-size: 1rem;
+  --max-width-table: 1024px;
 }
 
 .table-view {
+  margin-inline: auto;
+  max-width: var(--max-width-table);
+}
+
+.table-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-}
-
-.mat-header-cell {
-  text-align: center;
-  font-size: var(--table-head-text-size);
-}
-
-.mat-cell {
-  width: 150px;
-  text-align: center;
 }
 
 .table-image {
@@ -24,15 +18,17 @@
   height: 150px;
 }
 
-.loading {
+.table-pagination {
+  display: block;
+}
+
+.anime-search {
+  width: 100%;
+}
+
+.table-column-type__trigger {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.loading__spinner {
-  position: absolute;
-  top: 50%;
-  bottom: 50%;
-  transform: translate(-50%, -50%);
+  color: inherit;
 }

@@ -1,14 +1,16 @@
 import { map, Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { AnimeBase } from '@js-camp/core/models/anime';
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
+import { AnimeBase, AnimeType } from '@js-camp/core/models/anime';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
+import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
+import { AnimeListOptionsMapper } from '@js-camp/core/mappers/anime-list-options.mapper';
 
 import { AppConfigService } from './app-config.service';
 
@@ -24,19 +26,32 @@ export class AnimeService {
     config: AppConfigService,
     private readonly http: HttpClient,
   ) {
-    this.animeListUrl = new URL(`anime/anime/`, config.apiUrl);
+    this.animeListUrl = new URL(`anime/anime/`, config.apiCampBaseUrl);
   }
 
-  /** Request to the server to get anime. */
-  public fetchAnimeList(): Observable<Pagination<AnimeBase>> {
-    return this.http.get<PaginationDto<AnimeBaseDto>>(this.animeListUrl.toString())
-      .pipe(
-        map(
-          pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
-            pagination,
-            animeDto => AnimeMapper.fromDto(animeDto),
-          ),
-        ),
-      );
+  /**
+   * Requests to the server to get anime.
+   * @param animeListQueryParams Parameters for generating a request.
+   */
+  public fetchAnimeList(animeListQueryParams: AnimeListQueryParams): Observable<Pagination<AnimeBase>> {
+    const animeListSearchParams = AnimeListOptionsMapper.toDto(animeListQueryParams);
+    const params = new HttpParams({
+      fromString: animeListSearchParams.toString(),
+    });
+
+    return this.http.get<PaginationDto<AnimeBaseDto>>(
+      this.animeListUrl.toString(),
+      { params },
+    ).pipe(map(pagination => PaginationMapper.fromDto<AnimeBaseDto, AnimeBase>(
+      pagination,
+      animeDto => AnimeMapper.fromDto(animeDto),
+    )));
+  }
+
+  /** Gets all anime types. */
+  // Getting values of this model can be asynchronous.
+  // eslint-disable-next-line require-await
+  public async getAnimeTypes(): Promise<string[]> {
+    return Object.values(AnimeType);
   }
 }

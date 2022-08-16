@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { PlaceholderPipe } from '../../../shared/pipes/placeholder.pipe';
+import { SharedModule } from '../../../shared/shared.module';
 
 import { AnimeComponent } from './anime.component';
 import { AnimeRoutingModule } from './anime-routing.module';
@@ -11,12 +8,13 @@ import { TableViewComponent } from './table-view/table-view.component';
 
 /** Anime module. */
 @NgModule({
-  declarations: [AnimeComponent, TableViewComponent, PlaceholderPipe],
+  declarations: [
+    AnimeComponent,
+    TableViewComponent,
+  ],
   imports: [
-    CommonModule,
-    MatTableModule,
+    SharedModule,
     AnimeRoutingModule,
-    MatProgressSpinnerModule,
   ],
 })
 export class AnimeModule { }

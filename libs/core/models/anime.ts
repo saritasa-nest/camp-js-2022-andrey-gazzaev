@@ -2,20 +2,44 @@ import { DateRange } from './dateRange';
 import { Immerable, OmitImmerable } from './immerable';
 
 /** Possible options anime type. */
-export enum Type {
+export enum AnimeType {
   Tv = 'TV',
   Ova = 'OVA',
-  Movie = 'MOVIE',
-  Special = 'SPECIAL',
+  Movie = 'Movie',
+  Special = 'Special',
   Ona = 'ONA',
-  Music = 'MUSIC',
+  Music = 'Music',
 }
 
 /** Possible options anime status. */
-export enum Status {
-  Airing = 'AIRING',
-  Finished = 'FINISHED',
-  NotYetAired = 'NOT_YET_AIRED',
+export enum AnimeStatus {
+  Airing = 'Airing',
+  Finished = 'Finished',
+  NotYetAired = 'Not yet aired',
+}
+
+/** Sort settings. */
+export interface AnimeSort<TDirection, TField> {
+
+  /** Ordering direction. */
+  readonly direction: TDirection;
+
+  /** Field by sort. */
+  readonly field: TField;
+}
+
+/** Fields by which you can sort. */
+export enum AnimeSortDirection {
+  Ascending = 'asc',
+  Descending = 'des',
+}
+
+/** Fields by which you can sort. */
+export enum AnimeSortField {
+  TitleEnglish = 'english',
+  TitleJapanese = 'japanese',
+  Aired = 'aired',
+  Status = 'status',
 }
 
 /** Anime. */
@@ -40,10 +64,10 @@ export class AnimeBase extends Immerable {
   public readonly aired: DateRange;
 
   /** Anime type. */
-  public readonly type: Type;
+  public readonly type: AnimeType;
 
   /** Anime status. */
-  public readonly status: Status;
+  public readonly status: AnimeStatus;
 
   public constructor(data: InitArgsAnimeBase) {
     super();

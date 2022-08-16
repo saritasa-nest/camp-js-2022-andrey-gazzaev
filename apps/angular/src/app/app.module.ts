@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppConfigService } from '../core/services/app-config.service';
-import { ApiInterceptor } from '../core/interceptors/api-interceptor.interceptor';
+import { ApiInterceptor } from '../core/interceptors/api.interceptor';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AnimeModule } from './features/anime/anime.module';
 
 const httpInterceptorProviders = [
   {
@@ -20,9 +22,11 @@ const httpInterceptorProviders = [
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    AnimeModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     AppConfigService,
@@ -30,4 +34,4 @@ const httpInterceptorProviders = [
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

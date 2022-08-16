@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-/** Anime catalog page. */
+/** Anime page. */
 @Component({
   selector: 'app-anime',
   templateUrl: './anime.component.html',
