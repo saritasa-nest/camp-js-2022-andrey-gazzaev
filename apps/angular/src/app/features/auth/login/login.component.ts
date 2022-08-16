@@ -46,7 +46,7 @@ export class LoginComponent {
 
   /** Handles form submit. */
   public onFormSubmit(): void {
-    // this.loginForm.markAllAsTouched();
+    this.loginForm.markAllAsTouched();
     if (this.loginForm.invalid) {
       return;
     }
