@@ -1,5 +1,5 @@
 import { HttpErrorDto } from '../dtos/httpError.dto';
-import { AppError } from '../models/httpError';
+import { AppError } from '../models/app-error';
 
 export namespace HttpErrorMapper {
 

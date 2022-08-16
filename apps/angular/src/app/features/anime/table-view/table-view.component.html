@@ -1,4 +1,4 @@
-<section class="table-view" [formGroup]="formQuery">
+<section class="table-view" [formGroup]="queryForm">
   <h2 id="anime-catalog" class="mat-title">Anime table</h2>
 
   <div class="table-container mat-elevation-z8">
@@ -19,7 +19,7 @@
           matSort
           aria-describedby="anime-catalog"
           (matSortChange)="onSortChange($event)"
-          [trackBy]="trackItemAnime"
+          [trackBy]="trackAnime"
           [matSortActive]="sort.field"
           [dataSource]="animeList.list"
           [matSortDirection]="sort.direction"
@@ -88,7 +88,7 @@
                   </mat-select-trigger>
                   <mat-option
                     [value]="type.field"
-                    *ngFor="let type of types; trackBy: trackItemType"
+                    *ngFor="let type of types; trackBy: trackType"
                   >
                     {{ type.title }}
                   </mat-option>

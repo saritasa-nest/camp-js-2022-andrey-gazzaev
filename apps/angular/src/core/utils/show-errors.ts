@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import { AppError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/app-error';
 import { isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 
 /**

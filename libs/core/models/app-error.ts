@@ -1,13 +1,15 @@
 /** Error coming from the server. */
-export class AppError extends Error {
+export class AppError<T> extends Error {
 
-  /**
-   * Error message.
-   */
-  public override readonly message: string;
+  /** Fields errors. */
+  public readonly data?: T;
 
-  public constructor(message: string) {
-    super(message);
-    this.message = message;
+  /** Error Description. */
+  public readonly detail?: string;
+
+  public constructor(data?: T, detail?: string) {
+    super();
+    this.data = data;
+    this.detail = detail;
   }
 }

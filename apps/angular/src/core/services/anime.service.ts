@@ -11,11 +11,10 @@ import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 import { AnimeDetailsDto } from '@js-camp/core/dtos/animeDetails';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
-
-import { AnimeListQueryParams } from '../models/anime-list-query-params';
+import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
+import { AnimeListOptionsMapper } from '@js-camp/core/mappers/anime-list-options.mapper';
 
 import { AppConfigService } from './app-config.service';
-import { AnimeListOptionsMapper } from './mappers/anime-list-options.mapper';
 
 /** Anime service. */
 @Injectable({
@@ -28,7 +27,6 @@ export class AnimeService {
   public constructor(
     config: AppConfigService,
     private readonly http: HttpClient,
-    private readonly animeListOptionsMapper: AnimeListOptionsMapper,
   ) {
     this.animeListUrl = new URL(`anime/anime/`, config.apiCampBaseUrl);
   }
@@ -38,7 +36,7 @@ export class AnimeService {
    * @param animeListQueryParams Parameters for generating a request.
    */
   public fetchAnimeList(animeListQueryParams: AnimeListQueryParams): Observable<Pagination<AnimeBase>> {
-    const animeListSearchParams = this.animeListOptionsMapper.toDto(animeListQueryParams);
+    const animeListSearchParams = AnimeListOptionsMapper.toDto(animeListQueryParams);
     const params = new HttpParams({
       fromString: animeListSearchParams.toString(),
     });
@@ -64,6 +62,7 @@ export class AnimeService {
   }
 
   /** Gets all anime types. */
+  // Getting values of this model can be asynchronous.
   // eslint-disable-next-line require-await
   public async getAnimeTypes(): Promise<string[]> {
     return Object.values(AnimeType);

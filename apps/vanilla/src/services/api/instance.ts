@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { AppError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/app-error1';
 import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
 import { isHttpErrorDto } from '@js-camp/core/utils/guards/error.guard';
 import { isDefined } from '@js-camp/core/utils/guards/general.guard';

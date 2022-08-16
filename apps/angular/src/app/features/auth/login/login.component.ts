@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 
 import { Login } from '@js-camp/core/models/login';
-import { AppError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/app-error';
 import { FormError } from '@js-camp/core/models/form-error';
 
 import { UrlService } from '../../../../core/services/url.service';
@@ -46,7 +46,7 @@ export class LoginComponent {
 
   /** Handles form submit. */
   public onFormSubmit(): void {
-    // this.loginForm.markAllAsTouched();
+    this.loginForm.markAllAsTouched();
     if (this.loginForm.invalid) {
       return;
     }

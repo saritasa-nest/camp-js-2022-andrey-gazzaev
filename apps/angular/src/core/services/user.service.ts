@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { User } from '@js-camp/core/models/user';
 import { Login } from '@js-camp/core/models/login';
 import { UserDto } from '@js-camp/core/dtos/user.dto';
-import { AppError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/app-error';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { Registration } from '@js-camp/core/models/registration';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
