@@ -60,7 +60,7 @@ export class DetailsComponent {
    * @param url Image URL.
    * @param name Image name.
    */
-  public openImagePopup(url: string, name: string): void {
+  public openImagePopup(url: string | null, name: string): void {
     this.dialog.open(ImagePopupComponent, {
       data: {
         url,
