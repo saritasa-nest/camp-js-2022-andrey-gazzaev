@@ -1,6 +1,7 @@
 import { catchError, combineLatest, debounceTime, defer, filter, iif, map, merge, Observable, of, ReplaySubject, Subscriber, switchMap, tap, throwError } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -10,7 +11,7 @@ import { DateRange } from '@js-camp/core/models/dateRange';
 import { FormError } from '@js-camp/core/models/form-error';
 import { AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
 import { isFieldsDefined } from '@js-camp/core/utils/guards/general.guard';
-import { AnimeEditor, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
+import { AnimeEditor, AnimeInformation, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 
 import { UrlService } from '../../../../core/services/url.service';
 import { AnimeService } from '../../../../core/services/anime.service';
@@ -36,13 +37,13 @@ interface AnimeFormControls {
   readonly trailerYoutubeId: FormControl<string | null>;
 
   /** Title of English control. */
-  readonly titleEnglish: FormControl<string | null>;
+  readonly titleEnglish: FormControl<string>;
 
   /** Title of Japanese control. */
-  readonly titleJapanese: FormControl<string | null>;
+  readonly titleJapanese: FormControl<string>;
 
   /** Synopsis control. */
-  readonly synopsis: FormControl<string | null>;
+  readonly synopsis: FormControl<string>;
 
   /** Type control. */
   readonly type: FormControl<AnimeType | null>;
@@ -60,22 +61,22 @@ interface AnimeFormControls {
   readonly rating: FormControl<Rating | null>;
 
   /** Is airing. */
-  readonly isAiring: FormControl<boolean | null>;
+  readonly isAiring: FormControl<boolean>;
 
   /** Aired date range. */
   readonly aired: FormGroup<DateRangeControls>;
 
   /** Genres control. */
-  readonly genres: FormControl<readonly number[] | null>;
+  readonly genres: FormControl<readonly number[]>;
 
   /** Genres search control. */
-  readonly genresSearch: FormControl<string | null>;
+  readonly genresSearch: FormControl<string>;
 
   /** Studios control. */
-  readonly studios: FormControl<readonly number[] | null>;
+  readonly studios: FormControl<readonly number[]>;
 
   /** Genres search control. */
-  readonly studiosSearch: FormControl<string | null>;
+  readonly studiosSearch: FormControl<string>;
 }
 
 interface StatusInformation {
@@ -155,18 +156,22 @@ export class EditorFormComponent implements OnInit {
   public ngOnInit(): void {
     const animeId = this.route.snapshot.params['id'];
     if (animeId !== undefined) {
-      this.animeService.fetchAnimeEditor(animeId).pipe(
+      const animeSet$ = this.animeService.fetchAnimeEditor(animeId).pipe(
         tap(animeEditor => {
           this.isEditAnime = true;
           this.setInitValuesToAnimeForm(animeEditor);
           this.genreService.addGenres(animeEditor.genresData);
           this.studioService.addStudios(animeEditor.studiosData);
         }),
+      );
+
+      animeSet$.pipe(
         map(animeEditor => animeEditor.image),
         map(posterUrl => this.posterPreview$.next(posterUrl)),
         untilDestroyed(this),
       )
         .subscribe();
+
     } else {
       this.posterPreview$.next(null);
     }
@@ -197,48 +202,25 @@ export class EditorFormComponent implements OnInit {
       return;
     }
 
-    const {
-      image,
-      aired,
-      genres,
-      isAiring,
-      rating,
-      season,
-      source,
-      status,
-      studios,
-      synopsis,
-      titleEnglish,
-      titleJapanese,
-      trailerYoutubeId,
-      type,
-    } = this.animeForm.getRawValue();
-
-    const requiredFields = {
-      rating, season, source, status, synopsis, type, studios, genres, isAiring, titleEnglish, titleJapanese,
-    };
-
-    if (!isFieldsDefined(requiredFields)) {
+    const amineInformation = this.getAnimeInformation();
+    if (amineInformation === null) {
       return;
     }
 
-    const amineInformation = {
-      ...requiredFields,
-      trailerYoutubeId,
-    };
+    const { image, aired } = this.animeForm.getRawValue();
 
-    const animeData = {
+    const anime = {
       id: this.route.snapshot.params['id'],
       information: amineInformation,
       aired: new DateRange({ ...aired }),
     };
 
     const posterFileAction$ = this.animeService.savePoster(image).pipe(
-      switchMap(posterUrl => this.animeService.saveAnime({ ...animeData, posterUrl })),
+      switchMap(posterUrl => this.animeService.saveAnime({ ...anime, posterUrl })),
     );
 
     const posterUrlAction$ = this.currentPosterPreview$.pipe(
-      switchMap(posterUrl => this.animeService.saveAnime({ ...animeData, posterUrl })),
+      switchMap(posterUrl => this.animeService.saveAnime({ ...anime, posterUrl })),
     );
 
     const animeActions$ = iif(() => image !== null, posterFileAction$, posterUrlAction$);
@@ -313,6 +295,42 @@ export class EditorFormComponent implements OnInit {
     this.animeForm.controls.image.setValue(null);
   }
 
+  private getAnimeInformation(): AnimeInformation | null {
+    const {
+      genres,
+      isAiring,
+      rating,
+      season,
+      source,
+      status,
+      studios,
+      synopsis,
+      titleEnglish,
+      titleJapanese,
+      trailerYoutubeId,
+      type,
+    } = this.animeForm.getRawValue();
+
+    const requiredFields = {
+      rating, season, source, status, type,
+    };
+
+    if (!isFieldsDefined(requiredFields)) {
+      return null;
+    }
+
+    return {
+      ...requiredFields,
+      trailerYoutubeId,
+      studios,
+      synopsis,
+      titleEnglish,
+      titleJapanese,
+      genres,
+      isAiring,
+    };
+  }
+
   private setErrors(errors: AppError<FormError<AnimeEditor>>): void {
     showErrorsFormFields(errors, this.animeForm);
     this.changeDetectorRef.markForCheck();
@@ -331,19 +349,19 @@ export class EditorFormComponent implements OnInit {
     return new FormGroup<AnimeFormControls>({
       image: new FormControl(null),
       trailerYoutubeId: new FormControl(null),
-      titleEnglish: new FormControl(null, Validators.required),
-      titleJapanese: new FormControl(null, Validators.required),
-      synopsis: new FormControl(null, Validators.required),
-      type: new FormControl(null, Validators.required),
-      status: new FormControl(null, Validators.required),
-      source: new FormControl(null, Validators.required),
-      rating: new FormControl(null, Validators.required),
-      season: new FormControl(null, Validators.required),
-      isAiring: new FormControl(false),
-      genres: new FormControl(null, Validators.required),
-      studios: new FormControl(null, Validators.required),
-      genresSearch: new FormControl(null),
-      studiosSearch: new FormControl(null),
+      titleEnglish: new FormControl('', { nonNullable: true }),
+      titleJapanese: new FormControl('', { nonNullable: true }),
+      synopsis: new FormControl('', { validators: Validators.required, nonNullable: true }),
+      type: new FormControl(null, { validators: Validators.required }),
+      status: new FormControl(null, { validators: Validators.required }),
+      source: new FormControl(null, { validators: Validators.required }),
+      rating: new FormControl(null, { validators: Validators.required }),
+      season: new FormControl(null, { validators: Validators.required }),
+      isAiring: new FormControl(false, { nonNullable: true }),
+      genres: new FormControl([], { validators: Validators.required, nonNullable: true }),
+      studios: new FormControl([], { validators: Validators.required, nonNullable: true }),
+      genresSearch: new FormControl('', { validators: Validators.required, nonNullable: true }),
+      studiosSearch: new FormControl('', { validators: Validators.required, nonNullable: true }),
       aired: new FormGroup<DateRangeControls>({
         start: new FormControl(null),
         end: new FormControl(null),
