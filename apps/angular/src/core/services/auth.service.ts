@@ -80,7 +80,7 @@ export class AuthService {
       switchMap(tokens => this.tokenService.save(tokens)),
       catchError((error: unknown) => {
         if (
-          error instanceof AppError &&
+          error instanceof HttpError &&
           error.message === UNAUTHORIZED_ERROR_MESSAGE
         ) {
           return throwError(() => error);
