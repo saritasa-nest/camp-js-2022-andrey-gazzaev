@@ -1,5 +1,5 @@
 /** Error coming from the server. */
-export class httpError extends Error {
+export class HttpError extends Error {
 
   /**
    * Error message.

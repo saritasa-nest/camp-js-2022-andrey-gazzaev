@@ -1,17 +1,17 @@
 import { BehaviorSubject, combineLatest, debounceTime, defer, map, merge, Observable, skip, startWith, switchMap, tap } from 'rxjs';
 
-import { FormControl, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sort, SortDirection } from '@angular/material/sort';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
-import { AnimeBase, AnimeType, SortField } from '@js-camp/core/models/anime';
+import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
+import { AnimeBase, AnimeType, AnimeSortField, AnimeSortDirection } from '@js-camp/core/models/anime';
 
 import { AnimeService } from '../../../../core/services/anime.service';
 import { UrlService } from '../../../../core/services/url.service';
-import { AnimeListQueryParams } from '../../../../core/models/anime-list-query-params';
 
 const defaultParams: AnimeListQueryParams = {
   page: 0,
@@ -19,25 +19,25 @@ const defaultParams: AnimeListQueryParams = {
   search: '',
   types: [AnimeType.Tv],
   sort: {
-    field: SortField.TitleJapanese,
-    direction: 'asc',
+    field: AnimeSortField.TitleJapanese,
+    direction: AnimeSortDirection.Ascending,
   },
 };
 
 interface QueryFormControls {
 
   /** Filter by type. */
-  readonly typeFilter: FormControl<AnimeType[] | []>;
+  readonly typeFilter: FormControl<AnimeType[]>;
 
   /** Value of search input. */
-  readonly search: FormControl<string | ''>;
+  readonly search: FormControl<string>;
 
 }
 
 interface TableSort {
 
   /** The field by which to sort. */
-  readonly field: SortField;
+  readonly field: AnimeSortField;
 
   /** The sort order. */
   readonly direction: SortDirection;
@@ -84,7 +84,7 @@ export class TableViewComponent implements OnInit {
   public readonly filterListByType$: Observable<readonly FilterItem[]>;
 
   /** Query group. */
-  public readonly formQuery: FormGroup<QueryFormControls>;
+  public readonly queryForm: FormGroup<QueryFormControls>;
 
   /** Current sort settings. */
   public readonly sort$: BehaviorSubject<TableSort>;
@@ -102,22 +102,22 @@ export class TableViewComponent implements OnInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly urlService: UrlService,
+    private readonly formBuilder: FormBuilder,
     private readonly animeService: AnimeService,
   ) {
     const animeListOptions = this.getAnimeListOptions();
 
     this.pageSize = animeListOptions.pageSize ?? defaultParams.pageSize;
 
-    this.formQuery = new FormGroup({
-      search: new FormControl(animeListOptions.search, { nonNullable: true }),
-      typeFilter: new FormControl<AnimeType[]>(animeListOptions.types, { nonNullable: true }),
+    this.queryForm = this.formBuilder.nonNullable.group({
+      search: [animeListOptions.search],
+      typeFilter: [animeListOptions.types],
     });
 
-    const sortInitialValue: TableSort = {
+    this.sort$ = new BehaviorSubject<TableSort>({
       field: animeListOptions.sort.field,
-      direction: animeListOptions.sort.direction,
-    };
-    this.sort$ = new BehaviorSubject<TableSort>(sortInitialValue);
+      direction: animeListOptions.sort.direction === 'asc' ? 'asc' : 'desc',
+    });
 
     this.currentPageNumber$ = new BehaviorSubject<number>(animeListOptions.page);
 
@@ -132,7 +132,7 @@ export class TableViewComponent implements OnInit {
     // it is necessary to save the page number that was passed in the url.
     // In the future, when one of the pagination parameters changes, you need to reset the page.
     const skipFirstRender$ = merge(
-      this.formQuery.valueChanges,
+      this.queryForm.valueChanges,
       this.sort$,
     ).pipe(
       skip(1),
@@ -160,7 +160,7 @@ export class TableViewComponent implements OnInit {
   public onSortChange(sort: Sort): void {
     // Need to remove the value '' from sort.direction
     this.sort$.next({
-      field: sort.active as SortField,
+      field: sort.active as AnimeSortField,
       direction: sort.direction === '' ? 'asc' : 'desc',
     });
   }
@@ -170,7 +170,7 @@ export class TableViewComponent implements OnInit {
    * @param index Anime's index into array.
    * @param anime Object of anime.
    */
-  public trackItemAnime(index: number, anime: AnimeBase): number {
+  public trackAnime(index: number, anime: AnimeBase): number {
     return anime.id;
   }
 
@@ -179,7 +179,7 @@ export class TableViewComponent implements OnInit {
    * @param index Anime's index into array.
    * @param type Object of type.
    */
-  public trackItemType(index: number, type: FilterItem): string {
+  public trackType(index: number, type: FilterItem): string {
     return type.field;
   }
 
@@ -207,11 +207,11 @@ export class TableViewComponent implements OnInit {
   private initializeAnimeList(): Observable<AnimeList> {
     const animeListOptions = this.getAnimeListOptions();
 
-    const searchChanges$ = this.formQuery.controls.search.valueChanges.pipe(
+    const searchChanges$ = this.queryForm.controls.search.valueChanges.pipe(
       startWith(animeListOptions.search),
     );
 
-    const typeFilterChanges$ = this.formQuery.controls.typeFilter.valueChanges.pipe(
+    const typeFilterChanges$ = this.queryForm.controls.typeFilter.valueChanges.pipe(
       startWith(animeListOptions.types),
     );
 
@@ -229,7 +229,10 @@ export class TableViewComponent implements OnInit {
     ]).pipe(
       map(([[search, typeFilter, sort], pageNumber]) => {
         const animeListQueryParams: AnimeListQueryParams = {
-          sort,
+          sort: {
+            direction: sort.direction === 'asc' ? AnimeSortDirection.Ascending : AnimeSortDirection.Descending,
+            field: sort.field,
+          },
           page: pageNumber,
           pageSize: this.pageSize,
           search,

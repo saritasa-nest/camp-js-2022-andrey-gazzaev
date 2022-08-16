@@ -15,14 +15,14 @@ import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeEditorDto } from '@js-camp/core/dtos/anime-editor.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { AnimeBase, AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
+import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
+import { AnimeListOptionsMapper } from '@js-camp/core/mappers/anime-list-options.mapper';
 import { AnimeEditor, AnimeInformation, PostAnime, PutAnime, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 
 import { catchHttpErrorResponse } from '../utils/rxjs/catch-http-error';
-import { AnimeListQueryParams } from '../models/anime-list-query-params';
 
 import { S3directService } from './s3direct.service';
 import { AppConfigService } from './app-config.service';
-import { AnimeListOptionsMapper } from './mappers/anime-list-options.mapper';
 
 interface AnimeData {
 
@@ -52,7 +52,6 @@ export class AnimeService {
     config: AppConfigService,
     private readonly http: HttpClient,
     private readonly s3directService: S3directService,
-    private readonly animeListOptionsMapper: AnimeListOptionsMapper,
   ) {
     this.animeListUrl = new URL(`anime/anime/`, config.apiCampBaseUrl);
   }
@@ -62,7 +61,7 @@ export class AnimeService {
    * @param animeListQueryParams Parameters for generating a request.
    */
   public fetchAnimeList(animeListQueryParams: AnimeListQueryParams): Observable<Pagination<AnimeBase>> {
-    const animeListSearchParams = this.animeListOptionsMapper.toDto(animeListQueryParams);
+    const animeListSearchParams = AnimeListOptionsMapper.toDto(animeListQueryParams);
     const params = new HttpParams({
       fromString: animeListSearchParams.toString(),
     });
@@ -147,6 +146,7 @@ export class AnimeService {
   }
 
   /** Gets all anime types. */
+  // Getting values of this model can be asynchronous.
   // eslint-disable-next-line require-await
   public async getAnimeTypes(): Promise<AnimeType[]> {
     return Object.values(AnimeType);
