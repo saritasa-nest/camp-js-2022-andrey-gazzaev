@@ -1,9 +1,9 @@
 import { BehaviorSubject, combineLatest, debounceTime, defer, map, merge, Observable, skip, startWith, switchMap, tap } from 'rxjs';
 
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { Sort, SortDirection } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Sort, SortDirection } from '@angular/material/sort';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
@@ -11,6 +11,7 @@ import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-para
 import { AnimeBase, AnimeType, AnimeSortField, AnimeSortDirection } from '@js-camp/core/models/anime';
 
 import { AnimeService } from '../../../../core/services/anime.service';
+import { UrlService } from '../../../../core/services/url.service';
 
 const defaultParams: AnimeListQueryParams = {
   page: 0,
@@ -100,6 +101,7 @@ export class TableViewComponent implements OnInit {
   public constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
+    private readonly urlService: UrlService,
     private readonly formBuilder: FormBuilder,
     private readonly animeService: AnimeService,
   ) {
@@ -179,6 +181,14 @@ export class TableViewComponent implements OnInit {
    */
   public trackType(index: number, type: FilterItem): string {
     return type.field;
+  }
+
+  /**
+   * Handlers redirect to details page.
+   * @param anime Anime record.
+   */
+  public onDetailsShow(anime: AnimeBase): void {
+    this.urlService.navigateToDetails(anime.id);
   }
 
   /** Gets filter by type. */

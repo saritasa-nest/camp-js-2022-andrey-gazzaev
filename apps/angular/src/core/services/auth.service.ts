@@ -22,6 +22,7 @@ const UNAUTHORIZED_ERROR_MESSAGE = 'User unauthorized';
   providedIn: 'root',
 })
 export class AuthService {
+
   private readonly loginUrl: URL;
 
   private readonly registrationUrl: URL;

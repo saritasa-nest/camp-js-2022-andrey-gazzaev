@@ -7,6 +7,8 @@ import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { AnimeBase, AnimeType } from '@js-camp/core/models/anime';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
+import { AnimeDetails } from '@js-camp/core/models/animeDetails';
+import { AnimeDetailsDto } from '@js-camp/core/dtos/animeDetails';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
@@ -46,6 +48,17 @@ export class AnimeService {
       pagination,
       animeDto => AnimeMapper.fromDto(animeDto),
     )));
+  }
+
+  /**
+   * Fetches anime by id.
+   * @param id Anime id.
+   */
+  public fetchAnime(id: number): Observable<AnimeDetails> {
+    const animeUrl = new URL(`${id}/`, this.animeListUrl);
+    return this.http.get<AnimeDetailsDto>(animeUrl.toString()).pipe(
+      map(animeDetailsDto => AnimeMapper.fromDetailsDto(animeDetailsDto)),
+    );
   }
 
   /** Gets all anime types. */

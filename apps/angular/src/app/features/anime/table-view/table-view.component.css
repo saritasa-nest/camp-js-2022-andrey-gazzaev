@@ -1,5 +1,6 @@
 :host {
   --max-width-table: 1024px;
+  --table-row-hover-background-color: #f3f3f3;
 }
 
 .table-view {

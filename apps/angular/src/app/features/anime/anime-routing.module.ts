@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthorizedGuard } from '../../../core/guards/authorized.guard';
+
 import { AnimeComponent } from './anime.component';
+import { DetailsComponent } from './details/details.component';
 import { TableViewComponent } from './table-view/table-view.component';
 
 const routes: Routes = [
@@ -12,6 +15,11 @@ const routes: Routes = [
       {
         path: '',
         component: TableViewComponent,
+      },
+      {
+        path: ':id',
+        component: DetailsComponent,
+        canActivate: [AuthorizedGuard],
       },
     ],
   },

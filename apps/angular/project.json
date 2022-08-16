@@ -16,7 +16,8 @@
         "styles": [
           "apps/angular/src/theme/styles.css",
           "libs/theme/src/index.css",
-          "apps/angular/src/theme/app-table-view.css"
+          "apps/angular/src/theme/app-table-view.css",
+          "apps/angular/src/theme/app-auth.css"
         ],
         "scripts": []
       },

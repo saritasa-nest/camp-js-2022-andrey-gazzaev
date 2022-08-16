@@ -20,4 +20,12 @@ export class UrlService {
   public navigateToHome(): Promise<boolean> {
     return this.router.navigate(['/catalog']);
   }
+
+  /**
+   * Navigate to details page.
+   * @param id Page id.
+   */
+  public navigateToDetails(id: number): Promise<boolean> {
+    return this.router.navigate(['/catalog', id]);
+  }
 }
