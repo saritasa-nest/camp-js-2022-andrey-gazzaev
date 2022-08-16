@@ -1,1 +1,27 @@
 @import url("@angular/material/prebuilt-themes/indigo-pink.css");
+
+:root {
+  --default-font-family: "Roboto", "Helvetica Neue", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+app-auth .form-field .mat-form-field-subscript-wrapper {
+  position: relative;
+}
+
+app-auth .form-field.mat-form-field {
+  display: block;
+  margin-inline: auto;
+}
+
+app-auth .form-buttons__button.mat-stroked-button {
+  min-width: 70%;
+}
+
+app-auth .form-list .mat-list-item-content {
+  justify-content: center;
+}

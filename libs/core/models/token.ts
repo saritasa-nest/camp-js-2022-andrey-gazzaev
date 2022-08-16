@@ -1,7 +1,7 @@
 import { Immerable, OmitImmerable } from './immerable';
 
-/** Authorization tokens. */
-export class Tokens extends Immerable {
+/** Authorization token. */
+export class Token extends Immerable {
 
   /** Refresh token. */
   public readonly refresh: string;
@@ -16,4 +16,4 @@ export class Tokens extends Immerable {
   }
 }
 
-type InitArgsTokens = OmitImmerable<Tokens>;
+type InitArgsTokens = OmitImmerable<Token>;

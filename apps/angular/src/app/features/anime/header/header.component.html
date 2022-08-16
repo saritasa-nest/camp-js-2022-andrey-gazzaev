@@ -1,0 +1,43 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row class="header">
+    <h1 class="header__logo-text mat-headline">Anime Catalog</h1>
+    <div class="profile" *ngIf="user$ | async as user; else standardProfile">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        type="button"
+        aria-label="Open profile control panels"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <p class="profile__text">
+          Hello {{ user.firstName }} {{ user.lastName }}
+        </p>
+        <a
+          mat-menu-item
+          title="Log out from account"
+          (click)="onLogout()"
+          routerLink="/catalog"
+        >
+          <mat-icon>logout</mat-icon>
+        </a>
+      </mat-menu>
+    </div>
+    <ng-template #standardProfile>
+      <div class="links">
+        <a mat-button title="Log in to account" routerLink="/auth/login">
+          Login
+        </a>
+        <a
+          mat-button
+          title="Create new account"
+          routerLink="/auth/registration"
+        >
+          Registration
+        </a>
+      </div>
+    </ng-template>
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -1,0 +1,10 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile__text {
+  font-family: var(--default-font-family);
+  padding-left: 20px;
+  padding-right: 10px;
+}

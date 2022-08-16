@@ -1,0 +1,83 @@
+<ng-template let-error let-text="text" #tpl> <span class="control-error">{{ text }}</span> </ng-template>
+
+<form
+  class="auth-form mat-elevation-z8"
+  [formGroup]="registrationForm"
+  (ngSubmit)="onFormSubmit()"
+>
+  <header class="form-header">
+    <h1 class="form-header__heading mat-headline">Registration</h1>
+  </header>
+
+  <mat-form-field class="form-field" appearance="fill">
+    <mat-label>Enter your email</mat-label>
+    <input
+      matInput
+      type="email"
+      placeholder="thomas.anderson@rabbit.com"
+      formControlName="email"
+      autocomplete="email"
+      [controlErrorsTpl]="tpl"
+    />
+    <mat-error *ngIf="registrationForm.controls.email.hasError('emailServe')">
+      {{ registrationForm.controls.email.getError("emailServe") }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="form-field" appearance="fill">
+    <mat-label>Enter your first name</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Thomas"
+      formControlName="firstName"
+      autocomplete="given-name"
+      [controlErrorsTpl]="tpl"
+    />
+  </mat-form-field>
+
+  <mat-form-field class="form-field" appearance="fill">
+    <mat-label>Enter your last name</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Anderson"
+      formControlName="lastName"
+      autocomplete="family-name"
+      [controlErrorsTpl]="tpl"
+    />
+  </mat-form-field>
+
+  <app-password-input
+    label="Enter your password"
+    [control]="registrationForm.controls.password"
+  >
+    <span>Password must be: </span>
+    <ul>
+      <li>Min 8 character</li>
+      <li>Min 1 lowercase character</li>
+      <li>Min 1 uppercase character</li>
+      <li>Min 1 number</li>
+    </ul>
+  </app-password-input>
+
+  <app-password-input
+    label="Confirm your password"
+    [control]="registrationForm.controls.passwordConfirm"
+  >
+  </app-password-input>
+
+  <div class="form-buttons">
+    <button class="form-buttons__button" mat-stroked-button type="submit">
+      Register
+    </button>
+  </div>
+
+  <mat-list class="form-list">
+    <mat-list-item>
+      <a class="link" mat-button routerLink="/auth/login/">
+        Do you have an account?
+      </a>
+    </mat-list-item>
+  </mat-list>
+</form>

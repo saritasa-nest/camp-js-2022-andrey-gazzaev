@@ -1,5 +1,5 @@
 import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
-import { HttpError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/app-error1';
 
 import { LocalStorageKey } from '../../constants/localStorage';
 import { login, register } from '../api/auth';
@@ -17,7 +17,7 @@ export async function loginUser(loginData: LoginData): Promise<void> {
 
     TokenService.setTokens(tokens);
   } catch (error: unknown) {
-    if (error instanceof HttpError) {
+    if (error instanceof AppError) {
       throw error;
     }
   }
@@ -33,7 +33,7 @@ export async function registerUser(registrationData: RegistrationData): Promise<
 
     TokenService.setTokens(tokens);
   } catch (error: unknown) {
-    if (error instanceof HttpError) {
+    if (error instanceof AppError) {
       throw error;
     }
   }

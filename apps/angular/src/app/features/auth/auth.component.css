@@ -1,0 +1,35 @@
+:host {
+  --error-color: #dc3545;
+  --error-font-size: 12px;
+}
+
+.auth-form {
+  max-width: 320px;
+  margin-top: 90px;
+  margin-inline: auto;
+}
+
+.form-header__heading {
+  padding-top: 10px;
+  text-align: center;
+}
+
+.form-hint {
+  position: relative;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.password-input__description {
+  position: absolute;
+}
+
+.control-error {
+  width: 100%;
+  margin-top: 5px;
+  font-size: var(--error-font-size);
+  color: var(--error-color);
+}
