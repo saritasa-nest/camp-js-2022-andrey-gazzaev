@@ -1,5 +1,5 @@
 import { LoginData, RegistrationData } from '@js-camp/core/utils/interfaces/auth.interface';
-import { AppError } from '@js-camp/core/models/httpError';
+import { AppError } from '@js-camp/core/models/app-error1';
 
 import { LocalStorageKey } from '../../constants/localStorage';
 import { login, register } from '../api/auth';

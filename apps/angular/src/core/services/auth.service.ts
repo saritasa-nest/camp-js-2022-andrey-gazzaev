@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Login } from '@js-camp/core/models/login';
 import { TokenDto } from '@js-camp/core/dtos/token.dto';
-import { AppError } from '@js-camp/core/models/app-error';
+import { HttpError } from '@js-camp/core/models/http-error';
 import { Registration } from '@js-camp/core/models/registration';
 import { TokensMapper } from '@js-camp/core/mappers/token.mapper';
 import { LoginDataMapper } from '@js-camp/core/mappers/login-data.mapper';
@@ -74,12 +74,12 @@ export class AuthService {
         this.http.post<TokenDto>(this.refreshUrl.toString(), {
           refresh: tokens.refresh,
         }) :
-        throwError(() => new AppError(UNAUTHORIZED_ERROR_MESSAGE))),
+        throwError(() => new HttpError(UNAUTHORIZED_ERROR_MESSAGE))),
       map(tokensDto => TokensMapper.fromDto(tokensDto)),
       switchMap(tokens => this.tokenService.save(tokens)),
       catchError((error: unknown) => {
         if (
-          error instanceof AppError &&
+          error instanceof HttpError &&
           error.message === UNAUTHORIZED_ERROR_MESSAGE
         ) {
           return throwError(() => error);
