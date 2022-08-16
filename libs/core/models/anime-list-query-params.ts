@@ -1,5 +1,4 @@
-import { AnimeType, SortField } from '@js-camp/core/models/anime';
-import { SortDirection } from '@angular/material/sort';
+import { AnimeSort, AnimeSortDirection, AnimeSortField, AnimeType } from './anime';
 
 /** Anime list parameters contained in URL.  */
 export interface AnimeListQueryParams {
@@ -17,12 +16,5 @@ export interface AnimeListQueryParams {
   readonly search: string;
 
   /** Sort. */
-  readonly sort: {
-
-    /** Field. */
-    readonly field: SortField;
-
-    /** Direction. */
-    readonly direction: SortDirection;
-  };
+  readonly sort: AnimeSort<AnimeSortDirection, AnimeSortField>;
 }
