@@ -65,7 +65,7 @@
                 <mat-chip
                   *ngFor="
                     let genre of anime.genresData;
-                    trackBy: trackItemGenre
+                    trackBy: trackGenre
                   "
                 >
                   {{ genre.name }}
@@ -78,7 +78,7 @@
                 <mat-chip
                   *ngFor="
                     let studio of anime.studiosData;
-                    trackBy: trackItemStudio
+                    trackBy: trackStudio
                   "
                 >
                   {{ studio.name }}
@@ -89,11 +89,10 @@
         </div>
 
         <mat-card-actions>
-          <a mat-button [routerLink]="'/editor/' + anime.id"> Edit </a>
+          <a mat-button [routerLink]="['/editor', anime.id]"> Edit </a>
           <button
             type="button"
             mat-button
-            type="button"
             (click)="onDeleteAnime(anime.id)"
           >
             Delete

@@ -167,7 +167,7 @@ export class EditorFormComponent implements OnInit {
 
       animeSet$.pipe(
         map(animeEditor => animeEditor.image),
-        map(posterUrl => this.posterPreview$.next(posterUrl)),
+        tap(posterUrl => this.posterPreview$.next(posterUrl)),
         untilDestroyed(this),
       )
         .subscribe();
@@ -178,13 +178,13 @@ export class EditorFormComponent implements OnInit {
 
     const genresSearchChanges$ = this.animeForm.controls.genresSearch.valueChanges.pipe(
       debounceTime(SEARCH_DEBOUNCE_TIME),
-      map(search => this.genreService.findGenresByName(search)),
+      switchMap(search => this.genreService.findGenresByName(search)),
       untilDestroyed(this),
     );
 
     const genresStudiosChanges$ = this.animeForm.controls.studiosSearch.valueChanges.pipe(
       debounceTime(SEARCH_DEBOUNCE_TIME),
-      map(search => this.studioService.findStudiosByName(search)),
+      switchMap(search => this.studioService.findStudiosByName(search)),
       untilDestroyed(this),
     );
 
@@ -241,13 +241,19 @@ export class EditorFormComponent implements OnInit {
 
   /** Handlers get more genres. */
   public onMoreGenres(): void {
-    this.genreService.getMoreGenres();
+    this.genreService.getMoreGenres().pipe(
+      untilDestroyed(this),
+    )
+      .subscribe();
   }
 
   /** Handlers create genre. */
   public onCreateGenre(): void {
     const search = this.animeForm.controls.genresSearch.value;
-    this.genreService.createGenre(search);
+    this.genreService.createGenre(search).pipe(
+      untilDestroyed(this),
+    )
+      .subscribe();
   }
 
   /**
@@ -255,7 +261,11 @@ export class EditorFormComponent implements OnInit {
    * @param id Genre id.
    */
   public onRemoveGenre(id: number): void {
-    this.genreService.deleteGenre(id);
+    this.genreService.deleteGenre(id).pipe(
+      untilDestroyed(this),
+    )
+      .subscribe();
+
     const genresIds = this.animeForm.controls.genres.value;
     if (genresIds !== null) {
       this.animeForm.controls.genres.setValue(genresIds.filter(genreId => genreId !== id));
@@ -266,13 +276,19 @@ export class EditorFormComponent implements OnInit {
 
   /** Handlers get more studios. */
   public onMoreStudios(): void {
-    this.studioService.getMoreStudios();
+    this.studioService.getMoreStudios().pipe(
+      untilDestroyed(this),
+    )
+      .subscribe();
   }
 
   /** Handlers create studio. */
   public onCreateStudio(): void {
     const search = this.animeForm.controls.studiosSearch.value;
-    this.studioService.createStudio(search);
+    this.studioService.createStudio(search).pipe(
+      untilDestroyed(this),
+    )
+      .subscribe();
   }
 
   /**
@@ -280,7 +296,11 @@ export class EditorFormComponent implements OnInit {
    * @param id Studio id.
    */
   public onRemoveStudio(id: number): void {
-    this.studioService.deleteStudio(id);
+    this.studioService.deleteStudio(id).pipe(
+      untilDestroyed(this),
+    )
+      .subscribe();
+
     const studioIds = this.animeForm.controls.studios.value;
     if (studioIds !== null) {
       this.animeForm.controls.studios.setValue(studioIds.filter(studioId => studioId !== id));

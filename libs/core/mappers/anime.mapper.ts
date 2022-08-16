@@ -4,7 +4,7 @@ import { AnimeDetails } from '../models/animeDetails';
 import { AnimeBaseDto, AnimeStatusDto, AnimeTypeDto } from '../dtos/anime.dto';
 import { AnimeBase, AnimeStatus, AnimeType } from '../models/anime';
 import { isDefined } from '../utils/guards/general.guard';
-import { AnimeEditor, PostAnime, PutAnime, Rating, Season, Source } from '../models/anime-editor';
+import { AnimeEditor, CreateAnime, UpdateAnime, Rating, Season, Source } from '../models/anime-editor';
 import { AnimeEditorDto, PostAnimeDto, PutAnimeDto, RatingDto, SeasonDto, SourceDto } from '../dtos/anime-editor.dto';
 
 import { GenreMapper } from './genre.mapper';
@@ -195,7 +195,7 @@ export namespace AnimeMapper {
    * Maps model to dto.
    * @param model PostAnimeEditor.
    */
-  export function toPostEditorDto(model: PostAnime): PostAnimeDto {
+  export function toPostEditorDto(model: CreateAnime): PostAnimeDto {
     if (!isDefined(ANIME_STATUS_TO_DTO_MAP[model.status])) {
       throw new Error(`Unknown value: ${model.status}`);
     }
@@ -238,7 +238,7 @@ export namespace AnimeMapper {
    * Maps model to dto.
    * @param model PutAnimeEditor.
    */
-  export function toPutEditorDto(model: PutAnime): PutAnimeDto {
+  export function toPutEditorDto(model: UpdateAnime): PutAnimeDto {
     return {
       id: model.id,
       ...AnimeMapper.toPostEditorDto(model),

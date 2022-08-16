@@ -1,5 +1,4 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BehaviorSubject, filter, first, map, merge, Observable, ReplaySubject, scan, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, map, merge, Observable, of, ReplaySubject, scan, switchMap, tap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -12,7 +11,6 @@ import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { AppConfigService } from './app-config.service';
 
 /** Studio service. */
-@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -20,11 +18,11 @@ export class StudioService {
 
   private readonly studiosUrl: URL;
 
-  private readonly nextStudiosUrl$ = new ReplaySubject<string | null>(1);
-
   private readonly nextStudios$ = new ReplaySubject<readonly Studio[]>(1);
 
   private readonly isSearch$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  private nextStudiosUrl: string | null = null;
 
   /** Current Studios. */
   public readonly currentStudios$: Observable<readonly Studio[]>;
@@ -68,71 +66,62 @@ export class StudioService {
         pagination,
         studiosDto => StudioMapper.fromDto(studiosDto),
       )),
-      map(studios => {
-        this.nextStudiosUrl$.next(studios.next);
-        return studios.results;
+      tap(studios => {
+        this.nextStudiosUrl = studios.next;
       }),
+      map(studios => studios.results),
     );
   }
 
   /** Gets next list of studios. */
-  public getMoreStudios(): void {
-    this.nextStudiosUrl$.pipe(
-      first(),
-      filter((nextStudiosUrl): nextStudiosUrl is NonNullable<string | null> => nextStudiosUrl !== null),
-      switchMap(nextStudiosUrl => this.fetchStudios(nextStudiosUrl, '')),
-      map(studios => this.nextStudios$.next(studios)),
-      untilDestroyed(this),
-    )
-      .subscribe();
+  public getMoreStudios(): Observable<readonly Studio[]> {
+    return this.fetchStudios(this.nextStudiosUrl ?? this.studiosUrl.toString(), '').pipe(
+      tap(studios => this.nextStudios$.next(studios)),
+    );
   }
 
   /**
    * Finds studios by name.
    * @param name Studio name.
    */
-  public findStudiosByName(name: string | null): void {
+  public findStudiosByName(name: string | null): Observable<readonly Studio[] | null> {
     if (name === null || name.length === 0) {
       this.isSearch$.next(false);
-      return;
+      return of(null);
     }
 
-    this.fetchStudios(this.studiosUrl.toString(), name).pipe(
-      tap(() => this.isSearch$.next(true)),
-      map(studios => this.nextStudios$.next(studios)),
-      untilDestroyed(this),
-    )
-      .subscribe();
+    return this.fetchStudios(this.studiosUrl.toString(), name).pipe(
+      tap(studios => {
+        this.isSearch$.next(true);
+        this.nextStudios$.next(studios);
+      }),
+    );
   }
 
   /**
    * Creates studio.
    * @param name Studio name.
    */
-  public createStudio(name: string | null): void {
+  public createStudio(name: string | null): Observable<Studio | null> {
     if (name === null) {
-      return;
+      return of(null);
     }
 
     const postStudio = StudioMapper.toDto(name);
-    this.http.post<StudioDto>(this.studiosUrl.toString(), postStudio).pipe(
+    return this.http.post<StudioDto>(this.studiosUrl.toString(), postStudio).pipe(
       map(studioDto => StudioMapper.fromDto(studioDto)),
-      map(studios => this.nextStudios$.next([studios])),
-      untilDestroyed(this),
-    )
-      .subscribe();
+      tap(studios => {
+        this.nextStudios$.next([studios]);
+      }),
+    );
   }
 
   /**
    * Deletes studio.
    * @param id Studio id.
    */
-  public deleteStudio(id: number): void {
-    this.http.delete(`${this.studiosUrl.toString()}${id}/`)
-      .pipe(
-        untilDestroyed(this),
-      )
-      .subscribe();
+  public deleteStudio(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.studiosUrl.toString()}${id}/`);
   }
 
   /**

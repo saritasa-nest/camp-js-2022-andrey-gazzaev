@@ -1,5 +1,5 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BehaviorSubject, filter, first, map, merge, Observable, ReplaySubject, scan, switchMap, tap } from 'rxjs';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { BehaviorSubject, map, merge, Observable, of, ReplaySubject, scan, shareReplay, switchMap, tap } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -20,11 +20,11 @@ export class GenreService {
 
   private readonly genresUrl: URL;
 
-  private readonly nextGenresUrl$ = new ReplaySubject<string | null>(1);
-
   private readonly nextGenres$ = new ReplaySubject<readonly Genre[]>(1);
 
   private readonly isSearch$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  private nextGenresUrl: string | null = null;
 
   /** Current genres. */
   public readonly currentGenres$: Observable<readonly Genre[]>;
@@ -43,6 +43,7 @@ export class GenreService {
       nextGenresActions$,
     ).pipe(
       scan((acc, value) => [...acc, ...value]),
+      shareReplay({ bufferSize: 1, refCount: true }),
     );
 
     this.currentGenres$ = this.isSearch$.pipe(
@@ -68,71 +69,63 @@ export class GenreService {
         pagination,
         genresDto => GenreMapper.fromDto(genresDto),
       )),
-      map(genres => {
-        this.nextGenresUrl$.next(genres.next);
-        return genres.results;
+      tap(genres => {
+        this.nextGenresUrl = genres.next;
       }),
+      map(genres => genres.results),
     );
   }
 
   /** Gets next list of genres. */
-  public getMoreGenres(): void {
-    this.nextGenresUrl$.pipe(
-      first(),
-      filter((nextGenresUrl): nextGenresUrl is NonNullable<string | null> => nextGenresUrl !== null),
-      switchMap(nextGenresUrl => this.fetchGenres(nextGenresUrl, '')),
-      map(genres => this.nextGenres$.next(genres)),
-      untilDestroyed(this),
-    )
-      .subscribe();
+  public getMoreGenres(): Observable<readonly Genre[]> {
+    return this.fetchGenres(this.nextGenresUrl ?? this.genresUrl.toString(), '')
+      .pipe(
+        tap(genres => {
+          this.nextGenres$.next(genres);
+        }),
+      );
   }
 
   /**
    * Finds genres by name.
    * @param name Genre name.
    */
-  public findGenresByName(name: string | null): void {
+  public findGenresByName(name: string | null): Observable<readonly Genre[] | null> {
     if (name === null || name.length === 0) {
       this.isSearch$.next(false);
-      return;
+      return of(null);
     }
 
-    this.fetchGenres(this.genresUrl.toString(), name).pipe(
-      tap(() => this.isSearch$.next(true)),
-      map(genres => this.nextGenres$.next(genres)),
-      untilDestroyed(this),
-    )
-      .subscribe();
+    return this.fetchGenres(this.genresUrl.toString(), name).pipe(
+      tap(genres => {
+        this.isSearch$.next(true);
+        this.nextGenres$.next(genres);
+      }),
+    );
   }
 
   /**
    * Creates genre.
    * @param name Genre name.
    */
-  public createGenre(name: string | null): void {
+  public createGenre(name: string | null): Observable<Genre | null> {
     if (name === null) {
-      return;
+      return of(null);
     }
 
     const postGenre = GenreMapper.toDto(name);
-    this.http.post<GenreDto>(this.genresUrl.toString(), postGenre).pipe(
+    return this.http.post<GenreDto>(this.genresUrl.toString(), postGenre).pipe(
       map(genreDto => GenreMapper.fromDto(genreDto)),
-      map(genres => this.nextGenres$.next([genres])),
-      untilDestroyed(this),
-    )
-      .subscribe();
+      tap(genres => this.nextGenres$.next([genres])),
+    );
   }
 
   /**
    * Deletes genre.
    * @param id Genre id.
    */
-  public deleteGenre(id: number): void {
-    this.http.delete(`${this.genresUrl.toString()}${id}/`)
-      .pipe(
-        untilDestroyed(this),
-      )
-      .subscribe();
+  public deleteGenre(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.genresUrl.toString()}${id}/`);
   }
 
   /**

@@ -62,7 +62,7 @@ export class S3directService {
     }).pipe(
       map(s3UploadDto => this.createPostData(s3UploadDto, poster)),
       switchMap(({ formAction, formData }) => this.http.post(formAction, formData, { responseType: 'text' })),
-      map(xml => <S3ResponseDto>xml2js(xml, { compact: true })),
+      map(xml => xml2js(xml, { compact: true }) as S3ResponseDto),
       map(s3ResponseDto => s3ResponseDto.PostResponse.Location._text),
     );
   }

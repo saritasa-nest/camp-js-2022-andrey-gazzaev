@@ -1,7 +1,7 @@
 import { filter, map, Observable, switchMap } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { Component, TrackByFunction } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -74,18 +74,18 @@ export class DetailsComponent {
    * @param _index Anime's index into array.
    * @param genre Object of genre.
    */
-  public trackItemGenre: TrackByFunction<Genre> = function(_index: number, genre: Genre): number {
+  public trackGenre(_index: number, genre: Genre): number {
     return genre.id;
-  };
+  }
 
   /**
    * Tracks anime by ID.
    * @param _index Anime's index into array.
    * @param studio Object of studio.
    */
-  public trackItemStudio: TrackByFunction<Studio> = function(_index: number, studio: Studio): number {
+  public trackStudio(_index: number, studio: Studio): number {
     return studio.id;
-  };
+  }
 
   /**
    * Handlers anime delete.
@@ -93,10 +93,10 @@ export class DetailsComponent {
    */
   public onDeleteAnime(id: number): void {
     this.openDialog().pipe(
-      untilDestroyed(this),
       filter(value => value),
       switchMap(() => this.animeService.deleteAnime(id)),
       map(() => this.urlService.navigateToHome()),
+      untilDestroyed(this),
     )
       .subscribe();
   }

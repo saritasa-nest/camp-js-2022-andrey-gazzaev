@@ -4,10 +4,10 @@ import { FormControl } from '@angular/forms';
 interface Entity {
 
   /** ID. */
-  id: number;
+  readonly id: number;
 
   /** Name. */
-  name: string;
+  readonly name: string;
 }
 
 /** Entity select component. */

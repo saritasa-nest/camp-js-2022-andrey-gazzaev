@@ -17,7 +17,7 @@ import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { AnimeBase, AnimeStatus, AnimeType } from '@js-camp/core/models/anime';
 import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
 import { AnimeListOptionsMapper } from '@js-camp/core/mappers/anime-list-options.mapper';
-import { AnimeEditor, AnimeInformation, PostAnime, PutAnime, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
+import { AnimeEditor, AnimeInformation, CreateAnime, UpdateAnime, Rating, Season, Source } from '@js-camp/core/models/anime-editor';
 
 import { catchHttpErrorResponse } from '../utils/rxjs/catch-http-error';
 
@@ -102,7 +102,7 @@ export class AnimeService {
    * @param animeData The anime object to be created.
    */
   public saveAnime({ id, aired, posterUrl, information }: AnimeData): Observable<number> {
-    const anime: PostAnime | PutAnime = posterUrl !== null && posterUrl !== '' ?
+    const anime: CreateAnime | UpdateAnime = posterUrl !== null && posterUrl !== '' ?
       { ...information, aired, image: posterUrl, id } :
       { ...information, aired, image: null, id };
 
@@ -176,8 +176,8 @@ export class AnimeService {
     return Object.values(Source);
   }
 
-  private isPutAnime(anime: PostAnime | PutAnime): anime is PutAnime {
-    return (anime as PutAnime).id !== undefined;
+  private isPutAnime(anime: CreateAnime | UpdateAnime): anime is UpdateAnime {
+    return (anime as UpdateAnime).id !== undefined;
   }
 
   /**
