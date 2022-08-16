@@ -1,4 +1,4 @@
-import { AnimeType, AnimeSortDirection, AnimeSortField, AnimeSort } from '@js-camp/core/models/anime';
+import { AnimeSort, AnimeSortDirection, AnimeSortField, AnimeType } from './anime';
 
 /** Anime list parameters contained in URL.  */
 export interface AnimeListQueryParams {
