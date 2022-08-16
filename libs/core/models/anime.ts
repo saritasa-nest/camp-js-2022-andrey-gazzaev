@@ -19,17 +19,23 @@ export enum AnimeStatus {
 }
 
 /** Sort settings. */
-export interface Sort<TOrder, TField> {
+export interface AnimeSort<TDirection, TField> {
 
   /** Ordering direction. */
-  readonly direction: TOrder;
+  readonly direction: TDirection;
 
   /** Field by sort. */
   readonly field: TField;
 }
 
 /** Fields by which you can sort. */
-export enum SortField {
+export enum AnimeSortDirection {
+  Ascending = 'asc',
+  Descending = 'des',
+}
+
+/** Fields by which you can sort. */
+export enum AnimeSortField {
   TitleEnglish = 'english',
   TitleJapanese = 'japanese',
   Aired = 'aired',
