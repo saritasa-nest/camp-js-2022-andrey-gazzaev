@@ -5,6 +5,11 @@ interface ImportMetaEnv {
 
   /** Api base url. */
   readonly VITE_APP_API_BASE_URL: string;
+
+  readonly VITE_API_KEY: string;
+
+  readonly VITE_BASE_URL: string;
+
 }
 
 interface ImportMeta {

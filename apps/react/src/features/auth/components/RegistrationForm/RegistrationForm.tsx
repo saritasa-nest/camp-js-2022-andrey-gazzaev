@@ -2,10 +2,14 @@ import * as yup from 'yup';
 import { memo, useState } from 'react';
 import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
+import { Box, Button, Grid, Snackbar, Typography } from '@mui/material';
 
 import { Registration } from '@js-camp/core/models/registration';
+import { isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
+import { AppError } from '@js-camp/core/models/app-error';
+import { FormError } from '@js-camp/core/models/form-error';
 
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { AuthService } from '../../../../api/services/authService';
 
 interface FormData {
 
@@ -74,10 +78,21 @@ const signUpSchema: yup.SchemaOf<FormData> = yup.object({
 });
 
 export const RegistrationFormComponent = () => {
-  const [newUser, setNewUser] = useState<Registration>(INITIAL_USER);
+  const [snackbar, setSnackbar] = useState({
+    isOpen: false,
+    message: '',
+    duration: 1000,
+  });
 
-  const handleSubmitForm = ({ email, firstName, lastName, password }: FormData) => {
-    setNewUser({ email, firstName, lastName, password });
+  const handleSubmitForm = async ({ email, firstName, lastName, password }: FormData) => {
+    try {
+      const token = await AuthService.register({ email, firstName, lastName, password });
+
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        setErrors(error);
+      }
+    }
   };
 
   const formik = useFormik({
@@ -85,6 +100,30 @@ export const RegistrationFormComponent = () => {
     validationSchema: signUpSchema,
     onSubmit: handleSubmitForm,
   });
+
+  const setErrors = (error: AppError<FormError<Registration>>) => {
+    if (error.data) {
+      const errorMessages: {
+        [key: string]: string;
+      } = {};
+
+      Object.entries(error.data).forEach(([key, value]) => {
+        errorMessages[key] = value[0];
+      });
+
+      formik.setErrors(
+        errorMessages,
+      );
+    }
+    setSnackbar(state => ({ ...state, isOpen: true, message: error.detail ?? 'Unknown error' }));
+  };
+
+  const handleCloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar(state => ({ ...state, isOpen: false }));
+  };
 
   return (
     <Box component="div">
@@ -181,6 +220,14 @@ export const RegistrationFormComponent = () => {
           </Grid>
         </Grid>
       </Box>
+
+      <Snackbar
+        open={snackbar.isOpen}
+        autoHideDuration={snackbar.duration}
+        onClose={handleCloseSnackbar}
+        message={snackbar.message}
+      />
+
     </Box>
   );
 };

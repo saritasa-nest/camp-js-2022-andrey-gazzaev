@@ -1,8 +1,13 @@
-import * as yup from 'yup';
-import { Login } from '@js-camp/core/models/login';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import { useFormik } from 'formik';
 import { memo, useState } from 'react';
+import * as yup from 'yup';
+import { Box, Button, Grid, Snackbar, TextField, Typography } from '@mui/material';
+import { useFormik } from 'formik';
+
+import { AppError } from '@js-camp/core/models/app-error';
+import { FormError } from '@js-camp/core/models/form-error';
+import { Login } from '@js-camp/core/models/login';
+
+import { AuthService } from '../../../../api/services/authService';
 
 interface FormData {
 
@@ -31,10 +36,21 @@ const signInSchema: yup.SchemaOf<FormData> = yup.object({
 });
 
 export const LoginFormComponent = () => {
-  const [user, setNewUser] = useState<Login>(INITIAL_FORM_VALUE);
+  const [snackbar, setSnackbar] = useState({
+    isOpen: false,
+    message: '',
+    duration: 1000,
+  });
 
-  const handleSubmitForm = ({ email, password }: FormData) => {
-    setNewUser({ email, password });
+  const handleSubmitForm = async({ email, password }: FormData) => {
+    try {
+      const token = await AuthService.login({ email, password });
+
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        setErrors(error);
+      }
+    }
   };
 
   const formik = useFormik({
@@ -42,6 +58,30 @@ export const LoginFormComponent = () => {
     validationSchema: signInSchema,
     onSubmit: handleSubmitForm,
   });
+
+  const setErrors = (error: AppError<FormError<Login>>) => {
+    if (error.data) {
+      const errorMessages: {
+        [key: string]: string;
+      } = {};
+
+      Object.entries(error.data).forEach(([key, value]) => {
+        errorMessages[key] = value[0];
+      });
+
+      formik.setErrors(
+        errorMessages,
+      );
+    }
+    setSnackbar(state => ({ ...state, isOpen: true, message: error.detail ?? 'Unknown error' }));
+  };
+
+  const handleCloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar(state => ({ ...state, isOpen: false }));
+  };
 
   return (
     <Box component="div">
@@ -52,7 +92,6 @@ export const LoginFormComponent = () => {
       </Typography>
       <Box component="form" noValidate onSubmit={formik.handleSubmit} >
         <Grid container spacing={2}>
-
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -94,6 +133,13 @@ export const LoginFormComponent = () => {
           </Grid>
         </Grid>
       </Box>
+
+      <Snackbar
+        open={snackbar.isOpen}
+        autoHideDuration={snackbar.duration}
+        onClose={handleCloseSnackbar}
+        message={snackbar.message}
+      />
     </Box>
   );
 };

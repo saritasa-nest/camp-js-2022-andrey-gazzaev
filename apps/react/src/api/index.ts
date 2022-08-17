@@ -1,7 +1,33 @@
 import axios, { AxiosInstance } from 'axios';
 
+import { HttpErrorMapper } from '@js-camp/core/mappers/httpError.mapper';
+import { AppError } from '@js-camp/core/models/app-error';
+import { isHttpErrorDto } from '@js-camp/core/utils/guards/error.guard';
+import { isDefined } from '@js-camp/core/utils/guards/general.guard';
+
 import { CONFIG } from './config';
+import { addTokenBeforeRequest } from './interceptors';
 
 export const http: AxiosInstance = axios.create({
   baseURL: CONFIG.apiUrl,
+  headers: {
+    'Api-Key': CONFIG.apiKey,
+  },
 });
+
+http.interceptors.request.use(addTokenBeforeRequest);
+
+/**
+ * Generates HttpError from general error.
+ * @param error Some error.
+ */
+export function generateError<T>(error: unknown): AppError<T> | null {
+  if (axios.isAxiosError(error) && isDefined(error.response)) {
+    const httpError = error.response;
+    if (isDefined(httpError.data) && isHttpErrorDto(httpError.data)) {
+      return HttpErrorMapper.fromDto<T>(httpError.data);
+    }
+  }
+
+  return null;
+}

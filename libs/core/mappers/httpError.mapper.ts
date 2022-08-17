@@ -7,7 +7,7 @@ export namespace HttpErrorMapper {
    * Maps dto to model.
    * @param dto Http error dto.
    */
-  export function fromDto(dto: HttpErrorDto): AppError {
-    return new AppError({ ...dto, message: dto.detail });
+  export function fromDto<T>(dto: HttpErrorDto): AppError<T> {
+    return new AppError<T>(dto.data as unknown as T, dto.detail);
   }
 }
