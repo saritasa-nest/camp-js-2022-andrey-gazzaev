@@ -1,20 +1,13 @@
-import { useState } from 'react';
 
-import styles from './Registration.module.css';
+import { memo } from 'react';
+import { Container } from '@mui/material';
 
-export const RegistrationComponent = () => {
-  const [someValue, setSomeValue] = useState(42);
+import { Registration } from '../components/Registration/Registration';
 
-  setSomeValue(42);
+export const RegistrationPageComponent = () => (
+  <Container component="main" maxWidth="xs">
+    <Registration />
+  </Container>
+);
 
-  return (
-    <div className={styles['container']}>
-      <h1>Welcome to Registration!</h1>
-      <p>
-        Life, the universe, and everything {someValue}
-      </p>
-    </div>
-  );
-};
-
-export default RegistrationComponent;
+export const RegistrationPage = memo(RegistrationPageComponent);
