@@ -1,1 +1,1 @@
-export { RegistrationComponent as Registration } from './RegistrationPage';
+export { AuthPage as RegistrationPage } from './AuthPage';

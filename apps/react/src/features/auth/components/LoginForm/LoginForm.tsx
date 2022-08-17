@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { Login as LoginData } from '@js-camp/core/models/login';
+import { Login } from '@js-camp/core/models/login';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { memo, useState } from 'react';
@@ -30,8 +30,8 @@ const signInSchema: yup.SchemaOf<FormData> = yup.object({
     .required(PASSWORD_ERROR_MESSAGES),
 });
 
-export const LoginComponent = () => {
-  const [user, setNewUser] = useState<LoginData>(INITIAL_FORM_VALUE);
+export const LoginFormComponent = () => {
+  const [user, setNewUser] = useState<Login>(INITIAL_FORM_VALUE);
 
   const handleSubmitForm = ({ email, password }: FormData) => {
     setNewUser({ email, password });
@@ -98,4 +98,4 @@ export const LoginComponent = () => {
   );
 };
 
-export const Login = memo(LoginComponent);
+export const LoginForm = memo(LoginFormComponent);

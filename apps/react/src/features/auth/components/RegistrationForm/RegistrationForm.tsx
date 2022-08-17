@@ -3,11 +3,9 @@ import { memo, useState } from 'react';
 import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
 
-import { Registration as RegistrationData } from '@js-camp/core/models/registration';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Registration } from '@js-camp/core/models/registration';
 
-/* eslint-disable-next-line */
-export interface RegistrationProps { }
+import { Box, Button, Grid, Typography } from '@mui/material';
 
 interface FormData {
 
@@ -75,8 +73,8 @@ const signUpSchema: yup.SchemaOf<FormData> = yup.object({
     .required(PASSWORD_CONFIRM_ERROR_MESSAGES.required),
 });
 
-export const RegistrationComponent = () => {
-  const [newUser, setNewUser] = useState<RegistrationData>(INITIAL_USER);
+export const RegistrationFormComponent = () => {
+  const [newUser, setNewUser] = useState<Registration>(INITIAL_USER);
 
   const handleSubmitForm = ({ email, firstName, lastName, password }: FormData) => {
     setNewUser({ email, firstName, lastName, password });
@@ -187,4 +185,4 @@ export const RegistrationComponent = () => {
   );
 };
 
-export const Registration = memo(RegistrationComponent);
+export const RegistrationForm = memo(RegistrationFormComponent);
