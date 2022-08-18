@@ -4,6 +4,7 @@ import { selectGenres, selectAreGenresLoading } from '@js-camp/react/store/genre
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store';
 
 import { GenreCard } from '../../components/GenreCard';
+import { Header } from '../../../../components/Header';
 
 /** Genres page component. */
 const GenresPageComponent: FC = () => {
@@ -21,6 +22,7 @@ const GenresPageComponent: FC = () => {
 
   return (
     <>
+      <Header />
       <h1>Genres</h1>
       {genres.map(genre => <GenreCard key={genre.id} genre={genre} />)}
     </>
