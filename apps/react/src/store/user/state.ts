@@ -1,10 +1,12 @@
 import { User } from '@js-camp/core/models/user';
+import { createEntityAdapter } from '@reduxjs/toolkit';
+
+export const entityAdapter = createEntityAdapter<User>({
+  selectId: user => user.email,
+});
 
 /** Genres state. */
 export interface UserState {
-
-  /** Genres list. */
-  readonly user: User | null;
 
   /** Error. */
   readonly error?: string;
@@ -13,7 +15,8 @@ export interface UserState {
   readonly isLoading: boolean;
 }
 
-export const initialState: UserState = {
+export const initialState = entityAdapter.getInitialState<UserState>({
   isLoading: true,
-  user: null,
-};
+});
+
+export type State = typeof initialState;

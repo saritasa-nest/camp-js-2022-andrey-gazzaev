@@ -1,8 +1,7 @@
-
 import { createSlice } from '@reduxjs/toolkit';
 
 import { fetchUser } from './dispatchers';
-import { initialState } from './state';
+import { entityAdapter, initialState, State } from './state';
 
 export const userSlice = createSlice({
   name: 'user',
@@ -13,7 +12,7 @@ export const userSlice = createSlice({
       state.isLoading = true;
     })
     .addCase(fetchUser.fulfilled, (state, action) => {
-      state.user = action.payload;
+      entityAdapter.setOne(state as State, action.payload);
       state.isLoading = false;
     })
     .addCase(fetchUser.rejected, (state, action) => {
