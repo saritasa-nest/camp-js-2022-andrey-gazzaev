@@ -20,6 +20,7 @@ export const authSlice = createSlice({
     .addCase(loginUser.fulfilled, (state, action) => {
       state.token = action.payload;
       state.isLoading = false;
+      state.isSubmit = true;
     })
     .addCase(loginUser.rejected, (state, action) => {
       state.error = action.payload as AppError<FormError<Login>>;
@@ -32,6 +33,7 @@ export const authSlice = createSlice({
     .addCase(registrationUser.fulfilled, (state, action) => {
       state.token = action.payload;
       state.isLoading = false;
+      state.isSubmit = true;
     })
     .addCase(registrationUser.rejected, (state, action) => {
       state.error = action.payload as AppError<FormError<Registration>>;

@@ -12,9 +12,5 @@ export const AuthGuard = () => {
     pathname: '/auth/login',
   };
 
-  if (!user) {
-    return <Navigate to={redirect} replace />;
-  }
-
-  return <Outlet />;
+  return user === null ? <Navigate to={redirect} replace /> : <Outlet />;
 };

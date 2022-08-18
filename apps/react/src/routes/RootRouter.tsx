@@ -7,10 +7,10 @@ import { genresRoutes } from '../features/genres/routes';
 const routes: RouteObject[] = [
   {
     path: '*',
-    element: <Navigate to="/" />,
+    element: <Navigate to="/genre" />,
   },
-  ...authRoutes,
   ...genresRoutes,
+  ...authRoutes,
 ];
 
 /** Root router component. */

@@ -10,6 +10,9 @@ export interface AuthState {
   /** Whether authentication is in process or not. */
   readonly isLoading: boolean;
 
+  /**  */
+  readonly isSubmit: boolean;
+
   /** Error. */
   readonly error?: AppError<FormError<Login> | FormError<Registration>>;
 
@@ -19,5 +22,6 @@ export interface AuthState {
 
 export const initialState: AuthState = {
   isLoading: false,
+  isSubmit: false,
   token: null,
 };
