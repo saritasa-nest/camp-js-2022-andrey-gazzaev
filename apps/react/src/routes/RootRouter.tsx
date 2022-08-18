@@ -7,7 +7,7 @@ import { genresRoutes } from '../features/genres/routes';
 const routes: RouteObject[] = [
   {
     path: '*',
-    element: <Navigate to="/auth/registration" />,
+    element: <Navigate to="/" />,
   },
   ...authRoutes,
   ...genresRoutes,
