@@ -1,6 +1,7 @@
 import { memo, useState } from 'react';
 import * as yup from 'yup';
-import { Box, Button, Grid, Snackbar, TextField, Typography } from '@mui/material';
+import { Box, Grid, Snackbar, TextField, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { useFormik } from 'formik';
 
 import { AppError } from '@js-camp/core/models/app-error';
@@ -36,20 +37,24 @@ const signInSchema: yup.SchemaOf<FormData> = yup.object({
 });
 
 export const LoginFormComponent = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({
     isOpen: false,
     message: '',
     duration: 1000,
   });
 
-  const handleSubmitForm = async({ email, password }: FormData) => {
+  const handleSubmitForm = async ({ email, password }: FormData) => {
     try {
+      setIsLoading(true);
       const token = await AuthService.login({ email, password });
 
     } catch (error: unknown) {
       if (error instanceof AppError) {
         setErrors(error);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -123,13 +128,15 @@ export const LoginFormComponent = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <Button
-              type="submit"
-              fullWidth
+            <LoadingButton
+              loading={isLoading}
+              loadingIndicator="Loading…"
               variant="contained"
+              fullWidth
+              type="submit"
             >
-              Sign Up
-            </Button>
+              Sign In
+            </LoadingButton>
           </Grid>
         </Grid>
       </Box>

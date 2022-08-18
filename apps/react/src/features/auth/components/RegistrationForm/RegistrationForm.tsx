@@ -2,10 +2,10 @@ import * as yup from 'yup';
 import { memo, useState } from 'react';
 import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
-import { Box, Button, Grid, Snackbar, Typography } from '@mui/material';
+import { Box, Grid, Snackbar, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { Registration } from '@js-camp/core/models/registration';
-import { isKeyOfObject } from '@js-camp/core/utils/guards/general.guard';
 import { AppError } from '@js-camp/core/models/app-error';
 import { FormError } from '@js-camp/core/models/form-error';
 
@@ -78,6 +78,8 @@ const signUpSchema: yup.SchemaOf<FormData> = yup.object({
 });
 
 export const RegistrationFormComponent = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [snackbar, setSnackbar] = useState({
     isOpen: false,
     message: '',
@@ -86,12 +88,15 @@ export const RegistrationFormComponent = () => {
 
   const handleSubmitForm = async ({ email, firstName, lastName, password }: FormData) => {
     try {
+      setIsLoading(true);
       const token = await AuthService.register({ email, firstName, lastName, password });
 
     } catch (error: unknown) {
       if (error instanceof AppError) {
         setErrors(error);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -210,13 +215,15 @@ export const RegistrationFormComponent = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <Button
-              type="submit"
-              fullWidth
+            <LoadingButton
+              loading={isLoading}
+              loadingIndicator="Loading…"
               variant="contained"
+              fullWidth
+              type="submit"
             >
               Sign Up
-            </Button>
+            </LoadingButton>
           </Grid>
         </Grid>
       </Box>
