@@ -1,46 +1,29 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import * as yup from 'yup';
 import { Box, Grid, Snackbar, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 
 import { AppError } from '@js-camp/core/models/app-error';
 import { loginUser } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { selectAreAuthLoading, selectError } from '@js-camp/react/store/auth/selectors';
+import { selectAreAuthLoading, selectError, selectIsSubmit } from '@js-camp/react/store/auth/selectors';
 
 import { ExtractedError, extractError } from '../../utils/error';
 
-interface FormData {
-
-  /** Email. */
-  readonly email: string;
-
-  /** Password.  */
-  readonly password: string;
-}
+import { LoginFormData, signInSchema } from './formSettings';
 
 const INITIAL_FORM_VALUE = {
   email: '',
   password: '',
 };
 
-const EMAIL_ERROR_MESSAGES = 'Email is required';
-const PASSWORD_ERROR_MESSAGES = 'Password is required';
-
-const signInSchema: yup.SchemaOf<FormData> = yup.object({
-  email: yup
-    .string()
-    .required(EMAIL_ERROR_MESSAGES),
-  password: yup
-    .string()
-    .required(PASSWORD_ERROR_MESSAGES),
-});
-
 export const LoginFormComponent = () => {
   const isLoading = useAppSelector(selectAreAuthLoading);
   const loginError = useAppSelector(selectError);
+  const isSubmitForm = useAppSelector(selectIsSubmit);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState({
     isOpen: false,
     message: '',
@@ -53,15 +36,11 @@ export const LoginFormComponent = () => {
     }
   }, [loginError]);
 
-  const handleSubmitForm = useCallback(({ email, password }: FormData) => {
-    dispatch(loginUser({ email, password }));
-  }, [dispatch]);
-
-  const formik = useFormik({
-    initialValues: INITIAL_FORM_VALUE,
-    validationSchema: signInSchema,
-    onSubmit: handleSubmitForm,
-  });
+  useEffect(() => {
+    if (isSubmitForm) {
+      navigate('/');
+    }
+  }, [isSubmitForm]);
 
   const setErrors = (error: ExtractedError) => {
     formik.setErrors(
@@ -77,6 +56,16 @@ export const LoginFormComponent = () => {
     }
     setSnackbar(state => ({ ...state, isOpen: false }));
   };
+
+  const handleSubmitForm = useCallback(({ email, password }: LoginFormData) => {
+    dispatch(loginUser({ email, password }));
+  }, [dispatch]);
+
+  const formik = useFormik({
+    initialValues: INITIAL_FORM_VALUE,
+    validationSchema: signInSchema,
+    onSubmit: handleSubmitForm,
+  });
 
   return (
     <Box component="div">
