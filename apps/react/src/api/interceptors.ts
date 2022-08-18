@@ -38,7 +38,7 @@ export const addTokenBeforeRequest = async(config: AxiosRequestConfig): Promise<
     ...config,
     headers: {
       ...headers,
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token.access}`,
     },
   };
 };

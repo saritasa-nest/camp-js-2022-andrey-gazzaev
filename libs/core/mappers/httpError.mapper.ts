@@ -8,6 +8,9 @@ export namespace HttpErrorMapper {
    * @param dto Http error dto.
    */
   export function fromDto<T>(dto: HttpErrorDto): AppError<T> {
+    const a = new AppError<T>(dto.data as unknown as T, dto.detail)
+    console.log(a.detail, 'apperror');
+
     return new AppError<T>(dto.data as unknown as T, dto.detail);
   }
 }

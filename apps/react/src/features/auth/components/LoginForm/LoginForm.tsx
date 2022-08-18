@@ -1,14 +1,15 @@
-import { memo, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { Box, Grid, Snackbar, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useFormik } from 'formik';
 
 import { AppError } from '@js-camp/core/models/app-error';
-import { FormError } from '@js-camp/core/models/form-error';
-import { Login } from '@js-camp/core/models/login';
+import { loginUser } from '@js-camp/react/store/auth/dispatchers';
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { selectAreAuthLoading, selectError } from '@js-camp/react/store/auth/selectors';
 
-import { AuthService } from '../../../../api/services/authService';
+import { ExtractedError, extractError } from '../../utils/error';
 
 interface FormData {
 
@@ -37,26 +38,24 @@ const signInSchema: yup.SchemaOf<FormData> = yup.object({
 });
 
 export const LoginFormComponent = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useAppSelector(selectAreAuthLoading);
+  const loginError = useAppSelector(selectError);
+  const dispatch = useAppDispatch();
   const [snackbar, setSnackbar] = useState({
     isOpen: false,
     message: '',
     duration: 1000,
   });
 
-  const handleSubmitForm = async ({ email, password }: FormData) => {
-    try {
-      setIsLoading(true);
-      const token = await AuthService.login({ email, password });
-
-    } catch (error: unknown) {
-      if (error instanceof AppError) {
-        setErrors(error);
-      }
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (loginError instanceof AppError) {
+      setErrors(extractError(loginError));
     }
-  };
+  }, [loginError]);
+
+  const handleSubmitForm = useCallback(({ email, password }: FormData) => {
+    dispatch(loginUser({ email, password }));
+  }, [dispatch]);
 
   const formik = useFormik({
     initialValues: INITIAL_FORM_VALUE,
@@ -64,21 +63,12 @@ export const LoginFormComponent = () => {
     onSubmit: handleSubmitForm,
   });
 
-  const setErrors = (error: AppError<FormError<Login>>) => {
-    if (error.data) {
-      const errorMessages: {
-        [key: string]: string;
-      } = {};
+  const setErrors = (error: ExtractedError) => {
+    formik.setErrors(
+      error.errorForFields,
+    );
 
-      Object.entries(error.data).forEach(([key, value]) => {
-        errorMessages[key] = value[0];
-      });
-
-      formik.setErrors(
-        errorMessages,
-      );
-    }
-    setSnackbar(state => ({ ...state, isOpen: true, message: error.detail ?? 'Unknown error' }));
+    setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
   };
 
   const handleCloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
