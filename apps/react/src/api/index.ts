@@ -6,7 +6,7 @@ import { isHttpErrorDto } from '@js-camp/core/utils/guards/error.guard';
 import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { CONFIG } from './config';
-import { addTokenBeforeRequest } from './interceptors';
+import { addTokenBeforeRequest, refreshToken } from './interceptors';
 
 export const http: AxiosInstance = axios.create({
   baseURL: CONFIG.apiUrl,
@@ -15,7 +15,8 @@ export const http: AxiosInstance = axios.create({
   },
 });
 
-http.interceptors.request.use(addTokenBeforeRequest);
+http.interceptors.request.use(addTokenBeforeRequest, refreshToken);
+http.interceptors.response.use(config => config, refreshToken);
 
 /**
  * Generates HttpError from general error.

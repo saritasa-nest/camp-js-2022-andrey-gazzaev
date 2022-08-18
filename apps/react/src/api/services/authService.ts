@@ -18,6 +18,7 @@ export namespace AuthService {
 
   const LOGIN_URL = new URL('auth/login/', CONFIG.apiUrl);
   const REGISTRATION_URL = new URL('auth/register/', CONFIG.apiUrl);
+  const REFRESH_URL = new URL('auth/token/refresh/', CONFIG.apiUrl);
 
   /**
    * Log in to account.
@@ -26,8 +27,8 @@ export namespace AuthService {
   export async function login(loginData: Login): Promise<Token> {
     try {
       const loginDataDto = LoginDataMapper.toDto(loginData);
-      const tokenDto = await http.post<TokenDto>(LOGIN_URL.toString(), loginDataDto);
-      const token = TokensMapper.fromDto(tokenDto.data);
+      const tokenDto = (await http.post<TokenDto>(LOGIN_URL.toString(), loginDataDto)).data;
+      const token = TokensMapper.fromDto(tokenDto);
       await TokenService.save(token);
       return token;
     } catch (error: unknown) {
@@ -48,8 +49,8 @@ export namespace AuthService {
 
     try {
       const registrationDataDto = RegistrationDataMapper.toDto({ ...registrationData, avatarUrl });
-      const tokenDto = await http.post<TokenDto>(REGISTRATION_URL.toString(), registrationDataDto);
-      const token = TokensMapper.fromDto(tokenDto.data);
+      const tokenDto = (await http.post<TokenDto>(REGISTRATION_URL.toString(), registrationDataDto)).data;
+      const token = TokensMapper.fromDto(tokenDto);
       await TokenService.save(token);
       return token;
     } catch (error: unknown) {
@@ -59,5 +60,14 @@ export namespace AuthService {
       }
       throw error;
     }
+  }
+
+  /**
+   * Refreshes access token.
+   * @param token Token object.
+   */
+  export async function refreshToken({ refresh }: Token): Promise<Token> {
+    const tokenDto = (await http.post<TokenDto>(REFRESH_URL.toString(), { refresh })).data;
+    return TokensMapper.fromDto(tokenDto);
   }
 }

@@ -3,11 +3,10 @@
 
 interface ImportMetaEnv {
 
-  /** Api base url. */
-  readonly VITE_APP_API_BASE_URL: string;
-
+  /** API key. */
   readonly VITE_API_KEY: string;
 
+  /** Api base url. */
   readonly VITE_BASE_URL: string;
 
 }

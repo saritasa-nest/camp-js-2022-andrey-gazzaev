@@ -14,6 +14,6 @@ export interface UserState {
 }
 
 export const initialState: UserState = {
-  isLoading: false,
+  isLoading: true,
   user: null,
 };

@@ -58,7 +58,7 @@ export const LoginFormComponent = () => {
   };
 
   const handleSubmitForm = useCallback(({ email, password }: LoginFormData) => {
-    dispatch(loginUser({ email, password }));
+  dispatch(loginUser({ email, password }));
   }, [dispatch]);
 
   const formik = useFormik({
