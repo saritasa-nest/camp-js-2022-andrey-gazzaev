@@ -2,11 +2,21 @@ import { memo } from 'react';
 import { Button, Typography, Toolbar, Box, AppBar } from '@mui/material';
 
 import { selectUser } from '@js-camp/react/store/user/selector';
+import { logoutUser } from '@js-camp/react/store/user/dispatchers';
 
-import { useAppSelector } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 
 const HeaderComponent = () => {
   const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+
+  const handleUserLogout = () => {
+    dispatch(logoutUser());
+  };
+
+  if (user === null) {
+    return <p>Oops, something went wrong.</p>;
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -16,11 +26,13 @@ const HeaderComponent = () => {
             Anime Catalog
           </Typography>
 
-          <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>
-            Hello {user.firstName} {user.lastName}
-          </Typography>
+          <Box>
+            <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>
+              Hello {user.firstName} {user.lastName}
+            </Typography>
 
-          <Button color="inherit">Log Out</Button>
+            <Button type='button' color="inherit" onClick={handleUserLogout}>Log Out</Button>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
