@@ -43,7 +43,7 @@ export async function addTokenBeforeRequest(config: AxiosRequestConfig): Promise
 
   if (headers == null) {
     throw new Error(
-      'Axios did not pass any header. Please check your request.',
+      'No headers. Hmm, maybe you should check the headers??',
     );
   }
 
