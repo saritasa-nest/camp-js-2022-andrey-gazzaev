@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
-import { Box, Grid, List, ListItem, ListItemButton, Snackbar, Typography } from '@mui/material';
+import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp/react/store/auth/selectors';
 
 import { ExtractedError, extractError } from '../../utils/error';
+
+import { HeaderForm } from '../HeaderForm/HeaderForm';
 
 import { RegistrationFormData, signUpSchema } from './formSettings';
 
@@ -69,20 +71,13 @@ export const RegistrationFormComponent = () => {
     setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
   }, [formik]);
 
-  const handleCloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  const handleCloseSnackbar = () => {
     setSnackbar(state => ({ ...state, isOpen: false }));
   };
 
   return (
     <Box component="div">
-      <Typography variant="h4" component="h1" sx={{
-        marginBottom: '10px',
-      }}>
-        Sign Up
-      </Typography>
+      <HeaderForm label='Sign Up' />
       <Box component="form" noValidate onSubmit={formik.handleSubmit} >
         <Grid container spacing={2}>
           <Grid item xs={6}>

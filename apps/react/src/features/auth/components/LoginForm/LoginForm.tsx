@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { Box, Grid, List, ListItem, ListItemButton, Snackbar, TextField, Typography } from '@mui/material';
+import { Box, Grid, List, ListItem, ListItemButton, Snackbar, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,6 +10,8 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp/react/store/auth/selectors';
 
 import { ExtractedError, extractError } from '../../utils/error';
+
+import { HeaderForm } from '../HeaderForm/HeaderForm';
 
 import { LoginFormData, signInSchema } from './formSettings';
 
@@ -61,20 +63,13 @@ export const LoginFormComponent = () => {
     setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
   }, [formik]);
 
-  const handleCloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  const handleCloseSnackbar = () => {
     setSnackbar(state => ({ ...state, isOpen: false }));
   };
 
   return (
     <Box component="div">
-      <Typography variant="h4" component="h1" sx={{
-        marginBottom: '10px',
-      }}>
-        Sign In
-      </Typography>
+      <HeaderForm label='Sign In' />
       <Box component="form" noValidate onSubmit={formik.handleSubmit} >
         <Grid container spacing={2}>
           <Grid item xs={12}>
