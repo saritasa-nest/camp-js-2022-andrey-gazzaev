@@ -6,7 +6,7 @@ import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router-dom';
 
 import { AppError } from '@js-camp/core/models/app-error';
-import { registrationUser } from '@js-camp/react/store/auth/dispatchers';
+import { registrationUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { selectAreAuthLoading, selectError, selectIsSubmit } from '@js-camp/react/store/auth/selectors';
 
@@ -41,6 +41,7 @@ export const RegistrationFormComponent = () => {
   useEffect(() => {
     if (isSubmitForm) {
       navigate('/');
+      dispatch(toggleSubmit());
     }
   }, [isSubmitForm]);
 

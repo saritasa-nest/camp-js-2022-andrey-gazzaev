@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
 import { AppError } from '@js-camp/core/models/app-error';
-import { loginUser } from '@js-camp/react/store/auth/dispatchers';
+import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { selectAreAuthLoading, selectError, selectIsSubmit } from '@js-camp/react/store/auth/selectors';
 
@@ -39,6 +39,7 @@ export const LoginFormComponent = () => {
   useEffect(() => {
     if (isSubmitForm) {
       navigate('/');
+      dispatch(toggleSubmit());
     }
   }, [isSubmitForm]);
 
@@ -58,7 +59,7 @@ export const LoginFormComponent = () => {
   };
 
   const handleSubmitForm = useCallback(({ email, password }: LoginFormData) => {
-  dispatch(loginUser({ email, password }));
+    dispatch(loginUser({ email, password }));
   }, [dispatch]);
 
   const formik = useFormik({

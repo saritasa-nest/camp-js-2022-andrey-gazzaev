@@ -9,7 +9,7 @@ export const { selectAll } = entityAdapter.getSelectors();
 /** Selects all genres from store. */
 export const selectUser = createSelector(
   (state: RootState) => selectAll(state.user),
-  user => user[0],
+  user => user[0] === undefined ? null : user[0],
 );
 
 export const selectAreUserLoading = createSelector(

@@ -1,5 +1,5 @@
 import { fetchUser } from '@js-camp/react/store/user/dispatchers';
-import { selectAreUserLoading } from '@js-camp/react/store/user/selector';
+import { selectAreUserLoading, selectUser } from '@js-camp/react/store/user/selector';
 import { memo, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -8,11 +8,14 @@ import { AuthGuardComponent } from './authGuard';
 
 const RestoreGuardComponent = () => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
   const isUserLoading = useAppSelector(selectAreUserLoading);
 
   useEffect(() => {
-    dispatch(fetchUser());
-  }, []);
+    if (user === null) {
+      dispatch(fetchUser());
+    }
+  }, [user]);
 
   return (isUserLoading ? <>Fetching user...</> : <AuthGuardComponent />);
 };

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { RootRouter } from './routes/RootRouter';
 import { store } from './store';
+import './theme/style.css';
 
 export const App: FC = () => (
   <Provider store={store}>
