@@ -11,8 +11,8 @@ export namespace UserService {
 
   /** Fetches user. */
   export async function fetchUser(): Promise<User> {
-    const userDto = (await http.get<UserDto>(userUrl.toString())).data;
-    const user = UserMapper.fromDto(userDto);
+    const { data } = await http.get<UserDto>(userUrl.toString());
+    const user = UserMapper.fromDto(data);
     return user;
   }
 }

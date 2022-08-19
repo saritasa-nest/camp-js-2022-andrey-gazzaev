@@ -27,8 +27,8 @@ export namespace AuthService {
   export async function login(loginData: Login): Promise<Token> {
     try {
       const loginDataDto = LoginDataMapper.toDto(loginData);
-      const tokenDto = (await http.post<TokenDto>(LOGIN_URL.toString(), loginDataDto)).data;
-      const token = TokensMapper.fromDto(tokenDto);
+      const { data } = await http.post<TokenDto>(LOGIN_URL.toString(), loginDataDto);
+      const token = TokensMapper.fromDto(data);
       await TokenService.save(token);
       return token;
     } catch (error: unknown) {
@@ -49,8 +49,8 @@ export namespace AuthService {
 
     try {
       const registrationDataDto = RegistrationDataMapper.toDto({ ...registrationData, avatarUrl });
-      const tokenDto = (await http.post<TokenDto>(REGISTRATION_URL.toString(), registrationDataDto)).data;
-      const token = TokensMapper.fromDto(tokenDto);
+      const { data } = await http.post<TokenDto>(REGISTRATION_URL.toString(), registrationDataDto);
+      const token = TokensMapper.fromDto(data);
       await TokenService.save(token);
       return token;
     } catch (error: unknown) {
@@ -67,7 +67,7 @@ export namespace AuthService {
    * @param token Token object.
    */
   export async function refreshToken({ refresh }: Token): Promise<Token> {
-    const tokenDto = (await http.post<TokenDto>(REFRESH_URL.toString(), { refresh })).data;
-    return TokensMapper.fromDto(tokenDto);
+    const { data } = await http.post<TokenDto>(REFRESH_URL.toString(), { refresh });
+    return TokensMapper.fromDto(data);
   }
 }
