@@ -11,7 +11,7 @@ export const animeRoutes: RouteObject[] = [
     element: <RestoreGuard ><AuthGuardComponent /></RestoreGuard>,
     children: [
       {
-        path: '',
+        path: 'anime',
         element: <AnimePage />,
       },
       {
