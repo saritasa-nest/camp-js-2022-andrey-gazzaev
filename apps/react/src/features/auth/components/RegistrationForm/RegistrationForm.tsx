@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
 import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
@@ -28,10 +28,10 @@ const INITIAL_FORM_VALUE = {
   passwordConfirm: '',
 };
 
-export const RegistrationFormComponent = () => {
+export const RegistrationFormComponent: FC = () => {
   const isLoading = useAppSelector(selectAreAuthLoading);
   const registrationError = useAppSelector(selectError);
-  const isSubmitForm = useAppSelector(selectAreAuthSubmit);
+  const isFormSubmitted = useAppSelector(selectAreAuthSubmit);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState({
@@ -51,11 +51,11 @@ export const RegistrationFormComponent = () => {
   });
 
   useEffect(() => {
-    if (isSubmitForm) {
+    if (isFormSubmitted) {
       navigate('/');
       dispatch(toggleSubmit());
     }
-  }, [isSubmitForm]);
+  }, [isFormSubmitted]);
 
   useEffect(() => {
     if (registrationError instanceof AppError) {
@@ -71,14 +71,14 @@ export const RegistrationFormComponent = () => {
     setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
   }, [formik]);
 
-  const handleCloseSnackbar = () => {
+  const handleCloseSnackbar = useCallback(() => {
     setSnackbar(state => ({ ...state, isOpen: false }));
-  };
+  }, []);
 
   return (
     <Box component="div">
-      <HeaderForm label='Sign Up' />
-      <Box component="form" noValidate onSubmit={formik.handleSubmit} >
+      <HeaderForm label="Sign Up" />
+      <Box component="form" noValidate onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
@@ -168,7 +168,7 @@ export const RegistrationFormComponent = () => {
           </Grid>
         </Grid>
 
-        <Box component="div" >
+        <Box component="div">
           <List>
             <ListItem disablePadding sx={{
               justifyContent: 'center',

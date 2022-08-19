@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Box, Grid, List, ListItem, ListItemButton, Snackbar, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useFormik } from 'formik';
@@ -20,10 +20,10 @@ const INITIAL_FORM_VALUE = {
   password: '',
 };
 
-export const LoginFormComponent = () => {
+export const LoginFormComponent: FC = () => {
   const isLoading = useAppSelector(selectAreAuthLoading);
   const loginError = useAppSelector(selectError);
-  const isSubmitForm = useAppSelector(selectAreAuthSubmit);
+  const isFormSubmitted = useAppSelector(selectAreAuthSubmit);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState({
@@ -49,11 +49,11 @@ export const LoginFormComponent = () => {
   }, [loginError]);
 
   useEffect(() => {
-    if (isSubmitForm) {
+    if (isFormSubmitted) {
       navigate('/');
       dispatch(toggleSubmit());
     }
-  }, [isSubmitForm]);
+  }, [isFormSubmitted]);
 
   const setErrors = useCallback((error: ExtractedError) => {
     formik.setErrors(
@@ -63,14 +63,14 @@ export const LoginFormComponent = () => {
     setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
   }, [formik]);
 
-  const handleCloseSnackbar = () => {
+  const handleCloseSnackbar = useCallback(() => {
     setSnackbar(state => ({ ...state, isOpen: false }));
-  };
+  }, []);
 
   return (
     <Box component="div">
-      <HeaderForm label='Sign In' />
-      <Box component="form" noValidate onSubmit={formik.handleSubmit} >
+      <HeaderForm label="Sign In" />
+      <Box component="form" noValidate onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
@@ -115,12 +115,12 @@ export const LoginFormComponent = () => {
           </Grid>
         </Grid>
 
-        <Box component="div" >
+        <Box component="div">
           <List>
             <ListItem disablePadding sx={{
               justifyContent: 'center',
             }}>
-              <Link to='#' color="inherit">
+              <Link to="#" color="inherit">
                 <ListItemButton>
                   Forgot your password?
                 </ListItemButton>

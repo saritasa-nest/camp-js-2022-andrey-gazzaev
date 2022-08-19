@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { FC, memo } from 'react';
 import { Button, Typography, Toolbar, Box, AppBar } from '@mui/material';
 
 import { selectUser } from '@js-camp/react/store/user/selector';
@@ -6,7 +6,7 @@ import { logoutUser } from '@js-camp/react/store/user/dispatchers';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 
-const HeaderComponent = () => {
+const HeaderComponent: FC = () => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
@@ -27,11 +27,17 @@ const HeaderComponent = () => {
           </Typography>
 
           <Box>
-            <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" component="span">
               Hello {user.firstName} {user.lastName}
             </Typography>
 
-            <Button type='button' color="inherit" onClick={handleUserLogout}>Log Out</Button>
+            <Button
+              type="button"
+              color="inherit"
+              onClick={handleUserLogout}
+            >
+              Log Out
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>

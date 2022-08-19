@@ -10,8 +10,8 @@ export const selectAreAuthLoading = createSelector(
 
 /** Selects auth submit state. */
 export const selectAreAuthSubmit = createSelector(
-  (state: RootState) => state.auth.isSubmit,
-  isSubmit => isSubmit,
+  (state: RootState) => state.auth.isSubmitted,
+  isSubmitted => isSubmitted,
 );
 
 /** Selects auth error state. */
