@@ -4,13 +4,13 @@ import { memo, ReactNode, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 
-interface props {
+interface Props {
 
   /** Children of element.*/
   readonly children: ReactNode;
 }
 
-const RestoreGuardComponent = ({ children }: props) => {
+const RestoreGuardComponent = ({ children }: Props) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const isUserLoading = useAppSelector(selectAreUserLoading);

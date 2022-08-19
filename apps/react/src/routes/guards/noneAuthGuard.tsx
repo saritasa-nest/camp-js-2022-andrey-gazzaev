@@ -5,7 +5,7 @@ import { selectUser } from '@js-camp/react/store/user/selector';
 
 import { useAppSelector } from '../../store';
 
-const noneAuthGuardComponent = () => {
+const NoneAuthGuardComponent = () => {
   const user = useAppSelector(selectUser);
 
   const redirect: To = {
@@ -21,4 +21,4 @@ const noneAuthGuardComponent = () => {
   );
 };
 
-export const NoneAuthGuard = memo(noneAuthGuardComponent);
+export const NoneAuthGuard = memo(NoneAuthGuardComponent);
