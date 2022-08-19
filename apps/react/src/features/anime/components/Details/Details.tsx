@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import { Container } from '@mui/system';
-import { memo } from 'react';
+import { FC, memo } from 'react';
 
-const DetailsComponent = () => (
+const DetailsComponent: FC = () => (
   <Container>
     <Box>
       <Typography component="h2" variant="h4">
