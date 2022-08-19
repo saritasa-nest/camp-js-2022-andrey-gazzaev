@@ -1,0 +1,16 @@
+.anime-list {
+  overflow-y: auto;
+}
+
+.anime-catalog__title {
+  letter-spacing: 0.15rem;
+}
+
+.anime-catalog {
+  display: flex;
+  flex-direction: column;
+
+  /* 64px this header height */
+  max-height: calc(100vh - 64px);
+  max-width: 260px;
+}
