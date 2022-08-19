@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { FC, memo, useEffect } from 'react';
 
 import { fetchAnimeList } from '@js-camp/react/store/anime/dispatchers';
 import { selectAmineList, selectAreAnimeLoading } from '@js-camp/react/store/anime/selectors';
@@ -10,7 +10,7 @@ import { AnimeItem } from '../AnimeItem/AnimeItem';
 
 import styles from './AnimeList.module.css';
 
-const AnimeListComponent = () => {
+const AnimeListComponent: FC = () => {
   const animeList = useAppSelector(selectAmineList);
   const isLoading = useAppSelector(selectAreAnimeLoading);
   const dispatch = useAppDispatch();
@@ -27,7 +27,11 @@ const AnimeListComponent = () => {
 
   return (
     <Box className={styles['anime-catalog']}>
-      <Typography component="h2" variant="body1" className={styles['anime-catalog__title']}>
+      <Typography
+        component="h2"
+        variant="body1"
+        className={styles['anime-catalog__title']}
+      >
         Anime catalog
       </Typography>
 

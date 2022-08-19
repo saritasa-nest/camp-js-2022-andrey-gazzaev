@@ -12,5 +12,5 @@
 
   /* 64px this header height */
   max-height: calc(100vh - 64px);
-  max-width: 260px;
+  min-width: 300px;
 }
