@@ -8,8 +8,8 @@ export const selectAreAuthLoading = createSelector(
   isLoading => isLoading,
 );
 
-/** Selects auth loading state. */
-export const selectIsSubmit = createSelector(
+/** Selects auth submit state. */
+export const selectAreAuthSubmit = createSelector(
   (state: RootState) => state.auth.isSubmit,
   isSubmit => isSubmit,
 );

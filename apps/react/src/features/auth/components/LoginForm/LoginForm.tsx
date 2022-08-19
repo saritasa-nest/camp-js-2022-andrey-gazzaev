@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AppError } from '@js-camp/core/models/app-error';
 import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { selectAreAuthLoading, selectError, selectIsSubmit } from '@js-camp/react/store/auth/selectors';
+import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp/react/store/auth/selectors';
 
 import { ExtractedError, extractError } from '../../utils/error';
 
@@ -21,13 +21,23 @@ const INITIAL_FORM_VALUE = {
 export const LoginFormComponent = () => {
   const isLoading = useAppSelector(selectAreAuthLoading);
   const loginError = useAppSelector(selectError);
-  const isSubmitForm = useAppSelector(selectIsSubmit);
+  const isSubmitForm = useAppSelector(selectAreAuthSubmit);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState({
     isOpen: false,
     message: '',
     duration: 1000,
+  });
+
+  const handleSubmitForm = useCallback(({ email, password }: LoginFormData) => {
+    dispatch(loginUser({ email, password }));
+  }, [dispatch]);
+
+  const formik = useFormik({
+    initialValues: INITIAL_FORM_VALUE,
+    validationSchema: signInSchema,
+    onSubmit: handleSubmitForm,
   });
 
   useEffect(() => {
@@ -43,13 +53,13 @@ export const LoginFormComponent = () => {
     }
   }, [isSubmitForm]);
 
-  const setErrors = (error: ExtractedError) => {
+  const setErrors = useCallback((error: ExtractedError) => {
     formik.setErrors(
       error.errorForFields,
     );
 
     setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
-  };
+  }, [formik]);
 
   const handleCloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -57,16 +67,6 @@ export const LoginFormComponent = () => {
     }
     setSnackbar(state => ({ ...state, isOpen: false }));
   };
-
-  const handleSubmitForm = useCallback(({ email, password }: LoginFormData) => {
-    dispatch(loginUser({ email, password }));
-  }, [dispatch]);
-
-  const formik = useFormik({
-    initialValues: INITIAL_FORM_VALUE,
-    validationSchema: signInSchema,
-    onSubmit: handleSubmitForm,
-  });
 
   return (
     <Box component="div">

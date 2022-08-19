@@ -5,13 +5,13 @@ export const entityAdapter = createEntityAdapter<User>({
   selectId: user => user.email,
 });
 
-/** Genres state. */
+/** User state. */
 export interface UserState {
 
   /** Error. */
   readonly error?: string;
 
-  /** Whether the genres are loading or not. */
+  /** Whether user are loading or not. */
   readonly isLoading: boolean;
 }
 
