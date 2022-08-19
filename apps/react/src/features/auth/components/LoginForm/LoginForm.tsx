@@ -1,8 +1,8 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { Box, Grid, Snackbar, TextField, Typography } from '@mui/material';
+import { Box, Grid, List, ListItem, ListItemButton, Snackbar, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { AppError } from '@js-camp/core/models/app-error';
 import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
@@ -119,6 +119,29 @@ export const LoginFormComponent = () => {
             </LoadingButton>
           </Grid>
         </Grid>
+
+        <Box component="div" >
+          <List>
+            <ListItem disablePadding sx={{
+              justifyContent: 'center',
+            }}>
+              <Link to='#' color="inherit">
+                <ListItemButton>
+                  Forgot your password?
+                </ListItemButton>
+              </Link>
+            </ListItem>
+            <ListItem disablePadding sx={{
+              justifyContent: 'center',
+            }}>
+              <Link to="/auth/registration/" color="inherit">
+                <ListItemButton>
+                  Don't have an account?
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          </List>
+        </Box>
       </Box>
 
       <Snackbar
