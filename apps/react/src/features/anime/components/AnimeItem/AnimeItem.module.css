@@ -1,0 +1,12 @@
+.item__poster {
+  display: flex;
+  align-self: flex-start;
+  align-items: center;
+  max-height: 120px;
+  margin-right: 20px;
+}
+
+.poster {
+  min-width: 80px;
+  min-height: 80px;
+}
