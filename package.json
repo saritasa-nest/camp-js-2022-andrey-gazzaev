@@ -60,6 +60,7 @@
     "@angular/language-service": "~14.0.0",
     "@angular/material": "^14.1.0",
     "@mui/icons-material": "^5.8.4",
+    "@mui/joy": "^5.0.0-alpha.41",
     "@mui/lab": "^5.0.0-alpha.95",
     "@nabla/vite-plugin-eslint": "^1.4.1",
     "@ngneat/until-destroy": "^9.2.1",

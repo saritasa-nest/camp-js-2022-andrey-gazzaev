@@ -4,10 +4,16 @@ import { AnimeService } from '../../api/services/animeService';
 
 export const fetchAnimeList = createAsyncThunk(
   'anime/fetch',
-  () => AnimeService.fetchAnimeList(),
+  async() => {
+    const animeList = await AnimeService.fetchAnimeList();
+    return animeList;
+  },
 );
 
 export const fetchNextAnimeList = createAsyncThunk(
   'anime/fetch/next',
-  () => AnimeService.fetchNextAnimeList(),
+  async() => {
+    const animeList = await AnimeService.fetchNextAnimeList();
+    return animeList;
+  },
 );
