@@ -5,7 +5,7 @@ export const entityAdapter = createEntityAdapter<AnimeBase>({
   selectId: anime => anime.id,
 });
 
-/** Auth state. */
+/** Anime state. */
 export interface AnimeState {
 
   /** Whether anime list is in process or not. */
@@ -14,7 +14,7 @@ export interface AnimeState {
   /** Error. */
   readonly error?: string;
 
-  /** Error. */
+  /** Whether the entire sheet has been loaded. */
   readonly isAll: boolean;
 }
 
