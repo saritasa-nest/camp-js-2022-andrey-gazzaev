@@ -1,12 +1,16 @@
 import { fetchUser } from '@js-camp/react/store/user/dispatchers';
 import { selectAreUserLoading, selectUser } from '@js-camp/react/store/user/selector';
-import { memo, useEffect } from 'react';
+import { memo, ReactNode, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 
-import { AuthGuardComponent } from './authGuard';
+interface props {
 
-const RestoreGuardComponent = () => {
+  /** Children of element.*/
+  readonly children: ReactNode;
+}
+
+const RestoreGuardComponent = ({ children }: props) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const isUserLoading = useAppSelector(selectAreUserLoading);
@@ -17,7 +21,7 @@ const RestoreGuardComponent = () => {
     }
   }, [user]);
 
-  return (isUserLoading ? <>Fetching user...</> : <AuthGuardComponent />);
+  return (isUserLoading ? <>Fetching user...</> : <>{children}</>);
 };
 
 export const RestoreGuard = memo(RestoreGuardComponent);

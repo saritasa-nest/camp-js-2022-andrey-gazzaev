@@ -1,8 +1,10 @@
 import { lazy } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
 
-import { LoginForm } from './components/LoginForm/LoginForm';
+import { NoneAuthGuard } from '../../routes/guards/noneAuthGuard';
+import { RestoreGuard } from '../../routes/guards/restoreGuard';
 
+import { LoginForm } from './components/LoginForm/LoginForm';
 import { RegistrationForm } from './components/RegistrationForm/RegistrationForm';
 
 const AuthPage = lazy(() => import('./pages/AuthPage')
@@ -10,25 +12,30 @@ const AuthPage = lazy(() => import('./pages/AuthPage')
 
 export const authRoutes: RouteObject[] = [
   {
-    path: 'auth',
-    element: <AuthPage />,
+    element: <RestoreGuard ><NoneAuthGuard /></RestoreGuard>,
     children: [
       {
-        path: 'registration',
-        element: <RegistrationForm />,
-      },
-      {
-        path: 'login',
-        element: <LoginForm />,
+        path: 'auth',
+        element: <AuthPage />,
+        children: [
+          {
+            path: 'registration',
+            element: <RegistrationForm />,
+          },
+          {
+            path: 'login',
+            element: <LoginForm />,
+          },
+          {
+            path: '*',
+            element: <Navigate to="/auth/login" />,
+          },
+        ],
       },
       {
         path: '*',
-        element: <Navigate to="/auth/login" />,
+        element: <Navigate to="RegistrationPage" />,
       },
     ],
-  },
-  {
-    path: '*',
-    element: <Navigate to="RegistrationPage" />,
   },
 ];
