@@ -10,10 +10,12 @@ import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp
 
 import { ExtractedError, extractError } from '../../utils/error';
 
-import { InputForm } from '../InputForm/InputForm';
-import { HeaderForm } from '../HeaderForm/HeaderForm';
+import { InputForm } from '../InputForm';
+import { HeaderForm } from '../HeaderForm';
 
 import { LoginFormData, signInSchema } from './formSettings';
+
+import styles from './LoginForm.module.css';
 
 const INITIAL_FORM_VALUE = {
   email: '',
@@ -111,18 +113,14 @@ const LoginFormComponent: FC = () => {
 
         <Box component="div">
           <List>
-            <ListItem disablePadding sx={{
-              justifyContent: 'center',
-            }}>
+            <ListItem disablePadding className={styles['list-item']}>
               <Link to="#" color="inherit">
                 <ListItemButton>
                   Forgot your password?
                 </ListItemButton>
               </Link>
             </ListItem>
-            <ListItem disablePadding sx={{
-              justifyContent: 'center',
-            }}>
+            <ListItem disablePadding className={styles['list-item']}>
               <Link to="/auth/registration/" color="inherit">
                 <ListItemButton>
                   Don't have an account?

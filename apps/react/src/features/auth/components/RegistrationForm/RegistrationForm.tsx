@@ -16,6 +16,8 @@ import { HeaderForm } from '../HeaderForm/HeaderForm';
 
 import { RegistrationFormData, signUpSchema } from './formSettings';
 
+import styles from './RegistrationForm.module.css';
+
 const INITIAL_USER = {
   firstName: '',
   lastName: '',
@@ -155,9 +157,7 @@ const RegistrationFormComponent: FC = () => {
 
         <Box component="div">
           <List>
-            <ListItem disablePadding sx={{
-              justifyContent: 'center',
-            }}>
+            <ListItem disablePadding className={styles['list-item']}>
               <Link to="/auth/login/" color="inherit">
                 <ListItemButton>
                   Do you have an account?

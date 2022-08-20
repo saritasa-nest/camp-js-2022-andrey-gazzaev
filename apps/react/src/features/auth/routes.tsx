@@ -4,8 +4,8 @@ import { Navigate, RouteObject } from 'react-router-dom';
 import { NoneAuthGuard } from '../../routes/guards/NoneAuthGuard';
 import { RestoreGuard } from '../../routes/guards/RestoreGuard';
 
-import { LoginForm } from './components/LoginForm/LoginForm';
-import { RegistrationForm } from './components/RegistrationForm/RegistrationForm';
+import { LoginForm } from './components/LoginForm';
+import { RegistrationForm } from './components/RegistrationForm';
 
 const AuthPage = lazy(() => import('./pages/AuthPage')
   .then(module => ({ default: module.AuthPage })));

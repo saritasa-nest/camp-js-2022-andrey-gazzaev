@@ -1,5 +1,7 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { FC } from 'react';
+
+import styles from './header.module.css';
 
 interface Props {
 
@@ -8,9 +10,9 @@ interface Props {
 }
 
 export const HeaderForm: FC<Props> = ({ label }: Props) => (
-  <Typography variant="h4" component="h1" sx={{
-      marginBottom: '10px',
-  }}>
-    {label}
-  </Typography>
+  <Box className={styles['header']}>
+    <Typography variant="h4" component="h1" className={styles['header__text']}>
+      {label}
+    </Typography>
+  </Box>
 );
