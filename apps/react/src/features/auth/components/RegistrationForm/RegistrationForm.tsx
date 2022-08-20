@@ -1,12 +1,13 @@
-import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Link, useNavigate } from 'react-router-dom';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
 
 import { AppError } from '@js-camp/core/models/app-error';
-import { registrationUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
+import { Registration } from '@js-camp/core/models/registration';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { registrationUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp/react/store/auth/selectors';
 
 import { SnackBarConfig } from '../../utils/interfaces';
@@ -19,7 +20,7 @@ import { RegistrationFormData, signUpSchema } from './formSettings';
 
 import styles from './RegistrationForm.module.css';
 
-const INITIAL_USER = {
+const INITIAL_USER: Registration = {
   firstName: '',
   lastName: '',
   email: '',
@@ -31,7 +32,7 @@ const INITIAL_FORM_VALUE = {
   passwordConfirm: '',
 };
 
-const INITIAL_SNACK_BAR = {
+const INITIAL_SNACK_BAR: SnackBarConfig = {
   isOpen: false,
   message: '',
   duration: 1000,
@@ -45,6 +46,10 @@ const RegistrationFormComponent: FC = () => {
   const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState<SnackBarConfig>(INITIAL_SNACK_BAR);
 
+  /**
+   * Handlers form submit.
+   * @param RegistrationData Registration data.
+   */
   const handleSubmitForm = useCallback(({ email, firstName, lastName, password }: RegistrationFormData) => {
     dispatch(registrationUser({ email, firstName, lastName, password }));
   }, [dispatch]);
@@ -68,6 +73,10 @@ const RegistrationFormComponent: FC = () => {
     }
   }, [registrationError]);
 
+  /**
+   * Sets errors in form.
+   * @param error Some error.
+   */
   const setErrors = useCallback((error: ExtractedError) => {
     formik.setErrors(
       error.errorForFields,
@@ -76,6 +85,7 @@ const RegistrationFormComponent: FC = () => {
     setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
   }, [formik]);
 
+  /** Handlers snack bar close. */
   const handleCloseSnackbar = useCallback(() => {
     setSnackbar(state => ({ ...state, isOpen: false }));
   }, []);

@@ -1,7 +1,7 @@
-import { Box, Typography } from '@mui/material';
 import { FC } from 'react';
+import { Box, Typography } from '@mui/material';
 
-import styles from './Header.module.css';
+import styles from './HeaderForm.module.css';
 
 interface Props {
 

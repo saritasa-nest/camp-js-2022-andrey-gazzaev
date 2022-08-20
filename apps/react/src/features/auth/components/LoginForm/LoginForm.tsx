@@ -1,11 +1,13 @@
+import { useFormik } from 'formik';
+import { LoadingButton } from '@mui/lab';
+import { Link, useNavigate } from 'react-router-dom';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import { useFormik } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
+
+import { Login } from '@js-camp/core/models/login';
 import { AppError } from '@js-camp/core/models/app-error';
-import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp/react/store/auth/selectors';
 
 import { SnackBarConfig } from '../../utils/interfaces';
@@ -18,12 +20,12 @@ import { LoginFormData, signInSchema } from './formSettings';
 
 import styles from './LoginForm.module.css';
 
-const INITIAL_FORM_VALUE = {
+const INITIAL_FORM_VALUE: Login = {
   email: '',
   password: '',
 };
 
-const INITIAL_SNACK_BAR = {
+const INITIAL_SNACK_BAR: SnackBarConfig = {
   isOpen: false,
   message: '',
   duration: 1000,
@@ -37,6 +39,10 @@ const LoginFormComponent: FC = () => {
   const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState<SnackBarConfig>(INITIAL_SNACK_BAR);
 
+  /**
+   * Handlers form submit.
+   * @param LoginData Login data.
+   */
   const handleSubmitForm = useCallback(({ email, password }: LoginFormData) => {
     dispatch(loginUser({ email, password }));
   }, [dispatch]);
@@ -60,6 +66,10 @@ const LoginFormComponent: FC = () => {
     }
   }, [isFormSubmitted]);
 
+  /**
+   * Sets errors in form.
+   * @param error Some error.
+   */
   const setErrors = useCallback((error: ExtractedError) => {
     formik.setErrors(
       error.errorForFields,
@@ -68,6 +78,7 @@ const LoginFormComponent: FC = () => {
     setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
   }, [formik]);
 
+  /** Handlers snack bar close. */
   const handleCloseSnackbar = useCallback(() => {
     setSnackbar(state => ({ ...state, isOpen: false }));
   }, []);

@@ -2,8 +2,8 @@ import { FC, Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 
-import { RootRouter } from './routes/RootRouter';
 import { store } from './store';
+import { RootRouter } from './routes/RootRouter';
 
 import './theme/style.css';
 
