@@ -1,6 +1,7 @@
 import { FC, memo, useEffect } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-import { fetchAnimeList } from '@js-camp/react/store/anime/dispatchers';
+import { fetchAnimeList, fetchNextAnimeList } from '@js-camp/react/store/anime/dispatchers';
 import { selectAmineList, selectAreAnimeLoading } from '@js-camp/react/store/anime/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
@@ -21,6 +22,10 @@ const AnimeListComponent: FC = () => {
     }
   }, [dispatch, animeList]);
 
+  const getMoreAnime = () => {
+    dispatch(fetchNextAnimeList());
+  };
+
   if (isLoading) {
     return <span>Anime loading</span>;
   }
@@ -34,18 +39,34 @@ const AnimeListComponent: FC = () => {
       >
         Anime catalog
       </Typography>
-
       <List
-        aria-labelledby="anime-list-catalog"
+        id="scrollableDiv"
         className={styles['anime-list']}
+        aria-labelledby="anime-list-catalog"
         sx={{
           bgcolor: 'background.paper',
         }}
       >
-        {animeList.map(anime => (<>
-          <AnimeItem anime={anime} key={anime.id} />
-          <Divider variant="inset" component="li" />
-        </>))}
+        <InfiniteScroll
+          className={styles['anime-list']}
+          dataLength={animeList.length}
+          next={getMoreAnime}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+          endMessage={
+            <p style={{ textAlign: 'center' }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+          scrollableTarget="scrollableDiv"
+        >
+
+          {animeList.map(anime => (<>
+            <AnimeItem anime={anime} key={anime.id} />
+            <Divider variant="inset" component="li" />
+          </>))}
+
+        </InfiniteScroll>
       </List>
     </Box>
   );

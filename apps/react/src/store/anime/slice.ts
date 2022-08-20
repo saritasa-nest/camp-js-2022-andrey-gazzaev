@@ -25,7 +25,6 @@ export const animeSlice = createSlice({
     })
     .addCase(fetchNextAnimeList.pending, state => {
       state.error = undefined;
-      state.isLoading = true;
     })
     .addCase(fetchNextAnimeList.fulfilled, (state, action) => {
       if (action.payload === null) {
@@ -34,12 +33,10 @@ export const animeSlice = createSlice({
       } else {
         entityAdapter.addMany(state as State, action.payload);
       }
-      state.isLoading = false;
     })
     .addCase(fetchNextAnimeList.rejected, (state, action) => {
       if (action.error.message) {
         state.error = action.error.message;
       }
-      state.isLoading = false;
     }),
 });
