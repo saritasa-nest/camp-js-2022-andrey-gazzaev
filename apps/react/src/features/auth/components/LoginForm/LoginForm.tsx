@@ -8,6 +8,7 @@ import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp/react/store/auth/selectors';
 
+import { SnackBarConfig } from '../../utils/interfaces';
 import { ExtractedError, extractError } from '../../utils/error';
 
 import { InputForm } from '../InputForm';
@@ -22,17 +23,19 @@ const INITIAL_FORM_VALUE = {
   password: '',
 };
 
+const INITIAL_SNACK_BAR = {
+  isOpen: false,
+  message: '',
+  duration: 1000,
+};
+
 const LoginFormComponent: FC = () => {
   const isLoading = useAppSelector(selectAreAuthLoading);
   const loginError = useAppSelector(selectError);
   const isFormSubmitted = useAppSelector(selectAreAuthSubmit);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [snackbar, setSnackbar] = useState({
-    isOpen: false,
-    message: '',
-    duration: 1000,
-  });
+  const [snackbar, setSnackbar] = useState<SnackBarConfig>(INITIAL_SNACK_BAR);
 
   const handleSubmitForm = useCallback(({ email, password }: LoginFormData) => {
     dispatch(loginUser({ email, password }));
