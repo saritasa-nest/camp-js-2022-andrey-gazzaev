@@ -1,6 +1,7 @@
+import { FC, memo, ReactNode, useEffect } from 'react';
+
 import { fetchUser } from '@js-camp/react/store/user/dispatchers';
 import { selectAreUserLoading, selectUser } from '@js-camp/react/store/user/selector';
-import { memo, ReactNode, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 
@@ -10,7 +11,7 @@ interface Props {
   readonly children: ReactNode;
 }
 
-const RestoreGuardComponent = ({ children }: Props) => {
+const RestoreGuardComponent: FC<Props> = ({ children }: Props) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const isUserLoading = useAppSelector(selectAreUserLoading);

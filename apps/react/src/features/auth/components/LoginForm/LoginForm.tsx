@@ -1,37 +1,48 @@
-import { memo, useCallback, useEffect, useState } from 'react';
-import { Box, Grid, List, ListItem, ListItemButton, Snackbar, TextField } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
 import { useFormik } from 'formik';
+import { LoadingButton } from '@mui/lab';
 import { Link, useNavigate } from 'react-router-dom';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
 
+import { Login } from '@js-camp/core/models/login';
 import { AppError } from '@js-camp/core/models/app-error';
-import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp/react/store/auth/selectors';
 
+import { SnackBarConfig } from '../../utils/interfaces';
 import { ExtractedError, extractError } from '../../utils/error';
 
-import { HeaderForm } from '../HeaderForm/HeaderForm';
+import { InputForm } from '../InputForm';
+import { HeaderForm } from '../HeaderForm';
 
 import { LoginFormData, signInSchema } from './formSettings';
 
-const INITIAL_FORM_VALUE = {
+import styles from './LoginForm.module.css';
+
+const INITIAL_FORM_VALUE: Login = {
   email: '',
   password: '',
 };
 
-export const LoginFormComponent = () => {
+const INITIAL_SNACK_BAR: SnackBarConfig = {
+  isOpen: false,
+  message: '',
+  duration: 1000,
+};
+
+const LoginFormComponent: FC = () => {
   const isLoading = useAppSelector(selectAreAuthLoading);
   const loginError = useAppSelector(selectError);
-  const isSubmitForm = useAppSelector(selectAreAuthSubmit);
+  const isFormSubmitted = useAppSelector(selectAreAuthSubmit);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [snackbar, setSnackbar] = useState({
-    isOpen: false,
-    message: '',
-    duration: 1000,
-  });
+  const [snackbar, setSnackbar] = useState<SnackBarConfig>(INITIAL_SNACK_BAR);
 
+  /**
+   * Handlers form submit.
+   * @param LoginData Login data.
+   */
   const handleSubmitForm = useCallback(({ email, password }: LoginFormData) => {
     dispatch(loginUser({ email, password }));
   }, [dispatch]);
@@ -49,12 +60,16 @@ export const LoginFormComponent = () => {
   }, [loginError]);
 
   useEffect(() => {
-    if (isSubmitForm) {
+    if (isFormSubmitted) {
       navigate('/');
       dispatch(toggleSubmit());
     }
-  }, [isSubmitForm]);
+  }, [isFormSubmitted]);
 
+  /**
+   * Sets errors in form.
+   * @param error Some error.
+   */
   const setErrors = useCallback((error: ExtractedError) => {
     formik.setErrors(
       error.errorForFields,
@@ -63,41 +78,36 @@ export const LoginFormComponent = () => {
     setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
   }, [formik]);
 
-  const handleCloseSnackbar = () => {
+  /** Handlers snack bar close. */
+  const handleCloseSnackbar = useCallback(() => {
     setSnackbar(state => ({ ...state, isOpen: false }));
-  };
+  }, []);
 
   return (
     <Box component="div">
-      <HeaderForm label='Sign In' />
-      <Box component="form" noValidate onSubmit={formik.handleSubmit} >
+      <HeaderForm label="Sign In" />
+      <Box component="form" noValidate onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField
+            <InputForm
               fullWidth
               id="email"
               name="email"
               label="Email"
               type="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
               required
+              formik={formik}
             />
           </Grid>
 
           <Grid item xs={12}>
-            <TextField
+            <InputForm
               fullWidth
               id="password"
               name="password"
               label="Password"
               type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              formik={formik}
               required
             />
           </Grid>
@@ -115,20 +125,16 @@ export const LoginFormComponent = () => {
           </Grid>
         </Grid>
 
-        <Box component="div" >
+        <Box component="div">
           <List>
-            <ListItem disablePadding sx={{
-              justifyContent: 'center',
-            }}>
-              <Link to='#' color="inherit">
+            <ListItem disablePadding className={styles['list-item']}>
+              <Link to="#" color="inherit">
                 <ListItemButton>
                   Forgot your password?
                 </ListItemButton>
               </Link>
             </ListItem>
-            <ListItem disablePadding sx={{
-              justifyContent: 'center',
-            }}>
+            <ListItem disablePadding className={styles['list-item']}>
               <Link to="/auth/registration/" color="inherit">
                 <ListItemButton>
                   Don't have an account?

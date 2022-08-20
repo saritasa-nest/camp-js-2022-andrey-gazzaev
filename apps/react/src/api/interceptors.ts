@@ -17,7 +17,7 @@ export function shouldInterceptToken(config: AxiosRequestConfig): boolean {
 
 /**
  * Checks if a request should be intercepted.
- * @param config - Request config.
+ * @param config Request config.
  */
 export function shouldInterceptAuth(config: AxiosRequestConfig): boolean {
   const authUrl = new URL('auth', CONFIG.apiUrl);

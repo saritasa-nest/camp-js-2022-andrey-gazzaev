@@ -1,22 +1,26 @@
-import { memo, useCallback, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import TextField from '@mui/material/TextField';
-import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Link, useNavigate } from 'react-router-dom';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
 
 import { AppError } from '@js-camp/core/models/app-error';
-import { registrationUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
+import { Registration } from '@js-camp/core/models/registration';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
+import { registrationUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp/react/store/auth/selectors';
 
+import { SnackBarConfig } from '../../utils/interfaces';
 import { ExtractedError, extractError } from '../../utils/error';
 
+import { InputForm } from '../InputForm/InputForm';
 import { HeaderForm } from '../HeaderForm/HeaderForm';
 
 import { RegistrationFormData, signUpSchema } from './formSettings';
 
-const INITIAL_USER = {
+import styles from './RegistrationForm.module.css';
+
+const INITIAL_USER: Registration = {
   firstName: '',
   lastName: '',
   email: '',
@@ -28,18 +32,24 @@ const INITIAL_FORM_VALUE = {
   passwordConfirm: '',
 };
 
-export const RegistrationFormComponent = () => {
+const INITIAL_SNACK_BAR: SnackBarConfig = {
+  isOpen: false,
+  message: '',
+  duration: 1000,
+};
+
+const RegistrationFormComponent: FC = () => {
   const isLoading = useAppSelector(selectAreAuthLoading);
   const registrationError = useAppSelector(selectError);
-  const isSubmitForm = useAppSelector(selectAreAuthSubmit);
+  const isFormSubmitted = useAppSelector(selectAreAuthSubmit);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [snackbar, setSnackbar] = useState({
-    isOpen: false,
-    message: '',
-    duration: 1000,
-  });
+  const [snackbar, setSnackbar] = useState<SnackBarConfig>(INITIAL_SNACK_BAR);
 
+  /**
+   * Handlers form submit.
+   * @param RegistrationData Registration data.
+   */
   const handleSubmitForm = useCallback(({ email, firstName, lastName, password }: RegistrationFormData) => {
     dispatch(registrationUser({ email, firstName, lastName, password }));
   }, [dispatch]);
@@ -51,11 +61,11 @@ export const RegistrationFormComponent = () => {
   });
 
   useEffect(() => {
-    if (isSubmitForm) {
+    if (isFormSubmitted) {
       navigate('/');
       dispatch(toggleSubmit());
     }
-  }, [isSubmitForm]);
+  }, [isFormSubmitted]);
 
   useEffect(() => {
     if (registrationError instanceof AppError) {
@@ -63,6 +73,10 @@ export const RegistrationFormComponent = () => {
     }
   }, [registrationError]);
 
+  /**
+   * Sets errors in form.
+   * @param error Some error.
+   */
   const setErrors = useCallback((error: ExtractedError) => {
     formik.setErrors(
       error.errorForFields,
@@ -71,87 +85,73 @@ export const RegistrationFormComponent = () => {
     setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
   }, [formik]);
 
-  const handleCloseSnackbar = () => {
+  /** Handlers snack bar close. */
+  const handleCloseSnackbar = useCallback(() => {
     setSnackbar(state => ({ ...state, isOpen: false }));
-  };
+  }, []);
 
   return (
     <Box component="div">
-      <HeaderForm label='Sign Up' />
-      <Box component="form" noValidate onSubmit={formik.handleSubmit} >
+      <HeaderForm label="Sign Up" />
+      <Box component="form" noValidate onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <TextField
+            <InputForm
               fullWidth
               id="firstName"
               name="firstName"
               label="First name"
               type="text"
-              value={formik.values.firstName}
-              onChange={formik.handleChange}
-              error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-              helperText={formik.touched.firstName && formik.errors.firstName}
               required
+              formik={formik}
             />
           </Grid>
 
           <Grid item xs={6}>
-            <TextField
+            <InputForm
               fullWidth
               id="lastName"
               name="lastName"
               label="LastName"
               type="text"
-              value={formik.values.lastName}
-              onChange={formik.handleChange}
-              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-              helperText={formik.touched.lastName && formik.errors.lastName}
               required
+              formik={formik}
             />
           </Grid>
 
           <Grid item xs={12}>
-            <TextField
+            <InputForm
               fullWidth
               id="email"
               name="email"
               label="Email"
               type="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
               required
+              formik={formik}
             />
           </Grid>
 
           <Grid item xs={12}>
-            <TextField
+            <InputForm
               fullWidth
               id="password"
               name="password"
               label="Password"
               type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
               required
+              formik={formik}
             />
           </Grid>
 
           <Grid item xs={12}>
-            <TextField
+            <InputForm
               fullWidth
               id="passwordConfirm"
               name="passwordConfirm"
               label="Password confirm"
               type="password"
-              value={formik.values.passwordConfirm}
-              onChange={formik.handleChange}
-              error={formik.touched.passwordConfirm && Boolean(formik.errors.passwordConfirm)}
-              helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
               required
+              formik={formik}
             />
           </Grid>
 
@@ -168,11 +168,9 @@ export const RegistrationFormComponent = () => {
           </Grid>
         </Grid>
 
-        <Box component="div" >
+        <Box component="div">
           <List>
-            <ListItem disablePadding sx={{
-              justifyContent: 'center',
-            }}>
+            <ListItem disablePadding className={styles['list-item']}>
               <Link to="/auth/login/" color="inherit">
                 <ListItemButton>
                   Do you have an account?
