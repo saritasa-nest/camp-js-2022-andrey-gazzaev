@@ -1,8 +1,7 @@
 import { lazy } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
 
-import { RestoreGuard } from '../../routes/guards/RestoreGuard';
-import { NoneAuthGuard } from '../../routes/guards/NoneAuthGuard';
+import { NoneAuthGuard, RestoreGuard } from '../../routes/guards';
 
 import { LoginForm } from './components/LoginForm';
 import { RegistrationForm } from './components/RegistrationForm';

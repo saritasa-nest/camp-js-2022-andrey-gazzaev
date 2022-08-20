@@ -5,7 +5,7 @@ import { selectUser } from '@js-camp/react/store/user/selector';
 
 import { useAppSelector } from '../../store';
 
-export const AuthGuardComponent: FC = () => {
+const AuthGuardComponent: FC = () => {
   const user = useAppSelector(selectUser);
 
   const redirect: To = {
