@@ -11,7 +11,7 @@ export const genresRoutes: RouteObject[] = [
     element: <RestoreGuard ><AuthGuardComponent /></RestoreGuard>,
     children: [
       {
-        path: '',
+        path: 'genre',
         element: <GenresPage />,
       },
       {

@@ -1,9 +1,8 @@
 import { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Box, Grid, List, ListItem, ListItemButton, Snackbar, TextField } from '@mui/material';
+import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
-
 import { AppError } from '@js-camp/core/models/app-error';
 import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
@@ -11,6 +10,7 @@ import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp
 
 import { ExtractedError, extractError } from '../../utils/error';
 
+import { InputForm } from '../InputForm/InputForm';
 import { HeaderForm } from '../HeaderForm/HeaderForm';
 
 import { LoginFormData, signInSchema } from './formSettings';
@@ -20,7 +20,7 @@ const INITIAL_FORM_VALUE = {
   password: '',
 };
 
-export const LoginFormComponent: FC = () => {
+const LoginFormComponent: FC = () => {
   const isLoading = useAppSelector(selectAreAuthLoading);
   const loginError = useAppSelector(selectError);
   const isFormSubmitted = useAppSelector(selectAreAuthSubmit);
@@ -73,31 +73,25 @@ export const LoginFormComponent: FC = () => {
       <Box component="form" noValidate onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField
+            <InputForm
               fullWidth
               id="email"
               name="email"
               label="Email"
               type="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
               required
+              formik={formik}
             />
           </Grid>
 
           <Grid item xs={12}>
-            <TextField
+            <InputForm
               fullWidth
               id="password"
               name="password"
               label="Password"
               type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              formik={formik}
               required
             />
           </Grid>
