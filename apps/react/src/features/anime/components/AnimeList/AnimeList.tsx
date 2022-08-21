@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
 import { AnimeSortDirection, AnimeSortField, AnimeType } from '@js-camp/core/models/anime';
 
+import { SortBar } from '../SortBar';
 import { FilterBar } from '../FilterBar';
 import { SearchBar } from '../SearchBar';
 import { AnimeItem } from '../AnimeItem/AnimeItem';
@@ -100,6 +101,7 @@ const AnimeListComponent: FC = () => {
       <Box className={styles['anime-catalog__query-bar']}>
         <SearchBar onChange={debounce(handleSearchChange, 500)} initialValue={query.search} />
         <FilterBar onChange={debounce(handleFiltersChange, 500)} initialValue={query.types} />
+        <SortBar />
       </Box>
 
       {

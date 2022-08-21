@@ -21,11 +21,11 @@ const SearchBarComponent: FC<Props> = ({ onChange, initialValue }) => {
     onChange(search);
   }, [search]);
 
-  const handlerSearchToggle = () => {
+  const handleSearchToggle = () => {
     setIsSearch(!isSearch);
   };
 
-  const handlerSearchChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearch(event.target.value);
   };
 
@@ -36,7 +36,7 @@ const SearchBarComponent: FC<Props> = ({ onChange, initialValue }) => {
           <InputBase
             type='search'
             placeholder='Search...'
-            onChange={handlerSearchChange}
+            onChange={handleSearchChange}
             value={search}
             className={styles['search__field']}
             inputProps={{
@@ -45,7 +45,7 @@ const SearchBarComponent: FC<Props> = ({ onChange, initialValue }) => {
           />
         </Collapse>
       </Box>
-      <Button onClick={handlerSearchToggle}>
+      <Button onClick={handleSearchToggle}>
         {!isSearch ? <SearchIcon /> : <SearchOffIcon />}
       </Button>
     </Box>
