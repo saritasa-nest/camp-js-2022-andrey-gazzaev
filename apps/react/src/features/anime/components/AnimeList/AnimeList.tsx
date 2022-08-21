@@ -1,6 +1,7 @@
 import { FC, memo, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Box, debounce, Divider, List, Typography } from '@mui/material';
+import { useSearchParams } from 'react-router-dom';
 
 import { fetchAnimeList, fetchNextAnimeList, removeAnimeList } from '@js-camp/react/store/anime/dispatchers';
 import { selectAmineList, selectAreAnimeLoading } from '@js-camp/react/store/anime/selectors';
@@ -29,17 +30,50 @@ const AnimeListComponent: FC = () => {
   const animeList = useAppSelector(selectAmineList);
   const isLoading = useAppSelector(selectAreAnimeLoading);
   const dispatch = useAppDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [query, setQuery] = useState<AnimeListQueryParams>(INITIAL_PARAMS);
+  const getAnimeListOptions = (): AnimeListQueryParams => {
+    const page = searchParams.get('page') !== null ? Number(searchParams.get('page')) : INITIAL_PARAMS.page;
+    const pageSize = searchParams.get('pageSize') !== null ?
+      Number(searchParams.get('pageSize')) :
+      INITIAL_PARAMS.pageSize;
+    const typesUrl = searchParams.get('types');
+    const types = typesUrl !== null ?
+      typesUrl.split(',') as AnimeType[] :
+      INITIAL_PARAMS.types;
+
+    return {
+      page,
+      pageSize,
+      search: searchParams.get('search') ?? INITIAL_PARAMS.search,
+      types,
+      sort: {
+        field: searchParams.get('field') as AnimeSortField ?? INITIAL_PARAMS.sort.field,
+        direction: searchParams.get('direction') as AnimeSortDirection ?? INITIAL_PARAMS.sort.direction,
+      },
+    };
+  };
+
+  const [query, setQuery] = useState<AnimeListQueryParams>(getAnimeListOptions());
+
+  const setQueryParamsToUrl = ({ search, types }: AnimeListQueryParams) => {
+    const queryParamsForUrl = { search, types: types.toString() };
+    const params = new URLSearchParams(queryParamsForUrl);
+    setSearchParams(params, { replace: true });
+  };
+
   useEffect(() => {
-    dispatch(removeAnimeList());
+    if (animeList.length > 0) {
+      setQueryParamsToUrl(query);
+      dispatch(removeAnimeList());
+    }
   }, [query]);
 
   useEffect(() => {
     if (animeList.length === 0) {
       dispatch(fetchAnimeList(query));
     }
-  }, [dispatch, animeList]);
+  }, [animeList]);
 
   const getMoreAnime = () => {
     dispatch(fetchNextAnimeList());
@@ -64,8 +98,8 @@ const AnimeListComponent: FC = () => {
       </Typography>
 
       <Box className={styles['anime-catalog__query-bar']}>
-        <SearchBar onChange={debounce(handleSearchChange, 500)} />
-        <FilterBar onChange={debounce(handleFiltersChange, 500)} />
+        <SearchBar onChange={debounce(handleSearchChange, 500)} initialValue={query.search} />
+        <FilterBar onChange={debounce(handleFiltersChange, 500)} initialValue={query.types} />
       </Box>
 
       {

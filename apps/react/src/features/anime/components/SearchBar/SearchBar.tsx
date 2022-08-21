@@ -7,12 +7,15 @@ import styles from './SearchBar.module.css';
 
 interface Props {
 
-  /** Handle search value change. */
+  /** Initial value form selector. */
+  readonly initialValue: string;
+
+  /** Handler search value change. */
   readonly onChange: (search: string) => void;
 }
-const SearchBarComponent: FC<Props> = ({ onChange }) => {
+const SearchBarComponent: FC<Props> = ({ onChange, initialValue }) => {
   const [isSearch, setIsSearch] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialValue);
 
   useEffect(() => {
     onChange(search);

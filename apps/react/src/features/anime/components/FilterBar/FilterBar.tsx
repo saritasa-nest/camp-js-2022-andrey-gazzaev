@@ -19,13 +19,16 @@ import styles from './FilterBar.module.css';
 
 interface Props {
 
-  /** Handle search value change. */
+  /** Initial value form selector. */
+  readonly initialValue: readonly AnimeType[];
+
+  /** Handler search value change. */
   readonly onChange: (filters: readonly AnimeType[]) => void;
 }
 
-const FilterBarComponent: FC<Props> = ({ onChange }) => {
+const FilterBarComponent: FC<Props> = ({ onChange, initialValue }) => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [filters, setFilters] = useState<readonly AnimeType[]>([]);
+  const [filters, setFilters] = useState<readonly AnimeType[]>(initialValue);
   const [filterList, setFilterList] = useState<readonly AnimeType[]>([]);
 
   useEffect(() => {
