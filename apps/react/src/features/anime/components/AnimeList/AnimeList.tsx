@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
 import { AnimeSortDirection, AnimeSortField, AnimeType } from '@js-camp/core/models/anime';
 
+import { FilterBar } from '../FilterBar';
 import { SearchBar } from '../SearchBar';
 import { AnimeItem } from '../AnimeItem/AnimeItem';
 
@@ -44,7 +45,7 @@ const AnimeListComponent: FC = () => {
     dispatch(fetchNextAnimeList());
   };
 
-  const handlerSearchChange = (search: string) => {
+  const handleSearchChange = (search: string) => {
     setQuery({ ...query, search });
   };
 
@@ -58,8 +59,8 @@ const AnimeListComponent: FC = () => {
         Anime catalog
       </Typography>
 
-      <SearchBar onChange={debounce(handlerSearchChange, 500)} />
-
+      <SearchBar onChange={debounce(handleSearchChange, 500)} />
+      <FilterBar />
       {
         !isLoading ?
           <List

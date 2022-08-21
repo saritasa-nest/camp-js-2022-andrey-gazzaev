@@ -1,4 +1,4 @@
-.search-bar {
+.filters-bar {
   display: flex;
   align-items: center;
   border-radius: 5px;
@@ -6,10 +6,11 @@
   width: fit-content;
 }
 
-.search {
+.filters {
   position: relative;
 }
 
-.search__field .search__field-input {
+.filters__field {
   padding-left: 10px;
+  min-width: 200px;
 }
