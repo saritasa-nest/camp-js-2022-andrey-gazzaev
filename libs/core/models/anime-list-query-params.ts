@@ -10,7 +10,7 @@ export interface AnimeListQueryParams {
   readonly pageSize: number;
 
   /** Filter by type. */
-  readonly types: AnimeType[];
+  readonly types: readonly AnimeType[];
 
   /** Search query. */
   readonly search: string;

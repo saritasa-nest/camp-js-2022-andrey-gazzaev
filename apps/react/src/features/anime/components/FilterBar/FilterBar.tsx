@@ -11,16 +11,22 @@ import {
   InputLabel,
   FormControl,
 } from '@mui/material';
-import { memo, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 
 import styles from './FilterBar.module.css';
 
-const FilterBarComponent = () => {
+interface Props {
+
+  /** Handle search value change. */
+  readonly onChange: (filters: readonly AnimeType[]) => void;
+}
+
+const FilterBarComponent: FC<Props> = ({ onChange }) => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [filters, setFilters] = useState<string[]>([]);
-  const [filterList, setFilterList] = useState<AnimeType[]>([]);
+  const [filters, setFilters] = useState<readonly AnimeType[]>([]);
+  const [filterList, setFilterList] = useState<readonly AnimeType[]>([]);
 
   useEffect(() => {
     setFilterList(Object.values(AnimeType));
@@ -30,16 +36,19 @@ const FilterBarComponent = () => {
     const {
       target: { value },
     } = event;
-    setFilters(
-
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    if (typeof value === 'string') {
+      return;
+    }
+    setFilters(value);
   };
 
   const handleFilterToggle = () => {
     setIsFiltersOpen(!isFiltersOpen);
   };
+
+  useEffect(() => {
+    onChange(filters);
+  }, [filters]);
 
   return (
     <Box className={styles['filters-bar']}>

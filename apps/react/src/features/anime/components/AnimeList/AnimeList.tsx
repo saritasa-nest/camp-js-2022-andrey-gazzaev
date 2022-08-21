@@ -49,6 +49,10 @@ const AnimeListComponent: FC = () => {
     setQuery({ ...query, search });
   };
 
+  const handleFiltersChange = (filters: readonly AnimeType[]) => {
+    setQuery({ ...query, types: filters });
+  };
+
   return (
     <Box className={styles['anime-catalog']}>
       <Typography
@@ -61,8 +65,9 @@ const AnimeListComponent: FC = () => {
 
       <Box className={styles['anime-catalog__query-bar']}>
         <SearchBar onChange={debounce(handleSearchChange, 500)} />
-        <FilterBar />
+        <FilterBar onChange={debounce(handleFiltersChange, 500)} />
       </Box>
+
       {
         !isLoading ?
           <List
