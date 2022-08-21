@@ -59,8 +59,10 @@ const AnimeListComponent: FC = () => {
         Anime catalog
       </Typography>
 
-      <SearchBar onChange={debounce(handleSearchChange, 500)} />
-      <FilterBar />
+      <Box className={styles['anime-catalog__query-bar']}>
+        <SearchBar onChange={debounce(handleSearchChange, 500)} />
+        <FilterBar />
+      </Box>
       {
         !isLoading ?
           <List

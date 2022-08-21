@@ -9,6 +9,7 @@ import {
   Select,
   SelectChangeEvent,
   InputLabel,
+  FormControl,
 } from '@mui/material';
 import { memo, useEffect, useState } from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -44,25 +45,27 @@ const FilterBarComponent = () => {
     <Box className={styles['filters-bar']}>
       <Box className={styles['filters']}>
         <Collapse in={isFiltersOpen} orientation="horizontal">
-          <InputLabel id="type-filter">Type</InputLabel>
-          <Select
-            labelId="type-filter"
-            className={styles['filters__field']}
-            multiple
-            value={filters}
-            onChange={handleChange}
-            renderValue={selected => selected.join(', ')}
-            inputProps={{
-              className: styles['filters__field-input'],
-            }}
-          >
-            {filterList.map(filter => (
-              <MenuItem key={filter} value={filter}>
-                <Checkbox checked={filters.includes(filter as AnimeType)} />
-                <ListItemText primary={filter} />
-              </MenuItem>
-            ))}
-          </Select>
+          <FormControl variant="standard">
+            <InputLabel id="type-filter">Type</InputLabel>
+            <Select
+              className={styles['filters__field']}
+              labelId="type-filter"
+              multiple
+              value={filters}
+              onChange={handleChange}
+              renderValue={selected => selected.join(', ')}
+              inputProps={{
+                className: styles['filters__field-input'],
+              }}
+            >
+              {filterList.map(filter => (
+                <MenuItem key={filter} value={filter}>
+                  <Checkbox checked={filters.includes(filter as AnimeType)} />
+                  <ListItemText primary={filter} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Collapse>
       </Box>
 

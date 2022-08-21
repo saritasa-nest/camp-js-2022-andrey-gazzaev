@@ -8,9 +8,10 @@
 
 .filters {
   position: relative;
+  width: 100%;
 }
 
 .filters__field {
   padding-left: 10px;
-  min-width: 200px;
+  width: 170px;
 }
