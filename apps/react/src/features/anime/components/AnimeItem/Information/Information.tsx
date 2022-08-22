@@ -21,6 +21,7 @@ const AnimeInformationComponent: FC<Props> = ({ status, type }) => (
     >
       Type: {replaceNull(type)}
     </Typography>
+    <br />
     <Typography
       component={'span'}
       variant="body2"
