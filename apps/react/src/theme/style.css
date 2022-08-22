@@ -1,3 +1,7 @@
+:root {
+  --main-header-height: 70px;
+}
+
 body {
   margin: 0;
   padding: 0;

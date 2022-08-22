@@ -173,7 +173,10 @@ const RegistrationFormComponent: FC = () => {
 
           <Box component="div">
             <List>
-              <ListItem disablePadding className={styles['list-item']}>
+              <ListItem
+                disablePadding
+                className={styles['listItem']}
+              >
                 <Link to="/auth/login/" color="inherit">
                   <ListItemButton>
                     Do you have an account?

@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { logoutUser } from '@js-camp/react/store/user/dispatchers';
@@ -19,13 +19,15 @@ const DashboardComponent: FC = () => {
     return <p>Oops, something went wrong.</p>;
   }
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  /** Handles click on dashboard button. */
+  const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-  };
+  }, []);
 
-  const handleClose = () => {
+  /** Handles click dashboard menu. */
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
 
   return (
     <Box>
@@ -50,7 +52,10 @@ const DashboardComponent: FC = () => {
         }}
       >
         <MenuItem >
-          <Typography variant="h6" component="span">
+          <Typography
+            variant="h6"
+            component="span"
+          >
             {user.firstName} {user.lastName}
           </Typography>
 

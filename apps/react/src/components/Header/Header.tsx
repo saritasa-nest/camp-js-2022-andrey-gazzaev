@@ -3,11 +3,13 @@ import { Typography, Toolbar, Box, AppBar } from '@mui/material';
 
 import { Dashboard } from './Dashboard';
 
+import styles from './Header.module.css';
+
 const HeaderComponent: FC = () => (
-  <Box sx={{ flexGrow: 1 }}>
+  <Box className={styles['header']}>
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="h1" className={styles['headerLogoText']}>
             Anime Catalog
         </Typography>
         <Dashboard />
