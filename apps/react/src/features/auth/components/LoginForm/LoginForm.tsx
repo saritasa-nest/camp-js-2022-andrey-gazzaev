@@ -10,7 +10,7 @@ import { Login } from '@js-camp/core/models/login';
 import { AppError } from '@js-camp/core/models/app-error';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
-import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp/react/store/auth/selectors';
+import { selectIsAuthLoading, selectError, selectIsAuthSubmited } from '@js-camp/react/store/auth/selectors';
 
 import { SnackBarConfig } from '../../utils/interfaces';
 import { ExtractedError, extractError } from '../../utils/error';
@@ -33,9 +33,9 @@ const INITIAL_SNACK_BAR: SnackBarConfig = {
 };
 
 const LoginFormComponent: FC = () => {
-  const isLoading = useAppSelector(selectAreAuthLoading);
+  const isLoading = useAppSelector(selectIsAuthLoading);
   const loginError = useAppSelector(selectError);
-  const isFormSubmitted = useAppSelector(selectAreAuthSubmit);
+  const isFormSubmitted = useAppSelector(selectIsAuthSubmited);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState<SnackBarConfig>(INITIAL_SNACK_BAR);

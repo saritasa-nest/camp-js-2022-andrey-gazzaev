@@ -10,10 +10,11 @@ const DashboardComponent: FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleUserLogout = () => {
+  /** Handles user logout. */
+  const handleUserLogout = useCallback(() => {
     dispatch(logoutUser());
     setAnchorEl(null);
-  };
+  }, []);
 
   /** Handles click on dashboard button. */
   const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
