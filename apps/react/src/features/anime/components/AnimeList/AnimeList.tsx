@@ -56,7 +56,7 @@ const getAnimeListOptions = (searchParams: URLSearchParams): AnimeListQueryParam
   };
 };
 
-const AnimeListComponent: FC<Props> = ({ className }) => {
+const AnimeListComponent: FC<Props> = () => {
   const animeList = useAppSelector(selectAmineList);
   const isLoading = useAppSelector(selectIsAnimeLoading);
   const [searchParams, setSearchParams] = useSearchParams();
