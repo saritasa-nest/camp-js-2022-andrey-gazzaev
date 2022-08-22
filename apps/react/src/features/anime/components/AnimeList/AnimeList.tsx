@@ -1,12 +1,12 @@
 import { useSearchParams } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { debounce, Divider, List, Paper } from '@mui/material';
+import { debounce, Divider, List, Paper, Typography } from '@mui/material';
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
 import { AnimeSortDirection, AnimeSortField, AnimeType } from '@js-camp/core/models/anime';
-import { selectAmineList, selectAreAnimeLoading } from '@js-camp/react/store/anime/selectors';
+import { selectAmineList, selectIsAnimeLoading } from '@js-camp/react/store/anime/selectors';
 import { fetchAnimeList, fetchNextAnimeList, removeAnimeList } from '@js-camp/react/store/anime/dispatchers';
 
 import { QueryBar } from '../QueryBar/QueryBar';
@@ -58,7 +58,7 @@ const getAnimeListOptions = (searchParams: URLSearchParams): AnimeListQueryParam
 
 const AnimeListComponent: FC<Props> = ({ className }) => {
   const animeList = useAppSelector(selectAmineList);
-  const isLoading = useAppSelector(selectAreAnimeLoading);
+  const isLoading = useAppSelector(selectIsAnimeLoading);
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState<AnimeListQueryParams>(getAnimeListOptions(searchParams));
   const dispatch = useAppDispatch();
@@ -92,7 +92,15 @@ const AnimeListComponent: FC<Props> = ({ className }) => {
   }, []);
 
   return (
-    <Paper className={`${styles['anime-catalog']} ${className}`}>
+    <Paper className={styles['animeCatalog']}>
+      <Typography
+        component="h2"
+        variant="body1"
+        className={styles['animeCatalogTitle']}
+      >
+        Anime catalog
+      </Typography>
+
       <QueryBar
         initialQuery={query}
         onQueryParamsChange={debounce(setQuery, 500)}
@@ -102,14 +110,10 @@ const AnimeListComponent: FC<Props> = ({ className }) => {
         !isLoading ?
           <List
             id="scrollableDiv"
-            className={styles['anime-list']}
             aria-labelledby="anime-list-catalog"
-            sx={{
-              bgcolor: 'background.paper',
-            }}
+            className={styles['animeList']}
           >
             <InfiniteScroll
-              className={styles['anime-list']}
               dataLength={animeList.length}
               next={getMoreAnime}
               hasMore={true}

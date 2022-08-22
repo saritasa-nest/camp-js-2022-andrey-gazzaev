@@ -3,13 +3,13 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 /** Selects auth loading state. */
-export const selectAreAuthLoading = createSelector(
+export const selectIsAuthLoading = createSelector(
   (state: RootState) => state.auth.isLoading,
   isLoading => isLoading,
 );
 
 /** Selects auth submit state. */
-export const selectAreAuthSubmit = createSelector(
+export const selectIsAuthSubmitted = createSelector(
   (state: RootState) => state.auth.isSubmitted,
   isSubmitted => isSubmitted,
 );

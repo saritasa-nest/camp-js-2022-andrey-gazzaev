@@ -1,0 +1,7 @@
+.header {
+  height: var(--main-header-height);
+}
+
+.header .headerLogoText {
+  flex-grow: 1;
+}

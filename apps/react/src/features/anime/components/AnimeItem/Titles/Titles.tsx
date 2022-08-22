@@ -6,10 +6,10 @@ import { replaceNull } from '../../../../../features/auth/utils/text';
 interface Props {
 
   /** Title of English. */
-  readonly titleEnglish: string | null;
+  readonly titleEnglish: string;
 
   /** Title of Japanese. */
-  readonly titleJapanese: string | null;
+  readonly titleJapanese: string;
 }
 
 const AnimeTitlesComponent: FC<Props> = ({ titleEnglish, titleJapanese }) => (
