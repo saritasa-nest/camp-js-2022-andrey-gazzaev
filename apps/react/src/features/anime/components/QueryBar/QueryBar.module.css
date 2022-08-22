@@ -1,0 +1,13 @@
+.query-bar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.search .search__input {
+  padding-left: 10px;
+}
+
+.filter {
+  min-width: 70px;
+  max-width: 110px;
+}

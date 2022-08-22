@@ -1,4 +1,4 @@
-.search-bar {
+.toggle {
   display: flex;
   align-items: center;
   border-radius: 5px;
@@ -6,10 +6,6 @@
   width: fit-content;
 }
 
-.search {
+.toggle-input {
   position: relative;
-}
-
-.search__field .search__field-input {
-  padding-left: 10px;
 }
