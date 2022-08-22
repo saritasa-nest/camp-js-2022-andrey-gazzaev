@@ -15,10 +15,6 @@ const DashboardComponent: FC = () => {
     setAnchorEl(null);
   };
 
-  if (user === null) {
-    return <p>Oops, something went wrong.</p>;
-  }
-
   /** Handles click on dashboard button. */
   const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -28,6 +24,10 @@ const DashboardComponent: FC = () => {
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
+
+  if (user === null) {
+    return <p>Oops, something went wrong.</p>;
+  }
 
   return (
     <Box>
