@@ -10,8 +10,12 @@ interface Props {
 }
 
 export const HeaderForm: FC<Props> = ({ label }: Props) => (
-  <Box className={styles['header']}>
-    <Typography variant="h4" component="h1" className={styles['header__text']}>
+  <Box>
+    <Typography
+      variant="h4"
+      component="h1"
+      className={styles['formHeaderText']}
+    >
       {label}
     </Typography>
   </Box>
