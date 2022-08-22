@@ -11,7 +11,7 @@ const AnimePageComponent: FC = () => (
   <>
     <Header />
     <Box className={styles['content']}>
-      <AnimeList />
+      <AnimeList className={styles['content__anime-catalog']} />
       <Details />
     </Box>
   </>

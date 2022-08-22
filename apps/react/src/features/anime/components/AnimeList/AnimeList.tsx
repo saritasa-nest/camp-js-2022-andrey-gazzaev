@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Box, debounce, Divider, List, Typography } from '@mui/material';
+import { debounce, Divider, List, Paper } from '@mui/material';
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
@@ -14,6 +14,11 @@ import { AnimeItem } from '../AnimeItem/AnimeItem';
 
 import styles from './AnimeList.module.css';
 
+interface Props {
+
+  /** Anime list component class name. */
+  readonly className: string;
+}
 const INITIAL_PARAMS: AnimeListQueryParams = {
   page: 0,
   pageSize: 25,
@@ -51,7 +56,7 @@ const getAnimeListOptions = (searchParams: URLSearchParams): AnimeListQueryParam
   };
 };
 
-const AnimeListComponent: FC = () => {
+const AnimeListComponent: FC<Props> = ({ className }) => {
   const animeList = useAppSelector(selectAmineList);
   const isLoading = useAppSelector(selectAreAnimeLoading);
   const dispatch = useAppDispatch();
@@ -87,15 +92,7 @@ const AnimeListComponent: FC = () => {
   }, []);
 
   return (
-    <Box className={styles['anime-catalog']}>
-      <Typography
-        component="h2"
-        variant="body1"
-        className={styles['anime-catalog__title']}
-      >
-        Anime catalog
-      </Typography>
-
+    <Paper className={`${styles['anime-catalog']} ${className}`}>
       <QueryBar
         initialQuery={query}
         onQueryParamsChange={debounce(setQuery, 500)}
@@ -129,9 +126,9 @@ const AnimeListComponent: FC = () => {
 
             </InfiniteScroll>
           </List> :
-          <span>Anime loading</span>
+          <span>No anime</span>
       }
-    </Box>
+    </Paper>
   );
 };
 
