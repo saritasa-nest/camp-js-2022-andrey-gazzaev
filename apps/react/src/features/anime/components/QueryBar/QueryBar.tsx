@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Checkbox,
   FormControl,
   InputBase,
@@ -15,8 +16,10 @@ import { FC, memo, useCallback, useEffect, useState } from 'react';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
-import { AnimeSortField, AnimeType } from '@js-camp/core/models/anime';
+import { AnimeSortDirection, AnimeSortField, AnimeType } from '@js-camp/core/models/anime';
 import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
 
 import { ToggleInput } from '../ToggleInput';
@@ -53,11 +56,20 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
   const [types, setTypes] = useState<readonly AnimeType[]>(initialQuery.types);
   const [search, setSearch] = useState(initialQuery.search);
   const [sortField, setSortField] = useState(initialQuery.sort.field);
+  const [sortDirection, setSortDirection] = useState(initialQuery.sort.direction);
 
+  /**
+   * Handles search change.
+   * @param event React change event.
+   */
   const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearch(event.target.value);
   }, []);
 
+  /**
+   * Handles filter change.
+   * @param event Select event.
+   */
   const handleFilterChange = useCallback((event: SelectChangeEvent<typeof types>) => {
     const {
       target: { value },
@@ -68,8 +80,19 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
     setTypes(value);
   }, []);
 
+  /**
+   * Handles sort change.
+   * @param event Select event.
+   */
   const handleSortChange = useCallback((event: SelectChangeEvent) => {
     setSortField(event.target.value as AnimeSortField);
+  }, []);
+
+  /** Handles sort toggle.*/
+  const handleDirectionToggle = useCallback(() => {
+    setSortDirection(direction => direction === AnimeSortDirection.Ascending ?
+      AnimeSortDirection.Descending :
+      AnimeSortDirection.Ascending);
   }, []);
 
   useEffect(() => {
@@ -78,10 +101,10 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
         ...initialQuery,
         search,
         types,
-        sort: { field: sortField, direction: initialQuery.sort.direction },
+        sort: { field: sortField, direction: sortDirection },
       },
     );
-  }, [search, types, sortField]);
+  }, [search, types, sortField, sortDirection]);
 
   return (
     <Box className={styles['query-bar']}>
@@ -147,6 +170,9 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
               {item.title}
             </MenuItem>)}
           </Select>
+          <Button onClick={handleDirectionToggle}>
+            {sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+          </Button>
         </FormControl>
       </ToggleInput>
     </Box>

@@ -35,7 +35,7 @@ export namespace AnimeListOptionsMapper {
   }: AnimeListQueryParams): URLSearchParams {
 
     const sortDirection = sort.direction === 'asc' ? SortDirectionDto.Ascending : SortDirectionDto.Descending;
-    const sortField = SORT_FIELD_TO_DTO_MAP[sort.field] !== undefined ? SORT_FIELD_TO_DTO_MAP[sort.field] : AnimeSortField.TitleEnglish;
+    const sortField = SORT_FIELD_TO_DTO_MAP[sort.field] !== undefined ? SORT_FIELD_TO_DTO_MAP[sort.field] : SortFieldDto.TitleEnglish;
 
     const filterType = types.map(type => ANIME_TYPE_TO_DTO_MAP[type]).toString();
 

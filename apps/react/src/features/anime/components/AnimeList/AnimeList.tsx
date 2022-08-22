@@ -25,6 +25,10 @@ const INITIAL_PARAMS: AnimeListQueryParams = {
   },
 };
 
+/**
+ * Gets anime list option from url.
+ * @param searchParams Params into url.
+ */
 const getAnimeListOptions = (searchParams: URLSearchParams): AnimeListQueryParams => {
   const page = searchParams.get('page') !== null ? Number(searchParams.get('page')) : INITIAL_PARAMS.page;
   const pageSize = searchParams.get('pageSize') !== null ?
@@ -54,6 +58,10 @@ const AnimeListComponent: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState<AnimeListQueryParams>(getAnimeListOptions(searchParams));
 
+  /**
+   * Sets query params to url.
+   * @param animeListQueryParams Query params.
+   */
   const setQueryParamsToUrl = ({ search, types, sort }: AnimeListQueryParams) => {
     const queryParamsForUrl = { search, types: types.toString(), field: sort.field, direction: sort.direction };
     const params = new URLSearchParams(queryParamsForUrl);
@@ -73,6 +81,7 @@ const AnimeListComponent: FC = () => {
     }
   }, [animeList]);
 
+  /** Gets more anime. */
   const getMoreAnime = useCallback(() => {
     dispatch(fetchNextAnimeList());
   }, []);

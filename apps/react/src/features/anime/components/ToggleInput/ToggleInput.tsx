@@ -18,6 +18,7 @@ interface Props {
 const ToggleInputComponent: FC<Props> = ({ iconOpen, iconClose, children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  /** Handles children element toggle. */
   const handleToggle = useCallback(() => {
     setIsOpen(!isOpen);
   }, [isOpen]);
