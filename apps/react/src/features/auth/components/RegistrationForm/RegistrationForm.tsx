@@ -1,6 +1,7 @@
-import { useFormik } from 'formik';
+import { TextField } from 'formik-mui';
 import { LoadingButton } from '@mui/lab';
 import { Link, useNavigate } from 'react-router-dom';
+import { Field, FormikProvider, useFormik } from 'formik';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
 
@@ -13,7 +14,6 @@ import { selectAreAuthLoading, selectError, selectAreAuthSubmit } from '@js-camp
 import { SnackBarConfig } from '../../utils/interfaces';
 import { ExtractedError, extractError } from '../../utils/error';
 
-import { InputForm } from '../InputForm/InputForm';
 import { HeaderForm } from '../HeaderForm/HeaderForm';
 
 import { RegistrationFormData, signUpSchema } from './formSettings';
@@ -50,8 +50,9 @@ const RegistrationFormComponent: FC = () => {
    * Handlers form submit.
    * @param RegistrationData Registration data.
    */
-  const handleSubmitForm = useCallback(({ email, firstName, lastName, password }: RegistrationFormData) => {
-    dispatch(registrationUser({ email, firstName, lastName, password }));
+  const handleSubmitForm = useCallback(async({ email, firstName, lastName, password }: RegistrationFormData) => {
+    await dispatch(registrationUser({ email, firstName, lastName, password }));
+    formik.setSubmitting(false);
   }, [dispatch]);
 
   const formik = useFormik({
@@ -93,93 +94,96 @@ const RegistrationFormComponent: FC = () => {
   return (
     <Box component="div">
       <HeaderForm label="Sign Up" />
-      <Box component="form" noValidate onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <InputForm
-              fullWidth
-              id="firstName"
-              name="firstName"
-              label="First name"
-              type="text"
-              required
-              formik={formik}
-            />
+
+      <FormikProvider value={formik}>
+        <Box component="form" noValidate onSubmit={formik.handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Field
+                component={TextField}
+                fullWidth
+                id="firstName"
+                name="firstName"
+                label="First name"
+                type="text"
+                required
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <Field
+                component={TextField}
+                fullWidth
+                id="lastName"
+                name="lastName"
+                label="LastName"
+                type="text"
+                required
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Field
+                component={TextField}
+                fullWidth
+                id="email"
+                name="email"
+                label="Email"
+                type="email"
+                required
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Field
+                component={TextField}
+                fullWidth
+                id="password"
+                name="password"
+                label="Password"
+                type="password"
+                required
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Field
+                component={TextField}
+                fullWidth
+                id="passwordConfirm"
+                name="passwordConfirm"
+                label="Password confirm"
+                type="password"
+                required
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <LoadingButton
+                loading={isLoading}
+                loadingIndicator="Loading…"
+                variant="contained"
+                fullWidth
+                type="submit"
+              >
+                Sign Up
+              </LoadingButton>
+            </Grid>
           </Grid>
 
-          <Grid item xs={6}>
-            <InputForm
-              fullWidth
-              id="lastName"
-              name="lastName"
-              label="LastName"
-              type="text"
-              required
-              formik={formik}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <InputForm
-              fullWidth
-              id="email"
-              name="email"
-              label="Email"
-              type="email"
-              required
-              formik={formik}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <InputForm
-              fullWidth
-              id="password"
-              name="password"
-              label="Password"
-              type="password"
-              required
-              formik={formik}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <InputForm
-              fullWidth
-              id="passwordConfirm"
-              name="passwordConfirm"
-              label="Password confirm"
-              type="password"
-              required
-              formik={formik}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <LoadingButton
-              loading={isLoading}
-              loadingIndicator="Loading…"
-              variant="contained"
-              fullWidth
-              type="submit"
-            >
-              Sign Up
-            </LoadingButton>
-          </Grid>
-        </Grid>
-
-        <Box component="div">
-          <List>
-            <ListItem disablePadding className={styles['list-item']}>
-              <Link to="/auth/login/" color="inherit">
-                <ListItemButton>
-                  Do you have an account?
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          </List>
+          <Box component="div">
+            <List>
+              <ListItem disablePadding className={styles['list-item']}>
+                <Link to="/auth/login/" color="inherit">
+                  <ListItemButton>
+                    Do you have an account?
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            </List>
+          </Box>
         </Box>
-      </Box>
+      </FormikProvider>
 
       <Snackbar
         open={snackbar.isOpen}
