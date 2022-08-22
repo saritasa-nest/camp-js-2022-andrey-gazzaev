@@ -59,9 +59,9 @@ const getAnimeListOptions = (searchParams: URLSearchParams): AnimeListQueryParam
 const AnimeListComponent: FC<Props> = ({ className }) => {
   const animeList = useAppSelector(selectAmineList);
   const isLoading = useAppSelector(selectAreAnimeLoading);
-  const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState<AnimeListQueryParams>(getAnimeListOptions(searchParams));
+  const dispatch = useAppDispatch();
 
   /**
    * Sets query params to url.

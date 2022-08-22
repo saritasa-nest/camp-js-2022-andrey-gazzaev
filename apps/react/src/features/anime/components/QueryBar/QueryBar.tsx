@@ -34,19 +34,23 @@ interface Props {
   /** Handles query params change.*/
   readonly onQueryParamsChange: (queryParams: AnimeListQueryParams) => void;
 }
+interface SortSelect {
 
-const sortList = [
+  /** Title select. */
+  readonly title: string;
+
+  /** Select value. */
+  readonly field: AnimeSortField;
+}
+
+const sortList: readonly SortSelect[] = [
   {
     title: 'Title in English',
-    field: 'titleEnglish',
-  },
-  {
-    title: 'Aired start',
-    field: 'aired',
+    field: AnimeSortField.TitleEnglish,
   },
   {
     title: 'Status',
-    field: 'status',
+    field: AnimeSortField.Status,
   },
 ];
 
@@ -55,8 +59,8 @@ const filterList = Object.values(AnimeType);
 const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => {
   const [types, setTypes] = useState<readonly AnimeType[]>(initialQuery.types);
   const [search, setSearch] = useState(initialQuery.search);
-  const [sortField, setSortField] = useState(initialQuery.sort.field);
-  const [sortDirection, setSortDirection] = useState(initialQuery.sort.direction);
+  const [sortField, setSortField] = useState<AnimeSortField>(initialQuery.sort.field);
+  const [sortDirection, setSortDirection] = useState<AnimeSortDirection>(initialQuery.sort.direction);
 
   /**
    * Handles search change.
