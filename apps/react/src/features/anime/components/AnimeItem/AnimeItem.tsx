@@ -13,13 +13,12 @@ interface Props {
   readonly anime: AnimeBase;
 }
 
-const AnimeItemComponent: FC<Props> = ({ anime }: Props) => (
+const AnimeItemComponent: FC<Props> = ({ anime }) => (
   <ListItem
     disablePadding
-    className={styles['item']}
   >
     <ListItemAvatar
-      className={styles['item__poster']}
+      className={styles['itemPoster']}
     >
       <Avatar
         alt={`Anime poster - ${anime.imageTitle}`}

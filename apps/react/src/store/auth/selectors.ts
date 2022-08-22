@@ -9,7 +9,7 @@ export const selectIsAuthLoading = createSelector(
 );
 
 /** Selects auth submit state. */
-export const selectIsAuthSubmited = createSelector(
+export const selectIsAuthSubmitted = createSelector(
   (state: RootState) => state.auth.isSubmitted,
   isSubmitted => isSubmitted,
 );

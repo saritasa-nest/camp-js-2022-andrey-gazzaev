@@ -6,7 +6,7 @@ import { entityAdapter } from './state';
 
 export const { selectAll } = entityAdapter.getSelectors();
 
-/** Selects user from store. */
+/** Selects user. */
 export const selectUser = createSelector(
   (state: RootState) => selectAll(state.user),
   user => user[0] === undefined ? null : user[0],
