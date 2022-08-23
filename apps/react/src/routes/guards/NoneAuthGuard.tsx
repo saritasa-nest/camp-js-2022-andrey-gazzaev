@@ -12,13 +12,7 @@ const NoneAuthGuardComponent: FC = () => {
     pathname: '/',
   };
 
-  if (user !== null) {
-    return <Navigate to={redirect} replace />;
-  }
-
-  return (
-    <Outlet />
-  );
+  return user !== null ? <Navigate to={redirect} replace /> : <Outlet />;
 };
 
 export const NoneAuthGuard = memo(NoneAuthGuardComponent);
