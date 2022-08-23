@@ -92,11 +92,11 @@ const AnimeListComponent: FC<Props> = () => {
   }, []);
 
   return (
-    <Paper className={styles['animeCatalog']}>
+    <Paper className={styles.animeCatalog}>
       <Typography
         component="h2"
         variant="body1"
-        className={styles['animeCatalogTitle']}
+        className={styles.animeCatalogTitle}
       >
         Anime catalog
       </Typography>
@@ -111,7 +111,7 @@ const AnimeListComponent: FC<Props> = () => {
           <List
             id="scrollableDiv"
             aria-labelledby="anime-list-catalog"
-            className={styles['animeList']}
+            className={styles.animeList}
           >
             <InfiniteScroll
               dataLength={animeList.length}

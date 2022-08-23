@@ -14,7 +14,7 @@ export const HeaderForm: FC<Props> = ({ label }: Props) => (
     <Typography
       variant="h4"
       component="h1"
-      className={styles['formHeaderText']}
+      className={styles.formHeaderText}
     >
       {label}
     </Typography>

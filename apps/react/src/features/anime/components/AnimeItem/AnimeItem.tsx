@@ -18,7 +18,7 @@ const AnimeItemComponent: FC<Props> = ({ anime }) => (
     disablePadding
   >
     <ListItemAvatar
-      className={styles['itemPoster']}
+      className={styles.itemPoster}
     >
       <Avatar
         alt={`Anime poster - ${anime.imageTitle}`}

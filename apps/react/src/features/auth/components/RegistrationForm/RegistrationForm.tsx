@@ -175,7 +175,7 @@ const RegistrationFormComponent: FC = () => {
             <List>
               <ListItem
                 disablePadding
-                className={styles['listItem']}
+                className={styles.listItem}
               >
                 <Link to="/auth/login/" color="inherit">
                   <ListItemButton>

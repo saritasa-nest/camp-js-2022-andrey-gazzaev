@@ -6,10 +6,10 @@ import { Dashboard } from './Dashboard';
 import styles from './Header.module.css';
 
 const HeaderComponent: FC = () => (
-  <Box className={styles['header']}>
+  <Box className={styles.header}>
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="h1" className={styles['headerLogoText']}>
+        <Typography variant="h6" component="h1" className={styles.headerLogoText}>
             Anime Catalog
         </Typography>
         <Dashboard />
