@@ -11,11 +11,19 @@ interface Props {
 
   /** List of anime. */
   readonly anime: AnimeBase;
+
+  /** Handles click on element. */
+  readonly onClick: () => void;
+
+  /** It is selected element. */
+  readonly isSelected: boolean;
 }
 
-const AnimeItemComponent: FC<Props> = ({ anime }) => (
+const AnimeItemComponent: FC<Props> = ({ anime, onClick, isSelected }) => (
   <ListItem
+    className={`${styles.item} ${isSelected ? styles.itemSelected : null}`}
     disablePadding
+    onClick={onClick}
   >
     <ListItemAvatar
       className={styles.itemPoster}

@@ -20,7 +20,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 import { AnimeSortDirection, AnimeSortField, AnimeType } from '@js-camp/core/models/anime';
-import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
+import { AnimeListQueryParamsWithId } from '@js-camp/core/models/anime-list-query-params';
 
 import { ToggleInput } from '../ToggleInput';
 
@@ -29,10 +29,10 @@ import styles from './QueryBar.module.css';
 interface Props {
 
   /** Initial query params. */
-  readonly initialQuery: AnimeListQueryParams;
+  readonly initialQuery: AnimeListQueryParamsWithId;
 
   /** Handles query params change.*/
-  readonly onQueryParamsChange: (queryParams: AnimeListQueryParams) => void;
+  readonly onQueryParamsChange: (queryParams: AnimeListQueryParamsWithId) => void;
 }
 interface SortSelect {
 

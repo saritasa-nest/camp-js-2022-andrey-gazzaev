@@ -18,3 +18,10 @@ export interface AnimeListQueryParams {
   /** Sort. */
   readonly sort: AnimeSort<AnimeSortDirection, AnimeSortField>;
 }
+
+/** Anime list parameters(with id) contained in URL.  */
+export interface AnimeListQueryParamsWithId extends AnimeListQueryParams {
+
+  /** Anime ID. */
+  readonly id: number;
+}

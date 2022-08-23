@@ -4,7 +4,7 @@ import { debounce, Divider, List, Paper, Typography } from '@mui/material';
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
+import { AnimeListQueryParamsWithId } from '@js-camp/core/models/anime-list-query-params';
 import { AnimeSortDirection, AnimeSortField, AnimeType } from '@js-camp/core/models/anime';
 import { selectAmineList, selectIsAnimeLoading } from '@js-camp/react/store/anime/selectors';
 import { fetchAnimeList, fetchNextAnimeList, removeAnimeList } from '@js-camp/react/store/anime/dispatchers';
@@ -19,22 +19,23 @@ interface Props {
   /** Anime list component class name. */
   readonly className: string;
 }
-const INITIAL_PARAMS: AnimeListQueryParams = {
+const INITIAL_PARAMS: AnimeListQueryParamsWithId = {
   page: 0,
   pageSize: 25,
   search: '',
   types: [AnimeType.Tv],
   sort: {
-    field: AnimeSortField.TitleJapanese,
+    field: AnimeSortField.TitleEnglish,
     direction: AnimeSortDirection.Ascending,
   },
+  id: -1,
 };
 
 /**
  * Gets anime list option from url.
  * @param searchParams Params into url.
  */
-const getAnimeListOptions = (searchParams: URLSearchParams): AnimeListQueryParams => {
+const getAnimeListOptions = (searchParams: URLSearchParams): AnimeListQueryParamsWithId => {
   const page = searchParams.get('page') !== null ? Number(searchParams.get('page')) : INITIAL_PARAMS.page;
   const pageSize = searchParams.get('pageSize') !== null ?
     Number(searchParams.get('pageSize')) :
@@ -43,6 +44,7 @@ const getAnimeListOptions = (searchParams: URLSearchParams): AnimeListQueryParam
   const types = typesUrl !== null ?
     typesUrl.split(',') as AnimeType[] :
     INITIAL_PARAMS.types;
+  const id = searchParams.get('id') !== null ? Number(searchParams.get('id')) : INITIAL_PARAMS.id;
 
   return {
     page,
@@ -53,6 +55,7 @@ const getAnimeListOptions = (searchParams: URLSearchParams): AnimeListQueryParam
       field: searchParams.get('field') as AnimeSortField ?? INITIAL_PARAMS.sort.field,
       direction: searchParams.get('direction') as AnimeSortDirection ?? INITIAL_PARAMS.sort.direction,
     },
+    id,
   };
 };
 
@@ -60,15 +63,24 @@ const AnimeListComponent: FC<Props> = () => {
   const animeList = useAppSelector(selectAmineList);
   const isLoading = useAppSelector(selectIsAnimeLoading);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState<AnimeListQueryParams>(getAnimeListOptions(searchParams));
+  const [query, setQuery] = useState<AnimeListQueryParamsWithId>(getAnimeListOptions(searchParams));
+  const [currentAnimeId, setCurrentAnimeId] = useState(query.id);
   const dispatch = useAppDispatch();
 
   /**
    * Sets query params to url.
    * @param animeListQueryParams Query params.
+   * @param animeId Anime id.
    */
-  const setQueryParamsToUrl = ({ search, types, sort }: AnimeListQueryParams) => {
-    const queryParamsForUrl = { search, types: types.toString(), field: sort.field, direction: sort.direction };
+  const setQueryParamsToUrl = ({ search, types, sort, id }: AnimeListQueryParamsWithId) => {
+    const queryParamsForUrl = {
+      search,
+      types: types.toString(),
+      field: sort.field,
+      direction: sort.direction,
+      id: String(id),
+    };
+
     const params = new URLSearchParams(queryParamsForUrl);
     setSearchParams(params, { replace: true });
   };
@@ -89,6 +101,15 @@ const AnimeListComponent: FC<Props> = () => {
   /** Gets more anime. */
   const getMoreAnime = useCallback(() => {
     dispatch(fetchNextAnimeList());
+  }, []);
+
+  /**
+   * Handles anime select.
+   * @param id Anime ID.
+   */
+  const handleAnimeSelect = useCallback((id: number) => {
+    setQueryParamsToUrl({ ...query, id });
+    setCurrentAnimeId(id);
   }, []);
 
   return (
@@ -122,8 +143,12 @@ const AnimeListComponent: FC<Props> = () => {
             >
 
               {animeList.map(anime => (
-                <React.Fragment key={anime.id} >
-                  <AnimeItem anime={anime} />
+                <React.Fragment key={anime.id}>
+                  <AnimeItem
+                    anime={anime}
+                    onClick={() => handleAnimeSelect(anime.id)}
+                    isSelected={currentAnimeId === anime.id}
+                  />
                   <Divider variant="inset" component="li" />
                 </React.Fragment >
               ))}
