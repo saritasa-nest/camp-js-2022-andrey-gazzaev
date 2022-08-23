@@ -1,16 +1,18 @@
 import { AnimeBaseDto } from '@js-camp/core/dtos/anime.dto';
+import { AnimeDetailsDto } from '@js-camp/core/dtos/animeDetails';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeListOptionsMapper } from '@js-camp/core/mappers/anime-list-options.mapper';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { AnimeBase } from '@js-camp/core/models/anime';
 import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
+import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 
 import { http } from '..';
 import { CONFIG } from '../config';
 
 export namespace AnimeService {
-  const animeListUrl = new URL('anime/anime/', CONFIG.apiUrl);
+  const animeUrl = new URL('anime/anime/', CONFIG.apiUrl);
   let animeListNextUrl: URL | null = null;
 
   /**
@@ -19,7 +21,7 @@ export namespace AnimeService {
    */
   export async function fetchAnimeList(animeListQueryParams: AnimeListQueryParams): Promise<readonly AnimeBase[]> {
     const animeListSearchParams = AnimeListOptionsMapper.toDto(animeListQueryParams);
-    const { data } = await http.get<PaginationDto<AnimeBaseDto>>(animeListUrl.toString(), {
+    const { data } = await http.get<PaginationDto<AnimeBaseDto>>(animeUrl.toString(), {
       params: animeListSearchParams,
     });
     const animeList = PaginationMapper.fromDto(
@@ -50,10 +52,26 @@ export namespace AnimeService {
   }
 
   /**
+   * Fetches anime by id.
+   * @param id Anime Id.
+   */
+  export async function fetchAnimeById(id: number): Promise<AnimeDetails | null> {
+    try {
+      const url = `${animeUrl.toString()}${id}/`;
+      const { data } = await http.get<AnimeDetailsDto>(url);
+      return AnimeMapper.fromDetailsDto(data);
+    } catch (error: unknown) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  /**
    * Sets next URL.
    * @param url Some URL.
    */
   function setAnimeListNextUrl(url: string | null) {
     animeListNextUrl = url !== null ? new URL(url) : null;
   }
+
 }

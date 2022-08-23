@@ -10,5 +10,5 @@
   display: flex;
   flex-direction: column;
   max-height: var(--anime-list-height);
-  min-width: 300px;
+  max-width: 420px;
 }

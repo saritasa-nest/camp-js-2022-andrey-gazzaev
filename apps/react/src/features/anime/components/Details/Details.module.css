@@ -1,0 +1,11 @@
+.cardContent {
+  display: flex;
+}
+
+.cardContent .posterButton {
+  min-width: auto;
+}
+
+.poster {
+  max-width: 360px;
+}
