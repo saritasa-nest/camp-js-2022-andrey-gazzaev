@@ -26,19 +26,19 @@ const AnimeListComponent: FC = () => {
   }
 
   return (
-    <Box className={styles['animeCatalog']}>
+    <Box className={styles.animeCatalog}>
       <Typography
         id="anime-list-catalog"
         component="h2"
         variant="body1"
-        className={styles['animeCatalogTitle']}
+        className={styles.animeCatalogTitle}
       >
         Catalog
       </Typography>
 
       <List
         aria-labelledby="anime-list-catalog"
-        className={styles['animeList']}
+        className={styles.animeList}
       >
         {animeList.map(anime => (<>
           <AnimeItem anime={anime} key={anime.id} />
