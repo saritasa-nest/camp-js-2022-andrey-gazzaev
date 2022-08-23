@@ -5,7 +5,7 @@ import { RootState } from '../store';
 
 import { entityAdapter } from './state';
 
-export const { selectAll } = entityAdapter.getSelectors();
+export const { selectAll, selectById } = entityAdapter.getSelectors();
 
 /** Selects anime list. */
 export const selectAmineList = createSelector(

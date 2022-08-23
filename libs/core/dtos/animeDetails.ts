@@ -18,4 +18,10 @@ export interface AnimeDetailsDto extends AnimeBaseDto {
 
   /** Short review about anime. */
   readonly synopsis: string;
+
+  /** Genres ids. */
+  readonly genres: readonly number[];
+
+  /** Studios ids. */
+  readonly studios: readonly number[];
 }

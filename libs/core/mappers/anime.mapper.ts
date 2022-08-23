@@ -84,6 +84,8 @@ export namespace AnimeMapper {
       trailerYoutubeId: dto.trailer_youtube_id,
       genresData,
       studiosData,
+      genres: dto.genres,
+      studios: dto.studios,
     });
   }
 }

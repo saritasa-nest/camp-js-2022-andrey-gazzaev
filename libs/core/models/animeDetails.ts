@@ -6,6 +6,12 @@ import { Studio } from './studio.dto';
 /** Anime details. */
 export class AnimeDetails extends AnimeBase {
 
+  /** Genres ids. */
+  public readonly genres: readonly number[];
+
+  /** Studios ids. */
+  public readonly studios: readonly number[];
+
   /** List of anime genres. */
   public readonly genresData: readonly Genre[];
 
@@ -28,6 +34,8 @@ export class AnimeDetails extends AnimeBase {
     this.isAiring = data.isAiring;
     this.trailerYoutubeId = data.trailerYoutubeId;
     this.synopsis = data.synopsis;
+    this.studios = data.studios;
+    this.genres = data.genres;
   }
 }
 
