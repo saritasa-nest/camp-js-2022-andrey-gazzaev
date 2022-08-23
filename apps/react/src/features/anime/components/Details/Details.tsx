@@ -1,4 +1,5 @@
 import moment from 'moment';
+import YouTube from 'react-youtube';
 
 import { Box, Button, Card, CardContent, CardHeader, Chip, Divider, List, ListItem, Typography } from '@mui/material';
 import { Container } from '@mui/system';
@@ -67,13 +68,22 @@ const DetailsComponent: FC = () => {
               />
 
               <Box className={styles.cardContent}>
-                <Button className={styles.posterButton}>
-                  <img
-                    className={styles.poster}
-                    src={animeDetails.image}
-                    alt={`Poster anime - ${animeDetails.imageTitle}`}
-                  />
-                </Button>
+                <Box className={styles.cardMedia}>
+
+                  <Button className={styles.posterButton}>
+                    <img
+                      className={styles.poster}
+                      src={animeDetails.image}
+                      alt={`Poster anime - ${animeDetails.imageTitle}`}
+                    />
+                  </Button>
+
+                  {animeDetails.trailerYoutubeId && <YouTube
+                    className={styles.cardTrailer}
+                    iframeClassName={styles.trailer}
+                    videoId={animeDetails.trailerYoutubeId} />
+                  }
+                </Box>
 
                 <CardContent>
                   <Typography variant="body2">
@@ -95,7 +105,7 @@ const DetailsComponent: FC = () => {
                       Genres
                     </Typography>
 
-                    <Divider variant="middle"/>
+                    <Divider variant="middle" />
                     <List className={styles.list}>
                       {animeDetails.genres.map(id => (
                         <ListItem key={id} className={styles.listItem}>
@@ -109,7 +119,7 @@ const DetailsComponent: FC = () => {
                     <Typography variant="overline">
                       Studios
                     </Typography>
-                    <Divider variant="middle"/>
+                    <Divider variant="middle" />
                     <List>
                       {animeDetails.studios.map(id => (
                         <ListItem key={id} className={styles.listItem}>

@@ -2,12 +2,22 @@
   display: flex;
 }
 
+.cardTrailer {
+  padding: 6px 8px;
+  max-width: 360px;
+}
+
+.trailer {
+  max-width: 360px;
+}
+
 .cardContent .posterButton {
   min-width: auto;
+  max-height: 500px;
 }
 
 .poster {
-  max-width: 360px;
+  max-width: 260px;
 }
 
 .list {
