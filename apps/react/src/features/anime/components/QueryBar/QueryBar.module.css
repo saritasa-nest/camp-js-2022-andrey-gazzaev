@@ -1,9 +1,9 @@
-.query-bar {
+.queryBar {
   display: flex;
   justify-content: space-between;
 }
 
-.search .search__input {
+.search .searchInput {
   padding-left: 10px;
 }
 

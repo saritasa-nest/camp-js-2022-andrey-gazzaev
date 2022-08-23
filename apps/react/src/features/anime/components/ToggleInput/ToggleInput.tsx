@@ -24,8 +24,8 @@ const ToggleInputComponent: FC<Props> = ({ iconOpen, iconClose, children }) => {
   }, [isOpen]);
 
   return (
-    <Box className={styles['toggle']} >
-      <Box className={styles['toggle-input']}>
+    <Box className={styles.toggle} >
+      <Box className={styles.toggleInput}>
         <Collapse in={isOpen} orientation="horizontal">
           {children}
         </Collapse>

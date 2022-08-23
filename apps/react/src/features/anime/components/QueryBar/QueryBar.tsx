@@ -111,7 +111,7 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
   }, [search, types, sortField, sortDirection]);
 
   return (
-    <Box className={styles['query-bar']}>
+    <Box className={styles.queryBar}>
       <ToggleInput
         iconOpen={<SearchIcon />}
         iconClose={<SearchOffIcon />}
@@ -120,10 +120,10 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
           type='search'
           placeholder='Search...'
           value={search}
-          className={styles['search']}
+          className={styles.search}
           onChange={handleSearchChange}
           inputProps={{
-            className: styles['search__input'],
+            className: styles.searchInput,
           }}
         />
       </ToggleInput>
@@ -138,7 +138,7 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
             labelId="type-filter"
             multiple
             value={types}
-            className={styles['filter']}
+            className={styles.filter}
             onChange={handleFilterChange}
             renderValue={selected => selected.join(', ')}
           >
