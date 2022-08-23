@@ -134,14 +134,14 @@ const LoginFormComponent: FC = () => {
 
           <Box component="div">
             <List>
-              <ListItem disablePadding className={styles['listItem']}>
+              <ListItem disablePadding className={styles.listItem}>
                 <Link to="#" color="inherit">
                   <ListItemButton>
                     Forgot your password?
                   </ListItemButton>
                 </Link>
               </ListItem>
-              <ListItem disablePadding className={styles['listItem']}>
+              <ListItem disablePadding className={styles.listItem}>
                 <Link to="/auth/registration/" color="inherit">
                   <ListItemButton>
                     Don't have an account?
