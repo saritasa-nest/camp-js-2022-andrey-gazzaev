@@ -23,7 +23,7 @@ const AnimeItemComponent: FC<Props> = ({ anime }) => (
       <Avatar
         alt={`Anime poster - ${anime.imageTitle}`}
         src={anime.image}
-        className={styles['poster']}
+        className={styles.poster}
       />
     </ListItemAvatar>
     <ListItemText
