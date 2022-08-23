@@ -87,7 +87,7 @@ const AnimeListComponent: FC<Props> = () => {
 
   useEffect(() => {
     if (animeList.length > 0) {
-      setQueryParamsToUrl(query);
+      setQueryParamsToUrl({ ...query, id: currentAnimeId });
       dispatch(removeAnimeList());
     }
   }, [query]);
@@ -110,7 +110,7 @@ const AnimeListComponent: FC<Props> = () => {
   const handleAnimeSelect = useCallback((id: number) => {
     setQueryParamsToUrl({ ...query, id });
     setCurrentAnimeId(id);
-  }, []);
+  }, [query]);
 
   return (
     <Paper className={styles.animeCatalog}>
