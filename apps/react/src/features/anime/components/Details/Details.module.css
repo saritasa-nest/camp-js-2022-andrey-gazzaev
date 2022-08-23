@@ -9,3 +9,12 @@
 .poster {
   max-width: 360px;
 }
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list .listItem {
+  width: auto;
+}

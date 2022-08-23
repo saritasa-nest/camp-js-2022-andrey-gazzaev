@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { Box, Button, Card, CardContent, CardHeader, List, ListItem, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, Chip, Divider, List, ListItem, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import { FC, memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -90,20 +90,34 @@ const DetailsComponent: FC = () => {
                     Airing: {animeDetails.isAiring ? 'Yes' : 'No'}
                   </Typography>
 
-                  <List>
-                    {animeDetails.genres.map(id => (
-                      <ListItem key={id}>
-                        {genres.find((genre => genre.id === id))?.name}
-                      </ListItem>
-                    ))}
-                  </List>
-                  <List>
-                    {animeDetails.studios.map(id => (
-                      <ListItem key={id}>
-                        {studios.find((studio => studio.id === id))?.name}
-                      </ListItem>
-                    ))}
-                  </List>
+                  <Box>
+                    <Typography variant="overline">
+                      Genres
+                    </Typography>
+
+                    <Divider variant="middle"/>
+                    <List className={styles.list}>
+                      {animeDetails.genres.map(id => (
+                        <ListItem key={id} className={styles.listItem}>
+                          <Chip label={genres.find((genre => genre.id === id))?.name} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Box>
+
+                  <Box>
+                    <Typography variant="overline">
+                      Studios
+                    </Typography>
+                    <Divider variant="middle"/>
+                    <List>
+                      {animeDetails.studios.map(id => (
+                        <ListItem key={id} className={styles.listItem}>
+                          <Chip label={studios.find((studio => studio.id === id))?.name} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Box>
                 </CardContent>
               </Box>
             </Card>
