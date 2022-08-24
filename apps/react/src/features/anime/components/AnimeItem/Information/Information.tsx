@@ -15,14 +15,15 @@ interface Props {
 const AnimeInformationComponent: FC<Props> = ({ status, type }) => (
   <>
     <Typography
-      component="p"
+      component="span"
       variant="body2"
       color="text.primary"
     >
       Type: {replaceNull(type)}
     </Typography>
+    <br />
     <Typography
-      component="p"
+      component="span"
       variant="body2"
       color="text.primary"
     >

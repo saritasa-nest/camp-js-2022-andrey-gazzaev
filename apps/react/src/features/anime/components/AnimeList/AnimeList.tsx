@@ -1,4 +1,4 @@
-import { FC, memo, useEffect } from 'react';
+import React, { FC, memo, useEffect } from 'react';
 
 import { fetchAnimeList } from '@js-camp/react/store/anime/dispatchers';
 import { selectAmineList, selectIsAnimeLoading } from '@js-camp/react/store/anime/selectors';
@@ -40,10 +40,12 @@ const AnimeListComponent: FC = () => {
         aria-labelledby="anime-list-catalog"
         className={styles.animeList}
       >
-        {animeList.map(anime => (<>
-          <AnimeItem anime={anime} key={anime.id} />
-          <Divider variant="inset" component="li" />
-        </>))}
+        {animeList.map(anime => (
+          <React.Fragment key={anime.id}>
+            <AnimeItem anime={anime} />
+            <Divider variant="inset" component="li" />
+          </React.Fragment>
+        ))}
       </List>
     </Box>
   );

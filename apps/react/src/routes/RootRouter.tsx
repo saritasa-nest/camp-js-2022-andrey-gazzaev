@@ -13,7 +13,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '*',
-        element: <Navigate to="/genre" />,
+        element: <Navigate to="/anime" />,
       },
       ...genresRoutes,
       ...animeRoutes,

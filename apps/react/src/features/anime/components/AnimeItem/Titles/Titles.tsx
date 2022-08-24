@@ -15,14 +15,12 @@ interface Props {
 const AnimeTitlesComponent: FC<Props> = ({ titleEnglish, titleJapanese }) => (
   <>
     <Typography
-      component="p"
       variant="subtitle1"
       color="text.primary"
     >
       {replaceNull(titleEnglish)}
     </Typography>
     <Typography
-      component="p"
       variant="subtitle2"
       color="text.primary"
     >
