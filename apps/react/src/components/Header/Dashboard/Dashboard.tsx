@@ -34,11 +34,12 @@ const DashboardComponent: FC = () => {
     <Box>
       <Button
         id="basic-button"
-        color='inherit'
+        color="inherit"
         variant="text"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
+        type="button"
         onClick={handleClick}
       >
         Dashboard
@@ -52,7 +53,7 @@ const DashboardComponent: FC = () => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem >
+        <MenuItem>
           <Typography
             variant="h6"
             component="span"
