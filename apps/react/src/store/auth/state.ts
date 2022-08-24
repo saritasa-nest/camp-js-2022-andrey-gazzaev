@@ -10,7 +10,7 @@ export interface AuthState {
   /** Whether authentication is in process or not. */
   readonly isLoading: boolean;
 
-  /** Whether or not it has been submit. */
+  /** Whether it has been submitted or not.. */
   readonly isSubmitted: boolean;
 
   /** Error. */

@@ -41,7 +41,7 @@ const LoginFormComponent: FC = () => {
   const [snackbar, setSnackbar] = useState<SnackBarConfig>(INITIAL_SNACK_BAR);
 
   /**
-   * Handlers form submit.
+   * Handles form submit.
    * @param LoginData Login data.
    */
   const handleSubmitForm = useCallback(async({ email, password }: LoginFormData) => {
@@ -80,7 +80,7 @@ const LoginFormComponent: FC = () => {
     setSnackbar(state => ({ ...state, isOpen: true, message: error.detail }));
   }, [formik]);
 
-  /** Handlers snack bar close. */
+  /** Handles snack bar close. */
   const handleCloseSnackbar = useCallback(() => {
     setSnackbar(state => ({ ...state, isOpen: false }));
   }, []);
