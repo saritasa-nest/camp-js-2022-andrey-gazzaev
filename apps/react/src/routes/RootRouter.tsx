@@ -5,13 +5,20 @@ import { animeRoutes } from '../features/anime/routes';
 import { authRoutes } from '../features/auth/routes';
 import { genresRoutes } from '../features/genres/routes';
 
+import { RestoreUserGuard } from './guards';
+
 const routes: RouteObject[] = [
   {
-    path: '*',
-    element: <Navigate to="/anime" />,
+    element: <RestoreUserGuard />,
+    children: [
+      {
+        path: '*',
+        element: <Navigate to="/anime" />,
+      },
+      ...genresRoutes,
+      ...animeRoutes,
+    ],
   },
-  ...animeRoutes,
-  ...genresRoutes,
   ...authRoutes,
 ];
 

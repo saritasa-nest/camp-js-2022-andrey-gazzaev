@@ -10,14 +10,14 @@ export interface LoginFormData {
   readonly password: string;
 }
 
-const EMAIL_ERROR_MESSAGES = 'Email is required';
-const PASSWORD_ERROR_MESSAGES = 'Password is required';
+const EMAIL_ERROR_MESSAGE = 'Email is required';
+const PASSWORD_ERROR_MESSAGE = 'Password is required';
 
 export const signInSchema: yup.SchemaOf<LoginFormData> = yup.object({
   email: yup
     .string()
-    .required(EMAIL_ERROR_MESSAGES),
+    .required(EMAIL_ERROR_MESSAGE),
   password: yup
     .string()
-    .required(PASSWORD_ERROR_MESSAGES),
+    .required(PASSWORD_ERROR_MESSAGE),
 });

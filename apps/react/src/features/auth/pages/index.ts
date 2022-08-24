@@ -1,1 +1,1 @@
-export { AuthPage as RegistrationPage } from './AuthPage';
+export { AuthPage } from './AuthPage';

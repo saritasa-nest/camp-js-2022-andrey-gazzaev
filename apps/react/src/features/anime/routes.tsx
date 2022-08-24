@@ -1,13 +1,13 @@
 import { lazy } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
 
-import { AuthGuard, RestoreGuard } from '../../routes/guards';
+import { AuthGuard } from '../../routes/guards';
 
 const AnimePage = lazy(() => import('./pages/AnimePage').then(module => ({ default: module.AnimePage })));
 
 export const animeRoutes: RouteObject[] = [
   {
-    element: <RestoreGuard ><AuthGuard /></RestoreGuard>,
+    element: <AuthGuard />,
     children: [
       {
         path: 'anime',
