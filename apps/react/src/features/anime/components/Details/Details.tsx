@@ -1,18 +1,20 @@
 import moment from 'moment';
 import YouTube from 'react-youtube';
 
-import { Box, Button, Card, CardContent, CardHeader, Chip, Divider, List, ListItem, Typography } from '@mui/material';
 import { Container } from '@mui/system';
-import { FC, memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { Box, Button, Card, CardContent, CardHeader, Chip, Divider, List, ListItem, Typography } from '@mui/material';
 
+import { selectGenres } from '@js-camp/react/store/genre/selectors';
+import { selectStudios } from '@js-camp/react/store/studio/selectors';
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { fetchAnimeDetailsById } from '@js-camp/react/store/animeDetails/dispatchers';
 import { selectAnimeDetailsById } from '@js-camp/react/store/animeDetails/selectors';
-import { selectGenres } from '@js-camp/react/store/genre/selectors';
-import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { selectStudios } from '@js-camp/react/store/studio/selectors';
 
 import { replaceNull } from '../../../auth/utils/text';
+
+import { ImagePopup } from '../ImagePopup/ImagePopup';
 
 import styles from './Details.module.css';
 
@@ -27,9 +29,9 @@ const getAnimeId = (searchParams: URLSearchParams): number => searchParams.get('
   INITIAL_ID;
 
 const DetailsComponent: FC = () => {
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const { search } = useLocation();
   const [currentAnimeId, setCurrentAnimeId] = useState(getAnimeId(new URLSearchParams(search)));
-
   const genres = useAppSelector(selectGenres);
   const studios = useAppSelector(selectStudios);
   const animeDetails = useAppSelector(state => selectAnimeDetailsById(state, currentAnimeId));
@@ -44,6 +46,16 @@ const DetailsComponent: FC = () => {
       dispatch(fetchAnimeDetailsById(currentAnimeId));
     }
   }, [animeDetails, currentAnimeId]);
+
+  /** Handles image popup open. */
+  const handleImagePopupOpen = useCallback(() => {
+    setIsImagePopupOpen(true);
+  }, []);
+
+  /** Handles image popup close. */
+  const handleImagePopupClose = useCallback(() => {
+    setIsImagePopupOpen(false);
+  }, []);
 
   return (
     <Container>
@@ -70,13 +82,22 @@ const DetailsComponent: FC = () => {
               <Box className={styles.cardContent}>
                 <Box className={styles.cardMedia}>
 
-                  <Button className={styles.posterButton}>
+                  <Button
+                    className={styles.posterButton}
+                    onClick={handleImagePopupOpen}
+                  >
                     <img
                       className={styles.poster}
                       src={animeDetails.image}
                       alt={`Poster anime - ${animeDetails.imageTitle}`}
                     />
                   </Button>
+
+                  <ImagePopup
+                    imageSrc={animeDetails.image}
+                    onClose={handleImagePopupClose}
+                    isOpen={isImagePopupOpen}
+                  />
 
                   {animeDetails.trailerYoutubeId && <YouTube
                     className={styles.cardTrailer}
