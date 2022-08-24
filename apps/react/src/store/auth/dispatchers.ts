@@ -26,8 +26,3 @@ export const registrationUser = createAsyncThunk(
     }
   },
 );
-
-export const toggleSubmit = createAsyncThunk(
-  'auth/submit',
-  () => null,
-);

@@ -8,8 +8,9 @@ import { TextField } from 'formik-mui';
 
 import { Login } from '@js-camp/core/models/login';
 import { AppError } from '@js-camp/core/models/app-error';
+import { toggleSubmit } from '@js-camp/react/store/auth/slice';
+import { loginUser } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { loginUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { selectIsAuthLoading, selectError, selectIsAuthSubmitted } from '@js-camp/react/store/auth/selectors';
 
 import { SnackBarConfig } from '../../utils/interfaces';

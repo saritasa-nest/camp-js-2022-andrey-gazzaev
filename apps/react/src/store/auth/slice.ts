@@ -4,14 +4,18 @@ import { Login } from '@js-camp/core/models/login';
 import { Registration } from '@js-camp/core/models/registration';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { loginUser, registrationUser, toggleSubmit } from './dispatchers';
+import { loginUser, registrationUser } from './dispatchers';
 
 import { initialState } from './state';
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    toggleSubmit(state) {
+      state.isSubmitted = false;
+    },
+  },
   extraReducers: builder => builder
     .addCase(loginUser.pending, state => {
       state.error = undefined;
@@ -40,8 +44,7 @@ export const authSlice = createSlice({
       state.error = action.payload as AppError<FormError<Registration>>;
       state.isLoading = false;
       state.isSubmitted = false;
-    })
-    .addCase(toggleSubmit.fulfilled, state => {
-      state.isSubmitted = false;
     }),
 });
+
+export const { toggleSubmit } = authSlice.actions;
