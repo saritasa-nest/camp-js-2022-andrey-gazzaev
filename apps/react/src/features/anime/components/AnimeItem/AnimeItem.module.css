@@ -3,7 +3,7 @@
 }
 
 .itemSelected {
-  background-color: #e6e6e6;
+  background-color: var(--selected-item-list-color);
   transition: 100ms ease;
 }
 

@@ -57,102 +57,109 @@ const DetailsComponent: FC = () => {
     setIsImagePopupOpen(false);
   }, []);
 
+  if (animeDetails === undefined) {
+    return (
+      <Typography component="h2" variant="h4">
+        Please select an anime
+      </Typography>
+    );
+  }
+
+  const airedStart = animeDetails.aired.start === null ?
+    'no date' :
+    moment(animeDetails.aired.start).format('MM.DD.YYYY');
+  const airedEnd = animeDetails.aired.end === null ?
+    'no date' :
+    moment(animeDetails.aired.end).format('MM.DD.YYYY');
+
   return (
     <Container>
       <Box>
-        {
-          animeDetails === undefined ?
-            <Typography component="h2" variant="h4">
-              Please select an anime
-            </Typography> :
-            <Card >
-              <CardHeader
-                title={
-                  <Typography component="h2" variant="h5">
-                    {replaceNull(animeDetails.titleEnglish)}
-                  </Typography>
-                }
-                subheader={
-                  <Typography variant="subtitle1">
-                    {replaceNull(animeDetails.titleJapanese)}
-                  </Typography>
-                }
+        <Card >
+          <CardHeader
+            title={
+              <Typography component="h2" variant="h5">
+                {replaceNull(animeDetails.titleEnglish)}
+              </Typography>
+            }
+            subheader={
+              <Typography variant="subtitle1">
+                {replaceNull(animeDetails.titleJapanese)}
+              </Typography>
+            }
+          />
+
+          <Box className={styles.cardContent}>
+            <Box className={styles.cardMedia}>
+
+              <Button
+                className={styles.posterButton}
+                onClick={handleImagePopupOpen}
+              >
+                <img
+                  className={styles.poster}
+                  src={animeDetails.image}
+                  alt={`Poster anime - ${animeDetails.imageTitle}`}
+                />
+              </Button>
+
+              <ImagePopup
+                imageSrc={animeDetails.image}
+                onClose={handleImagePopupClose}
+                isOpen={isImagePopupOpen}
               />
 
-              <Box className={styles.cardContent}>
-                <Box className={styles.cardMedia}>
+              {animeDetails.trailerYoutubeId && <YouTube
+                className={styles.cardTrailer}
+                iframeClassName={styles.trailer}
+                videoId={animeDetails.trailerYoutubeId} />
+              }
+            </Box>
 
-                  <Button
-                    className={styles.posterButton}
-                    onClick={handleImagePopupOpen}
-                  >
-                    <img
-                      className={styles.poster}
-                      src={animeDetails.image}
-                      alt={`Poster anime - ${animeDetails.imageTitle}`}
-                    />
-                  </Button>
+            <CardContent>
+              <Typography variant="body2">
+                {animeDetails.synopsis}
+              </Typography>
 
-                  <ImagePopup
-                    imageSrc={animeDetails.image}
-                    onClose={handleImagePopupClose}
-                    isOpen={isImagePopupOpen}
-                  />
+              <Typography variant="body2">
+                {`Aired from ${airedStart} to ${airedEnd}`}
+              </Typography>
 
-                  {animeDetails.trailerYoutubeId && <YouTube
-                    className={styles.cardTrailer}
-                    iframeClassName={styles.trailer}
-                    videoId={animeDetails.trailerYoutubeId} />
-                  }
-                </Box>
+              <Typography variant="body2">
+                Airing: {animeDetails.isAiring ? 'Yes' : 'No'}
+              </Typography>
 
-                <CardContent>
-                  <Typography variant="body2">
-                    {animeDetails.synopsis}
-                  </Typography>
+              <Box>
+                <Typography variant="overline">
+                  Genres
+                </Typography>
 
-                  <Typography variant="body2">
-                    {`Aired from
-                      ${moment(animeDetails.aired.start).format('MM.DD.YYYY')} to
-                      ${moment(animeDetails.aired.end).format('MM.DD.YYYY')}`}
-                  </Typography>
-
-                  <Typography variant="body2">
-                    Airing: {animeDetails.isAiring ? 'Yes' : 'No'}
-                  </Typography>
-
-                  <Box>
-                    <Typography variant="overline">
-                      Genres
-                    </Typography>
-
-                    <Divider variant="middle" />
-                    <List className={styles.list}>
-                      {animeDetails.genres.map(id => (
-                        <ListItem key={id} className={styles.listItem}>
-                          <Chip label={genres.find((genre => genre.id === id))?.name} />
-                        </ListItem>
-                      ))}
-                    </List>
-                  </Box>
-
-                  <Box>
-                    <Typography variant="overline">
-                      Studios
-                    </Typography>
-                    <Divider variant="middle" />
-                    <List>
-                      {animeDetails.studios.map(id => (
-                        <ListItem key={id} className={styles.listItem}>
-                          <Chip label={studios.find((studio => studio.id === id))?.name} />
-                        </ListItem>
-                      ))}
-                    </List>
-                  </Box>
-                </CardContent>
+                <Divider variant="middle" />
+                <List className={styles.list}>
+                  {animeDetails.genres.map(id => (
+                    <ListItem key={id} className={styles.listItem}>
+                      <Chip label={genres.find((genre => genre.id === id))?.name} />
+                    </ListItem>
+                  ))}
+                </List>
               </Box>
-            </Card>
-        }
+
+              <Box>
+                <Typography variant="overline">
+                  Studios
+                </Typography>
+                <Divider variant="middle" />
+                <List>
+                  {animeDetails.studios.map(id => (
+                    <ListItem key={id} className={styles.listItem}>
+                      <Chip label={studios.find((studio => studio.id === id))?.name} />
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
+            </CardContent>
+          </Box>
+        </Card>
       </Box>
     </Container>
   );
