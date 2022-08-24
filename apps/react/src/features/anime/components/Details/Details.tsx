@@ -4,13 +4,25 @@ import YouTube from 'react-youtube';
 import { Container } from '@mui/system';
 import { useLocation } from 'react-router-dom';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Box, Button, Card, CardContent, CardHeader, Chip, Divider, List, ListItem, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Chip,
+  Divider,
+  List,
+  ListItem,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
 
 import { selectGenres } from '@js-camp/react/store/genre/selectors';
 import { selectStudios } from '@js-camp/react/store/studio/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { fetchAnimeDetailsById } from '@js-camp/react/store/animeDetails/dispatchers';
-import { selectAnimeDetailsById } from '@js-camp/react/store/animeDetails/selectors';
+import { selectAnimeDetailsById, selectIsAnimeDetailsLoading } from '@js-camp/react/store/animeDetails/selectors';
 
 import { replaceNull } from '../../../auth/utils/text';
 
@@ -35,6 +47,8 @@ const DetailsComponent: FC = () => {
   const genres = useAppSelector(selectGenres);
   const studios = useAppSelector(selectStudios);
   const animeDetails = useAppSelector(state => selectAnimeDetailsById(state, currentAnimeId));
+  const isLoadingAnimeDetails = useAppSelector(selectIsAnimeDetailsLoading);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -57,11 +71,25 @@ const DetailsComponent: FC = () => {
     setIsImagePopupOpen(false);
   }, []);
 
+  if (isLoadingAnimeDetails) {
+    return (
+      <Container className={styles.details}>
+        <CircularProgress className={styles.loader} />
+      </Container>
+    );
+  }
+
   if (animeDetails === undefined) {
     return (
-      <Typography component="h2" variant="h4">
-        Please select an anime
-      </Typography>
+      <Container className={styles.details}>
+        <Typography
+          component="h2"
+          variant="h4"
+          className={styles.placeholderTest}
+        >
+          Please select an anime
+        </Typography>
+      </Container>
     );
   }
 

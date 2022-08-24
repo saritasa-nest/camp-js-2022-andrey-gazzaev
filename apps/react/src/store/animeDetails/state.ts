@@ -8,7 +8,7 @@ export const entityAdapter = createEntityAdapter<AnimeDetails>({
 /** Anime details state. */
 export interface AnimeDetailsState {
 
-  /** Whether anime list is in process or not. */
+  /** Whether anime details is in process or not. */
   readonly isLoading: boolean;
 
   /** Error. */
