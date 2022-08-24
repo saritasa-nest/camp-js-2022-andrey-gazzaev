@@ -1,4 +1,4 @@
-import { Studio } from '@js-camp/core/models/studio.dto';
+import { Studio } from '@js-camp/core/models/studio';
 import { createEntityAdapter } from '@reduxjs/toolkit';
 
 export const entityAdapter = createEntityAdapter<Studio>({

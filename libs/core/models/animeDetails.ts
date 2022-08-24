@@ -1,7 +1,7 @@
 import { AnimeBase } from './anime';
 import { Genre } from './genre';
 import { OmitImmerable } from './immerable';
-import { Studio } from './studio.dto';
+import { Studio } from './studio';
 
 /** Anime details. */
 export class AnimeDetails extends AnimeBase {

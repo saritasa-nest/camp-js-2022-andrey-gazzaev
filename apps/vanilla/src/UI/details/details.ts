@@ -1,7 +1,7 @@
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 import { DateRange } from '@js-camp/core/models/dateRange';
 import { Genre } from '@js-camp/core/models/genre';
-import { Studio } from '@js-camp/core/models/studio.dto';
+import { Studio } from '@js-camp/core/models/studio';
 import { isDefined } from '@js-camp/core/utils/guards/general.guard';
 
 import { getAnimeDetails } from '../../services/general';

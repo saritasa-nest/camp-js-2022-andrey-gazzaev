@@ -1,4 +1,4 @@
-import { Studio } from '@js-camp/core/models/studio.dto';
+import { Studio } from '@js-camp/core/models/studio';
 import { StudioDto } from '@js-camp/core/dtos/studio.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { StudioMapper } from '@js-camp/core/mappers/studio.mapper';

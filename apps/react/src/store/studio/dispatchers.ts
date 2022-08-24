@@ -1,4 +1,4 @@
-import { Studio } from '@js-camp/core/models/studio.dto';
+import { Studio } from '@js-camp/core/models/studio';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { StudioService } from '../../api/services/studioService';

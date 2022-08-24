@@ -14,14 +14,14 @@ export interface AnimeDetailsDto extends AnimeBaseDto {
   readonly airing: boolean;
 
   /** Anime trailer ID. */
-  readonly trailer_youtube_id: string;
+  readonly trailer_youtube_id: string | null;
 
   /** Short review about anime. */
   readonly synopsis: string;
 
-  /** Genres ids. */
-  readonly genres: readonly number[];
-
-  /** Studios ids. */
+  /** Studios (collection of id). */
   readonly studios: readonly number[];
+
+  /** Genres (collection of id). */
+  readonly genres: readonly number[];
 }

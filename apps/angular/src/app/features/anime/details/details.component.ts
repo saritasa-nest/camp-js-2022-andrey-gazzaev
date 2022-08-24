@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { Genre } from '@js-camp/core/models/genre';
-import { Studio } from '@js-camp/core/models/studio.dto';
+import { Studio } from '@js-camp/core/models/studio';
 import { AnimeDetails } from '@js-camp/core/models/animeDetails';
 
 import { AnimeService } from '../../../../core/services/anime.service';

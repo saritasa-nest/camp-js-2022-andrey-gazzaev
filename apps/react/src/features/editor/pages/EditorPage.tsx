@@ -1,9 +1,10 @@
 import { memo } from 'react';
 import { Container } from '@mui/material';
+import { EditorForm } from '../components/EditorForm';
 
 const EditorPageComponent = () => (
   <Container>
-    Editor page
+    <EditorForm />
   </Container>
 );
 
