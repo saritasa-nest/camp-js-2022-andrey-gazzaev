@@ -1,17 +1,12 @@
-import { FC, memo, ReactNode, useEffect } from 'react';
+import { FC, memo, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import { fetchUser } from '@js-camp/react/store/user/dispatchers';
 import { selectIsUserLoading, selectUser } from '@js-camp/react/store/user/selector';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 
-interface Props {
-
-  /** Children of element.*/
-  readonly children: ReactNode;
-}
-
-const RestoreGuardComponent: FC<Props> = ({ children }: Props) => {
+const RestoreUserGuardComponent: FC = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const isUserLoading = useAppSelector(selectIsUserLoading);
@@ -22,7 +17,7 @@ const RestoreGuardComponent: FC<Props> = ({ children }: Props) => {
     }
   }, [user]);
 
-  return (isUserLoading ? <>Fetching user...</> : <>{children}</>);
+  return (isUserLoading ? <>Fetching user...</> : <Outlet />);
 };
 
-export const RestoreGuard = memo(RestoreGuardComponent);
+export const RestoreUserGuard = memo(RestoreUserGuardComponent);

@@ -4,12 +4,19 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 import { authRoutes } from '../features/auth/routes';
 import { genresRoutes } from '../features/genres/routes';
 
+import { RestoreUserGuard } from './guards';
+
 const routes: RouteObject[] = [
   {
-    path: '*',
-    element: <Navigate to="/genre" />,
+    element: <RestoreUserGuard />,
+    children: [
+      {
+        path: '*',
+        element: <Navigate to="/genre" />,
+      },
+      ...genresRoutes,
+    ],
   },
-  ...genresRoutes,
   ...authRoutes,
 ];
 
