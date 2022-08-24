@@ -12,7 +12,7 @@ import {
   Tabs,
   TextField,
 } from '@mui/material';
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, FC, memo, SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
@@ -31,6 +31,7 @@ interface Props {
   /** Handles query params change.*/
   readonly onQueryParamsChange: (queryParams: AnimeListQueryParamsWithId) => void;
 }
+
 interface SortSelect {
 
   /** Title select. */
@@ -73,9 +74,9 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
 
   /**
    * Handles search change.
-   * @param event React change event.
+   * @param event Change event.
    */
-  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleSearchChange = useCallback((event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearch(event.target.value);
   }, []);
 
@@ -120,9 +121,8 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
   }, [search, types, sortField, sortDirection]);
 
   /** Handles tab panel change. */
-  const handleTabChange = useCallback((event: React.SyntheticEvent, newTabNumber: number) => {
+  const handleTabChange = useCallback((event: SyntheticEvent, newTabNumber: number) => {
     setTabNumber(newTabNumber);
-
   }, []);
 
   return (
@@ -188,7 +188,7 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
                 {item.title}
               </MenuItem>)}
           </Select>
-          <Button onClick={handleDirectionToggle}>
+          <Button type="button" onClick={handleDirectionToggle}>
             {sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
           </Button>
         </FormControl>

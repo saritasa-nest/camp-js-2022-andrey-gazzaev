@@ -1,13 +1,14 @@
 import { useSearchParams } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { debounce, Divider, List, Paper, Typography } from '@mui/material';
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import { FC, Fragment, memo, useCallback, useEffect, useState } from 'react';
 
+import { removeAnimeList } from '@js-camp/react/store/anime/slice';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AnimeListQueryParamsWithId } from '@js-camp/core/models/anime-list-query-params';
 import { AnimeSortDirection, AnimeSortField, AnimeType } from '@js-camp/core/models/anime';
+import { fetchAnimeList, fetchNextAnimeList } from '@js-camp/react/store/anime/dispatchers';
 import { selectAmineList, selectIsAnimeLoading } from '@js-camp/react/store/anime/selectors';
-import { fetchAnimeList, fetchNextAnimeList, removeAnimeList } from '@js-camp/react/store/anime/dispatchers';
 
 import { QueryBar } from '../QueryBar/QueryBar';
 import { AnimeItem } from '../AnimeItem/AnimeItem';
@@ -143,14 +144,14 @@ const AnimeListComponent: FC<Props> = () => {
             >
 
               {animeList.map(anime => (
-                <React.Fragment key={anime.id}>
+                <Fragment key={anime.id}>
                   <AnimeItem
                     anime={anime}
                     onClick={() => handleAnimeSelect(anime.id)}
                     isSelected={currentAnimeId === anime.id}
                   />
                   <Divider variant="inset" component="li" />
-                </React.Fragment >
+                </Fragment >
               ))}
 
             </InfiniteScroll>

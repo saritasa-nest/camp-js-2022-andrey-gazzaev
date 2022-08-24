@@ -19,19 +19,19 @@ export namespace AnimeService {
    * Requests to the server to get anime.
    * @param animeListQueryParams Parameters for generating a request.
    */
-  export async function fetchAnimeList(animeListQueryParams: AnimeListQueryParams): Promise<readonly AnimeBase[]> {
+  export async function fetchAnimeList(animeListQueryParams: AnimeListQueryParams): Promise<AnimeBase[]> {
     const animeListSearchParams = AnimeListOptionsMapper.toDto(animeListQueryParams);
     const { data } = await http.get<PaginationDto<AnimeBaseDto>>(animeUrl.toString(), {
       params: animeListSearchParams,
     });
-    const animeList = PaginationMapper.fromDto(
+    const { next, results } = PaginationMapper.fromDto(
       data,
       animeBaseDto => AnimeMapper.fromDto(animeBaseDto),
     );
 
-    setAnimeListNextUrl(animeList.next);
+    setAnimeListNextUrl(next);
 
-    return animeList.results;
+    return [...results];
   }
 
   /** Fetches next anime list. */
@@ -41,14 +41,14 @@ export namespace AnimeService {
     }
 
     const { data } = await http.get<PaginationDto<AnimeBaseDto>>(animeListNextUrl.toString());
-    const animeList = PaginationMapper.fromDto(
+    const { next, results } = PaginationMapper.fromDto(
       data,
       animeBaseDto => AnimeMapper.fromDto(animeBaseDto),
     );
 
-    setAnimeListNextUrl(animeList.next);
+    setAnimeListNextUrl(next);
 
-    return animeList.results;
+    return [...results];
   }
 
   /**

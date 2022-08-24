@@ -6,9 +6,10 @@ import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Box, Grid, List, ListItem, ListItemButton, Snackbar } from '@mui/material';
 
 import { AppError } from '@js-camp/core/models/app-error';
+import { toggleSubmit } from '@js-camp/react/store/auth/slice';
 import { Registration } from '@js-camp/core/models/registration';
+import { registrationUser } from '@js-camp/react/store/auth/dispatchers';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { registrationUser, toggleSubmit } from '@js-camp/react/store/auth/dispatchers';
 import { selectIsAuthLoading, selectError, selectIsAuthSubmitted } from '@js-camp/react/store/auth/selectors';
 
 import { SnackBarConfig } from '../../utils/interfaces';
