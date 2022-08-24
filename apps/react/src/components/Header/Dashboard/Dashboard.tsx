@@ -3,10 +3,12 @@ import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { logoutUser } from '@js-camp/react/store/user/dispatchers';
 import { selectUser } from '@js-camp/react/store/user/selector';
+import { useNavigate } from 'react-router-dom';
 
 const DashboardComponent: FC = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -25,6 +27,11 @@ const DashboardComponent: FC = () => {
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
+
+  /** Handles redirect user to editor page. */
+  const handleGoToEditorPage = () => {
+    navigate('/editor', { replace: true });
+  };
 
   if (user === null) {
     return <p>Oops, something went wrong.</p>;
@@ -61,6 +68,7 @@ const DashboardComponent: FC = () => {
           </Typography>
 
         </MenuItem>
+        <MenuItem onClick={handleGoToEditorPage}>Add new anime</MenuItem>
         <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
       </Menu>
     </Box>

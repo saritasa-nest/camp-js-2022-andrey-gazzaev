@@ -3,6 +3,7 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
 import { animeRoutes } from '../features/anime/routes';
 import { authRoutes } from '../features/auth/routes';
+import { editorRoutes } from '../features/editor/routes';
 import { genresRoutes } from '../features/genres/routes';
 
 import { RestoreUserGuard } from './guards';
@@ -17,6 +18,7 @@ const routes: RouteObject[] = [
       },
       ...genresRoutes,
       ...animeRoutes,
+      ...editorRoutes,
     ],
   },
   ...authRoutes,
