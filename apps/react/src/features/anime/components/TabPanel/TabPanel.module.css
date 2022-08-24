@@ -1,0 +1,8 @@
+.tabPanel {
+  display: flex;
+  justify-content: center;
+}
+
+.tabPanelElement {
+  margin-top: 10px;
+}

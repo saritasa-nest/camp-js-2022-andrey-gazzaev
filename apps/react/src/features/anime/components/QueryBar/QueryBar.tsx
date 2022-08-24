@@ -3,26 +3,23 @@ import {
   Button,
   Checkbox,
   FormControl,
-  InputBase,
   InputLabel,
   ListItemText,
   MenuItem,
   Select,
   SelectChangeEvent,
+  Tab,
+  Tabs,
+  TextField,
 } from '@mui/material';
-import SortIcon from '@mui/icons-material/Sort';
-import SearchIcon from '@mui/icons-material/Search';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
-import SearchOffIcon from '@mui/icons-material/SearchOff';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 import { AnimeSortDirection, AnimeSortField, AnimeType } from '@js-camp/core/models/anime';
 import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
 
-import { ToggleInput } from '../ToggleInput';
+import { TabPanel } from '../TabPanel/TabPanel';
 
 import styles from './QueryBar.module.css';
 
@@ -56,7 +53,19 @@ const sortList: readonly SortSelect[] = [
 
 const filterList = Object.values(AnimeType);
 
+/**
+ * Gets accessibility props for tab.
+ * @param index Tab number.
+ */
+function getAccessibilityProps(index: number) {
+  return {
+    'id': `query-tab-${index}`,
+    'aria-controls': `query-tabpanel-${index}`,
+  };
+}
+
 const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => {
+  const [tabNumber, setTabNumber] = useState(0);
   const [types, setTypes] = useState<readonly AnimeType[]>(initialQuery.types);
   const [search, setSearch] = useState(initialQuery.search);
   const [sortField, setSortField] = useState<AnimeSortField>(initialQuery.sort.field);
@@ -110,13 +119,22 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
     );
   }, [search, types, sortField, sortDirection]);
 
+  /** Handles tab panel change. */
+  const handleTabChange = useCallback((event: React.SyntheticEvent, newTabNumber: number) => {
+    setTabNumber(newTabNumber);
+
+  }, []);
+
   return (
     <Box className={styles.queryBar}>
-      <ToggleInput
-        iconOpen={<SearchIcon />}
-        iconClose={<SearchOffIcon />}
-      >
-        <InputBase
+      <Tabs value={tabNumber} onChange={handleTabChange} aria-label="basic tabs example">
+        <Tab label="Search One" {...getAccessibilityProps(0)} />
+        <Tab label="Type filter" {...getAccessibilityProps(1)} />
+        <Tab label="Sort" {...getAccessibilityProps(2)} />
+      </Tabs>
+
+      <TabPanel value={tabNumber} index={0}>
+        <TextField
           type='search'
           placeholder='Search...'
           value={search}
@@ -126,12 +144,9 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
             className: styles.searchInput,
           }}
         />
-      </ToggleInput>
+      </TabPanel>
 
-      <ToggleInput
-        iconOpen={<FilterListIcon />}
-        iconClose={<FilterListOffIcon />}
-      >
+      <TabPanel value={tabNumber} index={1}>
         <FormControl variant="standard">
           <InputLabel id="type-filter">Type</InputLabel>
           <Select
@@ -153,32 +168,31 @@ const QueryBarComponent: FC<Props> = ({ initialQuery, onQueryParamsChange }) => 
             ))}
           </Select>
         </FormControl>
-      </ToggleInput>
+      </TabPanel>
 
-      <ToggleInput
-        iconOpen={<SortIcon />}
-        iconClose={<SortIcon />}
-      >
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+      <TabPanel value={tabNumber} index={2}>
+        <FormControl variant="standard" className={styles.sortField}>
           <InputLabel id="sort-select">Sort</InputLabel>
           <Select
             label="Sort"
             labelId="sort-select"
             value={sortField}
             onChange={handleSortChange}
+            className={styles.sort}
           >
-            {sortList.map(item => <MenuItem
-              key={item.field}
-              value={item.field}
-            >
-              {item.title}
-            </MenuItem>)}
+            {sortList.map(item =>
+              <MenuItem
+                key={item.field}
+                value={item.field}
+              >
+                {item.title}
+              </MenuItem>)}
           </Select>
           <Button onClick={handleDirectionToggle}>
             {sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
           </Button>
         </FormControl>
-      </ToggleInput>
+      </TabPanel>
     </Box>
   );
 };
