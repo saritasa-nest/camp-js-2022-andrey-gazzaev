@@ -25,7 +25,7 @@ http.interceptors.response.use(config => config, refreshToken);
 export function generateError<T>(error: unknown): AppError<T> | null {
   if (axios.isAxiosError(error) && isDefined(error.response)) {
     const httpError = error.response;
-    if (isDefined(httpError.data) && isHttpErrorDto(httpError.data)) {
+    if (isDefined(httpError.data) && isHttpErrorDto<T>(httpError.data)) {
       return HttpErrorMapper.fromDto<T>(httpError.data);
     }
   }

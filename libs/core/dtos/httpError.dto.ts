@@ -9,10 +9,10 @@ export interface ErrorDataDto {
 }
 
 /** Error coming from the server DTO. */
-export interface HttpErrorDto extends Error {
+export interface HttpErrorDto<T> extends Error {
 
   /** Error data. */
-  readonly data?: ErrorDataDto;
+  readonly data?: T;
 
   /** Error code. */
   readonly code?: string;

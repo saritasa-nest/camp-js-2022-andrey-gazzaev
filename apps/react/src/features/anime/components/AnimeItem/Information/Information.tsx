@@ -15,7 +15,7 @@ interface Props {
 const AnimeInformationComponent: FC<Props> = ({ status, type }) => (
   <>
     <Typography
-      component={'span'}
+      component="span"
       variant="body2"
       color="text.primary"
     >
@@ -23,7 +23,7 @@ const AnimeInformationComponent: FC<Props> = ({ status, type }) => (
     </Typography>
     <br />
     <Typography
-      component={'span'}
+      component="span"
       variant="body2"
       color="text.primary"
     >
