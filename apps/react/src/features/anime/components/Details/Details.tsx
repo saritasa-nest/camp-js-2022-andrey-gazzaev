@@ -28,7 +28,7 @@ const getAnimeId = (searchParams: URLSearchParams): number => searchParams.get('
 
 const DetailsComponent: FC = () => {
   const { search } = useLocation();
-  const [currentAnimeId, setCurrentAnime] = useState(getAnimeId(new URLSearchParams(search)));
+  const [currentAnimeId, setCurrentAnimeId] = useState(getAnimeId(new URLSearchParams(search)));
 
   const genres = useAppSelector(selectGenres);
   const studios = useAppSelector(selectStudios);
@@ -36,14 +36,14 @@ const DetailsComponent: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setCurrentAnime(getAnimeId(new URLSearchParams(search)));
+    setCurrentAnimeId(getAnimeId(new URLSearchParams(search)));
   }, [search]);
 
   useEffect(() => {
     if (animeDetails === undefined) {
       dispatch(fetchAnimeDetailsById(currentAnimeId));
     }
-  }, [animeDetails]);
+  }, [animeDetails, currentAnimeId]);
 
   return (
     <Container>
