@@ -19,8 +19,3 @@ export const fetchNextAnimeList = createAsyncThunk(
     return animeList;
   },
 );
-
-export const removeAnimeList = createAsyncThunk(
-  'anime/remove',
-  () => null,
-);

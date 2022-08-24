@@ -1,12 +1,12 @@
 import { Box } from '@mui/material';
-import React, { FC, memo } from 'react';
+import { FC, memo, ReactNode } from 'react';
 
 import styles from './TabPanel.module.css';
 
 interface Props {
 
   /** Children of element. */
-  readonly children?: React.ReactNode;
+  readonly children?: ReactNode;
 
   /** Tab index. */
   readonly index: number;
