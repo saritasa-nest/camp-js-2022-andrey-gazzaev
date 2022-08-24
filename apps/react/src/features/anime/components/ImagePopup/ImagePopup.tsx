@@ -1,5 +1,5 @@
 import { Dialog } from '@mui/material';
-import { FC, memo } from 'react';
+import { FC, memo, useCallback } from 'react';
 
 interface Props {
 
@@ -14,10 +14,11 @@ interface Props {
 }
 
 const ImagePopupComponent: FC<Props> = ({ isOpen, onClose, imageSrc }) => {
+
   /** Handles close dialog window. */
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     onClose();
-  };
+  }, []);
 
   return (
     <Dialog onClose={handleClose} open={isOpen}>
