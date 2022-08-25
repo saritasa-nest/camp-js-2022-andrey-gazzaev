@@ -5,10 +5,10 @@ import { replaceNull } from '../../../../../features/auth/utils/text';
 
 interface Props {
 
-  /** Title of English. */
+  /** Anime status. */
   readonly status: string;
 
-  /** Title of Japanese. */
+  /** Anime type. */
   readonly type: string;
 }
 

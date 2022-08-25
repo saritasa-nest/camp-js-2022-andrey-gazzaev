@@ -4,16 +4,16 @@ import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-para
 
 import { AnimeService } from '../../api/services/animeService';
 
-export const fetchAnimeList = createAsyncThunk(
-  'anime/fetch',
+export const fetchedAnimeList = createAsyncThunk(
+  'anime/fetched',
   async(animeListQueryParams: AnimeListQueryParams) => {
     const animeList = await AnimeService.fetchAnimeList(animeListQueryParams);
     return animeList;
   },
 );
 
-export const fetchNextAnimeList = createAsyncThunk(
-  'anime/fetch/next',
+export const fetchedNextAnimeList = createAsyncThunk(
+  'anime/fetchedNext',
   async() => {
     const animeList = await AnimeService.fetchNextAnimeList();
     return animeList;
