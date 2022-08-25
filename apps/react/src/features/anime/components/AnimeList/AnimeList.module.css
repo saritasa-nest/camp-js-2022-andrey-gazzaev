@@ -9,7 +9,7 @@
 .animeCatalog {
   display: flex;
   flex-direction: column;
-  max-height: var(--anime-list-height);
+  max-height: var(--content-height);
   min-width: 360px;
   max-width: 400px;
 }

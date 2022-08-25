@@ -1,3 +1,9 @@
+.detailsContainer .details {
+  position: relative;
+  max-height: var(--content-height);
+  overflow-y: auto;
+}
+
 .cardContent {
   display: flex;
 }
@@ -29,10 +35,6 @@
   width: auto;
 }
 
-.details {
-  position: relative;
-}
-
 .details .loader {
   position: absolute;
   top: 50%;
@@ -40,7 +42,7 @@
   transform: translate(50%, -50%);
 }
 
-.details .placeholderTest {
+.details .placeholderText {
   margin-top: 30px;
   text-align: center;
 }

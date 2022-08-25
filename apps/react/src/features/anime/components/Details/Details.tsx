@@ -85,7 +85,7 @@ const DetailsComponent: FC = () => {
         <Typography
           component="h2"
           variant="h4"
-          className={styles.placeholderTest}
+          className={styles.placeholderText}
         >
           Please select an anime
         </Typography>
@@ -100,9 +100,11 @@ const DetailsComponent: FC = () => {
     'no date' :
     moment(animeDetails.aired.end).format('MM.DD.YYYY');
 
+  const imageAlt = `Poster anime - ${animeDetails.imageTitle}`;
+
   return (
-    <Container>
-      <Card >
+    <Container className={styles.detailsContainer} >
+      <Card className={styles.details} >
         <CardHeader
           title={
             <Typography component="h2" variant="h5">
@@ -122,11 +124,12 @@ const DetailsComponent: FC = () => {
             <Button
               className={styles.posterButton}
               onClick={handleImagePopupOpen}
+              type="button"
             >
               <img
                 className={styles.poster}
                 src={animeDetails.image}
-                alt={`Poster anime - ${animeDetails.imageTitle}`}
+                alt={imageAlt}
               />
             </Button>
 
@@ -134,6 +137,7 @@ const DetailsComponent: FC = () => {
               imageSrc={animeDetails.image}
               onClose={handleImagePopupClose}
               isOpen={isImagePopupOpen}
+              alt={imageAlt}
             />
 
             {animeDetails.trailerYoutubeId && <YouTube

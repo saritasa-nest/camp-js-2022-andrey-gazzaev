@@ -11,9 +11,12 @@ interface Props {
 
   /** Handles dialog close. */
   readonly onClose: () => void;
+
+  /** Alternative image text. */
+  readonly alt: string;
 }
 
-const ImagePopupComponent: FC<Props> = ({ isOpen, onClose, imageSrc }) => {
+const ImagePopupComponent: FC<Props> = ({ isOpen, onClose, imageSrc, alt }) => {
 
   /** Handles close dialog window. */
   const handleClose = useCallback(() => {
@@ -22,7 +25,7 @@ const ImagePopupComponent: FC<Props> = ({ isOpen, onClose, imageSrc }) => {
 
   return (
     <Dialog onClose={handleClose} open={isOpen}>
-      <img src={imageSrc} alt="" />
+      <img src={imageSrc} alt={alt} />
     </Dialog>
   );
 };
