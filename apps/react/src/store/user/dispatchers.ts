@@ -4,13 +4,13 @@ import { TokenService } from '../../api/services/tokenService';
 
 import { UserService } from '../../api/services/userService';
 
-export const fetchUser = createAsyncThunk(
-  'user/fetch',
+export const fetchedUser = createAsyncThunk(
+  'user/fetched',
   () => UserService.fetchUser(),
 );
 
-export const logoutUser = createAsyncThunk(
-  'user/logout',
+export const loggedOutUser = createAsyncThunk(
+  'user/loggedOut',
   () => {
     TokenService.remove();
   },

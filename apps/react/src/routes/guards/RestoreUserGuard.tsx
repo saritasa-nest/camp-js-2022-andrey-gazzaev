@@ -1,7 +1,7 @@
 import { FC, memo, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { fetchUser } from '@js-camp/react/store/user/dispatchers';
+import { fetchedUser } from '@js-camp/react/store/user/dispatchers';
 import { selectIsUserLoading, selectUser } from '@js-camp/react/store/user/selector';
 
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -13,7 +13,7 @@ const RestoreUserGuardComponent: FC = () => {
 
   useEffect(() => {
     if (user === null) {
-      dispatch(fetchUser());
+      dispatch(fetchedUser());
     }
   }, [user]);
 

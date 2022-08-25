@@ -1,7 +1,7 @@
 import { FC, memo, useCallback, useState } from 'react';
 import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-import { logoutUser } from '@js-camp/react/store/user/dispatchers';
+import { loggedOutUser } from '@js-camp/react/store/user/dispatchers';
 import { selectUser } from '@js-camp/react/store/user/selector';
 
 const DashboardComponent: FC = () => {
@@ -12,7 +12,7 @@ const DashboardComponent: FC = () => {
 
   /** Handles user logout. */
   const handleUserLogout = useCallback(() => {
-    dispatch(logoutUser());
+    dispatch(loggedOutUser());
     setAnchorEl(null);
   }, []);
 
