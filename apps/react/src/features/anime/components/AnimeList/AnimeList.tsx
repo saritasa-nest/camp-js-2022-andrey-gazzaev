@@ -1,6 +1,6 @@
 import React, { FC, memo, useEffect } from 'react';
 
-import { fetchAnimeList } from '@js-camp/react/store/anime/dispatchers';
+import { fetchedAnimeList } from '@js-camp/react/store/anime/dispatchers';
 import { selectAmineList, selectIsAnimeLoading } from '@js-camp/react/store/anime/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
@@ -17,7 +17,7 @@ const AnimeListComponent: FC = () => {
 
   useEffect(() => {
     if (animeList.length === 0) {
-      dispatch(fetchAnimeList());
+      dispatch(fetchedAnimeList());
     }
   }, [dispatch, animeList]);
 

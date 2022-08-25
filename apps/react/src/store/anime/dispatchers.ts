@@ -2,16 +2,16 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AnimeService } from '../../api/services/animeService';
 
-export const fetchAnimeList = createAsyncThunk(
-  'anime/fetch',
+export const fetchedAnimeList = createAsyncThunk(
+  'anime/fetched',
   async() => {
     const animeList = await AnimeService.fetchAnimeList();
     return animeList;
   },
 );
 
-export const fetchNextAnimeList = createAsyncThunk(
-  'anime/fetch/next',
+export const fetchedNextAnimeList = createAsyncThunk(
+  'anime/fetchedNext',
   async() => {
     const animeList = await AnimeService.fetchNextAnimeList();
     return animeList;
