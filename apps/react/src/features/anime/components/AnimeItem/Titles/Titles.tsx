@@ -5,10 +5,10 @@ import { replaceNull } from '../../../../../features/auth/utils/text';
 
 interface Props {
 
-  /** Title of English. */
+  /** Title in English. */
   readonly titleEnglish: string;
 
-  /** Title of Japanese. */
+  /** Title in Japanese. */
   readonly titleJapanese: string;
 }
 
