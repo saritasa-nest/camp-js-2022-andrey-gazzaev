@@ -7,7 +7,7 @@ import { removeAnimeList } from '@js-camp/react/store/anime/slice';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AnimeListQueryParams } from '@js-camp/core/models/anime-list-query-params';
 import { AnimeSortDirection, AnimeSortField, AnimeType } from '@js-camp/core/models/anime';
-import { fetchAnimeList, fetchedNextAnimeList } from '@js-camp/react/store/anime/dispatchers';
+import { fetchedAnimeList, fetchedNextAnimeList } from '@js-camp/react/store/anime/dispatchers';
 import { selectAmineList, selectIsAnimeLoading } from '@js-camp/react/store/anime/selectors';
 
 import { QueryBar } from '../QueryBar/QueryBar';
@@ -81,9 +81,16 @@ const AnimeListComponent: FC<Props> = () => {
     }
   }, [query]);
 
-  if (isLoading) {
-    return <span>Anime loading</span>;
-  }
+  useEffect(() => {
+    if (animeList.length === 0) {
+      dispatch(fetchedAnimeList(query));
+    }
+  }, [animeList]);
+
+  /** Gets more anime. */
+  const getMoreAnime = useCallback(() => {
+    dispatch(fetchedNextAnimeList());
+  }, []);
 
   return (
     <Paper className={styles.animeCatalog}>
