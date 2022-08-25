@@ -1,27 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { addStudios, fetchStudios } from './dispatchers';
+import { fetchedStudios } from './dispatchers';
 import { entityAdapter, initialState, State } from './state';
 
 export const studiosSlice = createSlice({
   name: 'studios',
   initialState,
-  reducers: {},
+  reducers: {
+    addedStudios(state, action) {
+      entityAdapter.addMany(state as State, action.payload);
+    },
+  },
   extraReducers: builder => builder
-    .addCase(fetchStudios.pending, state => {
+    .addCase(fetchedStudios.pending, state => {
       state.isLoading = true;
     })
-    .addCase(fetchStudios.fulfilled, (state, action) => {
+    .addCase(fetchedStudios.fulfilled, (state, action) => {
       entityAdapter.setAll(state as State, action.payload);
       state.isLoading = false;
     })
-    .addCase(fetchStudios.rejected, (state, action) => {
+    .addCase(fetchedStudios.rejected, (state, action) => {
       if (action.error.message) {
         state.error = action.error.message;
       }
       state.isLoading = false;
-    })
-    .addCase(addStudios.fulfilled, (state, action) => {
-      entityAdapter.addMany(state as State, action.payload);
     }),
 });
+
+export const { addedStudios } = studiosSlice.actions;

@@ -1,14 +1,8 @@
-import { Studio } from '@js-camp/core/models/studio.dto';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { StudioService } from '../../api/services/studioService';
 
-export const fetchStudios = createAsyncThunk(
-  'studios/fetch',
+export const fetchedStudios = createAsyncThunk(
+  'studios/fetched',
   () => StudioService.fetchStudios(),
-);
-
-export const addStudios = createAsyncThunk(
-  'studios/add',
-  (studios: readonly Studio[]) => studios,
 );

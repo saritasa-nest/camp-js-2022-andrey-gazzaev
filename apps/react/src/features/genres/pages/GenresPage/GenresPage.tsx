@@ -1,5 +1,5 @@
 import { memo, useEffect, FC } from 'react';
-import { fetchGenres } from '@js-camp/react/store/genre/dispatchers';
+import { fetchedGenres } from '@js-camp/react/store/genre/dispatchers';
 import { selectGenres, selectIsGenresLoading } from '@js-camp/react/store/genre/selectors';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store';
 
@@ -13,7 +13,7 @@ const GenresPageComponent: FC = () => {
   const isLoading = useAppSelector(selectIsGenresLoading);
 
   useEffect(() => {
-    dispatch(fetchGenres());
+    dispatch(fetchedGenres());
   }, [dispatch]);
 
   if (isLoading) {

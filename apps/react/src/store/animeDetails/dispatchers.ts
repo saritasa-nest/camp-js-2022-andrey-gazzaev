@@ -1,16 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AnimeService } from '../../api/services/animeService';
-import { addGenres } from '../genre/dispatchers';
-import { addStudios } from '../studio/dispatchers';
+import { addedGenres } from '../genre/slice';
+import { addedStudios } from '../studio/slice';
 
 export const fetchAnimeDetailsById = createAsyncThunk(
-  'animeDetails/fetch/id',
+  'animeDetails/fetchedId',
   async(id: number, { dispatch }) => {
     const anime = await AnimeService.fetchAnimeById(id);
     if (anime !== null) {
-      dispatch(addGenres(anime.genresData));
-      dispatch(addStudios(anime.studiosData));
+      dispatch(addedGenres(anime.genresData));
+      dispatch(addedStudios(anime.studiosData));
     }
     return anime;
   },
