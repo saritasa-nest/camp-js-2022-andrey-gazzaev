@@ -1,3 +1,4 @@
+/** test commit */
 import { memo, useEffect, FC } from 'react';
 import { fetchGenres } from '@js-camp/react/store/genre/dispatchers';
 import { selectGenres, selectAreGenresLoading } from '@js-camp/react/store/genre/selectors';
