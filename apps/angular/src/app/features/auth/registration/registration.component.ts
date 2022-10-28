@@ -13,7 +13,7 @@ import { UserService } from '../../../../core/services/user.service';
 import { showErrorsFormFields } from '../../../../core/utils/show-errors';
 import { SnackBarService } from '../../../../core/services/snack-bar.service';
 
-interface RegistrationFormControls {
+interface RegistrationForm {
 
   /** Email control. */
   readonly email: FormControl<string>;
@@ -40,8 +40,9 @@ interface RegistrationFormControls {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationComponent {
+
   /** Registration form. */
-  public readonly registrationForm: FormGroup<RegistrationFormControls>;
+  public readonly registrationForm: FormGroup<RegistrationForm>;
 
   public constructor(
     private readonly urlService: UrlService,
@@ -67,8 +68,7 @@ export class RegistrationComponent {
         tap(() => this.urlService.navigateToHome()),
         untilDestroyed(this),
         catchError((error: unknown) => {
-          if (error instanceof AppError) {
-
+          if (error instanceof AppError<RegistrationForm>) {
             return of(this.setErrors(error));
           }
           return throwError(() => error);
@@ -83,29 +83,44 @@ export class RegistrationComponent {
     this.changeDetectorRef.markForCheck();
   }
 
-  private initRegistrationForm(): FormGroup<RegistrationFormControls> {
+  private initRegistrationForm(): FormGroup<RegistrationForm> {
+    // Example: exEx123
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$/i;
 
-    return this.formBuilder.nonNullable.group({
-      email: ['', [Validators.required, Validators.email]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.pattern(passwordPattern)]],
-      passwordConfirm: ['', [Validators.required, this.matchControl()]],
+    return this.formBuilder.group({
+      email: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.email],
+      }),
+      firstName: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      lastName: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      password: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.pattern(passwordPattern)],
+      }),
+      passwordConfirm: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, this.matchControl()],
+      }),
     });
   }
 
   private matchControl(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (
-        this.registrationForm &&
-        this.registrationForm.get('password')?.value !== control.value
-      ) {
-        return {
-          match: 'Passwords did not match',
-        };
+      const isPasswordsMatch = this.registrationForm && this.registrationForm.get('password')?.value === control.value;
+      if (isPasswordsMatch) {
+        return {};
       }
-      return null;
+
+      return {
+        match: 'Passwords did not match',
+      };
     };
   }
 }

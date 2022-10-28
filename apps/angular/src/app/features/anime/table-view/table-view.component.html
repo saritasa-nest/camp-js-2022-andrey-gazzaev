@@ -1,4 +1,4 @@
-<section class="table-view" [formGroup]="queryForm">
+<section class="table-view" [formGroup]="filter.queryForm">
   <h2 id="anime-catalog" class="mat-title">Anime table</h2>
 
   <div class="table-container mat-elevation-z8">
@@ -13,13 +13,13 @@
     </mat-form-field>
 
     <ng-container *ngIf="animeList$ | async as animeList; else loading">
-      <ng-container *ngIf="sort$ | async as sort; else loading">
+      <ng-container *ngIf="filter.sort$ | async as sort; else loading">
         <table
           mat-table
           matSort
           aria-describedby="anime-catalog"
           (matSortChange)="onSortChange($event)"
-          [trackBy]="trackAnime"
+          [trackBy]="trackAnimeById"
           [matSortActive]="sort.field"
           [dataSource]="animeList.list"
           [matSortDirection]="sort.direction"
@@ -81,7 +81,7 @@
 
           <ng-container matColumnDef="type">
             <th mat-header-cell *matHeaderCellDef class="table-column-type">
-              <ng-container *ngIf="filterListByType$ | async as types">
+              <ng-container *ngIf="filter.types$ | async as types">
                 <mat-select formControlName="typeFilter" multiple>
                   <mat-select-trigger class="table-column-type__trigger">
                     Type <mat-icon>filter_alt</mat-icon>
@@ -121,9 +121,9 @@
         <mat-paginator
           class="table-pagination"
           aria-label="Select page"
-          [pageSize]="pageSize"
+          [pageSize]="filter.pageSize"
           [length]="animeList.totalAnimeCount"
-          [pageIndex]="currentPageNumber$ | async"
+          [pageIndex]="filter.currentPageNumber$ | async"
           (page)="onPaginationChange($event)"
         >
         </mat-paginator>

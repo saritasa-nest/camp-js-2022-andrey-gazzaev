@@ -1,6 +1,6 @@
 import { map, Observable, switchMap } from 'rxjs';
 
-import { Component, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -13,13 +13,16 @@ import { AnimeService } from '../../../../core/services/anime.service';
 
 import { ImagePopupComponent } from './image-popup/image-popup.component';
 
-const PARAM_ID = 'id';
+const PARAM = {
+  id: 'id',
+};
 
 /** Anime details component. */
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailsComponent {
 
@@ -36,7 +39,7 @@ export class DetailsComponent {
     private readonly animeService: AnimeService,
   ) {
     this.anime$ = this.route.params.pipe(
-      switchMap(params => this.animeService.fetchAnime(params[PARAM_ID])),
+      switchMap(params => this.animeService.fetchAnime(params[PARAM.id])),
     );
 
     this.trailerUrl$ = this.anime$.pipe(

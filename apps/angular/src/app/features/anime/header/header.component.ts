@@ -16,6 +16,7 @@ import { UserService } from '../../../../core/services/user.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
+
   /** User information. */
   public readonly user$: Observable<User | null>;
 
